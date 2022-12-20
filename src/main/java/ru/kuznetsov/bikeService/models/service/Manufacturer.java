@@ -3,27 +3,38 @@ package ru.kuznetsov.bikeService.models.service;
 import javax.validation.constraints.NotEmpty;
 
 public class Manufacturer {
-    private int id;
+    private int manufacturerid;
     @NotEmpty(message = "Fill this field!")
     private final String name;
     private final String country;
 
-    public Manufacturer(int id, String name, String country) {
-        this.id = id;
+    public Manufacturer(String name, String country) {
         this.name = name;
         this.country = country;
     }
 
-    public Manufacturer(int id, String name){
-        this(id, name, "");
+    public Manufacturer(String name){
+        this(name, "");
     }
 
-    public int getId() {
-        return id;
+    public Manufacturer(){
+        this("");
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getManufacturerid() {
+        return manufacturerid;
+    }
+
+    public void setManufacturerid(int manufacturerid) {
+        this.manufacturerid = manufacturerid;
+    }
+
+    public String setName(String name) {
+        return this.name;
+    }
+
+    public String setCountry(String country) {
+        return country;
     }
 
     public String getName() {

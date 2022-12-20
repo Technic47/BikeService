@@ -2,18 +2,17 @@ package ru.kuznetsov.bikeService.models.lists;
 
 import ru.kuznetsov.bikeService.models.documents.Document;
 import ru.kuznetsov.bikeService.models.service.Consumable;
-import ru.kuznetsov.bikeService.models.service.Fastener;
 import ru.kuznetsov.bikeService.models.service.Usable;
 
 import java.util.List;
 
 public class ServiceList {
     private List<Usable> toolList;
-    private List<Fastener> fastenerList;
+    private List<ru.kuznetsov.bikeService.models.service.Fastener> fastenerList;
     private List<Consumable> consumableList;
     private List<Document> docsList;
 
-    public ServiceList(List<Usable> toolList, List<Fastener> fastenerList, List<Consumable> consumableList, List<Document> docsList) {
+    public ServiceList(List<Usable> toolList, List<ru.kuznetsov.bikeService.models.service.Fastener> fastenerList, List<Consumable> consumableList, List<Document> docsList) {
         this.toolList = toolList;
         this.fastenerList = fastenerList;
         this.consumableList = consumableList;
@@ -28,11 +27,11 @@ public class ServiceList {
         this.toolList = toolList;
     }
 
-    public List<Fastener> getFastenerList() {
+    public List<ru.kuznetsov.bikeService.models.service.Fastener> getFastenerList() {
         return fastenerList;
     }
 
-    public void setFastenerList(List<Fastener> fastenerList) {
+    public void setFastenerList(List<ru.kuznetsov.bikeService.models.service.Fastener> fastenerList) {
         this.fastenerList = fastenerList;
     }
 

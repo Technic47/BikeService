@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fastener info</title>
+</head>
+<body>
+
+<p th:text="${fastener.getFastenerid()}">VALUE</p>
+<p th:text="${fastener.getType()}">VALUE</p>
+<p th:text="${fastener.getSpecs()}">VALUE</p>
+<p th:text="${fastener.getDescription()}">VALUE</p>
+
+<a th:href="@{/fasteners/{id}/edit(id=${fastener.getFastenerid()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/fasteners/{id}(id=${fastener.getFastenerid()})}">
+    <label>
+        <input th:type="submit" value="Delete">
+    </label>
+</form>
+
+</body>
+</html>

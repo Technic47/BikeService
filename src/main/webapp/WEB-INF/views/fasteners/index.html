@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Fasteners</title>
+</head>
+<body>
+
+<div th:each="fastener : ${fasteners}">
+    <a th:href="@{/fasteners/{id}(id=${fastener.getFastenerid()})}"
+       th:text="${fastener.getFastenerid()} + ', ' + ${fastener.getType()}">doc</a>
+</div>
+
+<br/>
+<hr/>
+<a href="/fasteners/new">Create new</a>
+
+</body>
+</html>
