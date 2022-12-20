@@ -31,7 +31,7 @@ public class ManufactorerController {
     }
 
     @GetMapping("/new")
-    public String newDocument(Model model) {
+    public String newManufacturer(Model model) {
         model.addAttribute("manufacturer", new Manufacturer());
         return "manufacturers/new";
     }

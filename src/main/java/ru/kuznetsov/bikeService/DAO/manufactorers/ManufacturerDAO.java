@@ -1,10 +1,9 @@
 package ru.kuznetsov.bikeService.DAO.manufactorers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.kuznetsov.bikeService.DAO.fasteners.FastenerMapper;
-import ru.kuznetsov.bikeService.models.service.Fastener;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 import java.util.List;
@@ -19,17 +18,17 @@ public class ManufacturerDAO {
     }
 
     public List<Manufacturer> index() {
-        return jdbcTemplate.query("SELECT * FROM manufacturers", new ManufacturerMapper());
+        return jdbcTemplate.query("SELECT * FROM manufacturers", new BeanPropertyRowMapper<>(Manufacturer.class));
     }
 
     public Manufacturer show(int id) {
         return jdbcTemplate.query("SELECT * FROM manufacturers WHERE manufacturerid=?",
-                        new Object[]{id}, new ManufacturerMapper())
+                        new Object[]{id}, new BeanPropertyRowMapper<>(Manufacturer.class))
                 .stream().findAny().orElse(null);
     }
 
     public void save(Manufacturer item) {
-        jdbcTemplate.update("INSERT INTO manufacturers VALUES(?, ?,DEFAULT)",
+        jdbcTemplate.update("INSERT INTO manufacturers VALUES(?, ?, DEFAULT)",
                 item.getName(), item.getCountry());
     }
 
@@ -41,5 +40,4 @@ public class ManufacturerDAO {
     public void del(int id) {
         jdbcTemplate.update("DELETE FROM fasteners WHERE fastenerid=?", id);
     }
-
 }

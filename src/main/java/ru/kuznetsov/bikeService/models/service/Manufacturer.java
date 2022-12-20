@@ -5,20 +5,12 @@ import javax.validation.constraints.NotEmpty;
 public class Manufacturer {
     private int manufacturerid;
     @NotEmpty(message = "Fill this field!")
-    private final String name;
-    private final String country;
+    private String name;
+    private String country;
 
-    public Manufacturer(String name, String country) {
-        this.name = name;
-        this.country = country;
-    }
-
-    public Manufacturer(String name){
-        this(name, "");
-    }
-
-    public Manufacturer(){
-        this("");
+    public Manufacturer() {
+        this.name = "";
+        this.country = "";
     }
 
     public int getManufacturerid() {
@@ -29,12 +21,12 @@ public class Manufacturer {
         this.manufacturerid = manufacturerid;
     }
 
-    public String setName(String name) {
-        return this.name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String setCountry(String country) {
-        return country;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getName() {
@@ -43,5 +35,16 @@ public class Manufacturer {
 
     public String getCountry() {
         return country;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Manufacturer{" +
+                "manufacturerid=" + manufacturerid +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }

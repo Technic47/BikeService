@@ -5,15 +5,11 @@ import javax.validation.constraints.NotEmpty;
 public class Document {
 
     private int docid;
-    @NotEmpty
+    @NotEmpty(message = "Fill this field!")
     private String name;
     private String description;
     private String link;
 
-    public Document(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
     public Document(){
         this.name="";
         this.description = "";

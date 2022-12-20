@@ -1,9 +1,11 @@
 package ru.kuznetsov.bikeService.DAO.documents;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.documents.Document;
+import ru.kuznetsov.bikeService.models.service.Fastener;
 
 import java.util.List;
 
@@ -17,12 +19,12 @@ public class DocumentsDAO {
     }
 
     public List<Document> index() {
-        return jdbcTemplate.query("SELECT * FROM documents", new DocumentMapper());
+        return jdbcTemplate.query("SELECT * FROM documents", new BeanPropertyRowMapper<>(Document.class));
     }
 
     public Document show(int id) {
         return jdbcTemplate.query("SELECT * FROM documents WHERE docid=?",
-                        new Object[]{id}, new DocumentMapper())
+                        new Object[]{id}, new BeanPropertyRowMapper<>(Document.class))
                 .stream().findAny().orElse(null);
     }
 

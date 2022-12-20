@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manufacturer info</title>
+</head>
+<body>
+
+<p th:text="${manufacturer.getManufacturerid()}">VALUE</p>
+<p th:text="${manufacturer.getName()}">VALUE</p>
+<p th:text="${manufacturer.getCountry()}">VALUE</p>
+
+<a th:href="@{/manufacturers/{id}/edit(id=${manufacturer.getManufacturerid()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/manufacturers/{id}(id=${manufacturer.getManufacturerid()})}">
+    <label>
+        <input th:type="submit" value="Delete">
+    </label>
+</form>
+
+</body>
+</html>

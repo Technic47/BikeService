@@ -5,6 +5,7 @@
     <title>Create document</title>
 </head>
 <body>
+
 <form th:method="POST" th:action="@{/documents}" th:object="${document}">
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>

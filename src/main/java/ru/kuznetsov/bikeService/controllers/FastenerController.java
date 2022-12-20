@@ -31,7 +31,7 @@ public class FastenerController {
     }
 
     @GetMapping("/new")
-    public String newDocument(Model model) {
+    public String newFastener(Model model) {
         model.addAttribute("fastener", new Fastener());
         return "fasteners/new";
     }
