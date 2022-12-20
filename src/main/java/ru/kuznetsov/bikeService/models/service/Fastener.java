@@ -3,20 +3,30 @@ package ru.kuznetsov.bikeService.models.service;
 import javax.validation.constraints.NotEmpty;
 
 public class Fastener {
+    private int id;
     @NotEmpty(message = "Fill this field!")
     private String type;
     @NotEmpty(message = "Fill this field!")
     private String specs;
     private String description;
 
-    public Fastener(String type, String specs, String description) {
+    public Fastener(int id, String type, String specs, String description) {
+        this.id = id;
         this.type = type;
         this.specs = specs;
         this.description = description;
     }
 
-    public Fastener(String type, String specs) {
-        this(type, specs, "");
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Fastener(int id, String type, String specs) {
+        this(id, type, specs, "");
     }
 
     public String getType() {

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Document info</title>
+</head>
+<body>
+
+<p th:text="${document.getId()}">VALUE</p>
+<p th:text="${document.getName()}">VALUE</p>
+<p th:text="${document.getDescription()}">VALUE</p>
+<p><a th:href="@{${document.getLink()}}" th:text="${document.getLink()}"></a></p>
+
+<a th:href="@{/documents/{id}/edit(id=${document.getId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/documents/{id}(id=${document.getId()})}">
+    <label>
+        <input th:type="submit" value="Delete">
+    </label>
+</form>
+
+</body>
+</html>

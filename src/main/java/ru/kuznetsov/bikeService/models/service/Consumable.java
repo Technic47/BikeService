@@ -5,10 +5,10 @@ public class Consumable implements Usable{
     private Manufacturer manufacturer;
     private String model;
     private String name;
-    private String volume;
+    private int volume;
     private String description;
 
-    public Consumable(int id, Manufacturer manufacturer, String model, String name, String volume, String description) {
+    public Consumable(int id, Manufacturer manufacturer, String model, String name, int volume, String description) {
         this.id = id;
         this.manufacturer = manufacturer;
         this.model = model;
@@ -34,11 +34,11 @@ public class Consumable implements Usable{
         this.description = description;
     }
 
-    public String getVolume() {
+    public int getVolume() {
         return volume;
     }
 
-    public void setVolume(String volume) {
+    public void setVolume(int volume) {
         this.volume = volume;
     }
 
@@ -68,6 +68,6 @@ public class Consumable implements Usable{
 
     @Override
     public String getInfo() {
-        return this.volume;
+        return Integer.toString(this.volume);
     }
 }

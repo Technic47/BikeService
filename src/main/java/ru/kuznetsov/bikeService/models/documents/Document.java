@@ -1,22 +1,31 @@
 package ru.kuznetsov.bikeService.models.documents;
 
+import javax.validation.constraints.NotEmpty;
+
 public class Document {
-    private int id;
+
+    private int docid;
+    @NotEmpty
     private String name;
     private String description;
+    private String link;
 
-    public Document(int id, String name, String description) {
-        this.id = id;
+    public Document(String name, String description) {
         this.name = name;
         this.description = description;
     }
+    public Document(){
+        this.name="";
+        this.description = "";
+        this.link = "";
+    }
 
     public int getId() {
-        return id;
+        return docid;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.docid = id;
     }
 
     public String getName() {
@@ -33,5 +42,22 @@ public class Document {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "id=" + docid +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

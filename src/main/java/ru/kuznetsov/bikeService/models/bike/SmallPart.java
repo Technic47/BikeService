@@ -12,7 +12,6 @@ public class SmallPart {
     @NotEmpty(message = "Fill this field!")
     protected String model;
     protected String partNumber;
-    @NotEmpty(message = "Fill this field!")
     protected String description;
     protected ServiceList serviceList;
 
