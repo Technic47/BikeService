@@ -22,7 +22,7 @@ public class ManufacturerDAO {
     }
 
     public Manufacturer show(int id) {
-        return jdbcTemplate.query("SELECT * FROM manufacturers WHERE manufacturerid=?",
+        return jdbcTemplate.query("SELECT * FROM manufacturers WHERE id=?",
                         new Object[]{id}, new BeanPropertyRowMapper<>(Manufacturer.class))
                 .stream().findAny().orElse(null);
     }
@@ -33,11 +33,11 @@ public class ManufacturerDAO {
     }
 
     public void update(int id, Manufacturer updateItem) {
-        jdbcTemplate.update("UPDATE manufacturers SET name=?, country=? WHERE manufacturerid=?",
-                updateItem.getName(), updateItem.getCountry(), updateItem.getManufacturerid());
+        jdbcTemplate.update("UPDATE manufacturers SET name=?, country=? WHERE id=?",
+                updateItem.getName(), updateItem.getCountry(), id);
     }
 
     public void del(int id) {
-        jdbcTemplate.update("DELETE FROM fasteners WHERE fastenerid=?", id);
+        jdbcTemplate.update("DELETE FROM manufacturers WHERE id=?", id);
     }
 }

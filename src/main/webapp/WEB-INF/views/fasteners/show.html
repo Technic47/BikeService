@@ -6,13 +6,13 @@
 </head>
 <body>
 
-<p th:text="${fastener.getFastenerid()}">VALUE</p>
+<p th:text="${fastener.getId()}">VALUE</p>
 <p th:text="${fastener.getType()}">VALUE</p>
 <p th:text="${fastener.getSpecs()}">VALUE</p>
 <p th:text="${fastener.getDescription()}">VALUE</p>
 
-<a th:href="@{/fasteners/{id}/edit(id=${fastener.getFastenerid()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/fasteners/{id}(id=${fastener.getFastenerid()})}">
+<a th:href="@{/fasteners/{id}/edit(id=${fastener.getId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/fasteners/{id}(id=${fastener.getId()})}">
     <label>
         <input th:type="submit" value="Delete">
     </label>

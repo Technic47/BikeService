@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 
 public class Document {
 
-    private int docid;
+    private int id;
     @NotEmpty(message = "Fill this field!")
     private String name;
     private String description;
@@ -17,11 +17,11 @@ public class Document {
     }
 
     public int getId() {
-        return docid;
+        return id;
     }
 
     public void setId(int id) {
-        this.docid = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -51,7 +51,7 @@ public class Document {
     @Override
     public String toString() {
         return "Document{" +
-                "id=" + docid +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

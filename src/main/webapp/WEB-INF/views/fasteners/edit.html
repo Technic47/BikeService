@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/fasteners/{id}(id=${fastener.getFastenerid()})}" th:object="${fastener}">
+<form th:method="PATCH" th:action="@{/fasteners/{id}(id=${fastener.getId()})}" th:object="${fastener}">
     <label for="type">Enter name:</label>
     <input type="text" th:field="*{type}" id="type"/>
     <div style="color:red" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>

@@ -7,8 +7,8 @@
 <body>
 
 <div th:each="manufacturer : ${manufacturers}">
-    <a th:href="@{/manufacturers/{id}(id=${manufacturer.getManufacturerid()})}"
-       th:text="${manufacturer.getManufacturerid()} + ', ' + ${manufacturer.getName()}">doc</a>
+    <a th:href="@{/manufacturers/{id}(id=${manufacturer.getId()})}"
+       th:text="${manufacturer.getId()} + ', ' + ${manufacturer.getName()}">doc</a>
 </div>
 
 <br/>

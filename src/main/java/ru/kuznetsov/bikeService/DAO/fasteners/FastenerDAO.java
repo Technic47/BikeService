@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.service.Fastener;
-import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class FastenerDAO {
     }
 
     public Fastener show(int id) {
-        return jdbcTemplate.query("SELECT * FROM fasteners WHERE fastenerid=?",
+        return jdbcTemplate.query("SELECT * FROM fasteners WHERE id=?",
                         new Object[]{id}, new BeanPropertyRowMapper<>(Fastener.class))
                 .stream().findAny().orElse(null);
     }
@@ -34,11 +33,11 @@ public class FastenerDAO {
     }
 
     public void update(int id, Fastener updateItem) {
-        jdbcTemplate.update("UPDATE fasteners SET type=?, description=?, specs=? WHERE fastenerid=?",
-                updateItem.getType(), updateItem.getDescription(), updateItem.getSpecs(), updateItem.getFastenerid());
+        jdbcTemplate.update("UPDATE fasteners SET type=?, description=?, specs=? WHERE id=?",
+                updateItem.getType(), updateItem.getDescription(), updateItem.getSpecs(), id);
     }
 
     public void del(int id) {
-        jdbcTemplate.update("DELETE FROM fasteners WHERE fastenerid=?", id);
+        jdbcTemplate.update("DELETE FROM fasteners WHERE id=?", id);
     }
 }

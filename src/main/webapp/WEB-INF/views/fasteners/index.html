@@ -7,8 +7,8 @@
 <body>
 
 <div th:each="fastener : ${fasteners}">
-    <a th:href="@{/fasteners/{id}(id=${fastener.getFastenerid()})}"
-       th:text="${fastener.getFastenerid()} + ', ' + ${fastener.getType()}">doc</a>
+    <a th:href="@{/fasteners/{id}(id=${fastener.getId()})}"
+       th:text="${fastener.getId()} + ', ' + ${fastener.getType()}">doc</a>
 </div>
 
 <br/>

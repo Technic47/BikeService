@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.documents.Document;
-import ru.kuznetsov.bikeService.models.service.Fastener;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class DocumentsDAO {
     }
 
     public Document show(int id) {
-        return jdbcTemplate.query("SELECT * FROM documents WHERE docid=?",
+        return jdbcTemplate.query("SELECT * FROM documents WHERE id=?",
                         new Object[]{id}, new BeanPropertyRowMapper<>(Document.class))
                 .stream().findAny().orElse(null);
     }
@@ -34,11 +33,11 @@ public class DocumentsDAO {
     }
 
     public void update(int id, Document updateDoc) {
-        jdbcTemplate.update("UPDATE documents SET name=?, description=?, link=? WHERE docid=?",
-                updateDoc.getName(), updateDoc.getDescription(), updateDoc.getLink(), updateDoc.getId());
+        jdbcTemplate.update("UPDATE documents SET name=?, description=?, link=? WHERE id=?",
+                updateDoc.getName(), updateDoc.getDescription(), updateDoc.getLink(), id);
     }
 
     public void del(int id) {
-        jdbcTemplate.update("DELETE FROM documents WHERE docid=?", id);
+        jdbcTemplate.update("DELETE FROM documents WHERE id=?", id);
     }
 }

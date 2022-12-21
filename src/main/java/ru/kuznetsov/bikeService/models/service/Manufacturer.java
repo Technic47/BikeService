@@ -3,7 +3,7 @@ package ru.kuznetsov.bikeService.models.service;
 import javax.validation.constraints.NotEmpty;
 
 public class Manufacturer {
-    private int manufacturerid;
+    private int id;
     @NotEmpty(message = "Fill this field!")
     private String name;
     private String country;
@@ -13,12 +13,12 @@ public class Manufacturer {
         this.country = "";
     }
 
-    public int getManufacturerid() {
-        return manufacturerid;
+    public int getId() {
+        return id;
     }
 
-    public void setManufacturerid(int manufacturerid) {
-        this.manufacturerid = manufacturerid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -42,7 +42,7 @@ public class Manufacturer {
     @Override
     public String toString() {
         return "Manufacturer{" +
-                "manufacturerid=" + manufacturerid +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
                 '}';

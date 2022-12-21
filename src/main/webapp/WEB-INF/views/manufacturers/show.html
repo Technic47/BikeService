@@ -6,12 +6,12 @@
 </head>
 <body>
 
-<p th:text="${manufacturer.getManufacturerid()}">VALUE</p>
+<p th:text="${manufacturer.getId()}">VALUE</p>
 <p th:text="${manufacturer.getName()}">VALUE</p>
 <p th:text="${manufacturer.getCountry()}">VALUE</p>
 
-<a th:href="@{/manufacturers/{id}/edit(id=${manufacturer.getManufacturerid()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/manufacturers/{id}(id=${manufacturer.getManufacturerid()})}">
+<a th:href="@{/manufacturers/{id}/edit(id=${manufacturer.getId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/manufacturers/{id}(id=${manufacturer.getId()})}">
     <label>
         <input th:type="submit" value="Delete">
     </label>

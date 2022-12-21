@@ -3,7 +3,7 @@ package ru.kuznetsov.bikeService.models.service;
 import javax.validation.constraints.NotEmpty;
 
 public class Fastener {
-    private int fastenerid;
+    private int id;
     @NotEmpty(message = "Fill this field!")
     private String type;
     @NotEmpty(message = "Fill this field!")
@@ -24,12 +24,12 @@ public class Fastener {
         this("", "");
     }
 
-    public int getFastenerid() {
-        return fastenerid;
+    public int getId() {
+        return id;
     }
 
-    public void setFastenerid(int fastenerid) {
-        this.fastenerid = fastenerid;
+    public void setId(int id) {
+        this.id = id;
     }
 
 

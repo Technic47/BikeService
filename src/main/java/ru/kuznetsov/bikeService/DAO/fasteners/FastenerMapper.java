@@ -10,7 +10,7 @@ public class FastenerMapper implements RowMapper<Fastener> {
     @Override
     public Fastener mapRow(ResultSet resultSet, int i) throws SQLException {
         Fastener fastener = new Fastener();
-        fastener.setFastenerid(resultSet.getInt("fastenerid"));
+        fastener.setId(resultSet.getInt("id"));
         fastener.setType(resultSet.getString("type"));
         fastener.setSpecs(resultSet.getString("specs"));
         fastener.setDescription(resultSet.getString("description"));
