@@ -13,60 +13,62 @@ import javax.validation.Valid;
 @RequestMapping("/documents")
 public class DocumentController {
     private final DAO<Document> dao;
+    private final String currentObject = "document";
+    private final String category = currentObject + "s";
 
     public DocumentController(DAO<Document> dao) {
         this.dao = dao;
-        this.dao.setTableName("documents");
+        this.dao.setTableName(category);
         this.dao.setCurrentClass(Document.class);
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("documents", dao.index());
-        return "documents/index";
+        model.addAttribute(category, dao.index());
+        return category + "/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("document", dao.show(id));
-        return "documents/show";
+        model.addAttribute(currentObject, dao.show(id));
+        return category + "/show";
     }
 
     @GetMapping("/new")
     public String newDocument(Model model) {
-        model.addAttribute("document", new Document());
-        return "documents/new";
+        model.addAttribute(currentObject, new Document());
+        return category + "/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("document") @Valid Document doc,
+    public String create(@ModelAttribute(currentObject) @Valid Document doc,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "documents/new";
+            return category + "/new";
         }
         dao.save(doc);
-        return "redirect:/documents";
+        return "redirect:/" + category;
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("document", dao.show(id));
-        return "documents/edit";
+        model.addAttribute(currentObject, dao.show(id));
+        return category + "/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("document") @Valid Document doc, BindingResult bindingResult,
+    public String update(@ModelAttribute(currentObject) @Valid Document doc, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
-            return "documents/edit";
+            return category + "/edit";
         }
         dao.update(id, doc);
-        return "redirect:/documents";
+        return "redirect:/" + category;
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         dao.del(id);
-        return "redirect:/documents";
+        return "redirect:/" + category;
     }
 }

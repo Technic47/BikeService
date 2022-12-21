@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kuznetsov.bikeService.DAO.manufactorers.ManufacturerDAO;
+import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 import javax.validation.Valid;
@@ -12,21 +12,23 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/manufacturers")
 public class ManufactorerController {
-    private final ManufacturerDAO manufacturerDAO;
+    private final DAO<Manufacturer> dao;
 
-    public ManufactorerController(ManufacturerDAO manufacturerDAO) {
-        this.manufacturerDAO = manufacturerDAO;
+    public ManufactorerController(DAO<Manufacturer> dao) {
+        this.dao = dao;
+        this.dao.setTableName("manufacturers");
+        this.dao.setCurrentClass(Manufacturer.class);
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("manufacturers", manufacturerDAO.index());
+        model.addAttribute("manufacturers", dao.index());
         return "manufacturers/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("manufacturer", manufacturerDAO.show(id));
+        model.addAttribute("manufacturer", dao.show(id));
         return "manufacturers/show";
     }
 
@@ -42,13 +44,13 @@ public class ManufactorerController {
         if (bindingResult.hasErrors()) {
             return "manufacturers/new";
         }
-        manufacturerDAO.save(item);
+        dao.save(item);
         return "redirect:/manufacturers";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("manufacturer", manufacturerDAO.show(id));
+        model.addAttribute("manufacturer", dao.show(id));
         return "manufacturers/edit";
     }
 
@@ -58,13 +60,13 @@ public class ManufactorerController {
         if (bindingResult.hasErrors()) {
             return "manufacturers/edit";
         }
-        manufacturerDAO.update(id, item);
+        dao.update(id, item);
         return "redirect:/manufacturers";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        manufacturerDAO.del(id);
+        dao.del(id);
         return "redirect:/manufacturers";
     }
 }

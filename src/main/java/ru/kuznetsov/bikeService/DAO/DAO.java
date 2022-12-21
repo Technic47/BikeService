@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.DAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,10 +17,10 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 @Component
+@Scope("prototype")
 public class DAO<T> {
     private String tableName;
     private Class<T> currentClass;
-    //    private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private StringBuilder builder;
     private StringJoiner joiner;
@@ -115,6 +116,4 @@ public class DAO<T> {
 
         return result;
     }
-
-
 }
