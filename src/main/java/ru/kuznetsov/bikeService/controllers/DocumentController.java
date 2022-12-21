@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kuznetsov.bikeService.DAO.documents.DocumentsDAO;
+import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.models.documents.Document;
 
 import javax.validation.Valid;
@@ -12,21 +12,23 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/documents")
 public class DocumentController {
-    private final DocumentsDAO documentsDAO;
+    private final DAO<Document> dao;
 
-    public DocumentController(DocumentsDAO documentsDAO) {
-        this.documentsDAO = documentsDAO;
+    public DocumentController(DAO<Document> dao) {
+        this.dao = dao;
+        this.dao.setTableName("documents");
+        this.dao.setCurrentClass(Document.class);
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("documents", documentsDAO.index());
+        model.addAttribute("documents", dao.index());
         return "documents/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("document", documentsDAO.show(id));
+        model.addAttribute("document", dao.show(id));
         return "documents/show";
     }
 
@@ -42,13 +44,13 @@ public class DocumentController {
         if (bindingResult.hasErrors()) {
             return "documents/new";
         }
-        documentsDAO.save(doc);
+        dao.save(doc);
         return "redirect:/documents";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("document", documentsDAO.show(id));
+        model.addAttribute("document", dao.show(id));
         return "documents/edit";
     }
 
@@ -58,13 +60,13 @@ public class DocumentController {
         if (bindingResult.hasErrors()) {
             return "documents/edit";
         }
-        documentsDAO.update(id, doc);
+        dao.update(id, doc);
         return "redirect:/documents";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        documentsDAO.del(id);
+        dao.del(id);
         return "redirect:/documents";
     }
 }

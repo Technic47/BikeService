@@ -10,8 +10,8 @@ public class Document {
     private String description;
     private String link;
 
-    public Document(){
-        this.name="";
+    public Document() {
+        this.name = "";
         this.description = "";
         this.link = "";
     }
