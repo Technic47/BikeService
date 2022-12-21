@@ -2,27 +2,30 @@ package ru.kuznetsov.bikeService.DAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 @Component
 public class DAO<T> {
     private String tableName;
     private Class<T> currentClass;
-    private final JdbcTemplate jdbcTemplate;
+    //    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
     private StringBuilder builder;
+    private StringJoiner joiner;
 
     @Autowired
-    public DAO(JdbcTemplate jdbcTemplate) {
+    public DAO(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -42,64 +45,58 @@ public class DAO<T> {
 
     public T show(int id) {
         builder = new StringBuilder();
-        builder.append("SELECT * FROM ").append(this.tableName).append(" WHERE id=?");
-        return jdbcTemplate.query(builder.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(currentClass))
-                .stream().findAny().orElse(null);
+        builder.append("SELECT * FROM ").append(this.tableName).append(" WHERE id=:id");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
+        return jdbcTemplate.queryForObject(builder.toString(), sqlParameterSource, new BeanPropertyRowMapper<>(currentClass));
     }
 
     public void save(T item) {
         Map<String, Object> newObjectProperties = getObjectProperties(item);
+        SqlParameterSource parameterSource = new MapSqlParameterSource(newObjectProperties);
         builder = new StringBuilder();
-//        "INSERT INTO documents VALUES(DEFAULT, ?, ?, ?)"
-        builder.append("INSERT INTO ").append(this.tableName).append(" VALUES(");
-        int count = 0;
-        List<Object> objectsList = new ArrayList<>();
+        joiner = new StringJoiner(", ");
+        StringJoiner joiner2 = new StringJoiner(", ");
+        builder.append("INSERT INTO ").append(this.tableName).append(" (");
+
         for (Map.Entry<String, Object> str : newObjectProperties.entrySet()) {
             if (str.getKey().contains("id")) {
-                builder.append("DEFAULT");
+                joiner.add(str.getKey());
+                joiner2.add("DEFAULT");
             } else {
-                builder.append("?");
+                joiner.add(str.getKey());
+                String valueItem = str.getValue() == null ? "'null'" : str.getValue().toString();
+                joiner2.add("'" + valueItem + "'");
             }
-            if (count != newObjectProperties.keySet().size()) {
-                builder.append(", ");
-            }
-
-            objectsList.add(str.getValue());
-            count++;
         }
+        builder.append(joiner);
+        builder.append(") VALUES (");
+        builder.append(joiner2);
         builder.append(")");
-        jdbcTemplate.update(builder.toString(), objectsList);
+        jdbcTemplate.update(builder.toString(), parameterSource);
     }
 
     public void update(int id, T updateItem) {
-//        "UPDATE documents SET name=?, description=?, link=? WHERE id=?"
         Map<String, Object> newObjectProperties = getObjectProperties(updateItem);
         builder = new StringBuilder();
+        joiner = new StringJoiner(", ");
         builder.append("UPDATE ").append(this.tableName).append(" SET ");
-        int count = 0;
-        int size = newObjectProperties.keySet().size();
-        List<Object> objectsList = new ArrayList<>(size);
+
         for (Map.Entry<String, Object> str : newObjectProperties.entrySet()) {
             String key = str.getKey();
             if (!key.contains("id")) {
-                builder.append(key).append("=?");
-                objectsList.add(str.getValue());
-            } else {
-                objectsList.add(size - 1, id);
+                joiner.add(key + "= '" + str.getValue() + "'");
             }
-            if (count != size) {
-                builder.append(", ");
-            }
-            count++;
         }
-        builder.append("WHERE id=?");
-        jdbcTemplate.update(builder.toString(), objectsList);
+        builder.append(joiner);
+        builder.append(" WHERE id=").append(id);
+        jdbcTemplate.update(builder.toString(), newObjectProperties);
     }
 
     public void del(int id) {
         builder = new StringBuilder();
-        builder.append("DELETE FROM ").append(this.tableName).append("WHERE id=?");
-        jdbcTemplate.update(builder.toString(), id);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
+        builder.append("DELETE FROM ").append(this.tableName).append(" WHERE id=").append(id);
+        jdbcTemplate.update(builder.toString(), sqlParameterSource);
     }
 
     private Map<String, Object> getObjectProperties(final Object bean) {
