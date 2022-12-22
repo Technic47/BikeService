@@ -1,8 +1,10 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import ru.kuznetsov.bikeService.models.Showable;
+
 import javax.validation.constraints.NotEmpty;
 
-public class Tool implements Usable{
+public class Tool implements Usable, Showable {
     private int id;
     private Manufacturer manufacturer;
     private String model;
@@ -75,7 +77,7 @@ public class Tool implements Usable{
     }
 
     @Override
-    public String getInfo() {
+    public String getValue() {
         return this.size;
     }
 }

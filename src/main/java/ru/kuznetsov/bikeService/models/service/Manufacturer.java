@@ -1,8 +1,10 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import ru.kuznetsov.bikeService.models.Showable;
+
 import javax.validation.constraints.NotEmpty;
 
-public class Manufacturer {
+public class Manufacturer implements Showable {
     private int id;
     @NotEmpty(message = "Fill this field!")
     private String name;
@@ -33,11 +35,19 @@ public class Manufacturer {
         return name;
     }
 
+    @Override
+    public String getValue() {
+        return this.country;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
     public String getCountry() {
         return country;
     }
-
-
 
     @Override
     public String toString() {

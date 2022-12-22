@@ -5,22 +5,11 @@ import ru.kuznetsov.bikeService.models.service.Manufacturer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bike extends SmallPart{
-    private List<Unit> unitList;
+public class Bike extends PartsWithPartList<Unit>{
     private String year;
 
-    public Bike(int id, Manufacturer manufacturer, String model) {
-        super(id, manufacturer, model);
-        this.unitList = new ArrayList<>();
+    public Bike() {
         this.year = "";
-    }
-
-    public List<Unit> getUnitList() {
-        return unitList;
-    }
-
-    public void setUnitList(List<Unit> unitList) {
-        this.unitList = unitList;
     }
 
     public String getYear() {

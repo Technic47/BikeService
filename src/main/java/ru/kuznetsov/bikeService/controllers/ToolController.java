@@ -6,20 +6,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.models.documents.Document;
+import ru.kuznetsov.bikeService.models.service.Tool;
 
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/documents")
-public class DocumentController {
-    private final DAO<Document> dao;
-    private final String currentObject = "document";
+@RequestMapping("/tools")
+public class ToolController {
+    private final DAO<Tool> dao;
+    private final String currentObject = "tool";
     private final String category = currentObject + "s";
 
-    public DocumentController(DAO<Document> dao) {
+    public ToolController(DAO<Tool> dao) {
         this.dao = dao;
         this.dao.setTableName(category);
-        this.dao.setCurrentClass(Document.class);
+        this.dao.setCurrentClass(Tool.class);
     }
 
     @GetMapping()
@@ -30,26 +31,23 @@ public class DocumentController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("object", dao.show(id));
-        model.addAttribute("category", category);
-        model.addAttribute("properties", dao.getObjectProperties(dao.show(id)));
-        return "documents/show";
+        model.addAttribute(currentObject, dao.show(id));
+        return category + "/show";
     }
 
     @GetMapping("/new")
-    public String newItem(Model model) {
-//        model.addAttribute("properties", dao.getObjectProperties(new Document()));
-        model.addAttribute("document", new Document());
+    public String newDocument(Model model) {
+        model.addAttribute(currentObject, new Document());
         return category + "/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute(currentObject) @Valid Document doc,
+    public String create(@ModelAttribute(currentObject) @Valid Tool item,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return category + "/new";
         }
-        dao.save(doc);
+        dao.save(item);
         return "redirect:/" + category;
     }
 
@@ -60,12 +58,12 @@ public class DocumentController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute(currentObject) @Valid Document doc, BindingResult bindingResult,
+    public String update(@ModelAttribute(currentObject) @Valid Tool item, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
             return category + "/edit";
         }
-        dao.update(id, doc);
+        dao.update(id, item);
         return "redirect:/" + category;
     }
 

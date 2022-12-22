@@ -1,8 +1,10 @@
 package ru.kuznetsov.bikeService.models.documents;
 
+import ru.kuznetsov.bikeService.models.Showable;
+
 import javax.validation.constraints.NotEmpty;
 
-public class Document {
+public class Document implements Showable {
 
     private int id;
     @NotEmpty(message = "Fill this field!")
@@ -26,6 +28,11 @@ public class Document {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getValue() {
+        return this.link;
     }
 
     public void setName(String name) {

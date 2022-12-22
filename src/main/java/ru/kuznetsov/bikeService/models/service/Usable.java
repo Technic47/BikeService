@@ -1,9 +1,9 @@
 package ru.kuznetsov.bikeService.models.service;
 
-public interface Usable {
-    int getId();
+import ru.kuznetsov.bikeService.models.Showable;
+
+public interface Usable extends Showable {
     Manufacturer getManufacturer();
     String getModel();
     String getName();
-    String getInfo();
 }

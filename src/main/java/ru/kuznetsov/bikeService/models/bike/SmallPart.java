@@ -5,7 +5,7 @@ import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 import javax.validation.constraints.NotEmpty;
 
-public class SmallPart {
+public class SmallPart implements Serviceable{
     private int id;
     @NotEmpty(message = "Fill this field!")
     protected Manufacturer manufacturer;
@@ -15,13 +15,12 @@ public class SmallPart {
     protected String description;
     protected ServiceList serviceList;
 
-    public SmallPart(int id, Manufacturer manufacturer, String model) {
-        this.id = id;
-        this.manufacturer = manufacturer;
-        this.model = model;
+    public SmallPart() {
+        this.manufacturer = null;
+        this.model = "";
         this.partNumber = "";
         this.description = "";
-        this.serviceList = null;
+        this.serviceList = new ServiceList();
     }
 
     public void setId(int id) {
@@ -30,6 +29,16 @@ public class SmallPart {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getName() {
+        return this.model;
+    }
+
+    @Override
+    public String getValue() {
+        return this.partNumber;
     }
 
     public Manufacturer getManufacturer() {

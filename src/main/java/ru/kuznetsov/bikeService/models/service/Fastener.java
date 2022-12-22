@@ -1,8 +1,10 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import ru.kuznetsov.bikeService.models.Showable;
+
 import javax.validation.constraints.NotEmpty;
 
-public class Fastener {
+public class Fastener implements Showable {
     private int id;
     @NotEmpty(message = "Fill this field!")
     private String type;
@@ -26,6 +28,16 @@ public class Fastener {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String getName() {
+        return this.type;
+    }
+
+    @Override
+    public String getValue() {
+        return this.specs;
     }
 
     public void setId(int id) {

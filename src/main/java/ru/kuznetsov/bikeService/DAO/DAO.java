@@ -100,7 +100,7 @@ public class DAO<T> {
         jdbcTemplate.update(builder.toString(), sqlParameterSource);
     }
 
-    private Map<String, Object> getObjectProperties(final Object bean) {
+    public Map<String, Object> getObjectProperties(final Object bean) {
         final Map<String, Object> result = new HashMap<>();
         try {
             final PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(bean.getClass(), Object.class).getPropertyDescriptors();
