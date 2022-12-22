@@ -1,12 +1,17 @@
 package ru.kuznetsov.bikeService.DAO;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
+import ru.kuznetsov.bikeService.models.bike.PartsWithPartList;
+import ru.kuznetsov.bikeService.models.bike.Serviceable;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -60,12 +65,18 @@ public class DAO<T> {
         builder.append("INSERT INTO ").append(this.tableName).append(" (");
 
         for (Map.Entry<String, Object> str : newObjectProperties.entrySet()) {
+            Object value = str.getValue();
             if (str.getKey().contains("id")) {
                 joiner.add(str.getKey());
                 joiner2.add("DEFAULT");
             } else {
                 joiner.add(str.getKey());
-                String valueItem = str.getValue() == null ? "'null'" : str.getValue().toString();
+                String valueItem;
+                if (value instanceof Map) {
+                    valueItem = this.objectToJson(value);
+                } else {
+                    valueItem = value == null ? "'null'" : value.toString();
+                }
                 joiner2.add("'" + valueItem + "'");
             }
         }
@@ -113,7 +124,18 @@ public class DAO<T> {
         } catch (Exception ex) {
             // ignore
         }
-
         return result;
+    }
+
+    public String objectToJson(Object obj) {
+        Gson gson = new Gson();
+        return gson.toJson(obj, new TypeToken<Map<String, Integer>>() {
+        }.getType());
+    }
+
+    public Map<String, Integer> jsonToObject(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, new TypeToken<Map<String, Integer>>() {
+        }.getType());
     }
 }
