@@ -1,26 +1,32 @@
 package ru.kuznetsov.bikeService.models.bike;
 
+import ru.kuznetsov.bikeService.models.JSONConverter;
+import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 import javax.validation.constraints.NotEmpty;
 
-public class SmallPart implements Serviceable{
-    private int id;
-    @NotEmpty(message = "Fill this field!")
-    protected Manufacturer manufacturer;
+public class SmallPart implements Serviceable {
+    protected int id;
+    protected String manufacturer;
     @NotEmpty(message = "Fill this field!")
     protected String model;
     protected String partNumber;
     protected String description;
-    protected ServiceList serviceList;
+    protected String serviceList;
+    protected final JSONConverter<Manufacturer> converterManufacturer;
+    protected final JSONConverter<ServiceList> converterServiceList;
 
     public SmallPart() {
-        this.manufacturer = null;
+        this.converterManufacturer = new JSONConverter<>();
+        this.converterServiceList = new JSONConverter<>();
+        this.manufacturer = "";
         this.model = "";
         this.partNumber = "";
         this.description = "";
-        this.serviceList = new ServiceList();
+        ServiceList newServiceList = new ServiceList();
+        this.serviceList = this.converterServiceList.toJson(newServiceList);
     }
 
     public void setId(int id) {
@@ -42,11 +48,11 @@ public class SmallPart implements Serviceable{
     }
 
     public Manufacturer getManufacturer() {
-        return manufacturer;
+        return converterManufacturer.fromJson(this.manufacturer);
     }
 
     public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
+        this.manufacturer = converterManufacturer.toJson(manufacturer);
     }
 
     public String getModel() {
@@ -74,10 +80,16 @@ public class SmallPart implements Serviceable{
     }
 
     public ServiceList getServiceList() {
-        return serviceList;
+        return converterServiceList.fromJson(this.serviceList);
     }
 
-    public void setServiceList(ServiceList serviceList) {
-        this.serviceList = serviceList;
+    private void setServiceList(ServiceList newList) {
+        this.serviceList = converterServiceList.toJson(newList);
+    }
+
+    public void addToServiceList(Showable item) {
+        ServiceList currentServiceList = this.getServiceList();
+        currentServiceList.addToList(item);
+        this.setServiceList(currentServiceList);
     }
 }

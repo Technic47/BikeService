@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.models.lists;
 
+import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.documents.Document;
 import ru.kuznetsov.bikeService.models.service.Consumable;
 import ru.kuznetsov.bikeService.models.service.Fastener;
@@ -54,22 +55,22 @@ public class ServiceList {
         this.docsList = docsList;
     }
 
-//    public void addToList(Object obj) {
-//        switch (obj.getClass().getSimpleName()) {
-//            case "Tool":
-//                this.addTool((Tool) obj);
-//                break;
-//            case "Fastener":
-//                this.addFastener((Fastener) obj);
-//                break;
-//            case "Consumable":
-//                this.addConsumable((Consumable) obj);
-//                break;
-//            case "Document":
-//                this.addDocument((Document) obj);
-//                break;
-//        }
-//    }
+    public void addToList(Showable obj) {
+        switch (obj.getClass().getSimpleName()) {
+            case "Tool":
+                this.addTool(obj.getId());
+                break;
+            case "Fastener":
+                this.addFastener(obj.getId());
+                break;
+            case "Consumable":
+                this.addConsumable(obj.getId());
+                break;
+            case "Document":
+                this.addDocument(obj.getId());
+                break;
+        }
+    }
 
     public void addTool(Integer id) {
         this.toolList.add(id);

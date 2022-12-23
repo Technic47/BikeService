@@ -5,5 +5,5 @@ import ru.kuznetsov.bikeService.models.service.Manufacturer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Unit extends PartsWithPartList<Part> {
+public class Unit extends PartsWithPartList {
 }

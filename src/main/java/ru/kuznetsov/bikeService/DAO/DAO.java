@@ -65,18 +65,12 @@ public class DAO<T> {
         builder.append("INSERT INTO ").append(this.tableName).append(" (");
 
         for (Map.Entry<String, Object> str : newObjectProperties.entrySet()) {
-            Object value = str.getValue();
             if (str.getKey().contains("id")) {
                 joiner.add(str.getKey());
                 joiner2.add("DEFAULT");
             } else {
                 joiner.add(str.getKey());
-                String valueItem;
-                if (value instanceof Map) {
-                    valueItem = this.objectToJson(value);
-                } else {
-                    valueItem = value == null ? "'null'" : value.toString();
-                }
+                String valueItem = str.getValue() == null ? "'null'" : str.getValue().toString();
                 joiner2.add("'" + valueItem + "'");
             }
         }
@@ -125,17 +119,5 @@ public class DAO<T> {
             // ignore
         }
         return result;
-    }
-
-    public String objectToJson(Object obj) {
-        Gson gson = new Gson();
-        return gson.toJson(obj, new TypeToken<Map<String, Integer>>() {
-        }.getType());
-    }
-
-    public Map<String, Integer> jsonToObject(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, new TypeToken<Map<String, Integer>>() {
-        }.getType());
     }
 }

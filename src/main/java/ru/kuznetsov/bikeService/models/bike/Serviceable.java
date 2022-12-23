@@ -5,10 +5,11 @@ import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 public interface Serviceable extends Showable {
-    //    List<T> getPartList();
     Manufacturer getManufacturer();
 
     String getPartNumber();
 
     ServiceList getServiceList();
+
+
 }
