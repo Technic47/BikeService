@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
+import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.bike.PartsWithPartList;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
 
@@ -23,7 +24,7 @@ import java.util.StringJoiner;
 
 @Component
 @Scope("prototype")
-public class DAO<T> {
+public class DAO<T extends Showable> {
     private String tableName;
     private Class<T> currentClass;
     private final NamedParameterJdbcTemplate jdbcTemplate;

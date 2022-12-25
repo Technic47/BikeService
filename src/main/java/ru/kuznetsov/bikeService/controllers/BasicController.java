@@ -1,39 +1,36 @@
 package ru.kuznetsov.bikeService.controllers;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.DAO.DAO;
-import ru.kuznetsov.bikeService.models.documents.Document;
+import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.Valid;
-import java.util.function.Supplier;
 
-@Controller
-public class BasicController<T> {
-    private Class<T> currentClass;
-    private Supplier<T> supplier;
-    private final DAO<T> dao;
-    private String currentObjectName = "";
-    private final String category = currentObjectName + "s";
 
-    public BasicController(DAO<T> dao) {
+public class BasicController<T extends Showable> {
+    protected Class<T> currentClass;
+    protected final DAO<T> dao;
+    protected T thisObject;
+    protected String currentObjectName;
+    private final String category;
+
+    public BasicController(DAO<T> dao, String currentObjectName, T newObject) {
         this.dao = dao;
+        this.thisObject = newObject;
+        this.currentObjectName = currentObjectName;
+        this.category = currentObjectName + "s";
         this.dao.setTableName(category);
     }
 
-    public void setCurrentClass(Class<T> currentClass){
+    public void setCurrentClass(Class<T> currentClass) {
         this.currentClass = currentClass;
         this.dao.setCurrentClass(currentClass);
     }
 
-    public void setCurrentObjectName(String currentObjectName){
+    public void setCurrentObjectName(String currentObjectName) {
         this.currentObjectName = currentObjectName;
-    }
-
-    public T getNewObj(){
-        return supplier.get();
     }
 
     @GetMapping()
@@ -53,8 +50,8 @@ public class BasicController<T> {
 
     @GetMapping("/new")
     public String newItem(Model model) {
-        model.addAttribute("properties", dao.getObjectProperties(this.getNewObj()));
-        model.addAttribute("document", this.getNewObj());
+        model.addAttribute("properties", dao.getObjectProperties(this.thisObject));
+        model.addAttribute("newObject", this.thisObject);
         return category + "/new";
     }
 

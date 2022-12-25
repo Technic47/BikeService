@@ -5,7 +5,7 @@
     <title>Create fastener</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/fasteners}" th:object="${fastener}">
+<form th:method="POST" th:action="@{/fasteners}" th:object="${newObject}">
     <label for="type">Enter name:</label>
     <input type="text" th:field="*{type}" id="type"/>
     <div style="color:red" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>

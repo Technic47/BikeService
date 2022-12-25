@@ -1,31 +1,30 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import ru.kuznetsov.bikeService.models.JSONConverter;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
 
 public class Tool implements Usable, Showable {
     private int id;
-    private Manufacturer manufacturer;
+    private String manufacturer;
     private String model;
     @NotEmpty(message = "Fill this field!")
     private String name;
     @NotEmpty(message = "Fill this field!")
     private String size;
     private String description;
+    protected final JSONConverter<Manufacturer> converterManufacturer;
 
-    public Tool(int id, Manufacturer manufacturer, String model, String name, String size, String description) {
-        this.id = id;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.name = name;
-        this.size = size;
-        this.description = description;
+    public Tool() {
+        this.converterManufacturer = new JSONConverter<>();
+        this.manufacturer = "";
+        this.model = "";
+        this.name = "";
+        this.size = "";
+        this.description = "";
     }
 
-    public Tool(int id, String name, String size){
-        this(id, null, "", name, size, "");
-    }
 
     @Override
     public int getId() {
@@ -53,11 +52,11 @@ public class Tool implements Usable, Showable {
     }
 
     public Manufacturer getManufacturer() {
-        return manufacturer;
+        return converterManufacturer.fromJson(this.manufacturer);
     }
 
     public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
+        this.manufacturer = converterManufacturer.toJson(manufacturer);
     }
 
     public String getModel() {
