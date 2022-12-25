@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers;
+package ru.kuznetsov.bikeService.controllers.showable;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +14,7 @@ public class BasicController<T extends Showable> {
     protected final DAO<T> dao;
     protected T thisObject;
     protected String currentObjectName;
-    private final String category;
+    protected final String category;
 
     public BasicController(DAO<T> dao, String currentObjectName, T newObject) {
         this.dao = dao;
@@ -27,10 +27,6 @@ public class BasicController<T extends Showable> {
     public void setCurrentClass(Class<T> currentClass) {
         this.currentClass = currentClass;
         this.dao.setCurrentClass(currentClass);
-    }
-
-    public void setCurrentObjectName(String currentObjectName) {
-        this.currentObjectName = currentObjectName;
     }
 
     @GetMapping()

@@ -1,21 +1,24 @@
 package ru.kuznetsov.bikeService.models.service;
 
-public class Consumable implements Usable{
+import javax.validation.constraints.NotEmpty;
+
+public class Consumable implements Usable {
     private int id;
-    private Manufacturer manufacturer;
+    private int manufacturer;
     private String model;
+    @NotEmpty(message = "Fill this field!")
     private String name;
+    @NotEmpty(message = "Fill this field!")
     private String volume;
     private String description;
 
-//    public Consumable(int id, Manufacturer manufacturer, String model, String name, String volume, String description) {
-//        this.id = id;
-//        this.manufacturer = manufacturer;
-//        this.model = model;
-//        this.name = name;
-//        this.volume = volume;
-//        this.description = description;
-//    }
+    public Consumable() {
+        this.manufacturer = 0;
+        this.model = "";
+        this.name = "";
+        this.volume = "";
+        this.description = "";
+    }
 
     @Override
     public int getId() {
@@ -42,11 +45,11 @@ public class Consumable implements Usable{
         this.volume = volume;
     }
 
-    public Manufacturer getManufacturer() {
+    public int getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(Manufacturer manufacturer) {
+    public void setManufacturer(int manufacturer) {
         this.manufacturer = manufacturer;
     }
 

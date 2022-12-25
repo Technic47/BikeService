@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All documents</title>
+</head>
+<body>
+
+<div th:each="object : ${objects}">
+    <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
+       th:text="${object.getId()} + ', ' + ${object.getName()}">doc</a>
+</div>
+
+<br/>
+<hr/>
+
+<a th:href="@{/{link}/new(link=${category})}">Create new</a>
+
+</body>
+</html>

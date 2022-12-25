@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers;
+package ru.kuznetsov.bikeService.controllers.showable;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;

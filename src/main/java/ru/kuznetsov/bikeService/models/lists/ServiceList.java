@@ -1,11 +1,6 @@
 package ru.kuznetsov.bikeService.models.lists;
 
 import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.documents.Document;
-import ru.kuznetsov.bikeService.models.service.Consumable;
-import ru.kuznetsov.bikeService.models.service.Fastener;
-import ru.kuznetsov.bikeService.models.service.Tool;
-import ru.kuznetsov.bikeService.models.service.Usable;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,5 +9,7 @@
 <br/>
 <a href="${pageContext.request.contextPath}tools">Show tools</a>
 <br/>
+<a href="${pageContext.request.contextPath}consumables">Show consumables</a>
+<br/>
 </body>
 </html>

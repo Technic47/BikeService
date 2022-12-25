@@ -7,24 +7,21 @@ import javax.validation.constraints.NotEmpty;
 
 public class Tool implements Usable, Showable {
     private int id;
-    private String manufacturer;
+    private int manufacturer;
     private String model;
     @NotEmpty(message = "Fill this field!")
     private String name;
     @NotEmpty(message = "Fill this field!")
     private String size;
     private String description;
-    protected final JSONConverter<Manufacturer> converterManufacturer;
 
     public Tool() {
-        this.converterManufacturer = new JSONConverter<>();
-        this.manufacturer = "";
+        this.manufacturer = 0;
         this.model = "";
         this.name = "";
         this.size = "";
         this.description = "";
     }
-
 
     @Override
     public int getId() {
@@ -51,12 +48,12 @@ public class Tool implements Usable, Showable {
         this.size = size;
     }
 
-    public Manufacturer getManufacturer() {
-        return converterManufacturer.fromJson(this.manufacturer);
+    public int getManufacturer() {
+        return this.manufacturer;
     }
 
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = converterManufacturer.toJson(manufacturer);
+    public void setManufacturer(int manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public String getModel() {
