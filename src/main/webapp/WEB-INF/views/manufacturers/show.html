@@ -2,16 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Manufacturer info</title>
+    <title>Manufactures info</title>
 </head>
 <body>
 
-<p th:text="${manufacturer.getId()}">VALUE</p>
-<p th:text="${manufacturer.getName()}">VALUE</p>
-<p th:text="${manufacturer.getCountry()}">VALUE</p>
+<div th:each="pair : ${properties}">
+    <div th:if="${!pair.getKey().contains('link')}">
+        <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p></div>
+    <div th:if="${pair.getKey().contains('link')}">
+        <a th:href="@{${pair.getValue()}}"
+           th:text="${pair.getValue()}"></a>
+    </div>
+</div>
 
-<a th:href="@{/manufacturers/{id}/edit(id=${manufacturer.getId()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/manufacturers/{id}(id=${manufacturer.getId()})}">
+<a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
     <label>
         <input th:type="submit" value="Delete">
     </label>

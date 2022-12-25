@@ -15,9 +15,9 @@
     </div>
 </div>
 
-<a th:href="@{/category/{id}/edit(id=${object.getId()})}">Edit</a>
+<a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/category/{id}(id=${object.getId()})}">
+<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
     <label>
         <input th:type="submit" value="Delete">
     </label>

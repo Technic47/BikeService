@@ -13,60 +13,65 @@ import javax.validation.Valid;
 @RequestMapping("/fasteners")
 public class FastenerController {
     private final DAO<Fastener> dao;
+    private final String currentObject = "fastener";
+    private final String category = currentObject + "s";
 
     public FastenerController(DAO<Fastener> dao) {
         this.dao = dao;
-        this.dao.setTableName("fasteners");
+        this.dao.setTableName(category);
         this.dao.setCurrentClass(Fastener.class);
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("fasteners", dao.index());
-        return "fasteners/index";
+        model.addAttribute("objects", dao.index());
+        model.addAttribute("category", category);
+        return category + "/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("fastener", dao.show(id));
-        return "fasteners/show";
+        model.addAttribute("object", dao.show(id));
+        model.addAttribute("category", category);
+        model.addAttribute("properties", dao.getObjectProperties(dao.show(id)));
+        return category + "/show";
     }
 
     @GetMapping("/new")
     public String newFastener(Model model) {
-        model.addAttribute("fastener", new Fastener());
-        return "fasteners/new";
+        model.addAttribute(currentObject, new Fastener());
+        return category + "/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("fastener") @Valid Fastener item,
+    public String create(@ModelAttribute(currentObject) @Valid Fastener item,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "fasteners/new";
+            return category + "/new";
         }
         dao.save(item);
-        return "redirect:/fasteners";
+        return "redirect:/" + category;
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("fastener", dao.show(id));
-        return "fasteners/edit";
+        model.addAttribute(currentObject, dao.show(id));
+        return category + "/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("fastener") @Valid Fastener item, BindingResult bindingResult,
+    public String update(@ModelAttribute(currentObject) @Valid Fastener item, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
-            return "fasteners/edit";
+            return category + "/edit";
         }
         dao.update(id, item);
-        return "redirect:/fasteners";
+        return "redirect:/" + category;
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         dao.del(id);
-        return "redirect:/fasteners";
+        return "redirect:/" + category;
     }
 }

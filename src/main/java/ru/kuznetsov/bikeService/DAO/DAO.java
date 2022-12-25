@@ -118,6 +118,7 @@ public class DAO<T> {
         } catch (Exception ex) {
             // ignore
         }
+        result.remove("value");
         return result;
     }
 }

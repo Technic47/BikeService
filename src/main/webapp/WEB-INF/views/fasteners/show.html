@@ -2,17 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Fastener info</title>
+    <title>Fasteners info</title>
 </head>
 <body>
 
-<p th:text="${fastener.getId()}">VALUE</p>
-<p th:text="${fastener.getType()}">VALUE</p>
-<p th:text="${fastener.getSpecs()}">VALUE</p>
-<p th:text="${fastener.getDescription()}">VALUE</p>
+<div th:each="pair : ${properties}">
+    <div th:if="${!pair.getKey().contains('link')}">
+        <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p></div>
+    <div th:if="${pair.getKey().contains('link')}">
+        <a th:href="@{${pair.getValue()}}"
+           th:text="${pair.getValue()}"></a>
+    </div>
+</div>
 
-<a th:href="@{/fasteners/{id}/edit(id=${fastener.getId()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/fasteners/{id}(id=${fastener.getId()})}">
+<a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
     <label>
         <input th:type="submit" value="Delete">
     </label>

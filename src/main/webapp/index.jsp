@@ -1,6 +1,6 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <body>
 <h2>Hello World!</h2>
-<a href="${pageContext.request.contextPath}/documents/index.html">Show docs</a>
+<a href="${pageContext.request.contextPath}documents">Show documents</a>
 </body>
 </html>

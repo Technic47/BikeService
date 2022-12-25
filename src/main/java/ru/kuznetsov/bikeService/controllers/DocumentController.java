@@ -24,7 +24,8 @@ public class DocumentController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute(category, dao.index());
+        model.addAttribute("objects", dao.index());
+        model.addAttribute("category", category);
         return category + "/index";
     }
 
@@ -33,23 +34,24 @@ public class DocumentController {
         model.addAttribute("object", dao.show(id));
         model.addAttribute("category", category);
         model.addAttribute("properties", dao.getObjectProperties(dao.show(id)));
-        return "documents/show";
+        return category + "/show";
     }
 
     @GetMapping("/new")
     public String newItem(Model model) {
-//        model.addAttribute("properties", dao.getObjectProperties(new Document()));
+        model.addAttribute("properties", dao.getObjectProperties(new Document()));
         model.addAttribute("document", new Document());
         return category + "/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute(currentObject) @Valid Document doc,
+    public String create(@Valid Document item,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return category + "/new";
         }
-        dao.save(doc);
+//        model.addAttribute("object", currentObject);
+        dao.save(item);
         return "redirect:/" + category;
     }
 
