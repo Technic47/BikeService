@@ -3,25 +3,22 @@ package ru.kuznetsov.bikeService.models.bike;
 import ru.kuznetsov.bikeService.models.JSONConverter;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 import javax.validation.constraints.NotEmpty;
 
 public class SmallPart implements Serviceable {
     protected int id;
-    protected String manufacturer;
+    protected int manufacturer;
     @NotEmpty(message = "Fill this field!")
     protected String model;
     protected String partNumber;
     protected String description;
     protected String serviceList;
-    protected final JSONConverter<Manufacturer> converterManufacturer;
     protected final JSONConverter<ServiceList> converterServiceList;
 
     public SmallPart() {
-        this.converterManufacturer = new JSONConverter<>();
         this.converterServiceList = new JSONConverter<>();
-        this.manufacturer = "";
+        this.manufacturer = 0;
         this.model = "";
         this.partNumber = "";
         this.description = "";
@@ -47,12 +44,12 @@ public class SmallPart implements Serviceable {
         return this.partNumber;
     }
 
-    public Manufacturer getManufacturer() {
-        return converterManufacturer.fromJson(this.manufacturer);
+    public int getManufacturer() {
+        return this.manufacturer;
     }
 
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = converterManufacturer.toJson(manufacturer);
+    public void setManufacturer(int manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public String getModel() {
