@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.showable;
 
+import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -8,17 +9,23 @@ import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.Valid;
 
-
+@Component
 public class BasicController<T extends Showable> {
     protected Class<T> currentClass;
     protected final DAO<T> dao;
     protected T thisObject;
     protected String currentObjectName;
-    protected final String category;
+    protected String category;
 
-    public BasicController(DAO<T> dao, String currentObjectName, T newObject) {
+    public BasicController(DAO<T> dao) {
         this.dao = dao;
-        this.thisObject = newObject;
+    }
+
+    public void setThisObject(T thisObject) {
+        this.thisObject = thisObject;
+    }
+
+    public void setCurrentObjectName(String currentObjectName) {
         this.currentObjectName = currentObjectName;
         this.category = currentObjectName + "s";
         this.dao.setTableName(category);
@@ -42,6 +49,11 @@ public class BasicController<T extends Showable> {
         model.addAttribute("category", category);
         model.addAttribute("properties", dao.getObjectProperties(dao.show(id)));
         return category + "/show";
+    }
+
+    @GetMapping("/get/{id}")
+    public T getItem(@PathVariable("id") int id) {
+        return dao.show(id);
     }
 
     @GetMapping("/new")

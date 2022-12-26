@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.models.documents.Document;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
 import ru.kuznetsov.bikeService.models.service.Tool;
 
@@ -12,8 +13,10 @@ import ru.kuznetsov.bikeService.models.service.Tool;
 @RequestMapping("/tools")
 public class ToolController extends UsableController<Tool> {
 
-    public ToolController(DAO<Tool> dao, DAO<Manufacturer> dao2) {
-        super(dao, dao2, "tool", new Tool());
+    public ToolController(DAO<Tool> dao) {
+        super(dao);
         this.setCurrentClass(Tool.class);
+        this.setCurrentObjectName("tool");
+        this.setThisObject(new Tool());
     }
 }
