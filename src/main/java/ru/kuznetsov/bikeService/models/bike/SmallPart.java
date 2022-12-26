@@ -3,10 +3,11 @@ package ru.kuznetsov.bikeService.models.bike;
 import ru.kuznetsov.bikeService.models.JSONConverter;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.kuznetsov.bikeService.models.service.Usable;
 
 import javax.validation.constraints.NotEmpty;
 
-public class SmallPart implements Serviceable {
+public class SmallPart implements Serviceable, Usable {
     protected int id;
     protected int manufacturer;
     @NotEmpty(message = "Fill this field!")

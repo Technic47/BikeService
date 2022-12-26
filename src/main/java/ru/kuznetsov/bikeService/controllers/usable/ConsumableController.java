@@ -4,9 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kuznetsov.bikeService.DAO.DAO;
-import ru.kuznetsov.bikeService.models.documents.Document;
 import ru.kuznetsov.bikeService.models.service.Consumable;
-import ru.kuznetsov.bikeService.models.service.Manufacturer;
 
 @Controller
 @Scope("prototype")

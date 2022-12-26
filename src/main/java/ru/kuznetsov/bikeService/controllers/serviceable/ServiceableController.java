@@ -38,10 +38,19 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         this.cacheList = dao.show(id).getServiceList();
-//        for (Integer docId : cacheList.getDocsList()) {
-//            this.showableMap.put("documents", getShowable("documents", docId));
-//        }
-        model.addAttribute("serviceList", cacheList);
+        for (Integer item : cacheList.getDocsList()) {
+            this.showableMap.put("documents", documentDAO.show(item));
+        }
+        for (Integer item : cacheList.getFastenerList()) {
+            this.showableMap.put("fasteners", fastenerDAO.show(item));
+        }
+        for (Integer item : cacheList.getToolList()) {
+            this.showableMap.put("tools", toolDAO.show(item));
+        }
+        for (Integer item : cacheList.getConsumableList()) {
+            this.showableMap.put("consumables", consumableDAO.show(item));
+        }
+        model.addAttribute("serviceList", this.showableMap);
         return super.show(id, model);
     }
 
