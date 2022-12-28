@@ -7,6 +7,9 @@
 <body>
 
 <form th:method="PATCH" th:action="@{/tools/{id}(id=${tool.getId()})}" th:object="${tool}">
+
+
+
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
@@ -34,6 +37,8 @@
             </option>
         </select>
     </div>
+
+
     <input type="submit" value="Update!"/>
 </form>
 

@@ -10,10 +10,11 @@ import ru.kuznetsov.bikeService.models.bike.SmallPart;
 @Scope("prototype")
 @RequestMapping("/smallParts")
 public class SmallPartsController extends ServiceableController<SmallPart> {
+
     public SmallPartsController(DAO<SmallPart> dao) {
         super(dao);
         this.setCurrentClass(SmallPart.class);
-        this.setCurrentObjectName("smallpart");
+        this.setCurrentObjectName("smallPart");
         this.setThisObject(new SmallPart());
     }
 }
