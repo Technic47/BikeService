@@ -68,7 +68,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(){
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource());
     }
 }

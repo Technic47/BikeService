@@ -11,7 +11,9 @@ import ru.kuznetsov.bikeService.models.documents.Document;
 @RequestMapping("/documents")
 public class DocumentController extends BasicController<Document> {
     public DocumentController(DAO<Document> dao) {
-        super(dao, "document", new Document());
+        super(dao);
         this.setCurrentClass(Document.class);
+        this.setCurrentObjectName("document");
+        this.setThisObject(new Document());
     }
 }

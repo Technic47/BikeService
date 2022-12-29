@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tools info</title>
+</head>
+<body>
+<h1>ToolList</h1>
+
+<div th:each="pair : ${properties}">
+    <div th:if="${!pair.getKey().contains('manufacture')}">
+        <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p></div>
+</div>
+<p th:text="'Manufacture -' + ${manufacture}"></p>
+
+<table>
+    <thead>
+    <tr>
+        <th> documents</th>
+        <th> fasteners</th>
+        <th> tools</th>
+        <th> consumables</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <div th:if="${!documents.isempty}">
+        <tr th:each="document : ${documents}">
+            <td><span th:text="${document.getName()}"> documents </span></td>
+        </tr>
+    </div>
+    <div th:if="${documents.isempty}">
+        <tr>
+            <td><span th:text="'No documents found!'"> documents </span></td>
+        </tr>
+    </div>
+
+    <tr th:each="fastener : ${fasteners}">
+        <td><span th:text="${fastener.getName()}"> fasteners </span></td>
+    </tr>
+    <tr th:each="tool : ${tools}">
+        <td><span th:text="${tool.getName()}"> tools </span></td>
+    </tr>
+    <tr th:each="consumable : ${consumables}">
+        <td><span th:text="${consumable.getName()}"> consumables </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
+    <label>
+        <input th:type="submit" value="Delete">
+    </label>
+</form>
+
+</body>
+</html>

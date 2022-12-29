@@ -3,13 +3,15 @@ package ru.kuznetsov.bikeService.models.bike;
 import ru.kuznetsov.bikeService.models.JSONConverter;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.kuznetsov.bikeService.models.service.Usable;
 
 import javax.validation.constraints.NotEmpty;
 
-public class SmallPart implements Serviceable {
+public class SmallPart implements Serviceable, Usable {
     protected int id;
     protected int manufacturer;
     @NotEmpty(message = "Fill this field!")
+    protected String name;
     protected String model;
     protected String partNumber;
     protected String description;
@@ -18,12 +20,11 @@ public class SmallPart implements Serviceable {
 
     public SmallPart() {
         this.converterServiceList = new JSONConverter<>();
-        this.manufacturer = 0;
+        this.manufacturer = 1;
         this.model = "";
         this.partNumber = "";
         this.description = "";
-        ServiceList newServiceList = new ServiceList();
-        this.serviceList = this.converterServiceList.toJson(newServiceList);
+        this.serviceList = this.converterServiceList.toJson(new ServiceList());
     }
 
     public void setId(int id) {
@@ -36,7 +37,11 @@ public class SmallPart implements Serviceable {
 
     @Override
     public String getName() {
-        return this.model;
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
