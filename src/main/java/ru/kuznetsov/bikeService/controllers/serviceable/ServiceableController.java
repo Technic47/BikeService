@@ -35,7 +35,9 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     public ServiceableController(DAO<T> dao) {
         super(dao);
     }
+/*
 
+ */
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
