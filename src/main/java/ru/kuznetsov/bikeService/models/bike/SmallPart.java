@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.models.bike;
 
+import com.google.gson.Gson;
 import ru.kuznetsov.bikeService.models.JSONConverter;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
@@ -16,15 +17,14 @@ public class SmallPart implements Serviceable, Usable {
     protected String partNumber;
     protected String description;
     protected String serviceList;
-    protected final JSONConverter<ServiceList> converterServiceList;
+    protected final Gson converter;
 
     public SmallPart() {
-        this.converterServiceList = new JSONConverter<>();
         this.manufacturer = 1;
         this.model = "";
         this.partNumber = "";
         this.description = "";
-        this.serviceList = this.converterServiceList.toJson(new ServiceList());
+        this.converter = new Gson();
     }
 
     public void setId(int id) {
@@ -82,11 +82,11 @@ public class SmallPart implements Serviceable, Usable {
     }
 
     public ServiceList getServiceList() {
-        return converterServiceList.fromJson(this.serviceList);
+        return converter.fromJson(this.serviceList, ServiceList.class);
     }
 
     private void setServiceList(ServiceList newList) {
-        this.serviceList = converterServiceList.toJson(newList);
+        this.serviceList = converter.toJson(newList);
     }
 
     public void addToServiceList(Showable item) {
