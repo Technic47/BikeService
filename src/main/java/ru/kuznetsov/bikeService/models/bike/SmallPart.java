@@ -24,7 +24,7 @@ public class SmallPart implements Serviceable, Usable {
         this.partNumber = "";
         this.description = "";
         this.converter = new Gson();
-        this.serviceList = "";
+        this.serviceList = this.converter.toJson(new ServiceList());
     }
 
     public void setId(int id) {

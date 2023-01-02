@@ -66,9 +66,17 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         return super.show(id, model);
     }
     
-    @RequestMapping(value = "/addDocument")
-    public String addDocToNew(T item, @RequestParam(value = "document") Document document, Model model){
-        item.addToServiceList(document);
+    @RequestMapping(value = "/addToServiceList")
+    public String addDocToNew(@Valid T item,
+                              @RequestParam(value = "document") int documentId,
+                              @RequestParam(value = "fastener") int fastenerId,
+                              @RequestParam(value = "tool") int toolId,
+                              @RequestParam(value = "consumable") int consumableId,
+                              Model currentModel){
+        item.addToServiceList(documentDAO.show(documentId));
+        item.addToServiceList(fastenerDAO.show(fastenerId));
+        item.addToServiceList(toolDAO.show(toolId));
+        item.addToServiceList(consumableDAO.show(consumableId));
         return category + "/new";
     }
 

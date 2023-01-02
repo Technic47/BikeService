@@ -9,9 +9,12 @@
 
 <div th:each="pair : ${properties}">
     <div th:if="${!pair.getKey().contains('manufacture')}">
-        <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p></div>
+        <div th:if="${!pair.getKey().contains('serviceList')}">
+            <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p>
+        </div>
+    </div>
 </div>
-<p th:text="'Manufacture -' + ${manufacture}"></p>
+<p th:text="'Manufacture - ' + ${manufacture}"></p>
 
 <table>
     <thead>
@@ -24,16 +27,16 @@
     </thead>
     <tbody>
 
-    <div th:if="${!documents.isempty}">
-        <tr th:each="document : ${documents}">
-            <td><span th:text="${document.getName()}"> documents </span></td>
-        </tr>
-    </div>
-    <div th:if="${documents.isempty}">
-        <tr>
-            <td><span th:text="'No documents found!'"> documents </span></td>
-        </tr>
-    </div>
+    <!--    <div th:if="${!documents.isempty}">-->
+    <!--        <tr th:each="document : ${documents}">-->
+    <!--            <td><span th:text="${document.getName()}"> documents </span></td>-->
+    <!--        </tr>-->
+    <!--    </div>-->
+    <!--    <div th:if="${documents.isempty}">-->
+    <!--        <tr>-->
+    <!--            <td><span th:text="'No documents found!'"> documents </span></td>-->
+    <!--        </tr>-->
+    <!--    </div>-->
 
     <tr th:each="fastener : ${fasteners}">
         <td><span th:text="${fastener.getName()}"> fasteners </span></td>
@@ -46,8 +49,15 @@
     </tr>
     </tbody>
 </table>
-
+<br>
 <a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
+<br>
+
+<!--<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">-->
+<!--    <label>-->
+<!--        <input th:type="submit" value="Delete">-->
+<!--    </label>-->
+<!--</form>-->
 
 <form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
     <label>
