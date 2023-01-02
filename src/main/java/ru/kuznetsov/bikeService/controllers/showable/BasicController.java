@@ -51,10 +51,10 @@ public class BasicController<T extends Showable> {
         return category + "/show";
     }
 
-    @GetMapping("/get/{id}")
-    public T getItem(@PathVariable("id") int id) {
-        return dao.show(id);
-    }
+//    @GetMapping("/get/{id}")
+//    public T getItem(@PathVariable("id") int id) {
+//        return dao.show(id);
+//    }
 
     @GetMapping("/new")
     public String newItem(Model model) {

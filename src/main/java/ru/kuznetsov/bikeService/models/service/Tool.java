@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import ru.kuznetsov.bikeService.models.JSONConverter;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;

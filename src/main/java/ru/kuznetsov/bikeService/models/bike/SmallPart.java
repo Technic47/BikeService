@@ -1,7 +1,6 @@
 package ru.kuznetsov.bikeService.models.bike;
 
 import com.google.gson.Gson;
-import ru.kuznetsov.bikeService.models.JSONConverter;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Usable;
@@ -25,6 +24,7 @@ public class SmallPart implements Serviceable, Usable {
         this.partNumber = "";
         this.description = "";
         this.converter = new Gson();
+        this.serviceList = "";
     }
 
     public void setId(int id) {

@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
 import ru.kuznetsov.bikeService.models.Showable;
@@ -35,9 +32,7 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     public ServiceableController(DAO<T> dao) {
         super(dao);
     }
-/*
 
- */
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
@@ -69,6 +64,12 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         model.addAttribute("tools", toolsList);
         model.addAttribute("consumables", consumablesList);
         return super.show(id, model);
+    }
+    
+    @RequestMapping(value = "/addDocument")
+    public String addDocToNew(T item, @RequestParam(value = "document") Document document, Model model){
+        item.addToServiceList(document);
+        return category + "/new";
     }
 
     @Override

@@ -17,4 +17,6 @@ public class SmallPartsController extends ServiceableController<SmallPart> {
         this.setCurrentObjectName("smallPart");
         this.setThisObject(new SmallPart());
     }
+
+
 }

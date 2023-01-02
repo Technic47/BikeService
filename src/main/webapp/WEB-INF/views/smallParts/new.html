@@ -38,5 +38,23 @@
 
     <input type="submit" value="Create!"/>
 </form>
+
+<form th:action="@{/addDocument}">
+    <label for="documents">Choose document:</label>
+    <div th:object="${documents}">
+        <select id="documents" th:name="document">
+            <option th:each="item : ${documents}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+
+        </select>
+    </div>
+</form>
+
+<form th:action="@{/}">
+    <button type="submit" th:name="action" th:value="in">check-in</button>
+</form>
+
 </body>
 </html>
