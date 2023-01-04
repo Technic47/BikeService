@@ -16,6 +16,8 @@
     <label for="manufacturers">Choose manufacturer:</label>
     <div th:object="${manufacturers}">
         <select id="manufacturers" name="manufacturer">
+            <option selected th:value="${manufacture.getId()}"
+                    th:text="${manufacture.getName()}"></option>
             <option th:each="item : ${manufacturers}"
                     th:value="${item.getId()}"
                     th:text="${item.getName()}">
@@ -39,9 +41,6 @@
     <label for="serviceList">Enter serviceList:</label>
     <input type="text" th:field="*{serviceList}" id="serviceList"/>
     <br/>
-
-
-    <input th:type="submit" th:name="action" th:value="finish" value="Update"/>
     <br/>
 
     <label for="documents">Choose document to add:</label>
@@ -95,31 +94,50 @@
         <input th:type="submit" th:name="action" th:value="delConsumable"/>
     </div>
     <br/>
-
+    <input th:type="submit" th:name="action" th:value="finish" value="Update"/>
+    <br/>
 </form>
-<table>
+<table border="1">
     <thead>
     <tr>
-        <th> documents</th>
-        <th> fasteners</th>
-        <th> tools</th>
-        <th> consumables</th>
+        <th>documents</th>
+        <th>fasteners</th>
+        <th>tools</th>
+        <th>consumables</th>
     </tr>
+
     </thead>
     <tbody>
-    <tr th:each="document : ${documents}">
-        <td th:text="${document.getName()}"> documents</td>
-    </tr>
-    <tr th:each="fastener : ${fasteners}">
-        <td><span th:text="${fastener.getName()}"> fasteners </span></td>
-    </tr>
-    <tr th:each="tool : ${tools}">
-        <td><span th:text="${tool.getName()}"> tools </span></td>
-    </tr>
-    <tr th:each="consumable : ${consumables}">
-        <td><span th:text="${consumable.getName()}"> consumables </span></td>
-    </tr>
+    <th>
+        <table>
+            <tr th:each="document : ${documents}">
+                <td th:text="${document.getName()}"> documents</td>
+            </tr>
+        </table>
+    </th>
+    <th>
+        <table>
+            <tr th:each="fastener : ${fasteners}">
+                <td th:text="${fastener.getName()}"> fasteners</td>
+            </tr>
+        </table>
+    </th>
+    <th>
+        <table>
+            <tr th:each="tool : ${tools}">
+                <td th:text="${tool.getName()}"> tools</td>
+            </tr>
+        </table>
+    </th>
+    <th>
+        <table>
+            <tr th:each="consumable : ${consumables}">
+                <td th:text="${consumable.getName()}"> consumables</td>
+            </tr>
+        </table>
+    </th>
     </tbody>
+
 </table>
 
 </body>
