@@ -2,19 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Small part info</title>
+    <title>Service List Edit</title>
 </head>
 <body>
-<h1>Small Part</h1>
+<h1>List</h1>
 
-<div th:each="pair : ${properties}">
-    <div th:if="${!pair.getKey().contains('manufacture')}">
-        <div th:if="${!pair.getKey().contains('serviceList')}">
-            <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p>
-        </div>
-    </div>
-</div>
-<p th:text="'Manufacture - ' + ${manufacture}"></p>
+    <p th:text="'Name - ' + ${currentObject.getName()}"></p>
+    <p th:text="'Manufacture - ' + ${manufacture}"></p>
+    <p th:text="'Model - ' + ${currentObject.getModel()}"></p>
 
 <table>
     <thead>
@@ -46,6 +41,12 @@
 <br>
 
 <form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
+    <label>
+        <input th:type="submit" value="Delete">
+    </label>
+</form>
+
+<form th:method="POST" th:action="@{/{link}/{id}/editServiceList(link=${category}, id=${object.getId()})}">
     <label>
         <input th:type="submit" value="Delete">
     </label>

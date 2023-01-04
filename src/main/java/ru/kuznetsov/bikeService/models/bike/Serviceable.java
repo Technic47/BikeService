@@ -8,7 +8,9 @@ public interface Serviceable extends Showable {
 
     String getPartNumber();
 
-    ServiceList getServiceList();
+    ServiceList returnServiceListObject();
+
+    String getServiceList();
 
     void addToServiceList(Showable item);
 }

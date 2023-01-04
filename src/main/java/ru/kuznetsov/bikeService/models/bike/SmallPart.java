@@ -81,8 +81,12 @@ public class SmallPart implements Serviceable, Usable {
         this.description = description;
     }
 
-    public ServiceList getServiceList() {
+    public ServiceList returnServiceListObject() {
         return converter.fromJson(this.serviceList, ServiceList.class);
+    }
+
+    public String getServiceList(){
+        return this.serviceList;
     }
 
     private void setServiceList(ServiceList newList) {
@@ -90,7 +94,7 @@ public class SmallPart implements Serviceable, Usable {
     }
 
     public void addToServiceList(Showable item) {
-        ServiceList currentServiceList = this.getServiceList();
+        ServiceList currentServiceList = this.returnServiceListObject();
         currentServiceList.addToList(item);
         this.setServiceList(currentServiceList);
     }

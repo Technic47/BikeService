@@ -2,35 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit tool</title>
+    <title>Edit Small Part</title>
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/tools/{id}(id=${tool.getId()})}" th:object="${tool}">
-
-
+<form th:method="PATCH" th:action="@{/smallParts/{id}/update(id=${smallPart.getId()})}" th:object="${smallPart}">
 
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     <br/>
-    <label for="description">Enter description:</label>
-    <input type="text" th:field="*{description}" id="description"/>
-    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-    <br/>
-    <label for="size">Enter size:</label>
-    <input type="text" th:field="*{size}" id="size"/>
-    <div style="color:red" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"></div>
-    <br/>
-    <label for="model">Enter model:</label>
-    <input type="text" th:field="*{model}" id="model"/>
-    <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
-    <br/>
+
     <label for="manufacturers">Choose manufacturer:</label>
     <div th:object="${manufacturers}">
         <select id="manufacturers" name="manufacturer">
-            <option selected th:value="${manufacture.getId()}"
-                    th:text="${manufacture.getName()}"></option>
             <option th:each="item : ${manufacturers}"
                     th:value="${item.getId()}"
                     th:text="${item.getName()}">
@@ -38,8 +23,22 @@
         </select>
     </div>
 
+    <label for="partNumber">Enter part number:</label>
+    <input type="text" th:field="*{partNumber}" id="partNumber"/>
+    <div style="color:red" th:if="${#fields.hasErrors('partNumber')}" th:errors="*{partNumber}"></div>
+    <br/>
+    <label for="model">Enter model:</label>
+    <input type="text" th:field="*{model}" id="model"/>
+    <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
+    <br/>
+    <label for="description">Enter description:</label>
+    <input type="text" th:field="*{description}" id="description"/>
+    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    <br/>
 
-    <input type="submit" value="Update!"/>
+
+    <input th:type="submit" th:name="action" th:value="body" value="Update body"/>
+    <input th:type="submit" th:name="action" th:value="serviceList" value="Go to service list editor"/>
 </form>
 
 </body>
