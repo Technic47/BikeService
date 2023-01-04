@@ -2,6 +2,9 @@ package ru.kuznetsov.bikeService.models;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+/*
+Need to be deleted. Useless.
+ */
 
 public class JSONConverter<T> {
     public String toJson(T obj) {
