@@ -36,10 +36,91 @@
     <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
     <br/>
 
+    <label for="serviceList">Enter serviceList:</label>
+    <input type="text" th:field="*{serviceList}" id="serviceList"/>
+    <br/>
 
-    <input th:type="submit" th:name="action" th:value="body" value="Update body"/>
-    <input th:type="submit" th:name="action" th:value="serviceList" value="Go to service list editor"/>
+
+    <input th:type="submit" th:name="action" th:value="finish" value="Update"/>
+    <br/>
+
+    <label for="documents">Choose document to add:</label>
+    <div th:object="${allDocuments}">
+        <select id="documents" th:name="documentId">
+            <option th:each="item : ${allDocuments}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+        <input th:type="submit" th:name="action" th:value="addDocument"/>
+        <input th:type="submit" th:name="action" th:value="delDocument"/>
+    </div>
+    <br/>
+
+    <label for="fasteners">Choose fasteners to add:</label>
+    <div th:object="${allFasteners}">
+        <select id="fasteners" th:name="fastenerId">
+            <option th:each="item : ${allFasteners}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+        <input th:type="submit" th:name="action" th:value="addFastener"/>
+        <input th:type="submit" th:name="action" th:value="delFastener"/>
+    </div>
+    <br/>
+
+    <label for="tools">Choose tool to add:</label>
+    <div th:object="${allTools}">
+        <select id="tools" th:name="toolId">
+            <option th:each="item : ${allTools}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+        <input th:type="submit" th:name="action" th:value="addTool"/>
+        <input th:type="submit" th:name="action" th:value="delTool"/>
+    </div>
+    <br/>
+
+    <label for="consumables">Choose consumable to add:</label>
+    <div th:object="${allConsumables}">
+        <select id="consumables" th:name="consumableId">
+            <option th:each="item : ${allConsumables}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+        <input th:type="submit" th:name="action" th:value="addConsumable"/>
+        <input th:type="submit" th:name="action" th:value="delConsumable"/>
+    </div>
+    <br/>
+
 </form>
+<table>
+    <thead>
+    <tr>
+        <th> documents</th>
+        <th> fasteners</th>
+        <th> tools</th>
+        <th> consumables</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="document : ${documents}">
+        <td th:text="${document.getName()}"> documents</td>
+    </tr>
+    <tr th:each="fastener : ${fasteners}">
+        <td><span th:text="${fastener.getName()}"> fasteners </span></td>
+    </tr>
+    <tr th:each="tool : ${tools}">
+        <td><span th:text="${tool.getName()}"> tools </span></td>
+    </tr>
+    <tr th:each="consumable : ${consumables}">
+        <td><span th:text="${consumable.getName()}"> consumables </span></td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

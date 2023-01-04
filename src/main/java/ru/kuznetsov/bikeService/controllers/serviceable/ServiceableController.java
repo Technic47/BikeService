@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
-import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
 import ru.kuznetsov.bikeService.models.documents.Document;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
@@ -47,42 +46,64 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         return super.show(id, model);
     }
 
-    @RequestMapping(value = "/{id}/update")
-    public String updateRedirect(@Valid T item, BindingResult bindingResult,
-                                 @PathVariable("id") int id,
-                                 @RequestParam(value = "action") String action,
-                                 Model model) {
-        if ("body".equals(action)) {
-            return this.update(item, bindingResult, id);
-        }
-        return this.editServiceList(item, model, -1, -1, -1, -1);
-    }
+    @Override
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable int id) {
+        this.cacheList = dao.show(id).returnServiceListObject();
+        model.addAttribute("allDocuments", documentDAO.index());
+        model.addAttribute("allFasteners", fastenerDAO.index());
+        model.addAttribute("allTools", toolDAO.index());
+        model.addAttribute("allConsumables", consumableDAO.index());
 
-    @RequestMapping("/editServiceList")
-    public String editServiceList(@Valid T object,
-                                  Model model,
-                              @RequestParam(value = "document") int documentId,
-                              @RequestParam(value = "fastener") int fastenerId,
-                              @RequestParam(value = "tool") int toolId,
-                              @RequestParam(value = "consumable") int consumableId
-    ) {
-        this.cacheList = object.returnServiceListObject();
         model.addAttribute("documents", this.getObjectDocuments());
         model.addAttribute("fasteners", this.getObjectFasteners());
         model.addAttribute("tools", this.getObjectTools());
         model.addAttribute("consumables", this.getObjectConsumables());
-        model.addAttribute("currentObject", object);
-        model.addAttribute("manufacture", daoManufacturer.show(object.getManufacturer()).getName());
-
-//        System.out.println(item.getName());
-//        item.addToServiceList(documentDAO.show(documentId));
-//        item.addToServiceList(fastenerDAO.show(fastenerId));
-//        item.addToServiceList(toolDAO.show(toolId));
-//        item.addToServiceList(consumableDAO.show(consumableId));
-        return category + "/editServiceList";
+        return super.edit(model, id);
     }
 
-    private List<Document> getObjectDocuments(){
+    @RequestMapping(value = "/{id}/update")
+    public String updateRedirect(@Valid T item, BindingResult bindingResult,
+                                 @PathVariable("id") int id,
+                                 @RequestParam(value = "action") String action,
+                                 @RequestParam(value = "documentId") int documentId,
+                                 @RequestParam(value = "fastenerId") int fastenerId,
+                                 @RequestParam(value = "toolId") int toolId,
+                                 @RequestParam(value = "consumableId") int consumableId,
+                                 Model model) {
+        switch (action) {
+            case "finish":
+                return this.update(item, bindingResult, id);
+            case "addDocument":
+                item.addToServiceList(documentDAO.show(documentId));
+                break;
+            case "delDocument":
+                item.delFromServiceList(documentDAO.show(documentId));
+                break;
+            case "addFastener":
+                item.addToServiceList(fastenerDAO.show(fastenerId));
+                break;
+            case "delFastener":
+                item.delFromServiceList(fastenerDAO.show(fastenerId));
+                break;
+            case "addTool":
+                item.addToServiceList(toolDAO.show(toolId));
+                break;
+            case "delTool":
+                item.delFromServiceList(toolDAO.show(toolId));
+                break;
+            case "addConsumable":
+                item.addToServiceList(consumableDAO.show(consumableId));
+                break;
+            case "delConsumable":
+                item.delFromServiceList(consumableDAO.show(consumableId));
+                break;
+        }
+        dao.update(id, item);
+        return edit(model, id);
+    }
+
+    private List<Document> getObjectDocuments() {
         List<Document> documentsList = new ArrayList<>();
         for (Integer item : cacheList.getDocsList()) {
             documentsList.add(documentDAO.show(item));
@@ -90,29 +111,29 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         return documentsList;
     }
 
-    private List<Fastener> getObjectFasteners(){
+    private List<Fastener> getObjectFasteners() {
         List<Fastener> fastenersList = new ArrayList<>();
-        for (Integer item : cacheList.getDocsList()) {
+        for (Integer item : cacheList.getFastenerList()) {
             fastenersList.add(fastenerDAO.show(item));
         }
         return fastenersList;
     }
-    private List<Tool> getObjectTools(){
+
+    private List<Tool> getObjectTools() {
         List<Tool> toolsList = new ArrayList<>();
-        for (Integer item : cacheList.getDocsList()) {
+        for (Integer item : cacheList.getToolList()) {
             toolsList.add(toolDAO.show(item));
         }
         return toolsList;
     }
 
-    private List<Consumable> getObjectConsumables(){
+    private List<Consumable> getObjectConsumables() {
         List<Consumable> consumablesList = new ArrayList<>();
-        for (Integer item : cacheList.getDocsList()) {
+        for (Integer item : cacheList.getConsumableList()) {
             consumablesList.add(consumableDAO.show(item));
         }
         return consumablesList;
     }
-
 
 
     @Override
@@ -128,7 +149,7 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     public void setDaoServiceList(DAO<ServiceList> daoServiceList) {
         this.daoServiceList = daoServiceList;
         this.daoServiceList.setCurrentClass(ServiceList.class);
-        this.daoServiceList.setTableName("servicelists");
+        this.daoServiceList.setTableName("serviceLists");
     }
 
     @Autowired

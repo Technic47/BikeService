@@ -9,9 +9,9 @@
 
 <div th:each="pair : ${properties}">
     <div th:if="${!pair.getKey().contains('manufacture')}">
-        <div th:if="${!pair.getKey().contains('serviceList')}">
+
             <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p>
-        </div>
+
     </div>
 </div>
 <p th:text="'Manufacture - ' + ${manufacture}"></p>

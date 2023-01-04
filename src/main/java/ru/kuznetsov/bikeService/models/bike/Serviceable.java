@@ -13,4 +13,6 @@ public interface Serviceable extends Showable {
     String getServiceList();
 
     void addToServiceList(Showable item);
+
+    void delFromServiceList(Showable item);
 }

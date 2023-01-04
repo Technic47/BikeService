@@ -89,13 +89,23 @@ public class SmallPart implements Serviceable, Usable {
         return this.serviceList;
     }
 
-    private void setServiceList(ServiceList newList) {
+    public void setServiceList(String newServiceList){
+        this.serviceList = newServiceList;
+    }
+
+    private void updateServiceListObject(ServiceList newList) {
         this.serviceList = converter.toJson(newList);
     }
 
     public void addToServiceList(Showable item) {
         ServiceList currentServiceList = this.returnServiceListObject();
         currentServiceList.addToList(item);
-        this.setServiceList(currentServiceList);
+        this.updateServiceListObject(currentServiceList);
+    }
+
+    public void delFromServiceList(Showable item) {
+        ServiceList currentServiceList = this.returnServiceListObject();
+        currentServiceList.delFromList(item);
+        this.updateServiceListObject(currentServiceList);
     }
 }

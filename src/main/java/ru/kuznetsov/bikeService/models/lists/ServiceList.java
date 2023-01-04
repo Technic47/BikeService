@@ -76,6 +76,23 @@ public class ServiceList {
         }
     }
 
+    public void delFromList(Showable obj) {
+        switch (obj.getClass().getSimpleName()) {
+            case "Tool":
+                this.delTool(obj.getId());
+                break;
+            case "Fastener":
+                this.delFastener(obj.getId());
+                break;
+            case "Consumable":
+                this.delConsumable(obj.getId());
+                break;
+            case "Document":
+                this.delDocument(obj.getId());
+                break;
+        }
+    }
+
     public void addTool(Integer id) {
         this.toolList.add(id);
     }
