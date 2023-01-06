@@ -38,27 +38,17 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        this.cacheList = dao.show(id).returnServiceListObject();
-        model.addAttribute("documents", this.getObjectDocuments());
-        model.addAttribute("fasteners", this.getObjectFasteners());
-        model.addAttribute("tools", this.getObjectTools());
-        model.addAttribute("consumables", this.getObjectConsumables());
+        this.updateCacheList(id);
+        addItemShowablesToModel(model);
         return super.show(id, model);
     }
 
     @Override
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable int id) {
-        this.cacheList = dao.show(id).returnServiceListObject();
-        model.addAttribute("allDocuments", documentDAO.index());
-        model.addAttribute("allFasteners", fastenerDAO.index());
-        model.addAttribute("allTools", toolDAO.index());
-        model.addAttribute("allConsumables", consumableDAO.index());
-
-        model.addAttribute("documents", this.getObjectDocuments());
-        model.addAttribute("fasteners", this.getObjectFasteners());
-        model.addAttribute("tools", this.getObjectTools());
-        model.addAttribute("consumables", this.getObjectConsumables());
+        this.updateCacheList(id);
+        this.addAllShowablesToModel(model);
+        this.addItemShowablesToModel(model);
         return super.edit(model, id);
     }
 
@@ -103,6 +93,24 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         return edit(model, id);
     }
 
+    private void updateCacheList(int id) {
+        this.cacheList = dao.show(id).returnServiceListObject();
+    }
+
+    private void addItemShowablesToModel(Model model) {
+        model.addAttribute("documents", this.getObjectDocuments());
+        model.addAttribute("fasteners", this.getObjectFasteners());
+        model.addAttribute("tools", this.getObjectTools());
+        model.addAttribute("consumables", this.getObjectConsumables());
+    }
+
+    private void addAllShowablesToModel(Model model) {
+        model.addAttribute("allDocuments", documentDAO.index());
+        model.addAttribute("allFasteners", fastenerDAO.index());
+        model.addAttribute("allTools", toolDAO.index());
+        model.addAttribute("allConsumables", consumableDAO.index());
+    }
+
     private List<Document> getObjectDocuments() {
         List<Document> documentsList = new ArrayList<>();
         for (Integer item : cacheList.getDocsList()) {
@@ -138,10 +146,7 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
 
     @Override
     public String newItem(Model model) {
-        model.addAttribute("documents", documentDAO.index());
-        model.addAttribute("fasteners", fastenerDAO.index());
-        model.addAttribute("tools", toolDAO.index());
-        model.addAttribute("consumables", consumableDAO.index());
+        this.addAllShowablesToModel(model);
         return super.newItem(model);
     }
 
