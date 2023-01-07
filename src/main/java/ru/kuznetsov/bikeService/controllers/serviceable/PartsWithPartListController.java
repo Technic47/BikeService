@@ -43,14 +43,14 @@ public class PartsWithPartListController<T extends ServiceableWithParts & Servic
         return super.edit(model, id);
     }
 
-    @RequestMapping(value = "/{id}/update/serviceList")
+    @RequestMapping(value = "/{id}/update/partList")
     public String updatePartList(@Valid T item, BindingResult bindingResult,
                                  @PathVariable("id") int id,
                                  @RequestParam(value = "action") String action,
                                  @RequestParam(value = "smallpartId") int smallpartId,
-                                 @RequestParam(value = "partId") int partId,
-                                 @RequestParam(value = "unitId") int unitId,
-                                 Model model){
+//                                 @RequestParam(value = "partId") int partId,
+//                                 @RequestParam(value = "unitId") int unitId,
+                                 Model model) {
         switch (action) {
             case "finish":
                 return this.update(item, bindingResult, id);
@@ -60,18 +60,18 @@ public class PartsWithPartListController<T extends ServiceableWithParts & Servic
             case "delSmallpart":
                 item.delFromPartList(smallPartDAO.show(smallpartId));
                 break;
-            case "addPart":
-                item.addToPartList(partDAO.show(partId));
-                break;
-            case "delPart":
-                item.delFromPartList(partDAO.show(partId));
-                break;
-            case "addUnit":
-                item.addToPartList(unitDAO.show(unitId));
-                break;
-            case "delUnit":
-                item.delFromPartList(unitDAO.show(unitId));
-                break;
+//            case "addPart":
+//                item.addToPartList(partDAO.show(partId));
+//                break;
+//            case "delPart":
+//                item.delFromPartList(partDAO.show(partId));
+//                break;
+//            case "addUnit":
+//                item.addToPartList(unitDAO.show(unitId));
+//                break;
+//            case "delUnit":
+//                item.delFromPartList(unitDAO.show(unitId));
+//                break;
         }
         dao.update(id, item);
         return edit(model, id);
@@ -87,7 +87,7 @@ public class PartsWithPartListController<T extends ServiceableWithParts & Servic
         model.addAttribute("units", this.getObjectUnits());
     }
 
-    private void addAllServicableToModel(Model model){
+    private void addAllServicableToModel(Model model) {
         model.addAttribute("allSmallparts", smallPartDAO.index());
         model.addAttribute("allParts", partDAO.index());
         model.addAttribute("allUnits", unitDAO.index());
@@ -95,26 +95,41 @@ public class PartsWithPartListController<T extends ServiceableWithParts & Servic
 
     private List<SmallPart> getObjectSmallParts() {
         List<SmallPart> smallPartsList = new ArrayList<>();
-        for (Integer id : cachePartList.get("smallPart")) {
-            smallPartsList.add(smallPartDAO.show(id));
+        if (!cachePartList.isEmpty()) {
+            List<Integer> idList = cachePartList.get(SmallPart.class.getSimpleName());
+            if (!idList.isEmpty()) {
+                for (Integer id : idList) {
+                    smallPartsList.add(smallPartDAO.show(id));
+                }
+            }
         }
         return smallPartsList;
     }
 
     private List<Part> getObjectParts() {
-        List<Part> smallPartsList = new ArrayList<>();
-        for (Integer id : cachePartList.get("Part")) {
-            smallPartsList.add(partDAO.show(id));
+        List<Part> partsList = new ArrayList<>();
+        if (!cachePartList.isEmpty()) {
+            List<Integer> idList = cachePartList.get(Part.class.getSimpleName());
+            if (!idList.isEmpty()) {
+                for (Integer id : idList) {
+                    partsList.add(partDAO.show(id));
+                }
+            }
         }
-        return smallPartsList;
+        return partsList;
     }
 
     private List<Unit> getObjectUnits() {
-        List<Unit> smallPartsList = new ArrayList<>();
-        for (Integer id : cachePartList.get("Unit")) {
-            smallPartsList.add(unitDAO.show(id));
+        List<Unit> unitList = new ArrayList<>();
+        if (!cachePartList.isEmpty()) {
+            List<Integer> idList = cachePartList.get(Unit.class.getSimpleName());
+            if (!idList.isEmpty()) {
+                for (Integer id : idList) {
+                    unitList.add(unitDAO.show(id));
+                }
+            }
         }
-        return smallPartsList;
+        return unitList;
     }
 
     public PartsWithPartListController(DAO<T> dao) {

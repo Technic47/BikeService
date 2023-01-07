@@ -15,6 +15,10 @@ public class PartsWithPartList extends SmallPart implements ServiceableWithParts
 
     public PartsWithPartList() {
         Map<String, List<Integer>> newPartList = new HashMap<>();
+
+        newPartList.put(SmallPart.class.getSimpleName(), new ArrayList<>());
+        newPartList.put(Part.class.getSimpleName(), new ArrayList<>());
+        newPartList.put(Unit.class.getSimpleName(), new ArrayList<>());
         this.partList = this.converter.toJson(newPartList);
     }
 

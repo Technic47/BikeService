@@ -12,6 +12,7 @@ public class SmallPart implements Serviceable, Usable {
     protected int manufacturer;
     @NotEmpty(message = "Fill this field!")
     protected String name;
+    @NotEmpty(message = "Fill this field!")
     protected String model;
     protected String partNumber;
     protected String description;
@@ -85,11 +86,11 @@ public class SmallPart implements Serviceable, Usable {
         return converter.fromJson(this.serviceList, ServiceList.class);
     }
 
-    public String getServiceList(){
+    public String getServiceList() {
         return this.serviceList;
     }
 
-    public void setServiceList(String newServiceList){
+    public void setServiceList(String newServiceList) {
         this.serviceList = newServiceList;
     }
 

@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Small Part</title>
+    <title>Edit Part</title>
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/smallParts/{id}/update(id=${smallPart.getId()})}" th:object="${smallPart}">
+<form th:method="PATCH" th:action="@{/parts/{id}/update/serviceList(id=${part.getId()})}" th:object="${part}">
 
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
@@ -94,9 +94,29 @@
         <input th:type="submit" th:name="action" th:value="delConsumable"/>
     </div>
     <br/>
+
+</form>
+
+<form th:action="@{/parts}">
     <input th:type="submit" th:name="action" th:value="finish" value="Update"/>
     <br/>
 </form>
+
+<form th:method="PATCH" th:action="@{/parts/{id}/update/partList(id=${part.getId()})}" th:object="${part}">
+    <label for="smallparts">Choose small part to add:</label>
+    <div th:object="${allSmallparts}">
+        <select id="smallparts" th:name="smallpartId">
+            <option th:each="item : ${allSmallparts}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+        <input th:type="submit" th:name="action" th:value="addSmallpart"/>
+        <input th:type="submit" th:name="action" th:value="delSmallpart"/>
+    </div>
+    <br/>
+</form>
+
 <table border="1">
     <thead>
     <tr>

@@ -33,6 +33,20 @@
 <table border="1">
     <thead>
     <tr>
+        <th>small parts</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="smallpart : ${smallparts}">
+        <td th:text="${smallpart.getName()} + ${smallpart.getModel()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<table border="1">
+    <thead>
+    <tr>
         <th>documents</th>
         <th>fasteners</th>
         <th>tools</th>

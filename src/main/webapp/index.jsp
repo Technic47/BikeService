@@ -13,5 +13,7 @@
 <br/>
 <a href="${pageContext.request.contextPath}smallParts">Show smallParts</a>
 <br/>
+<a href="${pageContext.request.contextPath}parts">Show parts</a>
+<br/>
 </body>
 </html>
