@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/smallParts/{id}/update/serviceList(id=${smallPart.getId()})}" th:object="${smallPart}">
+<form th:method="PATCH" th:action="@{/smallParts/{id}/update(id=${smallPart.getId()})}" th:object="${smallPart}">
 
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>

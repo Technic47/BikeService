@@ -39,7 +39,7 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         this.updateCacheList(id);
-        addItemShowablesToModel(model);
+        this.addItemShowablesToModel(model);
         return super.show(id, model);
     }
 
@@ -52,15 +52,15 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         return super.edit(model, id);
     }
 
-    @RequestMapping(value = "/{id}/update")
-    public String updateRedirect(@Valid T item, BindingResult bindingResult,
-                                 @PathVariable("id") int id,
-                                 @RequestParam(value = "action") String action,
-                                 @RequestParam(value = "documentId") int documentId,
-                                 @RequestParam(value = "fastenerId") int fastenerId,
-                                 @RequestParam(value = "toolId") int toolId,
-                                 @RequestParam(value = "consumableId") int consumableId,
-                                 Model model) {
+    @RequestMapping(value = "/{id}/update/serviceList")
+    public String updateServiceList(@Valid T item, BindingResult bindingResult,
+                                    @PathVariable("id") int id,
+                                    @RequestParam(value = "action") String action,
+                                    @RequestParam(value = "documentId") int documentId,
+                                    @RequestParam(value = "fastenerId") int fastenerId,
+                                    @RequestParam(value = "toolId") int toolId,
+                                    @RequestParam(value = "consumableId") int consumableId,
+                                    Model model) {
         switch (action) {
             case "finish":
                 return this.update(item, bindingResult, id);
@@ -142,7 +142,6 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         }
         return consumablesList;
     }
-
 
     @Override
     public String newItem(Model model) {

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Part info</title>
+</head>
+<body>
+<h1>Part</h1>
+
+<div th:each="pair : ${properties}">
+    <div th:if="${!pair.getKey().contains('manufacture')}">
+
+            <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p>
+
+    </div>
+</div>
+<p th:text="'Manufacture - ' + ${manufacture}"></p>
+<br/>
+<form th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">
+    <label>
+        <input th:type="submit" value="Edit">
+    </label>
+</form>
+<br/>
+<br/>
+
+<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
+    <label>
+        <input th:type="submit" value="Delete">
+    </label>
+</form>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>documents</th>
+        <th>fasteners</th>
+        <th>tools</th>
+        <th>consumables</th>
+    </tr>
+
+    </thead>
+    <tbody>
+    <th>
+        <table>
+            <tr th:each="document : ${documents}">
+                <td th:text="${document.getName()}"> documents</td>
+            </tr>
+        </table>
+    </th>
+    <th>
+        <table>
+            <tr th:each="fastener : ${fasteners}">
+                <td th:text="${fastener.getName()}"> fasteners</td>
+            </tr>
+        </table>
+    </th>
+    <th>
+        <table>
+            <tr th:each="tool : ${tools}">
+                <td th:text="${tool.getName()}"> tools</td>
+            </tr>
+        </table>
+    </th>
+    <th>
+        <table>
+            <tr th:each="consumable : ${consumables}">
+                <td th:text="${consumable.getName()}"> consumables</td>
+            </tr>
+        </table>
+    </th>
+    </tbody>
+
+</table>
+
+</body>
+</html>
