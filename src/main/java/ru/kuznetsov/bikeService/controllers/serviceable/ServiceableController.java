@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
+import ru.kuznetsov.bikeService.models.bike.Part;
 import ru.kuznetsov.bikeService.models.documents.Document;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Consumable;
@@ -24,12 +25,13 @@ import java.util.List;
 
 @Component
 public class ServiceableController<T extends Serviceable & Usable> extends UsableController<T> {
-    protected DAO<ServiceList> daoServiceList;
     protected DAO<Document> documentDAO;
     protected DAO<Fastener> fastenerDAO;
     protected DAO<Consumable> consumableDAO;
     protected DAO<Tool> toolDAO;
+    private DAO<Part> partDAO;
     protected ServiceList cacheList;
+    private List<Integer> cachePartList;
 
     public ServiceableController(DAO<T> dao) {
         super(dao);
@@ -39,6 +41,8 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         this.updateCacheList(id);
+        this.updateCachePartList(id);
+        this.addItemServiceableToModel(model);
         this.addItemShowablesToModel(model);
         return super.show(id, model);
     }
@@ -49,10 +53,13 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         this.updateCacheList(id);
         this.addAllShowablesToModel(model);
         this.addItemShowablesToModel(model);
+        this.updateCachePartList(id);
+        this.addItemServiceableToModel(model);
+        this.addAllServicableToModel(model);
         return super.edit(model, id);
     }
 
-    @RequestMapping(value = "/{id}/update/serviceList")
+    @RequestMapping(value = "/{id}/update")
     public String updateServiceList(@Valid T item, BindingResult bindingResult,
                                     @PathVariable("id") int id,
                                     @RequestParam(value = "action") String action,
@@ -60,6 +67,7 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
                                     @RequestParam(value = "fastenerId") int fastenerId,
                                     @RequestParam(value = "toolId") int toolId,
                                     @RequestParam(value = "consumableId") int consumableId,
+                                    @RequestParam(value = "partId") int partId,
                                     Model model) {
         switch (action) {
             case "finish":
@@ -88,6 +96,12 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
             case "delConsumable":
                 item.delFromServiceList(consumableDAO.show(consumableId));
                 break;
+            case "addPart":
+                item.addToPartList(partDAO.show(partId));
+                break;
+            case "delPart":
+                item.delFromPartList(partDAO.show(partId));
+                break;
         }
         dao.update(id, item);
         return edit(model, id);
@@ -96,6 +110,11 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     private void updateCacheList(int id) {
         this.cacheList = dao.show(id).returnServiceListObject();
     }
+
+    private void updateCachePartList(int id) {
+        this.cachePartList = dao.show(id).returnPartListObject();
+    }
+
 
     private void addItemShowablesToModel(Model model) {
         model.addAttribute("documents", this.getObjectDocuments());
@@ -109,6 +128,15 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         model.addAttribute("allFasteners", fastenerDAO.index());
         model.addAttribute("allTools", toolDAO.index());
         model.addAttribute("allConsumables", consumableDAO.index());
+    }
+
+
+    private void addItemServiceableToModel(Model model) {
+        model.addAttribute("parts", this.getObjectParts());
+    }
+
+    private void addAllServicableToModel(Model model) {
+        model.addAttribute("allParts", partDAO.index());
     }
 
     private List<Document> getObjectDocuments() {
@@ -143,6 +171,14 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
         return consumablesList;
     }
 
+    private List<Part> getObjectParts() {
+        List<Part> partsList = new ArrayList<>();
+        for (Integer item : cachePartList) {
+            partsList.add(partDAO.show(item));
+        }
+        return partsList;
+    }
+
     @Override
     public String newItem(Model model) {
         this.addAllShowablesToModel(model);
@@ -150,10 +186,10 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     }
 
     @Autowired
-    public void setDaoServiceList(DAO<ServiceList> daoServiceList) {
-        this.daoServiceList = daoServiceList;
-        this.daoServiceList.setCurrentClass(ServiceList.class);
-        this.daoServiceList.setTableName("serviceLists");
+    public void setPartDAO(DAO<Part> partDAO) {
+        this.partDAO = partDAO;
+        this.partDAO.setCurrentClass(Part.class);
+        this.partDAO.setTableName("parts");
     }
 
     @Autowired

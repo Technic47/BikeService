@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceList {
-    private int id;
     private List<Integer> toolList;
     private List<Integer> fastenerList;
     private List<Integer> consumableList;
@@ -17,14 +16,6 @@ public class ServiceList {
         this.fastenerList = new ArrayList<>();
         this.consumableList = new ArrayList<>();
         this.docsList = new ArrayList<>();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public List<Integer> getToolList() {

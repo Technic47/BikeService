@@ -9,7 +9,7 @@ import ru.kuznetsov.bikeService.models.bike.Part;
 @Controller
 @Scope("prototype")
 @RequestMapping("/parts")
-public class PartsController extends PartsWithPartListController<Part> {
+public class PartsController extends ServiceableController<Part> {
 
     public PartsController(DAO<Part> dao) {
         super(dao);

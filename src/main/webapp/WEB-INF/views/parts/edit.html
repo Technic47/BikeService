@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/parts/{id}/update/serviceList(id=${part.getId()})}" th:object="${part}">
+<form th:method="PATCH" th:action="@{/parts/{id}/update(id=${part.getId()})}" th:object="${part}">
 
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
@@ -41,6 +41,20 @@
     <label for="serviceList">Enter serviceList:</label>
     <input type="text" th:field="*{serviceList}" id="serviceList"/>
     <br/>
+    <br/>
+
+    <label for="parts">Choose part to add:</label>
+    <div th:object="${allParts}">
+        <select id="parts" th:name="partId">
+            <option th:each="item : ${allParts}"
+                    th:if="!${item.getId() == part.getId()}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+        <input th:type="submit" th:name="action" th:value="addPart"/>
+        <input th:type="submit" th:name="action" th:value="delPart"/>
+    </div>
     <br/>
 
     <label for="documents">Choose document to add:</label>
@@ -100,22 +114,24 @@
 <form th:action="@{/parts}">
     <input th:type="submit" th:name="action" th:value="finish" value="Update"/>
     <br/>
-</form>
-
-<form th:method="PATCH" th:action="@{/parts/{id}/update/partList(id=${part.getId()})}" th:object="${part}">
-    <label for="smallparts">Choose small part to add:</label>
-    <div th:object="${allSmallparts}">
-        <select id="smallparts" th:name="smallpartId">
-            <option th:each="item : ${allSmallparts}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-        <input th:type="submit" th:name="action" th:value="addSmallpart"/>
-        <input th:type="submit" th:name="action" th:value="delSmallpart"/>
-    </div>
     <br/>
 </form>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>parts</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="part : ${parts}">
+        <td th:text="${part.getName()} + ' ' + ${part.getModel()}"></td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<br/>
 
 <table border="1">
     <thead>

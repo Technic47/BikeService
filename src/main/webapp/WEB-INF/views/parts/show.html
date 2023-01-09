@@ -10,7 +10,7 @@
 <div th:each="pair : ${properties}">
     <div th:if="${!pair.getKey().contains('manufacture')}">
 
-            <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p>
+        <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p>
 
     </div>
 </div>
@@ -29,6 +29,8 @@
         <input th:type="submit" value="Delete">
     </label>
 </form>
+<br/>
+<br/>
 
 <table border="1">
     <thead>
@@ -38,8 +40,8 @@
     </thead>
 
     <tbody>
-    <tr th:each="smallpart : ${smallparts}">
-        <td th:text="${smallpart.getName()} + ${smallpart.getModel()}"></td>
+    <tr th:each="part : ${parts}">
+        <td th:text="${part.getName()} + ${part.getModel()}"></td>
     </tr>
     </tbody>
 </table>
