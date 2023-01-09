@@ -22,7 +22,6 @@ public class UsableController<T extends Usable> extends BasicController<T> {
     public void setDaoManufacturer(DAO<Manufacturer> daoManufacturer) {
         this.daoManufacturer = daoManufacturer;
         this.daoManufacturer.setCurrentClass(Manufacturer.class);
-        this.daoManufacturer.setTableName("manufacturers");
     }
 
     @Override

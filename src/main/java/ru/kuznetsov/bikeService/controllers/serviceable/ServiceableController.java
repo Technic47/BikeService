@@ -189,34 +189,29 @@ public class ServiceableController<T extends Serviceable & Usable> extends Usabl
     public void setPartDAO(DAO<Part> partDAO) {
         this.partDAO = partDAO;
         this.partDAO.setCurrentClass(Part.class);
-        this.partDAO.setTableName("parts");
     }
 
     @Autowired
     public void setDocumentDAO(DAO<Document> documentDAO) {
         this.documentDAO = documentDAO;
         this.documentDAO.setCurrentClass(Document.class);
-        this.documentDAO.setTableName("documents");
     }
 
     @Autowired
     public void setFastenerDAO(DAO<Fastener> fastenerDAO) {
         this.fastenerDAO = fastenerDAO;
         this.fastenerDAO.setCurrentClass(Fastener.class);
-        this.fastenerDAO.setTableName("fasteners");
     }
 
     @Autowired
     public void setConsumableDAO(DAO<Consumable> consumableDAO) {
         this.consumableDAO = consumableDAO;
         this.consumableDAO.setCurrentClass(Consumable.class);
-        this.consumableDAO.setTableName("consumables");
     }
 
     @Autowired
     public void setToolDAO(DAO<Tool> toolDAO) {
         this.toolDAO = toolDAO;
         this.toolDAO.setCurrentClass(Tool.class);
-        this.toolDAO.setTableName("tools");
     }
 }

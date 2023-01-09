@@ -36,6 +36,7 @@ public class DAO<T> {
 
     public void setCurrentClass(Class<T> currentClass) {
         this.currentClass = currentClass;
+        this.tableName = this.currentClass.getSimpleName().toLowerCase() + "s";
     }
 
     public List<T> index() {
