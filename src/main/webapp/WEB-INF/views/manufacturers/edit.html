@@ -17,6 +17,11 @@
     <div style="color:red" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
     <br/>
 
+    <label for="description">Enter description:</label>
+    <input type="text" th:field="*{description}" id="description"/>
+    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    <br/>
+
     <input type="submit" value="Update!"/>
 </form>
 

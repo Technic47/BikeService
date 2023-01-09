@@ -13,7 +13,5 @@ public class DocumentController extends BasicController<Document> {
     public DocumentController(DAO<Document> dao) {
         super(dao);
         this.setCurrentClass(Document.class);
-        this.setCurrentObjectName("document");
-        this.setThisObject(new Document());
     }
 }

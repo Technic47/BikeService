@@ -7,19 +7,19 @@ import javax.validation.constraints.NotEmpty;
 public class Fastener implements Showable {
     private int id;
     @NotEmpty(message = "Fill this field!")
-    private String type;
+    private String name;
     @NotEmpty(message = "Fill this field!")
     private String specs;
     private String description;
 
-    public Fastener(String type, String specs, String description) {
-        this.type = type;
+    public Fastener(String name, String specs, String description) {
+        this.name = name;
         this.specs = specs;
         this.description = description;
     }
 
-    public Fastener(String type, String specs) {
-        this(type, specs, "");
+    public Fastener(String name, String specs) {
+        this(name, specs, "");
     }
 
     public Fastener() {
@@ -32,7 +32,7 @@ public class Fastener implements Showable {
 
     @Override
     public String getName() {
-        return this.type;
+        return this.name;
     }
 
     @Override
@@ -44,17 +44,12 @@ public class Fastener implements Showable {
         this.id = id;
     }
 
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getSpecs() {
         return specs;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setSpecs(String specs) {

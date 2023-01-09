@@ -21,19 +21,18 @@ public class BasicController<T extends Showable> {
         this.dao = dao;
     }
 
-    public void setThisObject(T thisObject) {
-        this.thisObject = thisObject;
-    }
-
-    public void setCurrentObjectName(String currentObjectName) {
-        this.currentObjectName = currentObjectName;
-        this.category = currentObjectName + "s";
-        this.dao.setTableName(category);
-    }
-
     public void setCurrentClass(Class<T> currentClass) {
         this.currentClass = currentClass;
         this.dao.setCurrentClass(currentClass);
+        this.currentObjectName = currentClass.getSimpleName().toLowerCase();
+        this.category = currentObjectName + "s";
+        this.dao.setTableName(category);
+        try {
+            assert false;
+            this.thisObject = currentClass.getConstructor().newInstance();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @GetMapping()

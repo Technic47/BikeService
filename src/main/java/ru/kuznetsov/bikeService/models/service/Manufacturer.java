@@ -9,6 +9,7 @@ public class Manufacturer implements Showable {
     @NotEmpty(message = "Fill this field!")
     private String name;
     private String country;
+    private String description;
 
     public Manufacturer() {
         this.name = "";
@@ -42,7 +43,11 @@ public class Manufacturer implements Showable {
 
     @Override
     public String getDescription() {
-        return null;
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getCountry() {

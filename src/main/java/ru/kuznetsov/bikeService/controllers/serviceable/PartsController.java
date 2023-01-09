@@ -14,7 +14,5 @@ public class PartsController extends ServiceableController<Part> {
     public PartsController(DAO<Part> dao) {
         super(dao);
         this.setCurrentClass(Part.class);
-        this.setCurrentObjectName("part");
-        this.setThisObject(new Part());
     }
 }

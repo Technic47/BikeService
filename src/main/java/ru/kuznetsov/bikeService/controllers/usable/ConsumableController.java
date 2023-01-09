@@ -14,7 +14,5 @@ public class ConsumableController extends UsableController<Consumable> {
     public ConsumableController(DAO<Consumable> dao) {
         super(dao);
         this.setCurrentClass(Consumable.class);
-        this.setCurrentObjectName("consumable");
-        this.setThisObject(new Consumable());
     }
 }
