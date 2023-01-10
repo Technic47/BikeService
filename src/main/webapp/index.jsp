@@ -13,5 +13,7 @@
 <br/>
 <a href="${pageContext.request.contextPath}parts">Show parts</a>
 <br/>
+<a href="${pageContext.request.contextPath}bikes">Show bikes</a>
+<br/>
 </body>
 </html>

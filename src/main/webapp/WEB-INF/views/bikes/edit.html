@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Part</title>
+    <title>Edit Bike</title>
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/parts/{id}/update(id=${part.getId()})}" th:object="${part}">
+<form th:method="PATCH" th:action="@{/bikes/{id}/update(id=${bike.getId()})}" th:object="${bike}">
 
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
@@ -50,7 +50,7 @@
     <div th:object="${allParts}">
         <select id="parts" th:name="partId">
             <option th:each="item : ${allParts}"
-                    th:if="!${item.getId() == part.getId()}"
+                    th:if="!${item.getId() == bike.getId()}"
                     th:value="${item.getId()}"
                     th:text="${item.getName()}">
             </option>
@@ -114,7 +114,7 @@
 
 </form>
 
-<form th:action="@{/parts}">
+<form th:action="@{/bikes}">
     <input th:type="submit" th:name="action" th:value="finish" value="Update"/>
     <br/>
     <br/>

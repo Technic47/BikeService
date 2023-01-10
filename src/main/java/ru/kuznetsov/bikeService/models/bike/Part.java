@@ -9,9 +9,7 @@ import ru.kuznetsov.bikeService.models.service.Usable;
 import javax.validation.constraints.NotEmpty;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Part implements Serviceable, Usable {
     protected int id;
@@ -33,11 +31,6 @@ public class Part implements Serviceable, Usable {
         this.description = "";
         this.converter = new Gson();
         this.serviceList = this.converter.toJson(new ServiceList());
-
-        Map<String, List<Integer>> newPartList = new HashMap<>();
-//        newPartList.put(SmallPart.class.getSimpleName(), new ArrayList<>());
-//        newPartList.put(Part.class.getSimpleName(), new ArrayList<>());
-//        newPartList.put(Unit.class.getSimpleName(), new ArrayList<>());
         this.partList = this.converter.toJson(new ArrayList<Integer>());
     }
 
