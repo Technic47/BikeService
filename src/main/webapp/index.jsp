@@ -15,5 +15,7 @@
 <br/>
 <a href="${pageContext.request.contextPath}bikes">Show bikes</a>
 <br/>
+<a href="${pageContext.request.contextPath}pictures">Show pictures</a>
+<br/>
 </body>
 </html>

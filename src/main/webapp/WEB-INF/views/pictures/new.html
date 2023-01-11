@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create document</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/pictures/upload}" enctype="multipart/form-data">
+    <h2 >Choose picture:</h2>
+    <div class="form-group">
+        <input type="file" th:name="image" accept="image/*" class="form-control-file">
+    </div>
+    <br/>
+
+    <input type="submit" value="Create!"/>
+</form>
+</body>
+</html>

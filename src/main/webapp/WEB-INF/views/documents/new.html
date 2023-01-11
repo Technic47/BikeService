@@ -22,6 +22,10 @@
     <div style="color:red" th:if="${#fields.hasErrors('link')}" th:errors="*{link}"></div>
     <br/>
 
+    <label for="picture">Choose picture:</label>
+    <input type="file" id="picture" name="image" accept="image/*" class="form-control-file"/>
+    <br/>
+
     <input type="submit" value="Create!"/>
 </form>
 </body>
