@@ -1,10 +1,11 @@
 package ru.kuznetsov.bikeService.config;
 
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRegistration;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -26,6 +27,12 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
     public void onStartup(ServletContext aServletContext) throws ServletException {
         super.onStartup(aServletContext);
         registerHiddenFieldFilter(aServletContext);
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setMultipartConfig(new MultipartConfigElement("C:\\Users\\Techn\\Documents\\JavaProjects\\BikeServiceStuff\\apache-tomcat-10.0.27-windows-x64\\apache-tomcat-10.0.27\\temp"));
+//        registration.setMultipartConfig(new MultipartConfigElement("C:\\tempFilesForJava"));
     }
 
     private void registerHiddenFieldFilter(ServletContext aContext) {

@@ -2,13 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All documents</title>
+    <title>All pictures</title>
 </head>
 <body>
 
-<div th:each="object : ${objects}">
-    <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
-       th:text="${object.getId()} + ', ' + ${object.getName()}">doc</a>
+<div th:each="object : ${allPictures}">
+    <img th:src="@{${object.getPreview()}}" alt = "test text1111101"/>
 </div>
 
 <br/>

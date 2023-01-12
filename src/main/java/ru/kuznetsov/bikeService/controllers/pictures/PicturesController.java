@@ -3,20 +3,14 @@ package ru.kuznetsov.bikeService.controllers.pictures;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.models.Picture;
 
-import javax.validation.Valid;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/pictures")
@@ -25,20 +19,30 @@ public class PicturesController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("pictures", pictureDao.index());
+        model.addAttribute("allPictures", pictureDao.index());
         return "pictures/index";
     }
 
     @GetMapping("/new")
     public String newPicture(Model model) {
+        model.addAttribute("message", "Hello!");
         return "pictures/new";
     }
 
-    @PostMapping("/upload")
-    public String uploadImage(Model model, @RequestParam("image") MultipartFile file) {
-        pictureDao.save(new Picture(file));
-//        model.addAttribute("msg", "Uploaded images: " + fileNames.toString());
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String uploadImage(@RequestPart("newImage") MultipartFile file
+//            , Model model
+    ) {
+        Picture newOne = new Picture();
+        newOne.managePicture(file);
+        pictureDao.save(newOne);
         return "redirect:/pictures";
+    }
+
+
+    @RequestMapping(value = "/upload", method = RequestMethod.GET)
+    public @ResponseBody String provideUploadInfo() {
+        return "Вы можете загружать файл с использованием того же URL.";
     }
 
 
