@@ -8,10 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.models.Picture;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.util.UUID;
-
 @Controller
 @RequestMapping("/pictures")
 public class PicturesController {
@@ -33,9 +29,9 @@ public class PicturesController {
     public String uploadImage(@RequestPart("newImage") MultipartFile file
 //            , Model model
     ) {
-        Picture newOne = new Picture();
-        newOne.managePicture(file);
-        pictureDao.save(newOne);
+        PictureWork picWorker = new PictureWork(new Picture());
+        picWorker.managePicture(file);
+        pictureDao.save(picWorker.getPicture());
         return "redirect:/pictures";
     }
 

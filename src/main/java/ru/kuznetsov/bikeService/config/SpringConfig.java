@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -23,8 +25,8 @@ import javax.sql.DataSource;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
-    public static String UPLOAD_DIRECTORY_BIG = "C:/Users/Techn/Documents/JavaProjects/BikeServiceStuff/bikeService/src/main/IMG";
-    public static String UPLOAD_DIRECTORY_PREVIEW = ":/Users/Techn/Documents/JavaProjects/BikeServiceStuff/bikeService/src/main/IMG/preview";
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @Autowired
     public SpringConfig(ApplicationContext applicationContext) {
@@ -62,6 +64,11 @@ public class SpringConfig implements WebMvcConfigurer {
         dataSource.setUrl("jdbc:postgresql://localhost:5432/BikeService");
         dataSource.setUsername("postgres");
         dataSource.setPassword("1999");
+        // TODO organize to config file
+//        dataSource.setDriverClassName("${spring.datasource.driver}");
+//        dataSource.setUrl("${spring.datasource.url}");
+//        dataSource.setUsername("${spring.datasource.username}");
+//        dataSource.setPassword("${spring.datasource.password}");
         return dataSource;
     }
 
@@ -78,5 +85,17 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean(name = "multipartResolver")
     public StandardServletMultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+        registry.addResourceHandler("/IMG/**")
+                .addResourceLocations("/resources/IMG/");
+        registry.addResourceHandler("/preview/**")
+                .addResourceLocations("/resources/IMG/preview/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/resources/static/");
     }
 }

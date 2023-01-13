@@ -32,7 +32,6 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(new MultipartConfigElement("C:\\Users\\Techn\\Documents\\JavaProjects\\BikeServiceStuff\\apache-tomcat-10.0.27-windows-x64\\apache-tomcat-10.0.27\\temp"));
-//        registration.setMultipartConfig(new MultipartConfigElement("C:\\tempFilesForJava"));
     }
 
     private void registerHiddenFieldFilter(ServletContext aContext) {
