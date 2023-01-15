@@ -25,6 +25,7 @@ public class DAO<T> {
     private StringBuilder builder;
     private StringJoiner joiner;
 
+
     @Autowired
     public DAO(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -116,5 +117,14 @@ public class DAO<T> {
         }
         result.remove("value");
         return result;
+    }
+
+    public int searchByName(String name) {
+//        int id = 0;
+        builder = new StringBuilder();
+        builder.append("SELECT id FROM ").append(this.tableName).append(" WHERE name=:name");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("name", name);
+        return jdbcTemplate.queryForObject(builder.toString(), sqlParameterSource, Integer.class);
+        // TODO resolve NullPointerExcwption
     }
 }

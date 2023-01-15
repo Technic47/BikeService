@@ -12,6 +12,9 @@
 </div>
 <p th:text="'Manufacture -' + ${manufacture}"></p>
 
+<img th:src="@{/IMG/{fileName}(fileName=${picture})}">
+<br/>
+
 <a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
 
 <form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">

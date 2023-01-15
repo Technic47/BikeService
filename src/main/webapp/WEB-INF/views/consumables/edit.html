@@ -34,6 +34,19 @@
             </option>
         </select>
     </div>
+    <br/>
+    <br/>
+    <label for="pictures">Choose picture:</label>
+    <div th:object="${allPictures}">
+        <select id="pictures" name="picture">
+            <option selected th:value="${picture.getId()}"
+                    th:text="${picture.getFileName()}"></option>
+            <option th:each="item : ${allPictures}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getFileName()}">
+            </option>
+        </select>
+    </div>
     <input type="submit" value="Update!"/>
 </form>
 

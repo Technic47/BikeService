@@ -20,7 +20,17 @@
     <label for="description">Enter description:</label>
     <input type="text" th:field="*{description}" id="description"/>
     <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+
     <br/>
+    <label for="pictures">Choose picture:</label>
+    <div th:object="${allPictures}">
+        <select id="pictures" name="picture">
+            <option th:each="item : ${allPictures}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+    </div>
 
     <input type="submit" value="Create!"/>
 </form>

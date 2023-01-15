@@ -13,6 +13,7 @@ public class Tool implements Usable, Showable {
     @NotEmpty(message = "Fill this field!")
     private String size;
     private String description;
+    private int picture;
 
     public Tool() {
         this.manufacturer = 0;
@@ -74,5 +75,14 @@ public class Tool implements Usable, Showable {
     @Override
     public String getValue() {
         return this.size;
+    }
+
+    @Override
+    public int getPicture() {
+        return picture;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
     }
 }

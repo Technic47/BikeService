@@ -11,6 +11,7 @@ public class Fastener implements Showable {
     @NotEmpty(message = "Fill this field!")
     private String specs;
     private String description;
+    private int picture;
 
     public Fastener(String name, String specs, String description) {
         this.name = name;
@@ -62,5 +63,14 @@ public class Fastener implements Showable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int getPicture() {
+        return picture;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
     }
 }

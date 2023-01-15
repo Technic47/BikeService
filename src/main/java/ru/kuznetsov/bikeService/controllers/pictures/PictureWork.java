@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.controllers.pictures;
 
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.Picture;
@@ -11,11 +10,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
+
 @Component
 public class PictureWork {
-    @Value("${upload.path}")
-    private String uploadPath;
-
+//    @Value("${upload.path}")
+//    private String uploadPath;
     private Picture picture;
 
     public PictureWork(Picture picture) {
@@ -25,18 +25,17 @@ public class PictureWork {
     public void managePicture(MultipartFile file) {
         try {
             BufferedImage uploadedImage = ImageIO.read(file.getInputStream());
-            BufferedImage bigImageOut = resizePicture(uploadedImage, 800, 600);
+            BufferedImage bigImageOut = resizePicture(uploadedImage, 400, 300);
             BufferedImage smallImageOut = resizePicture(uploadedImage, 64, 64);
-            File uploadDir = new File(uploadPath);
+            File uploadDir = new File(UPLOAD_PATH);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
             }
 
-            ImageIO.write(bigImageOut, "png", new File(uploadPath, file.getOriginalFilename()));
-            ImageIO.write(smallImageOut, "png", new File(uploadPath, file.getOriginalFilename()));
-
-            this.picture.setFileName(file.getOriginalFilename());
-            this.picture.setPreview(file.getOriginalFilename());
+            ImageIO.write(bigImageOut, "png", new File(UPLOAD_PATH, file.getOriginalFilename()));
+            ImageIO.write(smallImageOut, "png", new File(UPLOAD_PATH + "/preview", file.getOriginalFilename()));
+            String fileName = file.getOriginalFilename();
+            this.picture.setName(file.getOriginalFilename());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

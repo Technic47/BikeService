@@ -2,11 +2,12 @@ package ru.kuznetsov.bikeService.controllers.showable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
 
@@ -48,7 +49,9 @@ public class BasicController<T extends Showable> {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("object", dao.show(id));
+        Showable currentObject = dao.show(id);
+        model.addAttribute("object", currentObject);
+        model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
         model.addAttribute("properties", dao.getObjectProperties(dao.show(id)));
         return category + "/show";
@@ -58,15 +61,26 @@ public class BasicController<T extends Showable> {
     public String newItem(Model model) {
         model.addAttribute("properties", dao.getObjectProperties(this.thisObject));
         model.addAttribute("newObject", this.thisObject);
-//        model.addAttribute("defaultPicture", pictureDao.show(0));
+        model.addAttribute("allPictures", pictureDao.index());
+        model.addAttribute("defaultPicture", pictureDao.show(1));
         return category + "/new";
     }
 
     @PostMapping()
     public String create(@Valid T item,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult
+            , @RequestPart("newImage") MultipartFile file
+    ) {
         if (bindingResult.hasErrors()) {
             return category + "/new";
+        }
+        if (!file.isEmpty()) {
+            PictureWork picWorker = new PictureWork(new Picture());
+            picWorker.managePicture(file);
+            pictureDao.save(picWorker.getPicture());
+            item.setPicture(pictureDao.searchByName(file.getOriginalFilename()));
+// todo need to get id of picture
+
         }
         dao.save(item);
         return "redirect:/" + category;
@@ -74,7 +88,10 @@ public class BasicController<T extends Showable> {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute(currentObjectName, dao.show(id));
+        T currentObject = dao.show(id);
+        model.addAttribute(currentObjectName, currentObject);
+        model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
+        model.addAttribute("allPictures", pictureDao.index());
         return category + "/edit";
     }
 

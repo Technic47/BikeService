@@ -21,7 +21,6 @@ public class PicturesController {
 
     @GetMapping("/new")
     public String newPicture(Model model) {
-        model.addAttribute("message", "Hello!");
         return "pictures/new";
     }
 
@@ -34,13 +33,6 @@ public class PicturesController {
         pictureDao.save(picWorker.getPicture());
         return "redirect:/pictures";
     }
-
-
-    @RequestMapping(value = "/upload", method = RequestMethod.GET)
-    public @ResponseBody String provideUploadInfo() {
-        return "Вы можете загружать файл с использованием того же URL.";
-    }
-
 
     @Autowired
     public void setPictureDAO(DAO<Picture> pictureDao) {

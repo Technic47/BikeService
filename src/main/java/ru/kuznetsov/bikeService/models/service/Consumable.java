@@ -11,6 +11,7 @@ public class Consumable implements Usable {
     @NotEmpty(message = "Fill this field!")
     private String volume;
     private String description;
+    private int picture;
 
     public Consumable() {
         this.manufacturer = 0;
@@ -72,5 +73,14 @@ public class Consumable implements Usable {
     @Override
     public String getValue() {
         return this.volume;
+    }
+
+    @Override
+    public int getPicture() {
+        return picture;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
     }
 }

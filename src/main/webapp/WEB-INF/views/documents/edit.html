@@ -19,6 +19,19 @@
     <input type="text" th:field="*{link}" id="link"/>
     <div style="color:red" th:if="${#fields.hasErrors('link')}" th:errors="*{link}"></div>
     <br/>
+
+    <br/>
+    <label for="pictures">Choose picture:</label>
+    <div th:object="${allPictures}">
+        <select id="pictures" name="picture">
+            <option selected th:value="${picture.getId()}"
+                    th:text="${picture.getName()}"></option>
+            <option th:each="item : ${allPictures}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+    </div>
     <input type="submit" value="Update!"/>
 </form>
 

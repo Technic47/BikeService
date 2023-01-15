@@ -20,6 +20,7 @@ public class Part implements Serviceable, Usable {
     protected String model;
     protected String partNumber;
     protected String description;
+    protected int picture;
     protected String serviceList;
     protected String partList;
     protected final Gson converter;
@@ -86,6 +87,15 @@ public class Part implements Serviceable, Usable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int getPicture() {
+        return picture;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
     }
 
     public ServiceList returnServiceListObject() {

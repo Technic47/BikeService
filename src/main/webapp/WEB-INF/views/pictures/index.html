@@ -7,7 +7,7 @@
 <body>
 
 <div th:each="object : ${allPictures}">
-    <img th:src="@{/preview/{fileName}(fileName=${object.getFileName()})}" alt = "test text1111101"/>
+    <img th:src="@{/preview/{fileName}(fileName=${object.getName()})}" alt = "img preview"/>
 
 </div>
 <br/>

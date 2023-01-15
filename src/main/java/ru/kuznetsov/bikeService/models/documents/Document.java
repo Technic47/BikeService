@@ -11,7 +11,7 @@ public class Document implements Showable {
     private String name;
     private String description;
     private String link;
-//    private int picture;
+    private int picture;
 
     public Document() {
         this.name = "";
@@ -57,11 +57,11 @@ public class Document implements Showable {
         this.link = link;
     }
 
-//    public int getPicture() {
-//        return picture;
-//    }
+    public int getPicture() {
+        return picture;
+    }
 
-//    public void setPicture(int picture) {
-//        this.picture = picture;
-//    }
+    public void setPicture(int picture) {
+        this.picture = picture;
+    }
 }

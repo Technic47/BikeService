@@ -32,6 +32,18 @@
             </option>
         </select>
     </div>
+
+    <br/>
+    <label for="pictures">Choose picture:</label>
+    <div th:object="${allPictures}">
+        <select id="pictures" name="picture">
+            <option th:each="item : ${allPictures}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+    </div>
+
     <input type="submit" value="Create!"/>
 </form>
 </body>

@@ -25,8 +25,7 @@ import javax.sql.DataSource;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
-    @Value("${upload.path}")
-    private String uploadPath;
+    public static final String UPLOAD_PATH = "C:\\Users\\Techn\\Documents\\JavaProjects\\BikeServiceStuff\\bikeService\\src\\main\\webapp\\resources\\IMG";
 
     @Autowired
     public SpringConfig(ApplicationContext applicationContext) {

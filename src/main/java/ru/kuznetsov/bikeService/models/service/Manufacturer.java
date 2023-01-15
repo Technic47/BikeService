@@ -10,10 +10,12 @@ public class Manufacturer implements Showable {
     private String name;
     private String country;
     private String description;
+    private int picture;
 
     public Manufacturer() {
         this.name = "";
         this.country = "";
+        this.picture = 1;
     }
 
     public int getId() {
@@ -52,6 +54,14 @@ public class Manufacturer implements Showable {
 
     public String getCountry() {
         return country;
+    }
+
+    public int getPicture() {
+        return picture;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
     }
 
     @Override

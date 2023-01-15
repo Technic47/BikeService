@@ -36,8 +36,21 @@
     <label for="description">Enter description:</label>
     <input type="text" th:field="*{description}" id="description"/>
     <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-    <br/>
 
+    <br/>
+    <br/>
+    <label for="pictures">Choose picture:</label>
+    <div th:object="${allPictures}">
+        <select id="pictures" name="picture">
+            <option selected th:value="${picture.getId()}"
+                    th:text="${picture.getName()}"></option>
+            <option th:each="item : ${allPictures}"
+                    th:value="${item.getId()}"
+                    th:text="${item.getName()}">
+            </option>
+        </select>
+    </div>
+    <br/>
     <label for="serviceList">Enter serviceList:</label>
     <input type="text" th:field="*{serviceList}" id="serviceList"/>
     <br/>

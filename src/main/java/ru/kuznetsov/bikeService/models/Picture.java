@@ -5,8 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Picture {
     private int id;
-    private String preview;
-    private String fileName;
+    private String name;
 
     public int getId() {
         return id;
@@ -16,19 +15,11 @@ public class Picture {
         this.id = id;
     }
 
-    public String getPreview() {
-        return preview;
+    public String getName() {
+        return name;
     }
 
-    public void setPreview(String preview) {
-        this.preview = preview;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setName(String name) {
+        this.name = name;
     }
 }
