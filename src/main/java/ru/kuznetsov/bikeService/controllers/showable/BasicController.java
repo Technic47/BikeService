@@ -10,7 +10,6 @@ import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.bike.Part;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
 
 import javax.validation.Valid;
