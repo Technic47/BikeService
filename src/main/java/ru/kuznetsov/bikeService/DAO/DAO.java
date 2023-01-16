@@ -120,7 +120,6 @@ public class DAO<T> {
     }
 
     public int searchByName(String name) {
-//        int id = 0;
         builder = new StringBuilder();
         builder.append("SELECT id FROM ").append(this.tableName).append(" WHERE name=:name");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("name", name);

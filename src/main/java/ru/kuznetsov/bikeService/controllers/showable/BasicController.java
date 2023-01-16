@@ -40,6 +40,7 @@ public class BasicController<T extends Showable> {
         }
     }
 
+
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("objects", dao.index());
