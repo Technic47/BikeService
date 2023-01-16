@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Document info</title>
+    <title>Item Info</title>
 </head>
 <body>
 
@@ -13,6 +13,8 @@
         <a th:href="@{${pair.getValue()}}"
            th:text="${pair.getValue()}"></a>
     </div>
+    <div th:if="${pair.getKey().contains('manufacture')}">
+        <p th:text="'Manufacture -' + ${manufacture}">VALUE</p></div>
 </div>
 
 <img th:src="@{/IMG/{fileName}(fileName=${picture})}">

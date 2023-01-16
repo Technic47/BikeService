@@ -10,6 +10,8 @@ import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
+import ru.kuznetsov.bikeService.models.bike.Part;
+import ru.kuznetsov.bikeService.models.bike.Serviceable;
 
 import javax.validation.Valid;
 
@@ -45,7 +47,7 @@ public class BasicController<T extends Showable> {
     public String index(Model model) {
         model.addAttribute("objects", dao.index());
         model.addAttribute("category", category);
-        return category + "/index";
+        return "/common/index";
     }
 
     @GetMapping("/{id}")
@@ -55,7 +57,10 @@ public class BasicController<T extends Showable> {
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
         model.addAttribute("properties", dao.getObjectProperties(dao.show(id)));
-        return category + "/show";
+        if (thisObject instanceof Serviceable) {
+            return "/common/showPart";
+        }
+        return "/common/show";
     }
 
     @GetMapping(value = "/new")
