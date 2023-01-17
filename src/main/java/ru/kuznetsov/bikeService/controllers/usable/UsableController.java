@@ -9,7 +9,6 @@ import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.showable.BasicController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
-import ru.kuznetsov.bikeService.models.service.Usable;
 import ru.kuznetsov.bikeService.repositories.CommonRepository;
 
 @Component
