@@ -1,14 +1,13 @@
 package ru.kuznetsov.bikeService.models.documents;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import ru.kuznetsov.bikeService.models.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Document extends AbstractEntity implements Showable {
+public class Document extends AbstractShowableEntity implements Showable {
 
     @NotEmpty(message = "Fill this field!")
     private String name;
@@ -27,7 +26,6 @@ public class Document extends AbstractEntity implements Showable {
 //        this.link = "";
 //        this.picture = 1;
 //    }
-
 
 
     public String getName() {

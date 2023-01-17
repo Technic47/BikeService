@@ -1,11 +1,12 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import ru.kuznetsov.bikeService.models.AbstractEntity;
-import ru.kuznetsov.bikeService.models.Showable;
+import jakarta.persistence.Entity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 
 import javax.validation.constraints.NotEmpty;
 
-public class Tool extends AbstractEntity implements Usable, Showable {
+@Entity
+public class Tool extends AbstractUsableEntity {
 
     private int manufacturer;
     private String model;

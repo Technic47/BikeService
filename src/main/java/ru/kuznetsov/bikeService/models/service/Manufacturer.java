@@ -1,11 +1,13 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import ru.kuznetsov.bikeService.models.AbstractEntity;
+import jakarta.persistence.Entity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
 
-public class Manufacturer extends AbstractEntity implements Showable {
+@Entity
+public class Manufacturer extends AbstractShowableEntity implements Showable {
 
     @NotEmpty(message = "Fill this field!")
     private String name;

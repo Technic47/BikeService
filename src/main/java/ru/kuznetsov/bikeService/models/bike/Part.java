@@ -3,7 +3,8 @@ package ru.kuznetsov.bikeService.models.bike;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.Entity;
-import ru.kuznetsov.bikeService.models.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Usable;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Part extends AbstractEntity implements Serviceable, Usable {
+public class Part extends AbstractServiceableEntity {
 
     protected int manufacturer;
     @NotEmpty(message = "Fill this field!")
@@ -55,6 +56,7 @@ public class Part extends AbstractEntity implements Serviceable, Usable {
         return this.partNumber;
     }
 
+    @Override
     public void setValue(String value) {
         this.value = value;
     }

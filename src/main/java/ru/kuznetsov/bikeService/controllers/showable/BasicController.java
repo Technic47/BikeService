@@ -8,19 +8,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
-import ru.kuznetsov.bikeService.repositories.ItemRepository;
+import ru.kuznetsov.bikeService.repositories.CommonRepository;
 
 import javax.validation.Valid;
 
 @Component
-public class BasicController<T extends Showable> {
+public class BasicController<T extends AbstractShowableEntity> {
     protected Class<T> currentClass;
     protected final DAO<T> dao;
     protected DAO<Picture> pictureDao;
-    protected ItemRepository<T> repository;
+    protected CommonRepository<T> repository;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -127,7 +128,7 @@ public class BasicController<T extends Showable> {
     }
 
     @Autowired
-    public void setRepository(ItemRepository<T> repository) {
+    public void setRepository(CommonRepository<T> repository) {
         this.repository = repository;
     }
 }

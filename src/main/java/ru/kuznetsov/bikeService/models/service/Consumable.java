@@ -1,11 +1,13 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import ru.kuznetsov.bikeService.models.AbstractEntity;
+import jakarta.persistence.Entity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 
 import javax.validation.constraints.NotEmpty;
 
-public class Consumable extends AbstractEntity implements Usable {
-
+@Entity
+public class Consumable extends AbstractUsableEntity {
     private int manufacturer;
     private String model;
     @NotEmpty(message = "Fill this field!")
@@ -23,7 +25,6 @@ public class Consumable extends AbstractEntity implements Usable {
         this.volume = "";
         this.description = "";
     }
-
 
 
     public String getDescription() {

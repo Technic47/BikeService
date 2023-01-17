@@ -1,12 +1,13 @@
 package ru.kuznetsov.bikeService.models.service;
 
 import jakarta.persistence.Entity;
-import ru.kuznetsov.bikeService.models.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
+
 @Entity
-public class Fastener extends AbstractEntity implements Showable {
+public class Fastener extends AbstractShowableEntity implements Showable {
 
     @NotEmpty(message = "Fill this field!")
     private String name;
@@ -29,7 +30,6 @@ public class Fastener extends AbstractEntity implements Showable {
     public Fastener() {
         this("", "");
     }
-
 
 
     @Override
