@@ -12,20 +12,19 @@ import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.bike.Part;
-import ru.kuznetsov.bikeService.models.bike.Serviceable;
 import ru.kuznetsov.bikeService.models.documents.Document;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Consumable;
 import ru.kuznetsov.bikeService.models.service.Fastener;
 import ru.kuznetsov.bikeService.models.service.Tool;
-import ru.kuznetsov.bikeService.models.service.Usable;
+import ru.kuznetsov.bikeService.repositories.CommonRepository;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ServiceableController<T extends AbstractServiceableEntity> extends UsableController<T> {
+public class ServiceableController<T extends AbstractServiceableEntity, R extends CommonRepository<T>> extends UsableController<T, R> {
     protected DAO<Document> documentDAO;
     protected DAO<Fastener> fastenerDAO;
     protected DAO<Consumable> consumableDAO;

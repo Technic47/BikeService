@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.controllers.AbstractController;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.Picture;
@@ -17,11 +18,11 @@ import ru.kuznetsov.bikeService.repositories.CommonRepository;
 import javax.validation.Valid;
 
 @Component
-public class BasicController<T extends AbstractShowableEntity> {
+public class BasicController<T extends AbstractShowableEntity, R extends CommonRepository<T>> {
     protected Class<T> currentClass;
     protected final DAO<T> dao;
     protected DAO<Picture> pictureDao;
-    protected CommonRepository<T> repository;
+    protected R repository;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -125,10 +126,5 @@ public class BasicController<T extends AbstractShowableEntity> {
     public void setPictureDAO(DAO<Picture> pictureDao) {
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
-    }
-
-    @Autowired
-    public void setRepository(CommonRepository<T> repository) {
-        this.repository = repository;
     }
 }

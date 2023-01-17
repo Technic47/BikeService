@@ -10,11 +10,11 @@ import java.io.Serializable;
 
 @MappedSuperclass
 public abstract class AbstractShowableEntity implements Serializable, Showable {
-
-    protected Long id;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
+
+
     public Long getId() {
         return id;
     }
