@@ -2,6 +2,8 @@ package ru.kuznetsov.bikeService.models.bike;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import jakarta.persistence.Entity;
+import ru.kuznetsov.bikeService.models.AbstractEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Usable;
@@ -11,8 +13,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Part implements Serviceable, Usable {
-    protected int id;
+@Entity
+public class Part extends AbstractEntity implements Serviceable, Usable {
+
     protected int manufacturer;
     @NotEmpty(message = "Fill this field!")
     protected String name;
@@ -21,8 +24,10 @@ public class Part implements Serviceable, Usable {
     protected String partNumber;
     protected String description;
     protected int picture;
+    private String value;
     protected String serviceList;
     protected String partList;
+
     protected final Gson converter;
 
     public Part() {
@@ -35,13 +40,6 @@ public class Part implements Serviceable, Usable {
         this.partList = this.converter.toJson(new ArrayList<Integer>());
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
 
     @Override
     public String getName() {
@@ -55,6 +53,10 @@ public class Part implements Serviceable, Usable {
     @Override
     public String getValue() {
         return this.partNumber;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public int getManufacturer() {
@@ -146,13 +148,13 @@ public class Part implements Serviceable, Usable {
 
     public void addToPartList(Serviceable item) {
         List<Integer> currentPartList = this.returnPartListObject();
-        currentPartList.add(item.getId());
+        currentPartList.add(Math.toIntExact(item.getId()));
         this.updatePartListObject(currentPartList);
     }
 
     public void delFromPartList(Serviceable item) {
         List<Integer> currentPartList = this.returnPartListObject();
-        currentPartList.remove((Integer) item.getId());
+        currentPartList.remove(item.getId().intValue());
         this.updatePartListObject(currentPartList);
     }
 }

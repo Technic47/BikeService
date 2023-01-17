@@ -1,32 +1,34 @@
 package ru.kuznetsov.bikeService.models.documents;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import ru.kuznetsov.bikeService.models.AbstractEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
 
-public class Document implements Showable {
+@Entity
+public class Document extends AbstractEntity implements Showable {
 
-    private int id;
     @NotEmpty(message = "Fill this field!")
     private String name;
     private String description;
     private String link;
     private int picture;
+    private String value;
 
     public Document() {
-        this.name = "";
-        this.description = "";
-        this.link = "";
-//        this.picture = 0;
+
     }
 
-    public int getId() {
-        return id;
-    }
+//    public Document() {
+//        this.name = "";
+//        this.description = "";
+//        this.link = "";
+//        this.picture = 1;
+//    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public String getName() {
         return name;
@@ -35,6 +37,10 @@ public class Document implements Showable {
     @Override
     public String getValue() {
         return this.link;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public void setName(String name) {

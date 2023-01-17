@@ -1,17 +1,20 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import jakarta.persistence.Entity;
+import ru.kuznetsov.bikeService.models.AbstractEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
+@Entity
+public class Fastener extends AbstractEntity implements Showable {
 
-public class Fastener implements Showable {
-    private int id;
     @NotEmpty(message = "Fill this field!")
     private String name;
     @NotEmpty(message = "Fill this field!")
     private String specs;
     private String description;
     private int picture;
+    private String value;
 
     public Fastener(String name, String specs, String description) {
         this.name = name;
@@ -27,9 +30,7 @@ public class Fastener implements Showable {
         this("", "");
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     @Override
     public String getName() {
@@ -41,8 +42,9 @@ public class Fastener implements Showable {
         return this.specs;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    @Override
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getSpecs() {

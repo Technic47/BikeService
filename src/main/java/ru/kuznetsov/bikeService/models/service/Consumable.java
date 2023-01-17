@@ -1,9 +1,11 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import ru.kuznetsov.bikeService.models.AbstractEntity;
+
 import javax.validation.constraints.NotEmpty;
 
-public class Consumable implements Usable {
-    private int id;
+public class Consumable extends AbstractEntity implements Usable {
+
     private int manufacturer;
     private String model;
     @NotEmpty(message = "Fill this field!")
@@ -12,6 +14,7 @@ public class Consumable implements Usable {
     private String volume;
     private String description;
     private int picture;
+    private String value;
 
     public Consumable() {
         this.manufacturer = 0;
@@ -21,14 +24,7 @@ public class Consumable implements Usable {
         this.description = "";
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;
@@ -73,6 +69,11 @@ public class Consumable implements Usable {
     @Override
     public String getValue() {
         return this.volume;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

@@ -1,29 +1,23 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import ru.kuznetsov.bikeService.models.AbstractEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
 
-public class Manufacturer implements Showable {
-    private int id;
+public class Manufacturer extends AbstractEntity implements Showable {
+
     @NotEmpty(message = "Fill this field!")
     private String name;
     private String country;
     private String description;
     private int picture;
+    private String value;
 
     public Manufacturer() {
         this.name = "";
         this.country = "";
         this.picture = 1;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setName(String name) {
@@ -41,6 +35,11 @@ public class Manufacturer implements Showable {
     @Override
     public String getValue() {
         return this.country;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

@@ -53,16 +53,16 @@ public class ServiceList {
     public void addToList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
             case "Tool":
-                this.addTool(obj.getId());
+                this.addTool(Math.toIntExact(obj.getId()));
                 break;
             case "Fastener":
-                this.addFastener(obj.getId());
+                this.addFastener(Math.toIntExact(obj.getId()));
                 break;
             case "Consumable":
-                this.addConsumable(obj.getId());
+                this.addConsumable(Math.toIntExact(obj.getId()));
                 break;
             case "Document":
-                this.addDocument(obj.getId());
+                this.addDocument(Math.toIntExact(obj.getId()));
                 break;
         }
     }
@@ -70,16 +70,16 @@ public class ServiceList {
     public void delFromList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
             case "Tool":
-                this.delTool(obj.getId());
+                this.delTool(Math.toIntExact(obj.getId()));
                 break;
             case "Fastener":
-                this.delFastener(obj.getId());
+                this.delFastener(Math.toIntExact(obj.getId()));
                 break;
             case "Consumable":
-                this.delConsumable(obj.getId());
+                this.delConsumable(Math.toIntExact(obj.getId()));
                 break;
             case "Document":
-                this.delDocument(obj.getId());
+                this.delDocument(Math.toIntExact(obj.getId()));
                 break;
         }
     }

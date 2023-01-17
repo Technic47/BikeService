@@ -1,11 +1,12 @@
 package ru.kuznetsov.bikeService.models.service;
 
+import ru.kuznetsov.bikeService.models.AbstractEntity;
 import ru.kuznetsov.bikeService.models.Showable;
 
 import javax.validation.constraints.NotEmpty;
 
-public class Tool implements Usable, Showable {
-    private int id;
+public class Tool extends AbstractEntity implements Usable, Showable {
+
     private int manufacturer;
     private String model;
     @NotEmpty(message = "Fill this field!")
@@ -14,6 +15,7 @@ public class Tool implements Usable, Showable {
     private String size;
     private String description;
     private int picture;
+    private String value;
 
     public Tool() {
         this.manufacturer = 0;
@@ -23,14 +25,6 @@ public class Tool implements Usable, Showable {
         this.description = "";
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;
@@ -75,6 +69,11 @@ public class Tool implements Usable, Showable {
     @Override
     public String getValue() {
         return this.size;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

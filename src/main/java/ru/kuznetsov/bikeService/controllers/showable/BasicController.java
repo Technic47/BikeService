@@ -11,6 +11,7 @@ import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
+import ru.kuznetsov.bikeService.repositories.ItemRepository;
 
 import javax.validation.Valid;
 
@@ -19,6 +20,7 @@ public class BasicController<T extends Showable> {
     protected Class<T> currentClass;
     protected final DAO<T> dao;
     protected DAO<Picture> pictureDao;
+    protected ItemRepository<T> repository;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -41,10 +43,11 @@ public class BasicController<T extends Showable> {
         }
     }
 
-
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("objects", dao.index());
+        Iterable<T> objects = repository.findAll();
+        model.addAttribute("objects", objects);
+//        model.addAttribute("objects", dao.index());
         model.addAttribute("category", category);
         return "/common/index";
     }
@@ -87,7 +90,8 @@ public class BasicController<T extends Showable> {
 // todo need to get id of picture
 
         }
-        dao.save(item);
+        repository.save(item);
+//        dao.save(item);
         return "redirect:/" + category;
     }
 
@@ -120,5 +124,10 @@ public class BasicController<T extends Showable> {
     public void setPictureDAO(DAO<Picture> pictureDao) {
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
+    }
+
+    @Autowired
+    public void setRepository(ItemRepository<T> repository) {
+        this.repository = repository;
     }
 }

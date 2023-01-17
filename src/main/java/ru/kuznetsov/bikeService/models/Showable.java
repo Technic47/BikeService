@@ -1,9 +1,10 @@
 package ru.kuznetsov.bikeService.models;
 
 public interface Showable {
-    int getId();
+    Long getId();
     String getName();
     String getValue();
+    void setValue(String value);
     String getDescription();
     int getPicture();
     void setPicture(int id);
