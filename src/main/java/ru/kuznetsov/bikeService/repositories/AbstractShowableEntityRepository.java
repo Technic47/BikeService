@@ -4,5 +4,5 @@
 //import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 //
 //@Repository
-//public interface AbstractShowableEntityRepository extends CommonRepository<AbstractShowableEntity> {
+//public interface AbstractShowableEntityRepository<T extends AbstractShowableEntity> extends CommonRepository<T> {
 //}

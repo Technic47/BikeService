@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ServiceableController<T extends AbstractServiceableEntity, R extends CommonRepository<T>> extends UsableController<T, R> {
+public class ServiceableController<T extends AbstractServiceableEntity> extends UsableController<T> {
     protected DAO<Document> documentDAO;
     protected DAO<Fastener> fastenerDAO;
     protected DAO<Consumable> consumableDAO;

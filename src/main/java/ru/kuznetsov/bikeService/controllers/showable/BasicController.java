@@ -12,16 +12,16 @@ import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
-import ru.kuznetsov.bikeService.repositories.CommonRepository;
+import ru.kuznetsov.bikeService.services.ShowableService;
 
 import javax.validation.Valid;
 
 @Component
-public class BasicController<T extends AbstractShowableEntity, R extends CommonRepository<T>> {
+public class BasicController<T extends AbstractShowableEntity> {
     protected Class<T> currentClass;
     protected final DAO<T> dao;
     protected DAO<Picture> pictureDao;
-    protected R repository;
+    protected ShowableService<T> service;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -46,7 +46,7 @@ public class BasicController<T extends AbstractShowableEntity, R extends CommonR
 
     @GetMapping()
     public String index(Model model) {
-        Iterable<T> objects = repository.findAll();
+        Iterable<T> objects = service.findAll();
         model.addAttribute("objects", objects);
 //        model.addAttribute("objects", dao.index());
         model.addAttribute("category", category);
@@ -91,7 +91,7 @@ public class BasicController<T extends AbstractShowableEntity, R extends CommonR
 // todo need to get id of picture
 
         }
-        repository.save(item);
+        service.save(item);
 //        dao.save(item);
         return "redirect:/" + category;
     }
@@ -125,5 +125,10 @@ public class BasicController<T extends AbstractShowableEntity, R extends CommonR
     public void setPictureDAO(DAO<Picture> pictureDao) {
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
+    }
+
+    @Autowired
+    public void setService(ShowableService<T> service) {
+        this.service = service;
     }
 }
