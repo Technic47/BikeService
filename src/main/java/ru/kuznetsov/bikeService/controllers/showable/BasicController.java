@@ -12,7 +12,8 @@ import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
-import ru.kuznetsov.bikeService.services.ShowableService;
+import ru.kuznetsov.bikeService.repositories.CommonRepository;
+import ru.kuznetsov.bikeService.repositories.services.ShowableService;
 
 import javax.validation.Valid;
 
@@ -21,7 +22,8 @@ public class BasicController<T extends AbstractShowableEntity> {
     protected Class<T> currentClass;
     protected final DAO<T> dao;
     protected DAO<Picture> pictureDao;
-    protected ShowableService<T> service;
+//    protected ShowableService<T> service;
+    protected CommonRepository<T> repository;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -46,7 +48,8 @@ public class BasicController<T extends AbstractShowableEntity> {
 
     @GetMapping()
     public String index(Model model) {
-        Iterable<T> objects = service.findAll();
+//        Iterable<T> objects = service.findAll();
+        Iterable<T> objects = repository.findAll();
         model.addAttribute("objects", objects);
 //        model.addAttribute("objects", dao.index());
         model.addAttribute("category", category);
@@ -91,7 +94,7 @@ public class BasicController<T extends AbstractShowableEntity> {
 // todo need to get id of picture
 
         }
-        service.save(item);
+//        service.save(item);
 //        dao.save(item);
         return "redirect:/" + category;
     }
@@ -127,8 +130,12 @@ public class BasicController<T extends AbstractShowableEntity> {
         this.pictureDao.setCurrentClass(Picture.class);
     }
 
+//    @Autowired
+//    public void setService(ShowableService<T> service) {
+//        this.service = service;
+//    }
     @Autowired
-    public void setService(ShowableService<T> service) {
-        this.service = service;
+    public void setRepository(CommonRepository<T> repository) {
+        this.repository = repository;
     }
 }

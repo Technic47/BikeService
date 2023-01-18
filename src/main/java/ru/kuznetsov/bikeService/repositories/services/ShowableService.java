@@ -1,14 +1,14 @@
-package ru.kuznetsov.bikeService.services;
+package ru.kuznetsov.bikeService.repositories.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.repositories.CommonRepository;
 
 import java.util.Optional;
 
-@Service
+@Component
 @Scope("prototype")
 public class ShowableService<T extends AbstractShowableEntity> implements AbstractService<T> {
     private final CommonRepository<T> repository;

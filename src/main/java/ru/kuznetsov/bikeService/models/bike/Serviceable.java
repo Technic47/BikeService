@@ -2,11 +2,12 @@ package ru.kuznetsov.bikeService.models.bike;
 
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.kuznetsov.bikeService.models.service.Usable;
 
 import java.util.List;
 import java.util.Map;
 
-public interface Serviceable extends Showable {
+public interface Serviceable extends Usable {
     int getManufacturer();
 
     String getPartNumber();

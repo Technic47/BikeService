@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.repositories;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 

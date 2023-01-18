@@ -26,6 +26,7 @@ public class DAO<T> {
     private StringJoiner joiner;
 
 
+
     @Autowired
     public DAO(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

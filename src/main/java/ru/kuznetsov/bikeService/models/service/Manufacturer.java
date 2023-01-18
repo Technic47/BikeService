@@ -7,7 +7,7 @@ import ru.kuznetsov.bikeService.models.Showable;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Manufacturer extends AbstractShowableEntity implements Showable {
+public class Manufacturer extends AbstractShowableEntity {
 
     @NotEmpty(message = "Fill this field!")
     private String name;

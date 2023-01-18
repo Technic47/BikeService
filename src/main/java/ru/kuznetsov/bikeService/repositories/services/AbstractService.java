@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.services;
+package ru.kuznetsov.bikeService.repositories.services;
 
 import java.util.Optional;
 

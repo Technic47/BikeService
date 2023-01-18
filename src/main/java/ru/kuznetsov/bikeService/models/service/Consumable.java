@@ -8,32 +8,32 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Consumable extends AbstractUsableEntity {
-    private int manufacturer;
-    private String model;
-    @NotEmpty(message = "Fill this field!")
-    private String name;
+//    private int manufacturer;
+//    private String model;
+//    @NotEmpty(message = "Fill this field!")
+//    private String name;
     @NotEmpty(message = "Fill this field!")
     private String volume;
-    private String description;
-    private int picture;
-    private String value;
+//    private String description;
+//    private int picture;
+//    private String value;
 
-    public Consumable() {
-        this.manufacturer = 0;
-        this.model = "";
-        this.name = "";
-        this.volume = "";
-        this.description = "";
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+//    public Consumable() {
+//        this.manufacturer = 0;
+//        this.model = "";
+//        this.name = "";
+//        this.volume = "";
+//        this.description = "";
+//    }
+//
+//
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
 
     public String getVolume() {
         return volume;
@@ -43,29 +43,29 @@ public class Consumable extends AbstractUsableEntity {
         this.volume = volume;
     }
 
-    public int getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(int manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
+//    public int getManufacturer() {
+//        return manufacturer;
+//    }
+//
+//    public void setManufacturer(int manufacturer) {
+//        this.manufacturer = manufacturer;
+//    }
+//
+//    public String getModel() {
+//        return model;
+//    }
+//
+//    public void setModel(String model) {
+//        this.model = model;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getName() {
+//        return this.name;
+//    }
 
     @Override
     public String getValue() {
@@ -77,12 +77,12 @@ public class Consumable extends AbstractUsableEntity {
         this.value = value;
     }
 
-    @Override
-    public int getPicture() {
-        return picture;
-    }
-
-    public void setPicture(int picture) {
-        this.picture = picture;
-    }
+//    @Override
+//    public int getPicture() {
+//        return picture;
+//    }
+//
+//    public void setPicture(int picture) {
+//        this.picture = picture;
+//    }
 }

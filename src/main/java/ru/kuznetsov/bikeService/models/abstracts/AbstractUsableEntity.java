@@ -4,5 +4,24 @@ import jakarta.persistence.MappedSuperclass;
 import ru.kuznetsov.bikeService.models.service.Usable;
 
 @MappedSuperclass
-public abstract class AbstractUsableEntity extends AbstractShowableEntity implements Usable {
+public class AbstractUsableEntity extends AbstractShowableEntity implements Usable {
+    protected int manufacturer;
+    protected String model;
+
+    public int getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(int manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
 }
