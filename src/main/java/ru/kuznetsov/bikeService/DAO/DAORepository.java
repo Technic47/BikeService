@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.DAO;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
@@ -62,7 +61,7 @@ public class DAORepository<T extends BaseEntity>{
         return result;
     }
 
-    @Autowired
+
     public void setRepository(CommonRepository<T> repository) {
         this.repository = repository;
     }

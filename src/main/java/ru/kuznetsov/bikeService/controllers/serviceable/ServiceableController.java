@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.DAO.DAO;
-import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
 import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 import ru.kuznetsov.bikeService.models.bike.Part;
@@ -19,6 +18,7 @@ import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Consumable;
 import ru.kuznetsov.bikeService.models.service.Fastener;
 import ru.kuznetsov.bikeService.models.service.Tool;
+import ru.kuznetsov.bikeService.repositories.services.CommonService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ServiceableController<T extends BaseEntity & Serviceable> extends U
     protected ServiceList cacheList;
     private List<Long> cachePartList;
 
-    public ServiceableController(DAORepository<T> dao) {
+    public ServiceableController(CommonService<T> dao) {
         super(dao);
     }
 

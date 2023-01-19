@@ -7,30 +7,33 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
-import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
+import ru.kuznetsov.bikeService.repositories.services.CommonService;
 
 import javax.validation.Valid;
 
 @Component
 public class BasicController<T extends BaseEntity & Showable> {
     protected Class<T> currentClass;
-    protected DAORepository<T> dao;
+    protected CommonService<T> dao;
     protected DAO<Picture> pictureDao;
-    //    protected ShowableService<T> service;
-//    protected CommonRepository<T> repository;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
 
-    @Autowired
-    public BasicController(DAORepository<T> dao) {
+
+    public BasicController(CommonService<T> dao) {
         this.dao = dao;
     }
+
+//    public void setDao(CommonService<T> dao) {
+//        this.dao = dao;
+//    }
+
 
 //    @Autowired
 //    public void setDao(DAORepository<T> dao) {
