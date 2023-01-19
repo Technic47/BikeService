@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AbstractService<E extends AbstractEntity, R extends CommonRepository<E>>
+public abstract class AbstractService<E extends AbstractEntity, R extends CommonRepository<E>>
         implements CommonService<E> {
     private final R repository;
 
