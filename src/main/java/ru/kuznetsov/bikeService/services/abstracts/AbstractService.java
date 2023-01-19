@@ -17,7 +17,6 @@ public abstract class AbstractService<E extends AbstractEntity, R extends Common
         this.repository = repository;
     }
 
-
     @Override
     public void save(E entity) {
         repository.save(entity);
