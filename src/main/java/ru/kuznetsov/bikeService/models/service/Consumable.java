@@ -1,22 +1,35 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import jakarta.persistence.Entity;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
+import jakarta.persistence.*;
+import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Consumable extends AbstractUsableEntity {
-//    private int manufacturer;
-//    private String model;
-//    @NotEmpty(message = "Fill this field!")
-//    private String name;
+@Table(name = "consumables")
+public class Consumable extends BaseEntity implements Usable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
     @NotEmpty(message = "Fill this field!")
+    @Column(name = "name")
+    protected String name;
+    @Column(name = "description")
+    protected String description;
+    //    @Column(name="link")
+//    protected String link;
+    @Column(name = "picture")
+    protected Long picture;
+    @Transient
+    protected String value;
+    @NotEmpty(message = "Fill this field!")
+    @Column(name = "volume")
     private String volume;
-//    private String description;
-//    private int picture;
-//    private String value;
+
+    @Column(name = "manufacturer")
+    protected Long manufacturer;
+    @Column(name = "model")
+    protected String model;
 
 //    public Consumable() {
 //        this.manufacturer = 0;
@@ -26,14 +39,24 @@ public class Consumable extends AbstractUsableEntity {
 //        this.description = "";
 //    }
 //
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
+
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getVolume() {
         return volume;
@@ -43,29 +66,29 @@ public class Consumable extends AbstractUsableEntity {
         this.volume = volume;
     }
 
-//    public int getManufacturer() {
-//        return manufacturer;
-//    }
-//
-//    public void setManufacturer(int manufacturer) {
-//        this.manufacturer = manufacturer;
-//    }
-//
-//    public String getModel() {
-//        return model;
-//    }
-//
-//    public void setModel(String model) {
-//        this.model = model;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public String getName() {
-//        return this.name;
-//    }
+    public Long getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Long manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 
     @Override
     public String getValue() {
@@ -77,12 +100,12 @@ public class Consumable extends AbstractUsableEntity {
         this.value = value;
     }
 
-//    @Override
-//    public int getPicture() {
-//        return picture;
-//    }
-//
-//    public void setPicture(int picture) {
-//        this.picture = picture;
-//    }
+    @Override
+    public Long getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Long picture) {
+        this.picture = picture;
+    }
 }

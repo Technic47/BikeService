@@ -7,28 +7,32 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
 import ru.kuznetsov.bikeService.repositories.CommonRepository;
-import ru.kuznetsov.bikeService.repositories.services.ShowableService;
 
 import javax.validation.Valid;
 
 @Component
-public class BasicController<T extends AbstractShowableEntity> {
+public class BasicController<T extends BaseEntity & Showable> {
     protected Class<T> currentClass;
-    protected final DAO<T> dao;
+    protected DAO<T> dao;
     protected DAO<Picture> pictureDao;
-//    protected ShowableService<T> service;
+    //    protected ShowableService<T> service;
     protected CommonRepository<T> repository;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
 
-    public BasicController(DAO<T> dao) {
+    //    public BasicController(DAO<T> dao) {
+//        this.dao = dao;
+//    }
+    @Autowired
+    public void setDao(DAORepository<T> dao) {
         this.dao = dao;
     }
 
@@ -57,12 +61,13 @@ public class BasicController<T extends AbstractShowableEntity> {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") Long id, Model model) {
         Showable currentObject = dao.show(id);
+//        Showable currentObject = repository.getReferenceById(id);
         model.addAttribute("object", currentObject);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
-        model.addAttribute("properties", dao.getObjectProperties(dao.show(id)));
+        model.addAttribute("properties", dao.getObjectProperties(currentObject));
         if (thisObject instanceof Serviceable) {
             return "/common/showPart";
         }
@@ -74,7 +79,7 @@ public class BasicController<T extends AbstractShowableEntity> {
         model.addAttribute("properties", dao.getObjectProperties(this.thisObject));
         model.addAttribute("newObject", this.thisObject);
         model.addAttribute("allPictures", pictureDao.index());
-        model.addAttribute("defaultPicture", pictureDao.show(1));
+        model.addAttribute("defaultPicture", pictureDao.show(1L));
         return category + "/new";
     }
 
@@ -100,8 +105,8 @@ public class BasicController<T extends AbstractShowableEntity> {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
-        T currentObject = dao.show(id);
+    public String edit(Model model, @PathVariable("id") Long id) {
+        T currentObject = repository.getReferenceById(id);
         model.addAttribute(currentObjectName, currentObject);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
         model.addAttribute("allPictures", pictureDao.index());
@@ -110,17 +115,18 @@ public class BasicController<T extends AbstractShowableEntity> {
 
     @PatchMapping("/{id}")
     public String update(@Valid T item, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
             return category + "/edit";
         }
+//        repository.
         dao.update(id, item);
         return "redirect:/" + category;
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
-        dao.del(id);
+    public String delete(@PathVariable("id") Long id) {
+        dao.delete(id);
         return "redirect:/" + category;
     }
 
@@ -130,7 +136,7 @@ public class BasicController<T extends AbstractShowableEntity> {
         this.pictureDao.setCurrentClass(Picture.class);
     }
 
-//    @Autowired
+    //    @Autowired
 //    public void setService(ShowableService<T> service) {
 //        this.service = service;
 //    }

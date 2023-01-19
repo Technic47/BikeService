@@ -5,10 +5,9 @@ import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Usable;
 
 import java.util.List;
-import java.util.Map;
 
 public interface Serviceable extends Usable {
-    int getManufacturer();
+    Long getManufacturer();
 
     String getPartNumber();
 
@@ -22,7 +21,7 @@ public interface Serviceable extends Usable {
 
     String getPartList();
 
-    List<Integer> returnPartListObject();
+    List<Long> returnPartListObject();
 
     void addToPartList(Serviceable item);
 

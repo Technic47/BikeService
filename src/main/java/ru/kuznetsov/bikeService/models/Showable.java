@@ -6,6 +6,6 @@ public interface Showable {
     String getValue();
     void setValue(String value);
     String getDescription();
-    int getPicture();
-    void setPicture(int id);
+    Long getPicture();
+    void setPicture(Long id);
 }

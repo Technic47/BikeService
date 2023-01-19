@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceList {
-    private List<Integer> toolList;
-    private List<Integer> fastenerList;
-    private List<Integer> consumableList;
-    private List<Integer> docsList;
+    private List<Long> toolList;
+    private List<Long> fastenerList;
+    private List<Long> consumableList;
+    private List<Long> docsList;
 
     public ServiceList() {
         this.toolList = new ArrayList<>();
@@ -18,51 +18,51 @@ public class ServiceList {
         this.docsList = new ArrayList<>();
     }
 
-    public List<Integer> getToolList() {
+    public List<Long> getToolList() {
         return toolList;
     }
 
-    public void setToolList(List<Integer> toolList) {
+    public void setToolList(List<Long> toolList) {
         this.toolList = toolList;
     }
 
-    public List<Integer> getFastenerList() {
+    public List<Long> getFastenerList() {
         return fastenerList;
     }
 
-    public void setFastenerList(List<Integer> fastenerList) {
+    public void setFastenerList(List<Long> fastenerList) {
         this.fastenerList = fastenerList;
     }
 
-    public List<Integer> getConsumableList() {
+    public List<Long> getConsumableList() {
         return consumableList;
     }
 
-    public void setConsumableList(List<Integer> consumableList) {
+    public void setConsumableList(List<Long> consumableList) {
         this.consumableList = consumableList;
     }
 
-    public List<Integer> getDocsList() {
+    public List<Long> getDocsList() {
         return docsList;
     }
 
-    public void setDocsList(List<Integer> docsList) {
+    public void setDocsList(List<Long> docsList) {
         this.docsList = docsList;
     }
 
     public void addToList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
             case "Tool":
-                this.addTool(Math.toIntExact(obj.getId()));
+                this.addTool(obj.getId());
                 break;
             case "Fastener":
-                this.addFastener(Math.toIntExact(obj.getId()));
+                this.addFastener(obj.getId());
                 break;
             case "Consumable":
-                this.addConsumable(Math.toIntExact(obj.getId()));
+                this.addConsumable(obj.getId());
                 break;
             case "Document":
-                this.addDocument(Math.toIntExact(obj.getId()));
+                this.addDocument(obj.getId());
                 break;
         }
     }
@@ -70,49 +70,49 @@ public class ServiceList {
     public void delFromList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
             case "Tool":
-                this.delTool(Math.toIntExact(obj.getId()));
+                this.delTool(obj.getId());
                 break;
             case "Fastener":
-                this.delFastener(Math.toIntExact(obj.getId()));
+                this.delFastener(obj.getId());
                 break;
             case "Consumable":
-                this.delConsumable(Math.toIntExact(obj.getId()));
+                this.delConsumable(obj.getId());
                 break;
             case "Document":
-                this.delDocument(Math.toIntExact(obj.getId()));
+                this.delDocument(obj.getId());
                 break;
         }
     }
 
-    public void addTool(Integer id) {
+    public void addTool(Long id) {
         this.toolList.add(id);
     }
 
-    public void delTool(Integer id) {
+    public void delTool(Long id) {
         this.toolList.remove(id);
     }
 
-    public void addFastener(Integer id) {
+    public void addFastener(Long id) {
         this.fastenerList.add(id);
     }
 
-    public void delFastener(Integer id) {
+    public void delFastener(Long id) {
         this.fastenerList.remove(id);
     }
 
-    public void addConsumable(Integer id) {
+    public void addConsumable(Long id) {
         this.consumableList.add(id);
     }
 
-    public void delConsumable(Integer id) {
+    public void delConsumable(Long id) {
         this.consumableList.remove(id);
     }
 
-    public void addDocument(Integer id) {
+    public void addDocument(Long id) {
         this.docsList.add(id);
     }
 
-    public void delDocument(Integer id) {
+    public void delDocument(Long id) {
         this.docsList.remove(id);
     }
 }

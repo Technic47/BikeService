@@ -30,7 +30,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("ru.kuznetsov.bikeService")
 @EnableJpaRepositories("ru.kuznetsov.bikeService.repositories")
-@EntityScan("ru.kuznetsov.bikeService.models")
+@EntityScan("ru.kuznetsov.bikeService.models.entities")
 //@EnableAutoConfiguration
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
@@ -89,7 +89,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("ru.kuznetsov.bikeService");
+        factory.setPackagesToScan("ru.kuznetsov.bikeService.models");
         factory.setDataSource(dataSource());
         factory.afterPropertiesSet();
 

@@ -1,31 +1,45 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import jakarta.persistence.Entity;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
+import jakarta.persistence.*;
+import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Tool extends AbstractUsableEntity {
-
-    private int manufacturer;
-    private String model;
+@Table(name = "tools")
+public class Tool extends BaseEntity implements Usable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
     @NotEmpty(message = "Fill this field!")
-    private String name;
+    @Column(name = "name")
+    protected String name;
+    @Column(name = "description")
+    protected String description;
+    //    @Column(name="link")
+//    protected String link;
+    @Column(name = "picture")
+    protected Long picture;
+    @Transient
+    protected String value;
     @NotEmpty(message = "Fill this field!")
+    @Column(name = "manufacturer")
+    protected Long manufacturer;
+    @Column(name = "model")
+    protected String model;
+    @NotEmpty(message = "Fill this field!")
+    @Column(name = "size")
     private String size;
-    private String description;
-    private int picture;
-    private String value;
 
-    public Tool() {
-        this.manufacturer = 0;
-        this.model = "";
-        this.name = "";
-        this.size = "";
-        this.description = "";
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -43,11 +57,11 @@ public class Tool extends AbstractUsableEntity {
         this.size = size;
     }
 
-    public int getManufacturer() {
+    public Long getManufacturer() {
         return this.manufacturer;
     }
 
-    public void setManufacturer(int manufacturer) {
+    public void setManufacturer(Long manufacturer) {
         this.manufacturer = manufacturer;
     }
 
@@ -78,11 +92,11 @@ public class Tool extends AbstractUsableEntity {
     }
 
     @Override
-    public int getPicture() {
+    public Long getPicture() {
         return picture;
     }
 
-    public void setPicture(int picture) {
+    public void setPicture(Long picture) {
         this.picture = picture;
     }
 }

@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User implements UserDetails {
-    private int id;
+    private Long id;
     private String email;
     private String phone;
     private String name;
@@ -17,11 +17,11 @@ public class User implements UserDetails {
     private Set<UserRole> status = new HashSet<>();
     private String password;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -21,15 +21,12 @@ import java.util.StringJoiner;
 public class DAO<T> {
     private String tableName;
     private Class<T> currentClass;
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate jdbcTemplate;
     private StringBuilder builder;
     private StringJoiner joiner;
 
 
-
-    @Autowired
-    public DAO(NamedParameterJdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public DAO() {
     }
 
     public void setTableName(String tableName) {
@@ -47,7 +44,7 @@ public class DAO<T> {
         return jdbcTemplate.query(builder.toString(), new BeanPropertyRowMapper<>(currentClass));
     }
 
-    public T show(int id) {
+    public T show(Long id) {
         builder = new StringBuilder();
         builder.append("SELECT * FROM ").append(this.tableName).append(" WHERE id=:id");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
@@ -79,7 +76,7 @@ public class DAO<T> {
         jdbcTemplate.update(builder.toString(), parameterSource);
     }
 
-    public void update(int id, T updateItem) {
+    public void update(Long id, T updateItem) {
         Map<String, Object> newObjectProperties = getObjectProperties(updateItem);
         builder = new StringBuilder();
         joiner = new StringJoiner(", ");
@@ -96,7 +93,7 @@ public class DAO<T> {
         jdbcTemplate.update(builder.toString(), newObjectProperties);
     }
 
-    public void del(int id) {
+    public void delete(Long id) {
         builder = new StringBuilder();
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
         builder.append("DELETE FROM ").append(this.tableName).append(" WHERE id=").append(id);
@@ -120,11 +117,16 @@ public class DAO<T> {
         return result;
     }
 
-    public int searchByName(String name) {
+    public Long searchByName(String name) {
         builder = new StringBuilder();
         builder.append("SELECT id FROM ").append(this.tableName).append(" WHERE name=:name");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("name", name);
-        return jdbcTemplate.queryForObject(builder.toString(), sqlParameterSource, Integer.class);
+        return jdbcTemplate.queryForObject(builder.toString(), sqlParameterSource, Long.class);
         // TODO resolve NullPointerExcwption
+    }
+
+    @Autowired
+    public void setJdbcTemplate(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 }

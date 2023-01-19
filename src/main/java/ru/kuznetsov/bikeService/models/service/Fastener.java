@@ -1,36 +1,41 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import jakarta.persistence.Entity;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.Showable;
+import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Fastener extends AbstractShowableEntity implements Showable {
+@Table(name = "fasteners")
+public class Fastener extends BaseEntity implements Showable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
     @NotEmpty(message = "Fill this field!")
-    private String name;
+    @Column(name = "name")
+    protected String name;
+    @Column(name = "description")
+    protected String description;
+    //    @Column(name="link")
+//    protected String link;
+    @Column(name = "picture")
+    protected int picture;
+    @Transient
+    protected String value;
     @NotEmpty(message = "Fill this field!")
+    @Column(name = "specs")
     private String specs;
-    private String description;
-    private int picture;
-    private String value;
 
-    public Fastener(String name, String specs, String description) {
-        this.name = name;
-        this.specs = specs;
-        this.description = description;
+    @Override
+    public Long getId() {
+        return id;
     }
 
-    public Fastener(String name, String specs) {
-        this(name, specs, "");
+    public void setId(Long id) {
+        this.id = id;
     }
-
-    public Fastener() {
-        this("", "");
-    }
-
 
     @Override
     public String getName() {
@@ -75,4 +80,5 @@ public class Fastener extends AbstractShowableEntity implements Showable {
     public void setPicture(int picture) {
         this.picture = picture;
     }
+
 }
