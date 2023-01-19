@@ -25,7 +25,7 @@ public class UsableController<T extends BaseEntity & Usable> extends BasicContro
 //    }
 
     @Autowired
-    public void setDaoManufacturer(DAORepository<Manufacturer> daoManufacturer) {
+    public void setDaoManufacturer(DAO<Manufacturer> daoManufacturer) {
         this.daoManufacturer = daoManufacturer;
         this.daoManufacturer.setCurrentClass(Manufacturer.class);
     }

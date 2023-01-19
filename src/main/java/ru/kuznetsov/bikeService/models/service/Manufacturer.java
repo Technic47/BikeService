@@ -10,9 +10,9 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "manufacturers")
 public class Manufacturer extends BaseEntity implements Showable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    protected Long id;
     @NotEmpty(message = "Fill this field!")
     @Column(name = "name")
     protected String name;

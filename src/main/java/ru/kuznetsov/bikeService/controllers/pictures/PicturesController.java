@@ -36,7 +36,7 @@ public class PicturesController {
     }
 
     @Autowired
-    public void setPictureDAO(DAORepository<Picture> pictureDao) {
+    public void setPictureDAO(DAO<Picture> pictureDao) {
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
     }

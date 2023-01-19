@@ -8,9 +8,9 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Table(name = "consumables")
 public class Consumable extends BaseEntity implements Usable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    protected Long id;
     @NotEmpty(message = "Fill this field!")
     @Column(name = "name")
     protected String name;

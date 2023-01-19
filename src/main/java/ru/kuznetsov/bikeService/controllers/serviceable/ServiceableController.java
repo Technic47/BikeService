@@ -187,31 +187,31 @@ public class ServiceableController<T extends BaseEntity & Serviceable> extends U
     }
 
     @Autowired
-    public void setPartDAO(DAORepository<Part> partDAO) {
+    public void setPartDAO(DAO<Part> partDAO) {
         this.partDAO = partDAO;
         this.partDAO.setCurrentClass(Part.class);
     }
 
     @Autowired
-    public void setDocumentDAO(DAORepository<Document> documentDAO) {
+    public void setDocumentDAO(DAO<Document> documentDAO) {
         this.documentDAO = documentDAO;
         this.documentDAO.setCurrentClass(Document.class);
     }
 
     @Autowired
-    public void setFastenerDAO(DAORepository<Fastener> fastenerDAO) {
+    public void setFastenerDAO(DAO<Fastener> fastenerDAO) {
         this.fastenerDAO = fastenerDAO;
         this.fastenerDAO.setCurrentClass(Fastener.class);
     }
 
     @Autowired
-    public void setConsumableDAO(DAORepository<Consumable> consumableDAO) {
+    public void setConsumableDAO(DAO<Consumable> consumableDAO) {
         this.consumableDAO = consumableDAO;
         this.consumableDAO.setCurrentClass(Consumable.class);
     }
 
     @Autowired
-    public void setToolDAO(DAORepository<Tool> toolDAO) {
+    public void setToolDAO(DAO<Tool> toolDAO) {
         this.toolDAO = toolDAO;
         this.toolDAO.setCurrentClass(Tool.class);
     }

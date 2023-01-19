@@ -16,9 +16,9 @@ import java.util.List;
 @Table(name = "parts")
 public class Part extends BaseEntity implements Serviceable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    protected Long id;
     @NotEmpty(message = "Fill this field!")
     @Column(name = "name")
     protected String name;

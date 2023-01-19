@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Component
 public class BasicController<T extends BaseEntity & Showable> {
     protected Class<T> currentClass;
-    protected DAO<T> dao;
+    protected DAORepository<T> dao;
     protected DAO<Picture> pictureDao;
     //    protected ShowableService<T> service;
 //    protected CommonRepository<T> repository;
@@ -39,10 +39,10 @@ public class BasicController<T extends BaseEntity & Showable> {
 
     public void setCurrentClass(Class<T> currentClass) {
         this.currentClass = currentClass;
-        this.dao.setCurrentClass(currentClass);
+//        this.dao.setCurrentClass(currentClass);
         this.currentObjectName = currentClass.getSimpleName().toLowerCase();
         this.category = currentObjectName + "s";
-        this.dao.setTableName(category);
+//        this.dao.setTableName(category);
         try {
             assert false;
             this.thisObject = currentClass.getConstructor().newInstance();
@@ -132,7 +132,7 @@ public class BasicController<T extends BaseEntity & Showable> {
     }
 
     @Autowired
-    public void setPictureDAO(DAORepository<Picture> pictureDao) {
+    public void setPictureDAO(DAO<Picture> pictureDao) {
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
     }

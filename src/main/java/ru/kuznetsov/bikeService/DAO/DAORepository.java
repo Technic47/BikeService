@@ -16,35 +16,35 @@ import java.util.Map;
 
 @Component
 @Scope("prototype")
-public class DAORepository<T extends BaseEntity> extends DAO<T> {
+public class DAORepository<T extends BaseEntity>{
     private CommonRepository<T> repository;
 
-    @Override
+
     public void save(T entity) {
         repository.save(entity);
     }
 
-    @Override
+
     public T show(Long id) {
         return repository.findById(id).get();
     }
 
-    @Override
+
     public void update(Long id, T updateItem) {
         T newItem = show(id);
     }
 
-    @Override
+
     public List<T> index() {
         return new ArrayList<>(repository.findAll());
     }
 
-    @Override
+
     public void delete(Long id) {
         repository.deleteById(id);
     }
 
-    @Override
+
     public Map<String, Object> getObjectProperties(final Object bean) {
         final Map<String, Object> result = new HashMap<>();
         try {

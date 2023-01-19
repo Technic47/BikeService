@@ -3,13 +3,14 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Scope;
 //import org.springframework.stereotype.Component;
+//import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 //import ru.kuznetsov.bikeService.repositories.CommonRepository;
 //
 //import java.util.Optional;
 //
 //@Component
 //@Scope("prototype")
-//public class ShowableService<T> implements AbstractService<T> {
+//public class ShowableService<T extends BaseEntity> implements AbstractService<T> {
 //    private final CommonRepository<T> repository;
 //
 //    @Autowired
