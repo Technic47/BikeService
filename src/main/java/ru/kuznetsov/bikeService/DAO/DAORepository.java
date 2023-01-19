@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.DAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 import ru.kuznetsov.bikeService.repositories.CommonRepository;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Scope("prototype")
 public class DAORepository<T extends BaseEntity> extends DAO<T> {
     private CommonRepository<T> repository;
 

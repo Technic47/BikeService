@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
 import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 import ru.kuznetsov.bikeService.models.bike.Part;
@@ -33,7 +34,7 @@ public class ServiceableController<T extends BaseEntity & Serviceable> extends U
     protected ServiceList cacheList;
     private List<Long> cachePartList;
 
-    public ServiceableController(DAO<T> dao) {
+    public ServiceableController(DAORepository<T> dao) {
         super(dao);
     }
 
@@ -186,31 +187,31 @@ public class ServiceableController<T extends BaseEntity & Serviceable> extends U
     }
 
     @Autowired
-    public void setPartDAO(DAO<Part> partDAO) {
+    public void setPartDAO(DAORepository<Part> partDAO) {
         this.partDAO = partDAO;
         this.partDAO.setCurrentClass(Part.class);
     }
 
     @Autowired
-    public void setDocumentDAO(DAO<Document> documentDAO) {
+    public void setDocumentDAO(DAORepository<Document> documentDAO) {
         this.documentDAO = documentDAO;
         this.documentDAO.setCurrentClass(Document.class);
     }
 
     @Autowired
-    public void setFastenerDAO(DAO<Fastener> fastenerDAO) {
+    public void setFastenerDAO(DAORepository<Fastener> fastenerDAO) {
         this.fastenerDAO = fastenerDAO;
         this.fastenerDAO.setCurrentClass(Fastener.class);
     }
 
     @Autowired
-    public void setConsumableDAO(DAO<Consumable> consumableDAO) {
+    public void setConsumableDAO(DAORepository<Consumable> consumableDAO) {
         this.consumableDAO = consumableDAO;
         this.consumableDAO.setCurrentClass(Consumable.class);
     }
 
     @Autowired
-    public void setToolDAO(DAO<Tool> toolDAO) {
+    public void setToolDAO(DAORepository<Tool> toolDAO) {
         this.toolDAO = toolDAO;
         this.toolDAO.setCurrentClass(Tool.class);
     }

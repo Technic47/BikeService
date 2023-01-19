@@ -21,21 +21,21 @@ public class Fastener extends BaseEntity implements Showable {
     //    @Column(name="link")
 //    protected String link;
     @Column(name = "picture")
-    protected int picture;
+    protected Long picture;
     @Transient
     protected String value;
     @NotEmpty(message = "Fill this field!")
     @Column(name = "specs")
     private String specs;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    @Override
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     @Override
     public String getName() {
@@ -73,11 +73,11 @@ public class Fastener extends BaseEntity implements Showable {
     }
 
     @Override
-    public int getPicture() {
+    public Long getPicture() {
         return picture;
     }
 
-    public void setPicture(int picture) {
+    public void setPicture(Long picture) {
         this.picture = picture;
     }
 

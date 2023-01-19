@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.controllers.showable.BasicController;
 import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
@@ -15,12 +16,16 @@ import ru.kuznetsov.bikeService.models.service.Usable;
 public class UsableController<T extends BaseEntity & Usable> extends BasicController<T> {
     protected DAO<Manufacturer> daoManufacturer;
 
-    public UsableController(DAO<T> dao) {
+    public UsableController(DAORepository<T> dao) {
         super(dao);
     }
 
+//    public UsableController(DAO<T> dao) {
+//        super(dao);
+//    }
+
     @Autowired
-    public void setDaoManufacturer(DAO<Manufacturer> daoManufacturer) {
+    public void setDaoManufacturer(DAORepository<Manufacturer> daoManufacturer) {
         this.daoManufacturer = daoManufacturer;
         this.daoManufacturer.setCurrentClass(Manufacturer.class);
     }

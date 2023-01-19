@@ -3,7 +3,7 @@ package ru.kuznetsov.bikeService.controllers.serviceable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.models.bike.Part;
 
 @Controller
@@ -11,7 +11,7 @@ import ru.kuznetsov.bikeService.models.bike.Part;
 @RequestMapping("/parts")
 public class PartsController extends ServiceableController<Part> {
 
-    public PartsController(DAO<Part> dao) {
+    public PartsController(DAORepository<Part> dao) {
         super(dao);
         this.setCurrentClass(Part.class);
     }

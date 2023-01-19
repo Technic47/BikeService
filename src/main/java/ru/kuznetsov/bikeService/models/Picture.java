@@ -1,19 +1,25 @@
 package ru.kuznetsov.bikeService.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.springframework.stereotype.Component;
+import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 
-@Component
-public class Picture {
-    private int id;
+@Entity
+@Table(name = "pictures")
+public class Picture extends BaseEntity {
+//    private Long id;
+    @Column(name = "name")
     private String name;
 
-    public int getId() {
-        return id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.models.Picture;
 
 @Controller
@@ -35,7 +36,7 @@ public class PicturesController {
     }
 
     @Autowired
-    public void setPictureDAO(DAO<Picture> pictureDao) {
+    public void setPictureDAO(DAORepository<Picture> pictureDao) {
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
     }

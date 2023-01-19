@@ -3,7 +3,7 @@ package ru.kuznetsov.bikeService.controllers.usable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.models.service.Tool;
 
 @Controller
@@ -11,7 +11,7 @@ import ru.kuznetsov.bikeService.models.service.Tool;
 @RequestMapping("/tools")
 public class ToolController extends UsableController<Tool> {
 
-    public ToolController(DAO<Tool> dao) {
+    public ToolController(DAORepository<Tool> dao) {
         super(dao);
         this.setCurrentClass(Tool.class);
     }

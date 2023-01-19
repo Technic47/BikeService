@@ -24,7 +24,7 @@ public class Document extends BaseEntity implements Showable {
     @Column(name = "link")
     protected String link;
     @Column(name = "picture")
-    protected int picture;
+    protected Long picture;
     @Transient
     protected String value;
 
@@ -81,11 +81,11 @@ public class Document extends BaseEntity implements Showable {
         this.link = link;
     }
 
-    public int getPicture() {
+    public Long getPicture() {
         return picture;
     }
 
-    public void setPicture(int picture) {
+    public void setPicture(Long picture) {
         this.picture = picture;
     }
 }

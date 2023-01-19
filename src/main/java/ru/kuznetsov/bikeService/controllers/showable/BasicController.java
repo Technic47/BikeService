@@ -13,7 +13,6 @@ import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
-import ru.kuznetsov.bikeService.repositories.CommonRepository;
 
 import javax.validation.Valid;
 
@@ -23,18 +22,20 @@ public class BasicController<T extends BaseEntity & Showable> {
     protected DAO<T> dao;
     protected DAO<Picture> pictureDao;
     //    protected ShowableService<T> service;
-    protected CommonRepository<T> repository;
+//    protected CommonRepository<T> repository;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
 
-    //    public BasicController(DAO<T> dao) {
-//        this.dao = dao;
-//    }
     @Autowired
-    public void setDao(DAORepository<T> dao) {
+    public BasicController(DAORepository<T> dao) {
         this.dao = dao;
     }
+
+//    @Autowired
+//    public void setDao(DAORepository<T> dao) {
+//        this.dao = dao;
+//    }
 
     public void setCurrentClass(Class<T> currentClass) {
         this.currentClass = currentClass;
@@ -53,7 +54,7 @@ public class BasicController<T extends BaseEntity & Showable> {
     @GetMapping()
     public String index(Model model) {
 //        Iterable<T> objects = service.findAll();
-        Iterable<T> objects = repository.findAll();
+        Iterable<T> objects = dao.index();
         model.addAttribute("objects", objects);
 //        model.addAttribute("objects", dao.index());
         model.addAttribute("category", category);
@@ -79,7 +80,7 @@ public class BasicController<T extends BaseEntity & Showable> {
         model.addAttribute("properties", dao.getObjectProperties(this.thisObject));
         model.addAttribute("newObject", this.thisObject);
         model.addAttribute("allPictures", pictureDao.index());
-        model.addAttribute("defaultPicture", pictureDao.show(1L));
+//        model.addAttribute("defaultPicture", pictureDao.show(1L));
         return category + "/new";
     }
 
@@ -100,13 +101,13 @@ public class BasicController<T extends BaseEntity & Showable> {
 
         }
 //        service.save(item);
-//        dao.save(item);
+        dao.save(item);
         return "redirect:/" + category;
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
-        T currentObject = repository.getReferenceById(id);
+        T currentObject = dao.show(id);
         model.addAttribute(currentObjectName, currentObject);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
         model.addAttribute("allPictures", pictureDao.index());
@@ -131,7 +132,7 @@ public class BasicController<T extends BaseEntity & Showable> {
     }
 
     @Autowired
-    public void setPictureDAO(DAO<Picture> pictureDao) {
+    public void setPictureDAO(DAORepository<Picture> pictureDao) {
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
     }
@@ -140,8 +141,8 @@ public class BasicController<T extends BaseEntity & Showable> {
 //    public void setService(ShowableService<T> service) {
 //        this.service = service;
 //    }
-    @Autowired
-    public void setRepository(CommonRepository<T> repository) {
-        this.repository = repository;
-    }
+//    @Autowired
+//    public void setRepository(CommonRepository<T> repository) {
+//        this.repository = repository;
+//    }
 }

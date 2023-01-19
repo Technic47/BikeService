@@ -21,20 +21,20 @@ public class Manufacturer extends BaseEntity implements Showable {
     //    @Column(name="link")
 //    protected String link;
     @Column(name = "picture")
-    protected int picture;
+    protected Long picture;
     @Transient
     protected String value;
     @Column(name = "country")
     private String country;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    @Override
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
 
     public void setName(String name) {
@@ -73,11 +73,11 @@ public class Manufacturer extends BaseEntity implements Showable {
         return country;
     }
 
-    public int getPicture() {
+    public Long getPicture() {
         return picture;
     }
 
-    public void setPicture(int picture) {
+    public void setPicture(Long picture) {
         this.picture = picture;
     }
 

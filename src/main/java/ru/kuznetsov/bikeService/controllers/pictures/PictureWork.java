@@ -12,15 +12,16 @@ import java.io.File;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 
-@Component
+//@Component
 public class PictureWork {
 //    @Value("${upload.path}")
 //    private String uploadPath;
-    private Picture picture;
+    private final Picture picture;
 
     public PictureWork(Picture picture) {
         this.picture = picture;
     }
+
 
     public void managePicture(MultipartFile file) {
         try {
@@ -57,9 +58,9 @@ public class PictureWork {
         return picture;
     }
 
-    @Autowired
-    public void setPicture(Picture picture) {
-        this.picture = picture;
-    }
+//    @Autowired
+//    public void setPicture(Picture picture) {
+//        this.picture = picture;
+//    }
 
 }

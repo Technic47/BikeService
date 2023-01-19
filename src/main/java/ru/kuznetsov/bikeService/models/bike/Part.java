@@ -54,14 +54,14 @@ public class Part extends BaseEntity implements Serviceable {
         this.partList = this.converter.toJson(new ArrayList<Integer>());
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    @Override
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     @Override
     public String getName() {
