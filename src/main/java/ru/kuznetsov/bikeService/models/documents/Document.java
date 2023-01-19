@@ -5,13 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 
 import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "documents")
-public class Document extends BaseEntity implements Showable {
+public class Document extends AbstractEntity implements Showable {
 
     //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)

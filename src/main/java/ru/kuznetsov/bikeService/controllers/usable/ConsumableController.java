@@ -1,18 +1,15 @@
 package ru.kuznetsov.bikeService.controllers.usable;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kuznetsov.bikeService.models.service.Consumable;
-import ru.kuznetsov.bikeService.repositories.services.CommonService;
+import ru.kuznetsov.bikeService.services.ConsumableService;
 
-@Controller
-@Scope("prototype")
+@RestController
 @RequestMapping("/consumables")
-public class ConsumableController extends UsableController<Consumable> {
+public class ConsumableController extends UsableController<Consumable, ConsumableService> {
 
-    public ConsumableController(CommonService<Consumable> dao) {
-        super(dao);
-        this.setCurrentClass(Consumable.class);
+    public ConsumableController(ConsumableService service) {
+        super(service);
     }
 }

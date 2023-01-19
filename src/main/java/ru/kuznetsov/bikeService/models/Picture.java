@@ -3,12 +3,11 @@ package ru.kuznetsov.bikeService.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import org.springframework.stereotype.Component;
-import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 
 @Entity
 @Table(name = "pictures")
-public class Picture extends BaseEntity {
+public class Picture extends AbstractEntity {
 //    private Long id;
     @Column(name = "name")
     private String name;

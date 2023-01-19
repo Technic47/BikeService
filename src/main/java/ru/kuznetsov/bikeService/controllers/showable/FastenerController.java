@@ -1,17 +1,14 @@
 package ru.kuznetsov.bikeService.controllers.showable;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kuznetsov.bikeService.models.service.Fastener;
-import ru.kuznetsov.bikeService.repositories.services.CommonService;
+import ru.kuznetsov.bikeService.services.FastenerService;
 
-@Controller
-@Scope("prototype")
+@RestController
 @RequestMapping("/fasteners")
-public class FastenerController extends BasicController<Fastener> {
-    public FastenerController(CommonService<Fastener> dao) {
-        super(dao);
-        this.setCurrentClass(Fastener.class);
+public class FastenerController extends BasicController<Fastener, FastenerService> {
+    public FastenerController(FastenerService service) {
+        super(service);
     }
 }

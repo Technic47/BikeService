@@ -1,18 +1,14 @@
 package ru.kuznetsov.bikeService.controllers.showable;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kuznetsov.bikeService.models.documents.Document;
-import ru.kuznetsov.bikeService.repositories.services.CommonService;
+import ru.kuznetsov.bikeService.services.DocumentService;
 
-@Controller
-@Scope("prototype")
+@RestController
 @RequestMapping("/documents")
-public class DocumentController extends BasicController<Document> {
-    public DocumentController(CommonService<Document> dao) {
-        super(dao);
-//        this.setDao(dao);
-        this.setCurrentClass(Document.class);
+public class DocumentController extends BasicController<Document, DocumentService> {
+    public DocumentController(DocumentService service) {
+        super(service);
     }
 }

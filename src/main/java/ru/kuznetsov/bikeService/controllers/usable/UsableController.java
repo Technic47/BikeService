@@ -7,22 +7,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.showable.BasicController;
-import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 import ru.kuznetsov.bikeService.models.service.Manufacturer;
 import ru.kuznetsov.bikeService.models.service.Usable;
-import ru.kuznetsov.bikeService.repositories.services.CommonService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 @Component
-public class UsableController<T extends BaseEntity & Usable> extends BasicController<T> {
+public class UsableController<T extends AbstractEntity & Usable, S extends CommonService<T>>
+        extends BasicController<T, S> {
     protected DAO<Manufacturer> daoManufacturer;
 
-    public UsableController(CommonService<T> dao) {
+    public UsableController(S dao) {
         super(dao);
     }
 
-//    public UsableController(DAO<T> dao) {
-//        super(dao);
-//    }
 
     @Autowired
     public void setDaoManufacturer(DAO<Manufacturer> daoManufacturer) {

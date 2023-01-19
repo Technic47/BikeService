@@ -2,9 +2,12 @@ package ru.kuznetsov.bikeService.models.bike;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 
 import javax.validation.constraints.NotEmpty;
@@ -14,7 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "parts")
-public class Part extends BaseEntity implements Serviceable {
+public class Part extends AbstractEntity implements Serviceable {
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)

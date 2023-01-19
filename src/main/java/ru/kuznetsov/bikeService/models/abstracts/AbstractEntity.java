@@ -1,16 +1,19 @@
 package ru.kuznetsov.bikeService.models.abstracts;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 //@Entity
 @MappedSuperclass
 //@Inheritance(strategy = InheritanceType.JOINED)
 //@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class BaseEntity {
+public abstract class AbstractEntity {
 
     protected Long id;
 
-    public BaseEntity() {
+    public AbstractEntity() {
     }
 
     @Id

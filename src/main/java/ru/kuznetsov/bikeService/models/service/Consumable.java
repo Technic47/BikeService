@@ -1,13 +1,16 @@
 package ru.kuznetsov.bikeService.models.service;
 
-import jakarta.persistence.*;
-import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 
 import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "consumables")
-public class Consumable extends BaseEntity implements Usable {
+public class Consumable extends AbstractEntity implements Usable {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    protected Long id;

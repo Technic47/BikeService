@@ -7,38 +7,32 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
+import ru.kuznetsov.bikeService.controllers.abstracts.CommonController;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
-import ru.kuznetsov.bikeService.repositories.services.CommonService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 import javax.validation.Valid;
 
 @Component
-public class BasicController<T extends BaseEntity & Showable> {
+public class BasicController<T extends AbstractEntity & Showable, S extends CommonService<T>>
+        implements CommonController<T> {
+
+    protected final S dao;
     protected Class<T> currentClass;
-    protected CommonService<T> dao;
+//    protected AbstractService<T> dao;
     protected DAO<Picture> pictureDao;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
 
 
-    public BasicController(CommonService<T> dao) {
+    public BasicController(S dao) {
         this.dao = dao;
     }
-
-//    public void setDao(CommonService<T> dao) {
-//        this.dao = dao;
-//    }
-
-
-//    @Autowired
-//    public void setDao(DAORepository<T> dao) {
-//        this.dao = dao;
-//    }
 
     public void setCurrentClass(Class<T> currentClass) {
         this.currentClass = currentClass;

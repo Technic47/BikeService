@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +29,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("ru.kuznetsov.bikeService")
 @EnableJpaRepositories("ru.kuznetsov.bikeService.repositories")
-@EntityScan("ru.kuznetsov.bikeService.models.entities")
+@EntityScan("ru.kuznetsov.bikeService.models")
 //@EnableAutoConfiguration
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
-import ru.kuznetsov.bikeService.models.abstracts.BaseEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 import ru.kuznetsov.bikeService.models.bike.Part;
 import ru.kuznetsov.bikeService.models.bike.Serviceable;
 import ru.kuznetsov.bikeService.models.documents.Document;
@@ -18,14 +18,15 @@ import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.service.Consumable;
 import ru.kuznetsov.bikeService.models.service.Fastener;
 import ru.kuznetsov.bikeService.models.service.Tool;
-import ru.kuznetsov.bikeService.repositories.services.CommonService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ServiceableController<T extends BaseEntity & Serviceable> extends UsableController<T> {
+public class ServiceableController<T extends AbstractEntity & Serviceable, S extends CommonService<T>>
+        extends UsableController<T, S> {
     protected DAO<Document> documentDAO;
     protected DAO<Fastener> fastenerDAO;
     protected DAO<Consumable> consumableDAO;
@@ -34,7 +35,7 @@ public class ServiceableController<T extends BaseEntity & Serviceable> extends U
     protected ServiceList cacheList;
     private List<Long> cachePartList;
 
-    public ServiceableController(CommonService<T> dao) {
+    public ServiceableController(S dao) {
         super(dao);
     }
 

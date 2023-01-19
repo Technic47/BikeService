@@ -1,4 +1,6 @@
-package ru.kuznetsov.bikeService.repositories.services;
+package ru.kuznetsov.bikeService.services.abstracts;
+
+import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -7,14 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface CommonInterface<T> {
-    public void save(T entity);
+public interface CommonService<E extends AbstractEntity> {
+    public void save(E entity);
 
-    public T show(Long id);
+    public E show(Long id);
 
-    public void update(Long id, T updateItem);
+    public void update(Long id, E updateItem);
 
-    public List<T> index();
+    public List<E> index();
 
     public void delete(Long id);
 
