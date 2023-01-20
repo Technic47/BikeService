@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
-import ru.kuznetsov.bikeService.controllers.abstracts.CommonController;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.Showable;
@@ -20,13 +19,8 @@ import javax.validation.Valid;
 
 @Component
 @Scope("prototype")
-public class BasicController<T extends AbstractEntity & Showable, S extends CommonService<T>>
-        implements CommonController<T> {
-
+public class BasicController<T extends AbstractEntity & Showable, S extends CommonService<T>> {
     protected final CommonService<T> dao;
-    protected CommonService<T> service;
-    protected Class<T> currentClass;
-    //    protected AbstractService<T> dao;
     protected DAO<Picture> pictureDao;
     protected T thisObject;
     protected String currentObjectName;
@@ -37,17 +31,9 @@ public class BasicController<T extends AbstractEntity & Showable, S extends Comm
         this.dao = dao;
     }
 
-    @Autowired
-    public void setService(CommonService<T> service) {
-        this.service = service;
-    }
-
     public void setCurrentClass(Class<T> currentClass) {
-        this.currentClass = currentClass;
-//        this.dao.setCurrentClass(currentClass);
         this.currentObjectName = currentClass.getSimpleName().toLowerCase();
         this.category = currentObjectName + "s";
-//        this.dao.setTableName(category);
         try {
             assert false;
             this.thisObject = currentClass.getConstructor().newInstance();
@@ -58,10 +44,8 @@ public class BasicController<T extends AbstractEntity & Showable, S extends Comm
 
     @GetMapping()
     public String index(Model model) {
-//        Iterable<T> objects = service.findAll();
         Iterable<T> objects = dao.index();
         model.addAttribute("objects", objects);
-//        model.addAttribute("objects", dao.index());
         model.addAttribute("category", category);
         return "/common/index";
     }
@@ -69,7 +53,6 @@ public class BasicController<T extends AbstractEntity & Showable, S extends Comm
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Showable currentObject = dao.show(id);
-//        Showable currentObject = repository.getReferenceById(id);
         model.addAttribute("object", currentObject);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
@@ -105,7 +88,6 @@ public class BasicController<T extends AbstractEntity & Showable, S extends Comm
 // todo need to get id of picture
 
         }
-//        service.save(item);
         dao.save(item);
         return "redirect:/" + category;
     }
@@ -125,7 +107,6 @@ public class BasicController<T extends AbstractEntity & Showable, S extends Comm
         if (bindingResult.hasErrors()) {
             return category + "/edit";
         }
-//        repository.
         dao.update(id, item);
         return "redirect:/" + category;
     }
@@ -141,13 +122,4 @@ public class BasicController<T extends AbstractEntity & Showable, S extends Comm
         this.pictureDao = pictureDao;
         this.pictureDao.setCurrentClass(Picture.class);
     }
-
-    //    @Autowired
-//    public void setService(ShowableService<T> service) {
-//        this.service = service;
-//    }
-//    @Autowired
-//    public void setRepository(CommonRepository<T> repository) {
-//        this.repository = repository;
-//    }
 }

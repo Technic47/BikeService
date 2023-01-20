@@ -1,15 +1,16 @@
 package ru.kuznetsov.bikeService.controllers.serviceable;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import ru.kuznetsov.bikeService.models.bike.Part;
 import ru.kuznetsov.bikeService.services.PartService;
 
-@RestController
+@Controller
 @RequestMapping("/parts")
 public class PartsController extends ServiceableController<Part, PartService> {
 
     public PartsController(PartService service) {
         super(service);
+        this.setCurrentClass(Part.class);
     }
 }
