@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.controllers.usable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import ru.kuznetsov.bikeService.models.service.Usable;
 import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 @Component
+@Scope("prototype")
 public class UsableController<T extends AbstractEntity & Usable, S extends CommonService<T>>
         extends BasicController<T, S> {
     protected DAO<Manufacturer> daoManufacturer;

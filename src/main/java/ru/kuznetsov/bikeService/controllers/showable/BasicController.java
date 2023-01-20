@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.controllers.showable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +19,14 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 import javax.validation.Valid;
 
 @Component
+@Scope("prototype")
 public class BasicController<T extends AbstractEntity & Showable, S extends CommonService<T>>
         implements CommonController<T> {
 
-    protected final S dao;
+    protected final CommonService<T> dao;
+    protected CommonService<T> service;
     protected Class<T> currentClass;
-//    protected AbstractService<T> dao;
+    //    protected AbstractService<T> dao;
     protected DAO<Picture> pictureDao;
     protected T thisObject;
     protected String currentObjectName;
@@ -32,6 +35,11 @@ public class BasicController<T extends AbstractEntity & Showable, S extends Comm
 
     public BasicController(S dao) {
         this.dao = dao;
+    }
+
+    @Autowired
+    public void setService(CommonService<T> service) {
+        this.service = service;
     }
 
     public void setCurrentClass(Class<T> currentClass) {

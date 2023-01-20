@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.controllers.serviceable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Scope("prototype")
 public class ServiceableController<T extends AbstractEntity & Serviceable, S extends CommonService<T>>
         extends UsableController<T, S> {
     protected DAO<Document> documentDAO;
