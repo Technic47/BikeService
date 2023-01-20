@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 
 import javax.validation.constraints.NotEmpty;
 
-//@Entity
 @MappedSuperclass
-//@Inheritance(strategy = InheritanceType.JOINED)
-//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractShowableEntity {
 
     protected Long id;
@@ -25,7 +23,7 @@ public abstract class AbstractShowableEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     public Long getId() {
         return id;
     }
@@ -49,6 +47,7 @@ public abstract class AbstractShowableEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public Long getPicture() {
         return picture;
     }

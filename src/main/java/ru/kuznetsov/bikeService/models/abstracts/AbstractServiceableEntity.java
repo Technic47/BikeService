@@ -2,9 +2,7 @@ package ru.kuznetsov.bikeService.models.abstracts;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
@@ -14,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractServiceableEntity extends AbstractUsableEntity{
     @Column(name = "partNumber")
     protected String partNumber;

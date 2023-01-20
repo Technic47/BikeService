@@ -1,11 +1,14 @@
 package ru.kuznetsov.bikeService.models.abstracts;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.MappedSuperclass;
 
 import javax.validation.constraints.NotEmpty;
 
 @MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractUsableEntity extends AbstractShowableEntity{
     @NotEmpty(message = "Fill this field!")
     @Column(name = "manufacturer")
