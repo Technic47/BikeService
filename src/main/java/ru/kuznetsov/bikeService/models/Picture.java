@@ -3,11 +3,11 @@ package ru.kuznetsov.bikeService.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 @Entity
 @Table(name = "pictures")
-public class Picture extends AbstractEntity {
+public class Picture extends AbstractShowableEntity {
 //    private Long id;
     @Column(name = "name")
     private String name;

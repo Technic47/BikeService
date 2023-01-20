@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.showable.BasicController;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
-import ru.kuznetsov.bikeService.models.service.Manufacturer;
-import ru.kuznetsov.bikeService.models.service.Usable;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.showable.Manufacturer;
+import ru.kuznetsov.bikeService.models.usable.Usable;
 import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 @Component
 @Scope("prototype")
-public class UsableController<T extends AbstractEntity & Usable, S extends CommonService<T>>
+public class UsableController<T extends AbstractShowableEntity & Usable, S extends CommonService<T>>
         extends BasicController<T, S> {
     protected DAO<Manufacturer> daoManufacturer;
 

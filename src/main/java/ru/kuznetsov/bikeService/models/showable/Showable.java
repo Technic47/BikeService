@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.models;
+package ru.kuznetsov.bikeService.models.showable;
 
 public interface Showable {
     Long getId();

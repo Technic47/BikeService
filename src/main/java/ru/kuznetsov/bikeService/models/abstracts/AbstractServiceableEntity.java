@@ -1,43 +1,20 @@
-package ru.kuznetsov.bikeService.models.bike;
+package ru.kuznetsov.bikeService.models.abstracts;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
-import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.kuznetsov.bikeService.models.servicable.Serviceable;
+import ru.kuznetsov.bikeService.models.showable.Showable;
 
-import javax.validation.constraints.NotEmpty;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "parts")
-public class Part extends AbstractEntity implements Serviceable {
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    protected Long id;
-    @NotEmpty(message = "Fill this field!")
-    @Column(name = "name")
-    protected String name;
-    @Column(name = "description")
-    protected String description;
-    //    @Column(name="link")
-//    protected String link;
-    @Column(name = "picture")
-    protected Long picture;
-    @Transient
-    protected String value;
-    @NotEmpty(message = "Fill this field!")
-    @Column(name = "manufacturer")
-    protected Long manufacturer;
-    @Column(name = "model")
-    protected String model;
+@MappedSuperclass
+public abstract class AbstractServiceableEntity extends AbstractUsableEntity{
     @Column(name = "partNumber")
     protected String partNumber;
     @Column(name = "serviceList")
@@ -45,61 +22,7 @@ public class Part extends AbstractEntity implements Serviceable {
     @Column(name = "partList")
     protected String partList;
     @Transient
-    protected final Gson converter;
-
-    public Part() {
-        this.manufacturer = 1L;
-        this.model = "";
-        this.partNumber = "";
-        this.description = "";
-        this.converter = new Gson();
-        this.serviceList = this.converter.toJson(new ServiceList());
-        this.partList = this.converter.toJson(new ArrayList<Integer>());
-    }
-
-//    @Override
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getValue() {
-        return this.partNumber;
-    }
-
-    @Override
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Long getManufacturer() {
-        return this.manufacturer;
-    }
-
-    public void setManufacturer(Long manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
+    protected Gson converter;
 
     public String getPartNumber() {
         return partNumber;
@@ -107,23 +30,6 @@ public class Part extends AbstractEntity implements Serviceable {
 
     public void setPartNumber(String partNumber) {
         this.partNumber = partNumber;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public Long getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Long picture) {
-        this.picture = picture;
     }
 
     public ServiceList returnServiceListObject() {

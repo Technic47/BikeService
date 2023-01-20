@@ -1,30 +1,29 @@
-package ru.kuznetsov.bikeService.models.service;
+package ru.kuznetsov.bikeService.models.showable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "fasteners")
-public class Fastener extends AbstractEntity implements Showable {
+public class Fastener extends AbstractShowableEntity implements Showable {
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    protected Long id;
-    @NotEmpty(message = "Fill this field!")
-    @Column(name = "name")
-    protected String name;
-    @Column(name = "description")
-    protected String description;
+//    @NotEmpty(message = "Fill this field!")
+//    @Column(name = "name")
+//    protected String name;
+//    @Column(name = "description")
+//    protected String description;
     //    @Column(name="link")
 //    protected String link;
-    @Column(name = "picture")
-    protected Long picture;
+//    @Column(name = "picture")
+//    protected Long picture;
     @Transient
     protected String value;
     @NotEmpty(message = "Fill this field!")
@@ -40,11 +39,13 @@ public class Fastener extends AbstractEntity implements Showable {
 //        this.id = id;
 //    }
 
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
+//    @Override
+//    public String getName() {
+//        return this.name;
+//    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
     @Override
     public String getValue() {
         return this.specs;
@@ -59,29 +60,26 @@ public class Fastener extends AbstractEntity implements Showable {
         return specs;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setSpecs(String specs) {
         this.specs = specs;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public Long getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Long picture) {
-        this.picture = picture;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
+//
+//    @Override
+//    public Long getPicture() {
+//        return picture;
+//    }
+//
+//    public void setPicture(Long picture) {
+//        this.picture = picture;
+//    }
 
 }

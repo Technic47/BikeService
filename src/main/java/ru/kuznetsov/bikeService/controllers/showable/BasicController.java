@@ -10,16 +10,16 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
-import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
-import ru.kuznetsov.bikeService.models.bike.Serviceable;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.servicable.Serviceable;
+import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 import javax.validation.Valid;
 
 @Component
 @Scope("prototype")
-public class BasicController<T extends AbstractEntity & Showable, S extends CommonService<T>> {
+public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonService<T>> {
     protected final CommonService<T> dao;
     protected DAO<Picture> pictureDao;
     protected T thisObject;

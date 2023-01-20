@@ -2,7 +2,7 @@ package ru.kuznetsov.bikeService.DAO;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 import java.beans.Introspector;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 @Scope("prototype")
-public class DAORepository<T extends AbstractEntity>{
+public class DAORepository<T extends AbstractShowableEntity>{
     private CommonRepository<T> repository;
 
 

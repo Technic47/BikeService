@@ -1,7 +1,7 @@
 package ru.kuznetsov.bikeService.services;
 
 import org.springframework.stereotype.Service;
-import ru.kuznetsov.bikeService.models.bike.Part;
+import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.repositories.PartRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 

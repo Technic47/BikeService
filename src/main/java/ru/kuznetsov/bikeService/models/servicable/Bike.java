@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.models.bike;
+package ru.kuznetsov.bikeService.models.servicable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

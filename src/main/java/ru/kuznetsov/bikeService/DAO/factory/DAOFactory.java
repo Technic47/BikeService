@@ -7,8 +7,8 @@
 //import ru.kuznetsov.bikeService.models.bike.Part;
 //import ru.kuznetsov.bikeService.models.documents.Document;
 //import ru.kuznetsov.bikeService.models.service.Consumable;
-//import ru.kuznetsov.bikeService.models.service.Fastener;
-//import ru.kuznetsov.bikeService.models.service.Manufacturer;
+//import ru.kuznetsov.bikeService.models.showable.Fastener;
+//import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 //import ru.kuznetsov.bikeService.models.service.Tool;
 //
 //public class DAOFactory {

@@ -1,8 +1,8 @@
-package ru.kuznetsov.bikeService.models.bike;
+package ru.kuznetsov.bikeService.models.servicable;
 
-import ru.kuznetsov.bikeService.models.Showable;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.service.Usable;
+import ru.kuznetsov.bikeService.models.showable.Showable;
+import ru.kuznetsov.bikeService.models.usable.Usable;
 
 import java.util.List;
 

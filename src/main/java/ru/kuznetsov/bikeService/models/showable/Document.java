@@ -1,30 +1,27 @@
-package ru.kuznetsov.bikeService.models.documents;
+package ru.kuznetsov.bikeService.models.showable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import ru.kuznetsov.bikeService.models.Showable;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
-
-import javax.validation.constraints.NotEmpty;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 @Entity
 @Table(name = "documents")
-public class Document extends AbstractEntity implements Showable {
+public class Document extends AbstractShowableEntity implements Showable {
 
     //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    protected Long id;
-    @NotEmpty(message = "Fill this field!")
-    @Column(name = "name")
-    protected String name;
-    @Column(name = "description")
-    protected String description;
+//    @NotEmpty(message = "Fill this field!")
+//    @Column(name = "name")
+//    protected String name;
+//    @Column(name = "description")
+//    protected String description;
     @Column(name = "link")
     protected String link;
-    @Column(name = "picture")
-    protected Long picture;
+//    @Column(name = "picture")
+//    protected Long picture;
     @Transient
     protected String value;
 
@@ -48,9 +45,13 @@ public class Document extends AbstractEntity implements Showable {
 //        this.id = id;
 //    }
 
-    public String getName() {
-        return name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     @Override
     public String getValue() {
@@ -61,17 +62,14 @@ public class Document extends AbstractEntity implements Showable {
         this.value = value;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
 
     public String getLink() {
         return link;
@@ -81,11 +79,11 @@ public class Document extends AbstractEntity implements Showable {
         this.link = link;
     }
 
-    public Long getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Long picture) {
-        this.picture = picture;
-    }
+//    public Long getPicture() {
+//        return picture;
+//    }
+//
+//    public void setPicture(Long picture) {
+//        this.picture = picture;
+//    }
 }

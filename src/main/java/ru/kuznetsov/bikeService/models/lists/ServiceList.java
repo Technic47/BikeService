@@ -1,6 +1,6 @@
 package ru.kuznetsov.bikeService.models.lists;
 
-import ru.kuznetsov.bikeService.models.Showable;
+import ru.kuznetsov.bikeService.models.showable.Showable;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface CommonService<E extends AbstractEntity> {
+public interface CommonService<E extends AbstractShowableEntity> {
     public void save(E entity);
 
     public E show(Long id);

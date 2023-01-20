@@ -2,7 +2,7 @@ package ru.kuznetsov.bikeService.controllers.serviceable;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.kuznetsov.bikeService.models.bike.Bike;
+import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.services.BikeService;
 
 @Controller

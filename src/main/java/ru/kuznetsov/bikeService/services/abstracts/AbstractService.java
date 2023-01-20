@@ -1,14 +1,14 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class AbstractService<E extends AbstractEntity, R extends CommonRepository<E>>
+public abstract class AbstractService<E extends AbstractShowableEntity, R extends CommonRepository<E>>
         implements CommonService<E> {
     private final R repository;
 
