@@ -3,16 +3,18 @@ package ru.kuznetsov.bikeService.controllers.pictures;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.DAO.DAO;
-import ru.kuznetsov.bikeService.DAO.DAORepository;
 import ru.kuznetsov.bikeService.models.Picture;
+import ru.kuznetsov.bikeService.services.PictureService;
 
 @Controller
 @RequestMapping("/pictures")
 public class PicturesController {
-    protected DAO<Picture> pictureDao;
+    protected PictureService pictureDao;
 
     @GetMapping
     public String index(Model model) {
@@ -36,8 +38,7 @@ public class PicturesController {
     }
 
     @Autowired
-    public void setPictureDAO(DAO<Picture> pictureDao) {
+    public void setPictureDAO(PictureService pictureDao) {
         this.pictureDao = pictureDao;
-        this.pictureDao.setCurrentClass(Picture.class);
     }
 }
