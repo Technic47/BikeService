@@ -5,10 +5,21 @@
     <title>Create fastener</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/fasteners}" th:object="${newObject}">
+
+<form enctype="multipart/form-data" th:action="@{/fasteners}" th:method="POST" th:object="${newObject}">
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    <br/>
+
+    <label for="description">Enter description:</label>
+    <input id="description" th:field="*{description}" type="text"/>
+    <div style="color:red" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></div>
+    <br/>
+
+    <label for="link">Enter link:</label>
+    <input id="link" th:field="*{link}" type="text"/>
+    <div style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></div>
     <br/>
 
     <label for="specs">Enter specs:</label>
@@ -16,9 +27,8 @@
     <div style="color:red" th:if="${#fields.hasErrors('specs')}" th:errors="*{specs}"></div>
     <br/>
 
-    <label for="description">Enter description:</label>
-    <input type="text" th:field="*{description}" id="description"/>
-    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    <label for="picture">Upload new picture:</label>
+    <input accept="image/*" id="picture" name="newImage" type="file"/>
     <br/>
 
     <br/>

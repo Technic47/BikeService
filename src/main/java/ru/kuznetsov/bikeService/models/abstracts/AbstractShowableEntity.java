@@ -6,7 +6,7 @@ import ru.kuznetsov.bikeService.models.showable.Showable;
 import javax.validation.constraints.NotEmpty;
 
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractShowableEntity implements Showable {
 
     protected Long id;
@@ -26,7 +26,7 @@ public abstract class AbstractShowableEntity implements Showable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }

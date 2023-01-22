@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "parts")
-public class Part extends AbstractServiceableEntity implements Serviceable {
+public class Part extends AbstractServiceableEntity {
+
     public Part() {
         this.converter = new Gson();
         this.serviceList = this.converter.toJson(new ServiceList());

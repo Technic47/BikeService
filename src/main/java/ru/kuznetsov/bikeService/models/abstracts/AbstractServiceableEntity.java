@@ -2,7 +2,9 @@ package ru.kuznetsov.bikeService.models.abstracts;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
@@ -12,16 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractServiceableEntity extends AbstractUsableEntity{
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class AbstractServiceableEntity extends AbstractUsableEntity implements Serviceable{
     @Column(name = "partNumber")
     protected String partNumber;
+
     @Column(name = "serviceList")
+
     protected String serviceList;
+
     @Column(name = "partList")
     protected String partList;
     @Transient
     protected Gson converter;
+
+    public AbstractServiceableEntity() {
+    }
 
     public String getPartNumber() {
         return partNumber;
@@ -68,8 +76,7 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity{
     }
 
     public List<Long> returnPartListObject() {
-        Type type = new TypeToken<ArrayList<Long>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<Long>>() {}.getType();
         return converter.fromJson(this.partList, type);
     }
 

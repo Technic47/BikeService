@@ -9,11 +9,13 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "tools")
-public class Tool extends AbstractUsableEntity implements Usable {
+public class Tool extends AbstractUsableEntity {
     @NotEmpty(message = "Fill this field!")
     @Column(name = "size")
     private String size;
 
+    public Tool() {
+    }
 
     public String getSize() {
         return size;

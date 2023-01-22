@@ -11,6 +11,8 @@ public class Manufacturer extends AbstractShowableEntity implements Showable {
     @Column(name = "country")
     private String country;
 
+    public Manufacturer() {
+    }
 
     public void setCountry(String country) {
         this.country = country;
