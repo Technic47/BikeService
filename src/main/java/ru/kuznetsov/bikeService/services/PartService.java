@@ -6,8 +6,8 @@ import ru.kuznetsov.bikeService.repositories.PartRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractServiceableService;
 
 @Service
-public class PartShowableService extends AbstractServiceableService<Part, PartRepository> {
-    public PartShowableService(PartRepository repository) {
+public class PartService extends AbstractServiceableService<Part, PartRepository> {
+    public PartService(PartRepository repository) {
         super(repository);
     }
 }

@@ -6,9 +6,9 @@ import ru.kuznetsov.bikeService.repositories.DocumentRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractShowableService;
 
 @Service
-public class DocumentShowableService extends AbstractShowableService<Document, DocumentRepository> {
+public class DocumentService extends AbstractShowableService<Document, DocumentRepository> {
 
-    public DocumentShowableService(DocumentRepository repository) {
+    public DocumentService(DocumentRepository repository) {
         super(repository);
     }
 }

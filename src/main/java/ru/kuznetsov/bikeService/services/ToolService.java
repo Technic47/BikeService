@@ -6,8 +6,8 @@ import ru.kuznetsov.bikeService.repositories.ToolRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractUsableService;
 
 @Service
-public class ToolShowableService extends AbstractUsableService<Tool, ToolRepository> {
-    public ToolShowableService(ToolRepository repository) {
+public class ToolService extends AbstractUsableService<Tool, ToolRepository> {
+    public ToolService(ToolRepository repository) {
         super(repository);
     }
 }

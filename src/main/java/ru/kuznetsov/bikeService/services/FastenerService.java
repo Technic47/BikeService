@@ -6,9 +6,9 @@ import ru.kuznetsov.bikeService.repositories.FastenerRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractShowableService;
 
 @Service
-public class FastenerShowableService extends AbstractShowableService<Fastener, FastenerRepository> {
+public class FastenerService extends AbstractShowableService<Fastener, FastenerRepository> {
 
-    public FastenerShowableService(FastenerRepository repository) {
+    public FastenerService(FastenerRepository repository) {
         super(repository);
     }
 }

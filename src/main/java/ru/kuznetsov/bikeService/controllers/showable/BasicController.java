@@ -7,12 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
+import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 import javax.validation.Valid;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @Scope("prototype")
 public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonService<T>> {
     protected final CommonService<T> dao;
-    protected DAO<Picture> pictureDao;
+    protected PictureService pictureDao;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -83,9 +83,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork(new Picture());
             picWorker.managePicture(file);
-            pictureDao.save(picWorker.getPicture());
-            item.setPicture(pictureDao.searchByName(file.getOriginalFilename()));
-// todo need to get id of picture
+            item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
 
         }
         dao.save(item);
@@ -118,8 +116,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     }
 
     @Autowired
-    public void setPictureDAO(DAO<Picture> pictureDao) {
+    public void setPictureDAO(PictureService pictureDao) {
         this.pictureDao = pictureDao;
-        this.pictureDao.setCurrentClass(Picture.class);
     }
 }
