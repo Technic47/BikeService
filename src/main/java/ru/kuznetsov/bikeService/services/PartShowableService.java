@@ -3,11 +3,11 @@ package ru.kuznetsov.bikeService.services;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.repositories.PartRepository;
-import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
+import ru.kuznetsov.bikeService.services.abstracts.AbstractServiceableService;
 
 @Service
-public class PartService extends AbstractService<Part, PartRepository> {
-    public PartService(PartRepository repository) {
+public class PartShowableService extends AbstractServiceableService<Part, PartRepository> {
+    public PartShowableService(PartRepository repository) {
         super(repository);
     }
 }

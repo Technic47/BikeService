@@ -1,12 +1,13 @@
 package ru.kuznetsov.bikeService.models.abstracts;
 
 import jakarta.persistence.*;
+import ru.kuznetsov.bikeService.models.showable.Showable;
 
 import javax.validation.constraints.NotEmpty;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractShowableEntity {
+public abstract class AbstractShowableEntity implements Showable {
 
     protected Long id;
     @NotEmpty(message = "Fill this field!")
@@ -16,6 +17,8 @@ public abstract class AbstractShowableEntity {
     protected String description;
     @Column(name = "picture")
     protected Long picture;
+    @Column(name = "link")
+    protected String link;
     @Transient
     protected String value;
 
@@ -54,6 +57,14 @@ public abstract class AbstractShowableEntity {
 
     public void setPicture(Long picture) {
         this.picture = picture;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getValue() {

@@ -1,19 +1,16 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public abstract class AbstractService<E extends AbstractShowableEntity, R extends CommonRepository<E>>
+public abstract class AbstractUsableService<E extends AbstractUsableEntity, R extends CommonRepository<E>>
         implements CommonService<E> {
     private final R repository;
 
-    @Autowired
-    public AbstractService(R repository) {
+    public AbstractUsableService(R repository) {
         this.repository = repository;
     }
 
@@ -29,8 +26,6 @@ public abstract class AbstractService<E extends AbstractShowableEntity, R extend
 
     @Override
     public void update(Long id, E updateItem) {
-        E toUpdate = this.show(id);
-//        toUpdate.setLink(updateItem.getLink());
 
     }
 
