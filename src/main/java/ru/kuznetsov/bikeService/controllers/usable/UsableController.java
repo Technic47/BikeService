@@ -6,29 +6,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.showable.BasicController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.usable.Usable;
+import ru.kuznetsov.bikeService.services.ManufacturerService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 @Component
 @Scope("prototype")
 public class UsableController<T extends AbstractShowableEntity & Usable, S extends CommonService<T>>
         extends BasicController<T, S> {
-    protected DAO<Manufacturer> daoManufacturer;
+    protected ManufacturerService daoManufacturer;
 
     public UsableController(S dao) {
         super(dao);
     }
 
-
-    @Autowired
-    public void setDaoManufacturer(DAO<Manufacturer> daoManufacturer) {
-        this.daoManufacturer = daoManufacturer;
-        this.daoManufacturer.setCurrentClass(Manufacturer.class);
-    }
 
     @Override
     @GetMapping("/{id}")
@@ -52,5 +45,10 @@ public class UsableController<T extends AbstractShowableEntity & Usable, S exten
     public String newItem(Model model) {
         model.addAttribute("manufacturers", daoManufacturer.index());
         return super.newItem(model);
+    }
+
+    @Autowired
+    public void setDaoManufacturer(ManufacturerService daoManufacturer) {
+        this.daoManufacturer = daoManufacturer;
     }
 }

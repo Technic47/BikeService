@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.kuznetsov.bikeService.DAO.DAO;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
@@ -19,6 +18,7 @@ import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
+import ru.kuznetsov.bikeService.services.*;
 import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 import javax.validation.Valid;
@@ -29,11 +29,11 @@ import java.util.List;
 @Scope("prototype")
 public class ServiceableController<T extends AbstractShowableEntity & Serviceable, S extends CommonService<T>>
         extends UsableController<T, S> {
-    protected DAO<Document> documentDAO;
-    protected DAO<Fastener> fastenerDAO;
-    protected DAO<Consumable> consumableDAO;
-    protected DAO<Tool> toolDAO;
-    private DAO<Part> partDAO;
+    protected DocumentService documentDAO;
+    protected FastenerService fastenerDAO;
+    protected ConsumableService consumableDAO;
+    protected ToolService toolDAO;
+    private PartService partDAO;
     protected ServiceList cacheList;
     private List<Long> cachePartList;
 
@@ -189,33 +189,29 @@ public class ServiceableController<T extends AbstractShowableEntity & Serviceabl
         return super.newItem(model);
     }
 
-    @Autowired
-    public void setPartDAO(DAO<Part> partDAO) {
-        this.partDAO = partDAO;
-        this.partDAO.setCurrentClass(Part.class);
-    }
 
     @Autowired
-    public void setDocumentDAO(DAO<Document> documentDAO) {
+    public void setDocumentDAO(DocumentService documentDAO) {
         this.documentDAO = documentDAO;
-        this.documentDAO.setCurrentClass(Document.class);
     }
 
     @Autowired
-    public void setFastenerDAO(DAO<Fastener> fastenerDAO) {
+    public void setFastenerDAO(FastenerService fastenerDAO) {
         this.fastenerDAO = fastenerDAO;
-        this.fastenerDAO.setCurrentClass(Fastener.class);
     }
 
     @Autowired
-    public void setConsumableDAO(DAO<Consumable> consumableDAO) {
+    public void setConsumableDAO(ConsumableService consumableDAO) {
         this.consumableDAO = consumableDAO;
-        this.consumableDAO.setCurrentClass(Consumable.class);
     }
 
     @Autowired
-    public void setToolDAO(DAO<Tool> toolDAO) {
+    public void setToolDAO(ToolService toolDAO) {
         this.toolDAO = toolDAO;
-        this.toolDAO.setCurrentClass(Tool.class);
+    }
+
+    @Autowired
+    public void setPartDAO(PartService partDAO) {
+        this.partDAO = partDAO;
     }
 }
