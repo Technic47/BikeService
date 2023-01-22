@@ -30,6 +30,6 @@ public class Consumable extends AbstractUsableEntity implements Usable {
 
     @Override
     public void setValue(String value) {
-        this.value = value;
+        this.volume = value;
     }
 }

@@ -25,6 +25,6 @@ public class Part extends AbstractServiceableEntity implements Serviceable {
 
     @Override
     public void setValue(String value) {
-        this.value = value;
+        this.partNumber = value;
     }
 }

@@ -26,7 +26,7 @@ public abstract class AbstractShowableEntity implements Showable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long getId() {
         return id;
     }

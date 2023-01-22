@@ -23,7 +23,6 @@ public class Tool extends AbstractUsableEntity implements Usable {
         this.size = size;
     }
 
-
     @Override
     public String getValue() {
         return this.size;
@@ -31,6 +30,6 @@ public class Tool extends AbstractUsableEntity implements Usable {
 
     @Override
     public void setValue(String value) {
-        this.value = value;
+        this.size = value;
     }
 }

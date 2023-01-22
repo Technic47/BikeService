@@ -26,14 +26,18 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity, 
     }
 
     @Override
-    public void update(Long id, E updateItem) {
-        E toUpdate = this.show(id);
-        toUpdate.setName(updateItem.getName());
-        toUpdate.setDescription(updateItem.getDescription());
-        toUpdate.setPicture(updateItem.getPicture());
-        toUpdate.setLink(updateItem.getLink());
-        toUpdate.setValue(updateItem.getValue());
-        this.save(toUpdate);
+    public void update(Long id, E newItem) {
+        E torepo = this.show(id);
+        this.showableToRepo(torepo, newItem);
+    }
+
+    public void showableToRepo(E toRepo, E newItem) {
+        toRepo.setName(newItem.getName());
+        toRepo.setDescription(newItem.getDescription());
+        toRepo.setPicture(newItem.getPicture());
+        toRepo.setLink(newItem.getLink());
+        toRepo.setValue(newItem.getValue());
+        this.save(toRepo);
     }
 
     @Override

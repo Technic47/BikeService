@@ -3,41 +3,23 @@ package ru.kuznetsov.bikeService.services.abstracts;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class AbstractServiceableService<E extends AbstractServiceableEntity, R extends CommonRepository<E>>
-        implements CommonService<E> {
-
-    private final R repository;
+        extends AbstractUsableService<E, R> {
 
     public AbstractServiceableService(R repository) {
-        this.repository = repository;
+        super(repository);
     }
 
     @Override
-    public void save(E entity) {
-        repository.save(entity);
+    public void update(Long id, E newItem) {
+        E toRepo = this.show(id);
+        this.serviceableToRepo(toRepo, newItem);
     }
 
-    @Override
-    public E show(Long id) {
-        return repository.findById(id).get();
-    }
-
-    @Override
-    public void update(Long id, E updateItem) {
-        E toUpdate = this.show(id);
-
-    }
-
-    @Override
-    public List<E> index() {
-        return new ArrayList<>(repository.findAll());
-    }
-
-    @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public void serviceableToRepo(E toRepo, E newItem) {
+        toRepo.setPartNumber(newItem.getPartNumber());
+        toRepo.setServiceList(newItem.getServiceList());
+        toRepo.setPartList(newItem.getPartList());
+        this.usableToRepo(toRepo, newItem);
     }
 }
