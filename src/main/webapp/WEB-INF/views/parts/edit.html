@@ -51,17 +51,17 @@
         </select>
     </div>
     <br/>
-    <label for="serviceList">Enter serviceList:</label>
+    <label for="serviceList">ServiceList:</label>
     <input type="text" th:field="*{serviceList}" id="serviceList"/>
     <br/>
-    <label for="partList">Enter partList:</label>
+    <label for="partList">PartList:</label>
     <input type="text" th:field="*{partList}" id="partList"/>
     <br/>
     <br/>
 
-    <label for="parts">Choose part to add:</label>
+    <label for="allParts">Choose part to add:</label>
     <div th:object="${allParts}">
-        <select id="parts" th:name="partId">
+        <select id="allParts" th:name="partId">
             <option th:each="item : ${allParts}"
                     th:if="!${item.getId() == part.getId()}"
                     th:value="${item.getId()}"
@@ -69,7 +69,18 @@
             </option>
         </select>
         <input th:type="submit" th:name="action" th:value="addPart"/>
-        <input th:type="submit" th:name="action" th:value="delPart"/>
+    </div>
+    <br/>
+
+    <label for="parts">Choose part to delete:</label>
+    <div th:object="${parts}">
+        <select id="parts" th:name="partId">
+            <option th:each="item : ${parts}"
+                    th:text="${item.getName()}"
+                    th:value="${item.getId()}">
+            </option>
+        </select>
+        <input th:name="action" th:type="submit" th:value="delPart"/>
     </div>
     <br/>
 
@@ -142,7 +153,10 @@
 
     <tbody>
     <tr th:each="part : ${parts}">
-        <td th:text="${part.getName()} + ' ' + ${part.getModel()}"></td>
+        <td>
+            <a th:href="@{/parts/{id}(id=${part.getId()})}"
+               th:text="${part.getName()} + ' ' + ${part.getModel()}"></a>
+        </td>
     </tr>
     </tbody>
 </table>

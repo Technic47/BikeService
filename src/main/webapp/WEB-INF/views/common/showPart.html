@@ -41,7 +41,10 @@
 
     <tbody>
     <tr th:each="part : ${parts}">
-        <td th:text="${part.getName()} + ${part.getModel()}"></td>
+        <td>
+            <a th:href="@{/parts/{id}(id=${part.getId()})}"
+               th:text="${part.getName()} + ' ' + ${part.getModel()}"></a>
+        </td>
     </tr>
     </tbody>
 </table>

@@ -92,7 +92,7 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
 
     public void delFromPartList(Serviceable item) {
         List<Long> currentPartList = this.returnPartListObject();
-        currentPartList.remove(item.getId().intValue());
+        currentPartList.remove(item.getId());
         this.updatePartListObject(currentPartList);
     }
 }
