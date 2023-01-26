@@ -26,7 +26,6 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
 
     @Override
     public void update(Long id, E updateItem) {
-
     }
 
     @Override
