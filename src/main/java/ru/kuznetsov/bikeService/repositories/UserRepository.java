@@ -6,5 +6,5 @@ import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 @Repository
 public interface UserRepository extends CommonRepository<UserModel> {
-    UserModel findByUsername(String Username);
+    UserModel findByUsername(String userName);
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Objects;
 
 @MappedSuperclass
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -73,5 +74,18 @@ public abstract class AbstractShowableEntity implements Showable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractShowableEntity)) return false;
+        AbstractShowableEntity that = (AbstractShowableEntity) o;
+        return id.equals(that.id) && name.equals(that.name) && description.equals(that.description) && Objects.equals(picture, that.picture) && Objects.equals(link, that.link) && Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, picture, link, value);
     }
 }

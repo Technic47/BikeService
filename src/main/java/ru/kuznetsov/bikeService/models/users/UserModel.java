@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -17,8 +18,8 @@ public class UserModel implements UserDetails {
     private Long id;
     //    private String email;
 //    private String phone;
-    @Column(name = "username", unique = true)
-    private String Username;
+    @Column(name = "name", unique = true)
+    private String username;
     @Column(name = "active")
     private boolean active;
     //    private int avatar;
@@ -40,11 +41,11 @@ public class UserModel implements UserDetails {
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
-    public void setUsername(String username) {
-        this.Username = username;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public boolean isActive() {
@@ -96,5 +97,18 @@ public class UserModel implements UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserModel userModel = (UserModel) o;
+        return active == userModel.active && id.equals(userModel.id) && username.equals(userModel.username) && status.equals(userModel.status) && password.equals(userModel.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, active, status, password);
     }
 }

@@ -13,9 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
 
-
+@Component
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
@@ -32,14 +33,17 @@ public class SecurityConfiguration {
     }
 
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .addFilter()
-                .csrf().disable()
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/home").permitAll();
+                    auth.anyRequest().authenticated();
+                })
+                .formLogin(Customizer.withDefaults())
+//                .csrf().disable()
+//                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+//                .httpBasic(Customizer.withDefaults())
         ;
         return http.build();
     }

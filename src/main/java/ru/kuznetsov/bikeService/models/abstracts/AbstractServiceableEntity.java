@@ -12,10 +12,10 @@ import ru.kuznetsov.bikeService.models.showable.Showable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @MappedSuperclass
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractServiceableEntity extends AbstractUsableEntity implements Serviceable{
+public abstract class AbstractServiceableEntity extends AbstractUsableEntity implements Serviceable {
     @Column(name = "partNumber")
     protected String partNumber;
 
@@ -76,7 +76,8 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
     }
 
     public List<Long> returnPartListObject() {
-        Type type = new TypeToken<ArrayList<Long>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Long>>() {
+        }.getType();
         return converter.fromJson(this.partList, type);
     }
 
@@ -94,5 +95,19 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         List<Long> currentPartList = this.returnPartListObject();
         currentPartList.remove(item.getId());
         this.updatePartListObject(currentPartList);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractServiceableEntity)) return false;
+        if (!super.equals(o)) return false;
+        AbstractServiceableEntity that = (AbstractServiceableEntity) o;
+        return Objects.equals(partNumber, that.partNumber) && serviceList.equals(that.serviceList) && partList.equals(that.partList) && Objects.equals(converter, that.converter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), partNumber, serviceList, partList, converter);
     }
 }

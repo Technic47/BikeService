@@ -10,6 +10,11 @@ public class SiteController {
 
     @GetMapping("/home")
     public String home(){
-        return "/home";
+        return "title";
+    }
+
+    @GetMapping("/welcome")
+    public String welcome(){
+        return "home";
     }
 }
