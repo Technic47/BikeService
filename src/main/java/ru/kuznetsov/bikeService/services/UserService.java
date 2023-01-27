@@ -23,6 +23,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         userModel.setActive(true);
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
         userModel.getStatus().add(UserRole.USER);
+        repository.save(userModel);
         return true;
     }
 }
