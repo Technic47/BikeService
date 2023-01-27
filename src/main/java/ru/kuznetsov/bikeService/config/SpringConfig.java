@@ -125,6 +125,6 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addViewController("/home").setViewName("title");
         registry.addViewController("/").setViewName("title");
         registry.addViewController("/hello").setViewName("hello");
-        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/login").setViewName("registration");
     }
 }

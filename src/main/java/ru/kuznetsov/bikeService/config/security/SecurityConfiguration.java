@@ -37,8 +37,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/home").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/", "/home", "/home/**").permitAll();
+                    auth.requestMatchers("/resources/**").authenticated();
                 })
                 .formLogin(Customizer.withDefaults())
 //                .csrf().disable()
