@@ -24,9 +24,19 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "title";
+    }
+
     @GetMapping("/")
-    public String index() {
+    public String root() {
         return "home";
+    }
+
+    @GetMapping("/title")
+    public String index() {
+        return "title";
     }
 
     @GetMapping("/registration")
@@ -37,7 +47,7 @@ public class HomeController {
     @PostMapping("/registration")
     public String createUser(UserModel user, Model model) {
         if (!userService.createUser(user)) {
-            model.addAttribute("messege", "Current user name: " + user.getUsername() + " is occupied");
+            model.addAttribute("message", "Current user name '" + user.getUsername() + "' is occupied");
         return "/registration";
         }
         userService.createUser(user);

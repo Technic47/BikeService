@@ -4,11 +4,11 @@
     <title>Registration form</title>
 </head>
 <body>
-<div th:if="${messege}"
-     th:text="${messege}">
+<div th:if="${message}"
+     th:text="${message}">
     Invalid username and password.
 </div>
-<div th:if="${param.logout}">
+<div th:if="${logout}">
     You have been logged out.
 </div>
 <form method="post" th:action="@{/registration}">

@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.controllers.showable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,6 +52,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String show(@PathVariable("id") Long id, Model model) {
         Showable currentObject = dao.show(id);
         model.addAttribute("object", currentObject);
