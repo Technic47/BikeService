@@ -18,11 +18,9 @@ import java.util.Objects;
 public abstract class AbstractServiceableEntity extends AbstractUsableEntity implements Serviceable {
     @Column(name = "partNumber")
     protected String partNumber;
-
     @Column(name = "serviceList")
 
     protected String serviceList;
-
     @Column(name = "partList")
     protected String partList;
     @Transient

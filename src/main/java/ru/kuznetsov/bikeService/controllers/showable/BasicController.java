@@ -3,6 +3,8 @@ package ru.kuznetsov.bikeService.controllers.showable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +15,9 @@ import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PictureService;
+import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonService;
 
 import javax.validation.Valid;
@@ -22,14 +26,22 @@ import javax.validation.Valid;
 @Scope("prototype")
 public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonService<T>> {
     protected final CommonService<T> dao;
+    protected UserService userService;
     protected PictureService pictureDao;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
+    protected UserModel user;
 
 
     public BasicController(S dao) {
         this.dao = dao;
+    }
+
+    @Autowired
+    public void setUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        this.user = userService.findByName(authentication.getName());
     }
 
     public void setCurrentClass(Class<T> currentClass) {
@@ -43,7 +55,9 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         }
     }
 
+
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public String index(Model model) {
         Iterable<T> objects = dao.index();
         model.addAttribute("objects", objects);
@@ -52,7 +66,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public String show(@PathVariable("id") Long id, Model model) {
         Showable currentObject = dao.show(id);
         model.addAttribute("object", currentObject);
@@ -120,5 +133,10 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     @Autowired
     public void setPictureDAO(PictureService pictureDao) {
         this.pictureDao = pictureDao;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

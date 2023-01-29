@@ -8,4 +8,6 @@ public interface Showable {
     String getDescription();
     Long getPicture();
     void setPicture(Long id);
+    Long getCreator();
+    void setCreator(Long id);
 }

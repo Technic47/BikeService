@@ -1,13 +1,11 @@
 package ru.kuznetsov.bikeService.models.users;
 
+import com.google.gson.Gson;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -29,8 +27,18 @@ public class UserModel implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> status = new HashSet<>();
+//    private Map<String, List<Long>> createdItems;
     @Column(name = "password", length = 1000)
     private String password;
+    @Transient
+    private Gson converter;
+    @Column(name = "createdItems")
+    private String createdItems;
+
+    public UserModel() {
+        this.converter = new Gson();
+        this.createdItems = this.converter.toJson(new HashMap<String, List<Long>>());
+    }
 
     public Long getId() {
         return id;

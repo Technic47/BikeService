@@ -44,15 +44,8 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    //    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails pavel = User.builder()
-//                .username("pavel")
-//                .password(passwordEncoder().encode("1999"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(pavel);
-//    }
+
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {

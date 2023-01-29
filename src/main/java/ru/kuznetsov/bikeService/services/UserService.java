@@ -26,4 +26,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         repository.save(userModel);
         return true;
     }
+
+    public UserModel findByName(String name) {
+        return repository.findByUsername(name);
+    }
 }

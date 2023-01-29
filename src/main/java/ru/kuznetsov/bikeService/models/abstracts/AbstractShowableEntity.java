@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @MappedSuperclass
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractShowableEntity implements Showable {
 
     protected Long id;
@@ -22,6 +21,8 @@ public abstract class AbstractShowableEntity implements Showable {
     protected String link;
     @Transient
     protected String value;
+    @Column(name = "creator")
+    protected Long creator;
 
     public AbstractShowableEntity() {
     }
@@ -74,6 +75,14 @@ public abstract class AbstractShowableEntity implements Showable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Long creator) {
+        this.creator = creator;
     }
 
     @Override
