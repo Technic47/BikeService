@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.config.security;
+package ru.kuznetsov.bikeService.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

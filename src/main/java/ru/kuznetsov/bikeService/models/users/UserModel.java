@@ -1,14 +1,12 @@
 package ru.kuznetsov.bikeService.models.users;
 
-import com.google.gson.Gson;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kuznetsov.bikeService.models.lists.UserEntity;
+import ru.kuznetsov.bikeService.models.servicable.Bike;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -17,40 +15,28 @@ public class UserModel implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    //    private String email;
-//    private String phone;
     @Column(name = "name", unique = true)
     private String username;
     @Column(name = "active")
     private boolean active;
-    //    private int avatar;
     @Column(name = "status")
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> status = new HashSet<>();
+    @ElementCollection(targetClass = UserEntity.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_item",
+            joinColumns = @JoinColumn(name = "user_id"))
+    private List<UserEntity> createdItems = new ArrayList<>();
 
-    ///
-//    @Column(name = "createdItems")
-//    @ElementCollection(targetClass = AbstractShowableEntity.class, fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_role",
-//            joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(targetClass = Bike.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_bike",
+            joinColumns = @JoinColumn(name = "user_id"))
+    private List<Long> bikes = new ArrayList<>();
 
-//    private Map<String, List<Long>> createdItems;
-
-    ///
     @Column(name = "password", length = 1000)
     private String password;
-    @Transient
-    private Gson converter;
-//    @Column(name = "createdItems")
-//    private String createdItems;
-
-//    public UserModel() {
-//        this.converter = new Gson();
-//        this.createdItems = this.converter.toJson(new HashMap<String, List<Long>>());
-//    }
 
     public Long getId() {
         return id;
@@ -84,6 +70,21 @@ public class UserModel implements UserDetails {
         this.status = status;
     }
 
+    public List<UserEntity> getCreatedItems() {
+        return createdItems;
+    }
+
+    public void setCreatedItems(List<UserEntity> createdItems) {
+        this.createdItems = createdItems;
+    }
+
+    public List<Long> getBikes() {
+        return bikes;
+    }
+
+    public void setBikes(List<Long> bikes) {
+        this.bikes = bikes;
+    }
 
     public String getPassword() {
         return password;

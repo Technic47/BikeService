@@ -41,7 +41,10 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     @Autowired
     public void setUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        this.user = userService.findByName(authentication.getName());
+        if (!(authentication == null)) {
+            this.user = userService.findByName(authentication.getName());
+        }
+        // todo Find a way to update user
     }
 
     public void setCurrentClass(Class<T> currentClass) {
