@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<h1 th:text="${user}"></h1>
+
 <div th:each="object : ${objects}">
     <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
        th:text="${object.getId()} + ', ' + ${object.getName()}">doc</a>
@@ -16,7 +18,7 @@
 
 <a th:href="@{/{link}/new(link=${category})}">Create new</a>
 
-<form method="get" th:action="@{/home}">
+<form method="get" th:action="@{/title}">
     <input type="submit" value="Home"/>
 </form>
 

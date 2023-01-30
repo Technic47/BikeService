@@ -2,8 +2,8 @@ package ru.kuznetsov.bikeService.repositories;
 
 import org.springframework.stereotype.Repository;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
-import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
+import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
 
 @Repository
-public interface FastenerRepository extends CommonRepository<Fastener> {
+public interface FastenerRepository extends AbstractShowableEntityRepository<Fastener> {
 }

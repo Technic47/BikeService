@@ -1,10 +1,8 @@
 package ru.kuznetsov.bikeService.controllers.showable;
 
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,19 +16,23 @@ import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
-import ru.kuznetsov.bikeService.services.abstracts.CommonService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractShowableEntityService;
 
 import javax.validation.Valid;
 
+import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
+import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
+
 @Component
 @Scope("prototype")
-public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonService<T>> {
-    protected final CommonService<T> dao;
+public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractShowableEntityService<T>> {
+    protected final CommonAbstractShowableEntityService<T> dao;
     protected UserService userService;
     protected PictureService pictureDao;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
+    @Resource(name = "getCurrentUser")
     protected UserModel user;
 
 
@@ -38,14 +40,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         this.dao = dao;
     }
 
-    @Autowired
-    public void setUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication == null)) {
-            this.user = userService.findByName(authentication.getName());
-        }
-        // todo Find a way to update user
-    }
 
     public void setCurrentClass(Class<T> currentClass) {
         this.currentObjectName = currentClass.getSimpleName().toLowerCase();
@@ -60,9 +54,20 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
 
     @GetMapping()
-    @PreAuthorize("hasRole('ADMIN')")
     public String index(Model model) {
-        Iterable<T> objects = dao.index();
+//        if (this.user == null) {
+//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//            this.user = userService.findByName(auth.getName());
+//        }
+//
+        Iterable<T> objects = null;
+        if (user.getStatus().contains(ROLE_USER)) {
+            objects = dao.findByCreator(user.getId());
+        }
+        if (user.getStatus().contains(ROLE_ADMIN)) {
+            objects = dao.index();
+        }
+        model.addAttribute("user", user.getUsername());
         model.addAttribute("objects", objects);
         model.addAttribute("category", category);
         return "/common/index";
@@ -86,7 +91,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         model.addAttribute("properties", dao.getObjectProperties(this.thisObject));
         model.addAttribute("newObject", this.thisObject);
         model.addAttribute("allPictures", pictureDao.index());
-//        model.addAttribute("defaultPicture", pictureDao.show(1L));
         return category + "/new";
     }
 
@@ -104,6 +108,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
 
         }
+        item.setCreator(user.getId());
         dao.save(item);
         return "redirect:/" + category;
     }
@@ -139,7 +144,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     }
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 }

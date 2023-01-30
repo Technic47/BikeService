@@ -1,25 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<a href="documents">Show documents</a>
+
+<h1 th:text="${user}"></h1>
+
+<a href="bikes">My bikes</a>
 <br/>
-<a href="fasteners">Show fasteners</a>
+<a href="parts">My parts</a>
 <br/>
-<a href="manufacturers">Show manufacturers</a>
+
 <br/>
-<a href="tools">Show tools</a>
 <br/>
-<a href="consumables">Show consumables</a>
 <br/>
-<a href="parts">Show parts</a>
+<a href="documents">My documents</a>
 <br/>
-<a href="bikes">Show bikes</a>
+<a href="fasteners">My fasteners</a>
 <br/>
-<a href="pictures">Show pictures</a>
+<a href="manufacturers">My manufacturers</a>
+<br/>
+<a href="tools">My tools</a>
+<br/>
+<a href="consumables">My consumables</a>
+<br/>
+<a href="pictures">My pictures</a>
 <br/>
 </body>
 </html>

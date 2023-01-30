@@ -2,8 +2,8 @@ package ru.kuznetsov.bikeService.repositories;
 
 import org.springframework.stereotype.Repository;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
+import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
 
 @Repository
-public interface ManufacturerRepository extends CommonRepository<Manufacturer> {
+public interface ManufacturerRepository extends AbstractShowableEntityRepository<Manufacturer> {
 }

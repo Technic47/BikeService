@@ -1,12 +1,13 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
+import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
+
+import java.util.List;
 
 
-public abstract class AbstractShowableService<E extends AbstractShowableEntity, R extends CommonRepository<E>> extends AbstractService<E, R>
-        implements CommonService<E> {
-
+public abstract class AbstractShowableService<E extends AbstractShowableEntity, R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R>
+        implements CommonAbstractShowableEntityService<E> {
 
     public AbstractShowableService(R repository) {
         super(repository);
@@ -25,5 +26,9 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity, 
         toRepo.setLink(newItem.getLink());
         toRepo.setValue(newItem.getValue());
         this.save(toRepo);
+    }
+
+    public List<E> findByCreator(Long id) {
+        return repository.findByCreator(id);
     }
 }

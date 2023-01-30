@@ -19,7 +19,7 @@ import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.services.*;
-import ru.kuznetsov.bikeService.services.abstracts.CommonService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractShowableEntityService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
-public class ServiceableController<T extends AbstractShowableEntity & Serviceable, S extends CommonService<T>>
+public class ServiceableController<T extends AbstractShowableEntity & Serviceable, S extends CommonAbstractShowableEntityService<T>>
         extends UsableController<T, S> {
     protected DocumentService documentDAO;
     protected FastenerService fastenerDAO;

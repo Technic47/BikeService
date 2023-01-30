@@ -1,9 +1,9 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
-import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
+import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
 
-public abstract class AbstractServiceableService<E extends AbstractServiceableEntity, R extends CommonRepository<E>>
+public abstract class AbstractServiceableService<E extends AbstractServiceableEntity, R extends AbstractShowableEntityRepository<E>>
         extends AbstractUsableService<E, R> {
 
     public AbstractServiceableService(R repository) {
