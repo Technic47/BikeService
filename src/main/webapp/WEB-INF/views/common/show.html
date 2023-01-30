@@ -22,7 +22,7 @@
 
 <a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
+<form th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}" th:method="POST">
     <label>
         <input th:type="submit" value="Delete">
     </label>

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/tools/{id}(id=${tool.getId()})}" th:object="${tool}">
+<form th:action="@{/tools/{id}/edit(id=${tool.getId()})}" th:method="POST" th:object="${tool}">
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>

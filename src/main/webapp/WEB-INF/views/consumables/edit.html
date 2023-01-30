@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/consumables/{id}(id=${consumable.getId()})}" th:object="${consumable}">
+<form th:action="@{/consumables/{id}/edit(id=${consumable.getId()})}" th:method="POST" th:object="${consumable}">
     <label for="name">Enter name:</label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
@@ -40,7 +40,7 @@
     <div th:object="${allPictures}">
         <select id="pictures" name="picture">
             <option selected th:value="${picture.getId()}"
-                    th:text="${picture.getFileName()}"></option>
+                    th:text="${picture.getName()}"></option>
             <option th:each="item : ${allPictures}"
                     th:value="${item.getId()}"
                     th:text="${item.getFileName()}">

@@ -5,11 +5,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -103,7 +107,9 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
         }
         item.setCreator(user.getId());
-        dao.save(item);
+//        dao.save(item);
+        userService.addCreatedItem(user, new UserEntity(thisObject.getClass().getSimpleName(), dao.save(item).getId()));
+
         return "redirect:/" + category;
     }
 
@@ -116,7 +122,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         return category + "/edit";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}/edit")
     public String update(@Valid T item, BindingResult bindingResult,
                          @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
@@ -126,7 +132,8 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         return "redirect:/" + category;
     }
 
-    @DeleteMapping("/{id}")
+//    @DeleteMapping("/{id}")
+    @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id) {
         dao.delete(id);
         return "redirect:/" + category;
@@ -141,8 +148,4 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-    //    @Autowired
-//    public void setUser(UserModel user) {
-//        this.user = user;
-//    }
 }

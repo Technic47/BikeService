@@ -10,6 +10,14 @@ public class UserEntity {
     @Column(name = "itemId")
     private Long id;
 
+    public UserEntity(String type, Long id) {
+        this.type = type;
+        this.id = id;
+    }
+
+    public UserEntity() {
+    }
+
     public String getType() {
         return type;
     }

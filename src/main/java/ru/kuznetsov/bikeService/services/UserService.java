@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
@@ -25,6 +26,11 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         userModel.getStatus().add(UserRole.ROLE_USER);
         repository.save(userModel);
         return true;
+    }
+
+    public void addCreatedItem(UserModel user, UserEntity entity){
+        user.getCreatedItems().add(entity);
+        repository.save(user);
     }
 
     public UserModel findByName(String name) {

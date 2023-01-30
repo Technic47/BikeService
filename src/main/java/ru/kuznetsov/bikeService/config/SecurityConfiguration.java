@@ -45,16 +45,11 @@ public class SecurityConfiguration {
     }
 
 
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder)
         ;
-//                .withDefaultSchema()
-//                .withUser("user").password(passwordEncoder().encode("password")).roles("USER")
-//                .and()
-//                .withUser("admin").password(passwordEncoder().encode("password")).roles("USER", "ADMIN");
     }
 }
