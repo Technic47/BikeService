@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.controllers.showable;
 
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
-    @Resource(name = "getCurrentUser")
     protected UserModel user;
 
 
@@ -56,7 +54,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
     @GetMapping()
     public String index(Principal principal, Model model) {
-
         this.user = userService.findByName(principal.getName());
         Iterable<T> objects = null;
         if (user.getStatus().contains(ROLE_USER)) {
@@ -104,7 +101,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             PictureWork picWorker = new PictureWork(new Picture());
             picWorker.managePicture(file);
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
-
         }
         item.setCreator(user.getId());
         dao.save(item);
