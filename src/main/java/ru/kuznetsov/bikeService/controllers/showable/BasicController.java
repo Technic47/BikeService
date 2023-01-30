@@ -19,6 +19,7 @@ import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractShowableEntityService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
@@ -54,12 +55,9 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
 
     @GetMapping()
-    public String index(Model model) {
-//        if (this.user == null) {
-//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//            this.user = userService.findByName(auth.getName());
-//        }
-//
+    public String index(Principal principal, Model model) {
+
+        this.user = userService.findByName(principal.getName());
         Iterable<T> objects = null;
         if (user.getStatus().contains(ROLE_USER)) {
             objects = dao.findByCreator(user.getId());
@@ -144,7 +142,11 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     }
 
     @Autowired
-    public void setUser(UserModel user) {
-        this.user = user;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
+    //    @Autowired
+//    public void setUser(UserModel user) {
+//        this.user = user;
+//    }
 }
