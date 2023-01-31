@@ -132,9 +132,9 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         return "redirect:/" + category;
     }
 
-//    @DeleteMapping("/{id}")
     @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id) {
+        userService.delCreatedItem(user, new UserEntity(thisObject.getClass().getSimpleName(), id));
         dao.delete(id);
         return "redirect:/" + category;
     }
