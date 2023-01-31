@@ -5,21 +5,37 @@
     <title>Part info</title>
 </head>
 <body>
-<h1 th:text="${object.getName()}"></h1>
+<h1 th:text="${serviceObject.getName()}"></h1>
 
+<div th:text="${manufacture} + ' ' + ${serviceObject.getModel()}"></div>
 
-</div>
+<div th:text="'Part number - ' + ${serviceObject.getValue()}"></div>
 
-<div th:each="pair : ${properties}">
-    <div th:if="${!pair.getKey().contains('manufacture')}">
+<div th:text="${serviceObject.getDescription()}"></div>
 
-        <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p>
+<div th:text="${serviceObject.getLink()}"></div>
 
-    </div>
-</div>
-<p th:text="'Manufacture - ' + ${manufacture}"></p>
+<img th:src="@{/IMG/{fileName}(fileName=${picture})}">
 <br/>
-<form th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">
+<br/>
+
+<div th:if="${userRole} == admin">
+    <div th:text="'ID - ' + ${serviceObject.getId()}"></div>
+    <div th:text="'Name - ' + ${serviceObject.getName()}"></div>
+    <div th:text="'Manufacturer - ' + ${manufacture}"></div>
+    <div th:text="'Model - ' + ${serviceObject.getModel()}"></div>
+    <div th:text="'PartNumber - ' + ${serviceObject.getPartNumber()}"></div>
+    <div th:text="'Description - ' + ${serviceObject.getDescription()}"></div>
+    <div th:text="'Link - ' + ${serviceObject.getLink()}"></div>
+    <div th:text="'Value - ' + ${serviceObject.getValue()}"></div>
+    <div th:text="'Creator`s ID - ' + ${serviceObject.getCreator()}"></div>
+    <div th:text="'Picture`s ID - ' + ${serviceObject.getPicture()}"></div>
+    <div th:text="'Manufacturer`s ID - ' + ${serviceObject.getManufacturer()}"></div>
+    <div th:text="'ServiceList - ' + ${serviceObject.getServiceList()}"></div>
+    <div th:text="'PartList - ' + ${serviceObject.getPartList()}"></div>
+</div>
+
+<form th:action="@{/{link}/{id}/edit(link=${category}, id=${serviceObject.getId()})}">
     <label>
         <input th:type="submit" value="Edit">
     </label>
@@ -27,13 +43,14 @@
 <br/>
 <br/>
 
-<form th:method="DELETE" th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}">
+<form th:action="@{/{link}/{id}(link=${category}, id=${serviceObject.getId()})}" th:method="DELETE">
     <label>
         <input th:type="submit" value="Delete">
     </label>
 </form>
 <br/>
 <br/>
+
 
 <table border="1">
     <thead>
@@ -95,8 +112,6 @@
 
 </table>
 
-<img th:src="@{/IMG/{fileName}(fileName=${picture})}">
-<br/>
 
 </body>
 </html>

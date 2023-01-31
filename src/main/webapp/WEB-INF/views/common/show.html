@@ -5,24 +5,35 @@
     <title>Item Info</title>
 </head>
 <body>
+<h1 th:text="${showableObject.getName()}"></h1>
 
-<div th:each="pair : ${properties}">
-    <div th:if="${!pair.getKey().contains('link')}">
-        <p th:text="${pair.getKey()} + ' - ' + ${pair.getValue()}">VALUE</p></div>
-    <div th:if="${pair.getKey().contains('link')}">
-        <a th:href="@{${pair.getValue()}}"
-           th:text="${pair.getValue()}"></a>
-    </div>
-    <div th:if="${pair.getKey().contains('manufacture')}">
-        <p th:text="'Manufacture -' + ${manufacture}">VALUE</p></div>
-</div>
+<a th:href="@{${showableObject.getLink()}}"></a>
+
+<div th:text="${showableObject.getDescription()}"></div>
 
 <img th:src="@{/IMG/{fileName}(fileName=${picture})}">
 <br/>
 
-<a th:href="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">Edit</a>
+<div th:if="${userRole} == admin">
+    <div th:text="'ID - ' + ${showableObject.getId()}"></div>
+    <div th:text="'Name - ' + ${showableObject.getName()}"></div>
+    <div th:text="'Description - ' + ${showableObject.getDescription()}"></div>
+    <div th:text="'Link - ' + ${showableObject.getLink()}"></div>
+    <div th:text="'Value - ' + ${showableObject.getValue()}"></div>
+    <div th:text="'Creator`s ID - ' + ${showableObject.getCreator()}"></div>
+    <div th:text="'Picture`s ID - ' + ${showableObject.getPicture()}"></div>
+</div>
 
-<form th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}" th:method="POST">
+
+<form th:action="@{/{link}/{id}/edit(link=${category}, id=${showableObject.getId()})}">
+    <label>
+        <input th:type="submit" value="Edit">
+    </label>
+</form>
+<br/>
+<br/>
+
+<form th:action="@{/{link}/{id}(link=${category}, id=${showableObject.getId()})}" th:method="POST">
     <label>
         <input th:type="submit" value="Delete">
     </label>

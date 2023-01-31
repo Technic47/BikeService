@@ -7,8 +7,6 @@ import ru.kuznetsov.bikeService.models.usable.Usable;
 import java.util.List;
 
 public interface Serviceable extends Usable {
-    Long getManufacturer();
-
     String getPartNumber();
 
     ServiceList returnServiceListObject();

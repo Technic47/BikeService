@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Info</title>
+</head>
+<body>
+<h1 th:text="${usableObject.getName()}"></h1>
+
+<a th:href="@{${usableObject.getLink()}}"></a>
+
+<div th:text="${manufacture} + ' ' + ${usableObject.getModel()}"></div>
+
+<div th:text="'Value - ' + ${usableObject.getValue()}"></div>
+
+<div th:text="${usableObject.getDescription()}"></div>
+
+<img th:src="@{/IMG/{fileName}(fileName=${picture})}">
+<br/>
+
+<div th:if="${userRole} == admin">
+    <div th:text="'ID - ' + ${usableObject.getId()}"></div>
+    <div th:text="'Name - ' + ${usableObject.getName()}"></div>
+    <div th:text="'Manufacturer - ' + ${manufacture}"></div>
+    <div th:text="'Model - ' + ${usableObject.getModel()}"></div>
+    <div th:text="'Description - ' + ${usableObject.getDescription()}"></div>
+    <div th:text="'Link - ' + ${usableObject.getLink()}"></div>
+    <div th:text="'Value - ' + ${usableObject.getValue()}"></div>
+    <div th:text="'Creator`s ID - ' + ${usableObject.getCreator()}"></div>
+    <div th:text="'Picture`s ID - ' + ${usableObject.getPicture()}"></div>
+    <div th:text="'Manufacturer`s ID - ' + ${usableObject.getManufacturer()}"></div>
+</div>
+
+
+<form th:action="@{/{link}/{id}/edit(link=${category}, id=${usableObject.getId()})}">
+    <label>
+        <input th:type="submit" value="Edit">
+    </label>
+</form>
+<br/>
+<br/>
+
+<form th:action="@{/{link}/{id}(link=${category}, id=${usableObject.getId()})}" th:method="POST">
+    <label>
+        <input th:type="submit" value="Delete">
+    </label>
+</form>
+
+</body>
+</html>

@@ -16,6 +16,7 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
+import ru.kuznetsov.bikeService.models.usable.Usable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
@@ -80,15 +81,26 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             userRole = "admin";
         } else userRole = "user";
         model.addAttribute("userRole", userRole);
-        model.addAttribute("object", currentObject);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
         model.addAttribute("properties", dao.getObjectProperties(currentObject));
-        if (thisObject instanceof Serviceable) {
-            return "/common/showPart";
+        switch (category) {
+            case "parts", "bikes" -> {
+                model.addAttribute("serviceObject", (Serviceable) currentObject);
+                return "/common/showPart";
+            }
+            case "tools", "consumables" -> {
+                model.addAttribute("usableObject", (Usable) currentObject);
+                return "/common/showUsable";
+            }
+            case "documents", "fasteners", "manufacturers" -> {
+                model.addAttribute("showableObject", (Showable) currentObject);
+                return "/common/show";
+            }
         }
-        return "/common/show";
+        return "/{id}";
     }
+
 
     @GetMapping(value = "/new")
     public String newItem(Model model) {
