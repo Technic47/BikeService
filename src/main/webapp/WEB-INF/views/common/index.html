@@ -10,7 +10,7 @@
 
 <div th:each="object : ${objects}">
     <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
-       th:text="${object.getId()} + ', ' + ${object.getName()}">doc</a>
+       th:text="${object.getName()}">item</a>
 </div>
 
 <br/>

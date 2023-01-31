@@ -5,7 +5,10 @@
     <title>Part info</title>
 </head>
 <body>
-<h1>Part</h1>
+<h1 th:text="${object.getName()}"></h1>
+
+
+</div>
 
 <div th:each="pair : ${properties}">
     <div th:if="${!pair.getKey().contains('manufacture')}">

@@ -7,14 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.controllers.showable.BasicController;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.usable.Usable;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.services.ManufacturerService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractShowableEntityService;
 
 @Component
 @Scope("prototype")
-public class UsableController<T extends AbstractShowableEntity & Usable, S extends CommonAbstractShowableEntityService<T>>
+public class UsableController<T extends AbstractUsableEntity, S extends CommonAbstractShowableEntityService<T>>
         extends BasicController<T, S> {
     protected ManufacturerService daoManufacturer;
 

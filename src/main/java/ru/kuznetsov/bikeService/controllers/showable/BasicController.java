@@ -75,6 +75,11 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Showable currentObject = dao.show(id);
+        String userRole;
+        if (user.getStatus().contains(ROLE_ADMIN)) {
+            userRole = "admin";
+        } else userRole = "user";
+        model.addAttribute("userRole", userRole);
         model.addAttribute("object", currentObject);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
@@ -107,7 +112,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
         }
         item.setCreator(user.getId());
-//        dao.save(item);
         userService.addCreatedItem(user, new UserEntity(thisObject.getClass().getSimpleName(), dao.save(item).getId()));
 
         return "redirect:/" + category;

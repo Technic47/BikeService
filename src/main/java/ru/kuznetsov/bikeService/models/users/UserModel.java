@@ -29,11 +29,6 @@ public class UserModel implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> createdItems = new ArrayList<>();
 
-//    @ElementCollection(targetClass = Bike.class, fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_bike",
-//            joinColumns = @JoinColumn(name = "user_id"))
-//    private List<Long> bikes = new ArrayList<>();
-
     @Column(name = "password", length = 1000)
     private String password;
 
@@ -77,13 +72,6 @@ public class UserModel implements UserDetails {
         this.createdItems = createdItems;
     }
 
-//    public List<Long> getBikes() {
-//        return bikes;
-//    }
-//
-//    public void setBikes(List<Long> bikes) {
-//        this.bikes = bikes;
-//    }
 
     public String getPassword() {
         return password;

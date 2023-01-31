@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.controllers.usable.UsableController;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Part;
-import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
@@ -27,7 +26,7 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
-public class ServiceableController<T extends AbstractShowableEntity & Serviceable, S extends CommonAbstractShowableEntityService<T>>
+public class ServiceableController<T extends AbstractServiceableEntity, S extends CommonAbstractShowableEntityService<T>>
         extends UsableController<T, S> {
     protected DocumentService documentDAO;
     protected FastenerService fastenerDAO;
