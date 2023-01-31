@@ -70,7 +70,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         model.addAttribute("user", user.getUsername());
         model.addAttribute("objects", objects);
         model.addAttribute("category", category);
-        return "/common/index";
+        return "/show/index";
     }
 
     @GetMapping("/{id}")
@@ -87,15 +87,15 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         switch (category) {
             case "parts", "bikes" -> {
                 model.addAttribute("serviceObject", (Serviceable) currentObject);
-                return "/common/showPart";
+                return "/show/showPart";
             }
             case "tools", "consumables" -> {
                 model.addAttribute("usableObject", (Usable) currentObject);
-                return "/common/showUsable";
+                return "/show/showUsable";
             }
             case "documents", "fasteners", "manufacturers" -> {
                 model.addAttribute("showableObject", (Showable) currentObject);
-                return "/common/show";
+                return "/show/show";
             }
         }
         return "/{id}";
@@ -132,10 +132,25 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         T currentObject = dao.show(id);
-        model.addAttribute(currentObjectName, currentObject);
+//        model.addAttribute(currentObjectName, currentObject);
+        model.addAttribute("category", category);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
         model.addAttribute("allPictures", pictureDao.index());
-        return category + "/edit";
+        switch (category) {
+            case "parts", "bikes" -> {
+                model.addAttribute("serviceObject", (Serviceable) currentObject);
+                return "/edit/editPart";
+            }
+            case "tools", "consumables" -> {
+                model.addAttribute("usableObject", (Usable) currentObject);
+                return "/edit/editUsable";
+            }
+            case "documents", "fasteners", "manufacturers" -> {
+                model.addAttribute("showableObject", (Showable) currentObject);
+                return "/edit/edit";
+            }
+        }
+        return "/{id}/edit";
     }
 
     @PostMapping("/{id}/edit")

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit item</title>
+</head>
+<body>
+
+<form th:action="@{/{link}/{id}/edit(link=${category}, id=${showableObject.getId()})}" th:method="POST" th:object="${showableObject}">
+    <label for="name">Enter name:</label>
+    <input id="name" th:field="*{name}" type="text"/>
+    <div style="color:red" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
+    <br/>
+    <label for="description">Enter description:</label>
+    <input id="description" th:field="*{description}" type="text"/>
+    <div style="color:red" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></div>
+    <br/>
+    <label for="link">Enter link:</label>
+    <input id="link" th:field="*{link}" type="text"/>
+    <div style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></div>
+    <br/>
+    <label for="value">Enter value:</label>
+    <input id="value" th:field="*{value}" type="text"/>
+    <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('link')}"></div>
+    <br/>
+    <div th:field="*{creator}" th:value="${showableObject.getCreator()}"></div>
+
+    <br/>
+    <label for="pictures">Choose picture:</label>
+    <div th:object="${allPictures}">
+        <select id="pictures" name="picture">
+            <option selected th:text="${picture.getName()}"
+                    th:value="${picture.getId()}"></option>
+            <option th:each="item : ${allPictures}"
+                    th:text="${item.getName()}"
+                    th:value="${item.getId()}">
+            </option>
+        </select>
+    </div>
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>
