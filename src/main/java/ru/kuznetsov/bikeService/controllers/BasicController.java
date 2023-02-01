@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.showable;
+package ru.kuznetsov.bikeService.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,7 +20,7 @@ import ru.kuznetsov.bikeService.models.usable.Usable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractShowableEntityService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -30,8 +30,8 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 @Component
 @Scope("prototype")
-public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractShowableEntityService<T>> {
-    protected final CommonAbstractShowableEntityService<T> dao;
+public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>> {
+    protected final CommonAbstractEntityService<T> dao;
     protected UserService userService;
     protected PictureService pictureDao;
     protected T thisObject;

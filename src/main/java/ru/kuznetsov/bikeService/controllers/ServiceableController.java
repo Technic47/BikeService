@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.serviceable;
+package ru.kuznetsov.bikeService.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.kuznetsov.bikeService.controllers.usable.UsableController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Part;
@@ -18,7 +17,7 @@ import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.services.*;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractShowableEntityService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
-public class ServiceableController<T extends AbstractServiceableEntity, S extends CommonAbstractShowableEntityService<T>>
+public class ServiceableController<T extends AbstractServiceableEntity, S extends CommonAbstractEntityService<T>>
         extends UsableController<T, S> {
     protected DocumentService documentDAO;
     protected FastenerService fastenerDAO;

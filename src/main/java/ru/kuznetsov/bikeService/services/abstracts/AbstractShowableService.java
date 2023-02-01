@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public abstract class AbstractShowableService<E extends AbstractShowableEntity, R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R>
-        implements CommonAbstractShowableEntityService<E> {
+        implements CommonAbstractEntityService<E> {
 
     public AbstractShowableService(R repository) {
         super(repository);
