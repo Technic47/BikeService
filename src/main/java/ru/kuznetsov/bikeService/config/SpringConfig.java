@@ -34,7 +34,7 @@ import javax.sql.DataSource;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
-    public static final String UPLOAD_PATH = "C:\\Users\\Techn\\Documents\\JavaProjects\\BikeServiceStuff\\bikeService\\src\\main\\webapp\\resources\\IMG";
+    public static final String UPLOAD_PATH = "C:\\Users\\Techn\\Documents\\JavaProjects\\BikeServiceStuff\\bikeService\\src\\main\\resources\\IMG";
     @Value("${datasource.driver}")
     private String driver;
     @Value("${spring.datasource.url}")
