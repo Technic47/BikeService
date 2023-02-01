@@ -1,196 +1,196 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Bike</title>
-</head>
-<body>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Edit Bike</title>-->
+<!--</head>-->
+<!--<body>-->
 
-<form th:method="PATCH" th:action="@{/bikes/{id}/update(id=${bike.getId()})}" th:object="${bike}">
+<!--<form th:method="PATCH" th:action="@{/bikes/{id}/update(id=${bike.getId()})}" th:object="${bike}">-->
 
-    <label for="name">Enter name:</label>
-    <input type="text" th:field="*{name}" id="name"/>
-    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-    <br/>
+<!--    <label for="name">Enter name:</label>-->
+<!--    <input type="text" th:field="*{name}" id="name"/>-->
+<!--    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>-->
+<!--    <br/>-->
 
-    <label for="manufacturers">Choose manufacturer:</label>
-    <div th:object="${manufacturers}">
-        <select id="manufacturers" name="manufacturer">
-            <option selected th:value="${manufacture.getId()}"
-                    th:text="${manufacture.getName()}"></option>
-            <option th:each="item : ${manufacturers}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-    </div>
+<!--    <label for="manufacturers">Choose manufacturer:</label>-->
+<!--    <div th:object="${manufacturers}">-->
+<!--        <select id="manufacturers" name="manufacturer">-->
+<!--            <option selected th:value="${manufacture.getId()}"-->
+<!--                    th:text="${manufacture.getName()}"></option>-->
+<!--            <option th:each="item : ${manufacturers}"-->
+<!--                    th:value="${item.getId()}"-->
+<!--                    th:text="${item.getName()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--    </div>-->
 
-    <label for="partNumber">Enter part number:</label>
-    <input type="text" th:field="*{partNumber}" id="partNumber"/>
-    <div style="color:red" th:if="${#fields.hasErrors('partNumber')}" th:errors="*{partNumber}"></div>
-    <br/>
-    <label for="model">Enter model:</label>
-    <input type="text" th:field="*{model}" id="model"/>
-    <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
-    <br/>
-    <label for="description">Enter description:</label>
-    <input type="text" th:field="*{description}" id="description"/>
-    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+<!--    <label for="partNumber">Enter part number:</label>-->
+<!--    <input type="text" th:field="*{partNumber}" id="partNumber"/>-->
+<!--    <div style="color:red" th:if="${#fields.hasErrors('partNumber')}" th:errors="*{partNumber}"></div>-->
+<!--    <br/>-->
+<!--    <label for="model">Enter model:</label>-->
+<!--    <input type="text" th:field="*{model}" id="model"/>-->
+<!--    <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>-->
+<!--    <br/>-->
+<!--    <label for="description">Enter description:</label>-->
+<!--    <input type="text" th:field="*{description}" id="description"/>-->
+<!--    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>-->
 
-    <br/>
-    <br/>
-    <label for="pictures">Choose picture:</label>
-    <div th:object="${allPictures}">
-        <select id="pictures" name="picture">
-            <option selected th:value="${picture.getId()}"
-                    th:text="${picture.getName()}"></option>
-            <option th:each="item : ${allPictures}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-    </div>
-    <br/>
-    <label for="serviceList">Enter serviceList:</label>
-    <input type="text" th:field="*{serviceList}" id="serviceList"/>
-    <br/>
-    <label for="partList">Enter partList:</label>
-    <input type="text" th:field="*{partList}" id="partList"/>
-    <br/>
-    <br/>
+<!--    <br/>-->
+<!--    <br/>-->
+<!--    <label for="pictures">Choose picture:</label>-->
+<!--    <div th:object="${allPictures}">-->
+<!--        <select id="pictures" name="picture">-->
+<!--            <option selected th:value="${picture.getId()}"-->
+<!--                    th:text="${picture.getName()}"></option>-->
+<!--            <option th:each="item : ${allPictures}"-->
+<!--                    th:value="${item.getId()}"-->
+<!--                    th:text="${item.getName()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--    </div>-->
+<!--    <br/>-->
+<!--    <label for="serviceList">Enter serviceList:</label>-->
+<!--    <input type="text" th:field="*{serviceList}" id="serviceList"/>-->
+<!--    <br/>-->
+<!--    <label for="partList">Enter partList:</label>-->
+<!--    <input type="text" th:field="*{partList}" id="partList"/>-->
+<!--    <br/>-->
+<!--    <br/>-->
 
-    <label for="parts">Choose part to add:</label>
-    <div th:object="${allParts}">
-        <select id="parts" th:name="partId">
-            <option th:each="item : ${allParts}"
-                    th:if="!${item.getId() == bike.getId()}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-        <input th:type="submit" th:name="action" th:value="addPart"/>
-        <input th:type="submit" th:name="action" th:value="delPart"/>
-    </div>
-    <br/>
+<!--    <label for="parts">Choose part to add:</label>-->
+<!--    <div th:object="${allParts}">-->
+<!--        <select id="parts" th:name="partId">-->
+<!--            <option th:each="item : ${allParts}"-->
+<!--                    th:if="!${item.getId() == bike.getId()}"-->
+<!--                    th:value="${item.getId()}"-->
+<!--                    th:text="${item.getName()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--        <input th:type="submit" th:name="action" th:value="addPart"/>-->
+<!--        <input th:type="submit" th:name="action" th:value="delPart"/>-->
+<!--    </div>-->
+<!--    <br/>-->
 
-    <label for="documents">Choose document to add:</label>
-    <div th:object="${allDocuments}">
-        <select id="documents" th:name="documentId">
-            <option th:each="item : ${allDocuments}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-        <input th:type="submit" th:name="action" th:value="addDocument"/>
-        <input th:type="submit" th:name="action" th:value="delDocument"/>
-    </div>
-    <br/>
+<!--    <label for="documents">Choose document to add:</label>-->
+<!--    <div th:object="${allDocuments}">-->
+<!--        <select id="documents" th:name="documentId">-->
+<!--            <option th:each="item : ${allDocuments}"-->
+<!--                    th:value="${item.getId()}"-->
+<!--                    th:text="${item.getName()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--        <input th:type="submit" th:name="action" th:value="addDocument"/>-->
+<!--        <input th:type="submit" th:name="action" th:value="delDocument"/>-->
+<!--    </div>-->
+<!--    <br/>-->
 
-    <label for="fasteners">Choose fasteners to add:</label>
-    <div th:object="${allFasteners}">
-        <select id="fasteners" th:name="fastenerId">
-            <option th:each="item : ${allFasteners}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-        <input th:type="submit" th:name="action" th:value="addFastener"/>
-        <input th:type="submit" th:name="action" th:value="delFastener"/>
-    </div>
-    <br/>
+<!--    <label for="fasteners">Choose fasteners to add:</label>-->
+<!--    <div th:object="${allFasteners}">-->
+<!--        <select id="fasteners" th:name="fastenerId">-->
+<!--            <option th:each="item : ${allFasteners}"-->
+<!--                    th:value="${item.getId()}"-->
+<!--                    th:text="${item.getName()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--        <input th:type="submit" th:name="action" th:value="addFastener"/>-->
+<!--        <input th:type="submit" th:name="action" th:value="delFastener"/>-->
+<!--    </div>-->
+<!--    <br/>-->
 
-    <label for="tools">Choose tool to add:</label>
-    <div th:object="${allTools}">
-        <select id="tools" th:name="toolId">
-            <option th:each="item : ${allTools}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-        <input th:type="submit" th:name="action" th:value="addTool"/>
-        <input th:type="submit" th:name="action" th:value="delTool"/>
-    </div>
-    <br/>
+<!--    <label for="tools">Choose tool to add:</label>-->
+<!--    <div th:object="${allTools}">-->
+<!--        <select id="tools" th:name="toolId">-->
+<!--            <option th:each="item : ${allTools}"-->
+<!--                    th:value="${item.getId()}"-->
+<!--                    th:text="${item.getName()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--        <input th:type="submit" th:name="action" th:value="addTool"/>-->
+<!--        <input th:type="submit" th:name="action" th:value="delTool"/>-->
+<!--    </div>-->
+<!--    <br/>-->
 
-    <label for="consumables">Choose consumable to add:</label>
-    <div th:object="${allConsumables}">
-        <select id="consumables" th:name="consumableId">
-            <option th:each="item : ${allConsumables}"
-                    th:value="${item.getId()}"
-                    th:text="${item.getName()}">
-            </option>
-        </select>
-        <input th:type="submit" th:name="action" th:value="addConsumable"/>
-        <input th:type="submit" th:name="action" th:value="delConsumable"/>
-    </div>
-    <br/>
+<!--    <label for="consumables">Choose consumable to add:</label>-->
+<!--    <div th:object="${allConsumables}">-->
+<!--        <select id="consumables" th:name="consumableId">-->
+<!--            <option th:each="item : ${allConsumables}"-->
+<!--                    th:value="${item.getId()}"-->
+<!--                    th:text="${item.getName()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--        <input th:type="submit" th:name="action" th:value="addConsumable"/>-->
+<!--        <input th:type="submit" th:name="action" th:value="delConsumable"/>-->
+<!--    </div>-->
+<!--    <br/>-->
 
-</form>
+<!--</form>-->
 
-<form th:action="@{/bikes}">
-    <input th:type="submit" th:name="action" th:value="finish" value="Update"/>
-    <br/>
-    <br/>
-</form>
+<!--<form th:action="@{/bikes}">-->
+<!--    <input th:type="submit" th:name="action" th:value="finish" value="Update"/>-->
+<!--    <br/>-->
+<!--    <br/>-->
+<!--</form>-->
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>parts</th>
-    </tr>
-    </thead>
+<!--<table border="1">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>parts</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
 
-    <tbody>
-    <tr th:each="part : ${parts}">
-        <td th:text="${part.getName()} + ' ' + ${part.getModel()}"></td>
-    </tr>
-    </tbody>
-</table>
-<br/>
-<br/>
+<!--    <tbody>-->
+<!--    <tr th:each="part : ${parts}">-->
+<!--        <td th:text="${part.getName()} + ' ' + ${part.getModel()}"></td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--<br/>-->
+<!--<br/>-->
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>documents</th>
-        <th>fasteners</th>
-        <th>tools</th>
-        <th>consumables</th>
-    </tr>
+<!--<table border="1">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>documents</th>-->
+<!--        <th>fasteners</th>-->
+<!--        <th>tools</th>-->
+<!--        <th>consumables</th>-->
+<!--    </tr>-->
 
-    </thead>
-    <tbody>
-    <th>
-        <table>
-            <tr th:each="document : ${documents}">
-                <td th:text="${document.getName()}"> documents</td>
-            </tr>
-        </table>
-    </th>
-    <th>
-        <table>
-            <tr th:each="fastener : ${fasteners}">
-                <td th:text="${fastener.getName()}"> fasteners</td>
-            </tr>
-        </table>
-    </th>
-    <th>
-        <table>
-            <tr th:each="tool : ${tools}">
-                <td th:text="${tool.getName()}"> tools</td>
-            </tr>
-        </table>
-    </th>
-    <th>
-        <table>
-            <tr th:each="consumable : ${consumables}">
-                <td th:text="${consumable.getName()}"> consumables</td>
-            </tr>
-        </table>
-    </th>
-    </tbody>
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <th>-->
+<!--        <table>-->
+<!--            <tr th:each="document : ${documents}">-->
+<!--                <td th:text="${document.getName()}"> documents</td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </th>-->
+<!--    <th>-->
+<!--        <table>-->
+<!--            <tr th:each="fastener : ${fasteners}">-->
+<!--                <td th:text="${fastener.getName()}"> fasteners</td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </th>-->
+<!--    <th>-->
+<!--        <table>-->
+<!--            <tr th:each="tool : ${tools}">-->
+<!--                <td th:text="${tool.getName()}"> tools</td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </th>-->
+<!--    <th>-->
+<!--        <table>-->
+<!--            <tr th:each="consumable : ${consumables}">-->
+<!--                <td th:text="${consumable.getName()}"> consumables</td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </th>-->
+<!--    </tbody>-->
 
-</table>
+<!--</table>-->
 
-</body>
-</html>
+<!--</body>-->
+<!--</html>-->

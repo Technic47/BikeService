@@ -107,6 +107,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         model.addAttribute("properties", dao.getObjectProperties(this.thisObject));
         model.addAttribute("newObject", this.thisObject);
         model.addAttribute("allPictures", pictureDao.index());
+
         return category + "/new";
     }
 
