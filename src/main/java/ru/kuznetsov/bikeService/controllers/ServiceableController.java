@@ -5,10 +5,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Part;
@@ -65,15 +63,16 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
     public String updateServiceList(@Valid T item, BindingResult bindingResult,
                                     @PathVariable("id") Long id,
                                     @RequestParam(value = "action") String action,
-                                    @RequestParam(value = "documentId") Long documentId,
-                                    @RequestParam(value = "fastenerId") Long fastenerId,
-                                    @RequestParam(value = "toolId") Long toolId,
-                                    @RequestParam(value = "consumableId") Long consumableId,
-                                    @RequestParam(value = "partId") Long partId,
+                                    @RequestParam(value = "documentId", required = false) Long documentId,
+                                    @RequestParam(value = "fastenerId", required = false) Long fastenerId,
+                                    @RequestParam(value = "toolId", required = false) Long toolId,
+                                    @RequestParam(value = "consumableId", required = false) Long consumableId,
+                                    @RequestParam(value = "partId", required = false) Long partId,
+                                    @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Model model) {
         switch (action) {
             case "finish":
-                return this.update(item, bindingResult, id);
+                return this.update(item, bindingResult, file, id);
             case "addDocument":
                 item.addToServiceList(documentDAO.show(documentId));
                 break;

@@ -166,9 +166,15 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
     @PostMapping("/{id}/edit")
     public String update(@Valid T item, BindingResult bindingResult,
+                         @RequestPart("newImage") MultipartFile file,
                          @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
             return category + "/edit";
+        }
+        if (!file.isEmpty()) {
+            PictureWork picWorker = new PictureWork(new Picture());
+            picWorker.managePicture(file);
+            item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
         }
         dao.update(id, item);
         return "redirect:/" + category;

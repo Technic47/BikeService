@@ -5,9 +5,10 @@
     <title>Edit Part</title>
 </head>
 <body>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
 
-<form th:action="@{/{link}/{id}/update(link=${category}, id=${serviceObject.getId()})}" th:method="POST"
-      th:object="${serviceObject}">
+<form enctype="multipart/form-data" th:action="@{/{link}/{id}/update(link=${category}, id=${serviceObject.getId()})}"
+      th:method="POST" th:object="${serviceObject}">
 
     <label for="name">Enter name:</label>
     <input id="name" th:field="*{name}" type="text"/>
@@ -42,10 +43,6 @@
     <input id="link" th:field="*{link}" type="text"/>
     <div style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></div>
     <br/>
-<!--    <label for="value">Enter value:</label>-->
-<!--    <input id="value" th:field="*{value}" type="text"/>-->
-<!--    <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('link')}"></div>-->
-<!--    <br/>-->
     <div hidden="hidden">
         <label for="creator">Enter creator:</label>
         <input id="creator" th:field="*{creator}" type="text"/>
@@ -56,6 +53,9 @@
         <label for="partList">PartList:</label>
         <input id="partList" th:field="*{partList}" type="text"/>
     </div>
+    <br/>
+    <label for="picture">Upload new picture:</label>
+    <input accept="image/*" id="picture" name="newImage" type="file"/>
     <br/>
     <label for="pictures">Choose picture:</label>
     <div th:object="${allPictures}">
@@ -83,17 +83,33 @@
     </div>
     <br/>
 
-    <label for="parts">Choose part to delete:</label>
-    <div th:object="${parts}">
-        <select id="parts" th:name="partId">
-            <option th:each="item : ${parts}"
-                    th:text="${item.getName()}"
-                    th:value="${item.getId()}">
-            </option>
-        </select>
-        <input th:name="action" th:type="submit" th:value="delPart"/>
-    </div>
-    <br/>
+    <!--    <label for="parts">Choose part to delete:</label>-->
+    <!--    <div th:object="${parts}">-->
+    <!--        <select id="parts" th:name="partId">-->
+    <!--            <option th:each="item : ${parts}"-->
+    <!--                    th:text="${item.getName()}"-->
+    <!--                    th:value="${item.getId()}">-->
+    <!--            </option>-->
+    <!--        </select>-->
+    <!--        <input th:name="action" th:type="submit" th:value="delPart"/>-->
+    <!--    </div>-->
+    <!--    <br/>-->
+
+    <table border="1">
+        <tbody>
+        <tr th:each="part : ${parts}" th:name="partId">
+            <td>
+                <a th:href="@{/parts/{id}(id=${part.getId()})}"
+                   th:text="${part.getName()} + ' ' + ${part.getModel()}"
+
+                   th:value="${part.getId()}"></a>
+                <button class="btn btn-success" th:name="action" th:type="submit" th:value="delPart">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
     <label for="documents">Choose document to add:</label>
     <div th:object="${allDocuments}">
@@ -163,6 +179,9 @@
         <td>
             <a th:href="@{/parts/{id}(id=${part.getId()})}"
                th:text="${part.getName()} + ' ' + ${part.getModel()}"></a>
+            <!--            <button th:name="action" type="submit" class="btn btn-success" th:value="delPart">-->
+            <!--                <i class="fa-solid fa-trash"></i>-->
+            <!--            </button>-->
         </td>
     </tr>
     </tbody>
@@ -184,7 +203,11 @@
     <th>
         <table>
             <tr th:each="document : ${documents}">
-                <td th:text="${document.getName()}"> documents</td>
+                <td th:text="${document.getName()}">
+                    <button class="btn btn-success" th:name="action" th:value="delDocument" type="submit">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
             </tr>
         </table>
     </th>
@@ -210,7 +233,6 @@
         </table>
     </th>
     </tbody>
-
 </table>
 
 </body>
