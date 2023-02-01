@@ -22,8 +22,12 @@
     <br/>
     <label for="value">Enter value:</label>
     <input id="value" th:field="*{value}" type="text"/>
-    <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('link')}"></div>
+    <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></div>
     <br/>
+    <div hidden="hidden">
+        <label for="creator">Enter creator:</label>
+        <input id="creator" th:field="*{creator}" type="text"/>
+    </div>
     <label for="manufacturers">Choose manufacturer:</label>
     <div th:object="${manufacturers}">
         <select id="manufacturers" name="manufacturer">
@@ -39,7 +43,6 @@
     <input id="model" th:field="*{model}" type="text"/>
     <div style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></div>
     <br/>
-    <div th:field="*{creator}" th:value="${usableObject.getCreator()}"></div>
 
     <br/>
     <label for="pictures">Choose picture:</label>

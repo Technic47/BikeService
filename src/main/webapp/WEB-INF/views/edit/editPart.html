@@ -49,13 +49,13 @@
     <div hidden="hidden">
         <label for="creator">Enter creator:</label>
         <input id="creator" th:field="*{creator}" type="text"/>
+
         <label for="serviceList">ServiceList:</label>
         <input id="serviceList" th:field="*{serviceList}" type="text"/>
-        <br/>
+
         <label for="partList">PartList:</label>
         <input id="partList" th:field="*{partList}" type="text"/>
     </div>
-
     <br/>
     <label for="pictures">Choose picture:</label>
     <div th:object="${allPictures}">
@@ -69,13 +69,7 @@
         </select>
     </div>
     <br/>
-
     <br/>
-    <br/>
-    <div th:field="*{creator}" th:value="${serviceObject.getCreator()}"></div>
-    <div th:field="*{serviceList}" th:value="${serviceObject.getServiceList()}"></div>
-    <div th:field="*{partList}" th:value="${serviceObject.getPartList()}"></div>
-
     <label for="allParts">Choose part to add:</label>
     <div th:object="${allParts}">
         <select id="allParts" th:name="partId">
@@ -155,7 +149,7 @@
 
 </form>
 
-<form th:action="@{/${category}}">
+<form th:action="@{/{link}(link=${category})}">
     <input th:name="action" th:type="submit" th:value="finish" value="Update"/>
     <br/>
     <br/>

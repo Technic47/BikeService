@@ -6,7 +6,8 @@
 </head>
 <body>
 
-<form th:action="@{/{link}/{id}/edit(link=${category}, id=${showableObject.getId()})}" th:method="POST" th:object="${showableObject}">
+<form th:action="@{/{link}/{id}/edit(link=${category}, id=${showableObject.getId()})}" th:method="POST"
+      th:object="${showableObject}">
     <label for="name">Enter name:</label>
     <input id="name" th:field="*{name}" type="text"/>
     <div style="color:red" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
@@ -23,8 +24,10 @@
     <input id="value" th:field="*{value}" type="text"/>
     <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('link')}"></div>
     <br/>
-    <div th:field="*{creator}" th:value="${showableObject.getCreator()}"></div>
-
+    <div hidden="hidden">
+        <label for="creator">Enter creator:</label>
+        <input id="creator" th:field="*{creator}" type="text"/>
+    </div>
     <br/>
     <label for="pictures">Choose picture:</label>
     <div th:object="${allPictures}">

@@ -105,10 +105,23 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     @GetMapping(value = "/new")
     public String newItem(Model model) {
         model.addAttribute("properties", dao.getObjectProperties(this.thisObject));
-        model.addAttribute("newObject", this.thisObject);
+        model.addAttribute("category", category);
         model.addAttribute("allPictures", pictureDao.index());
-
-        return category + "/new";
+        switch (category) {
+            case "parts", "bikes" -> {
+                model.addAttribute("serviceObject", (Serviceable) thisObject);
+                return "/new/newPart";
+            }
+            case "tools", "consumables" -> {
+                model.addAttribute("usableObject", (Usable) thisObject);
+                return "/new/newUsable";
+            }
+            case "documents", "fasteners", "manufacturers" -> {
+                model.addAttribute("showableObject", (Showable) thisObject);
+                return "/new/new";
+            }
+        }
+        return "/new";
     }
 
     @PostMapping()
@@ -133,7 +146,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         T currentObject = dao.show(id);
-//        model.addAttribute(currentObjectName, currentObject);
         model.addAttribute("category", category);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
         model.addAttribute("allPictures", pictureDao.index());
