@@ -31,6 +31,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 @Component
 @Scope("prototype")
 public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>> {
+    // todo Create parent controller with user credentials storage
     protected final CommonAbstractEntityService<T> dao;
     protected UserService userService;
     protected PictureService pictureDao;
