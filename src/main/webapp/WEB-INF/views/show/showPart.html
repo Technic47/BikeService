@@ -83,28 +83,40 @@
     <th>
         <table>
             <tr th:each="document : ${documents}">
-                <td th:text="${document.getName()}"> documents</td>
+                <td>
+                    <a th:href="@{/documents/{id}(id=${document.getId()})}"
+                       th:text="${document.getName()}"></a>
+                </td>
             </tr>
         </table>
     </th>
     <th>
         <table>
             <tr th:each="fastener : ${fasteners}">
-                <td th:text="${fastener.getName()}"> fasteners</td>
+                <td>
+                    <a th:href="@{/fasteners/{id}(id=${fastener.getId()})}"
+                       th:text="${fastener.getName()}"></a>
+                </td>
             </tr>
         </table>
     </th>
     <th>
         <table>
             <tr th:each="tool : ${tools}">
-                <td th:text="${tool.getName()}"> tools</td>
+                <td>
+                    <a th:href="@{/tools/{id}(id=${tool.getId()})}"
+                       th:text="${tool.getName()}"></a>
+                </td>
             </tr>
         </table>
     </th>
     <th>
         <table>
             <tr th:each="consumable : ${consumables}">
-                <td th:text="${consumable.getName()}"> consumables</td>
+                <td>
+                    <a th:href="@{/consumables/{id}(id=${consumable.getId()})}"
+                       th:text="${consumable.getName()}"></a>
+                </td>
             </tr>
         </table>
     </th>

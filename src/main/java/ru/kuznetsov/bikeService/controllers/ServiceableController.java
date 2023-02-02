@@ -68,6 +68,7 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                                     @RequestParam(value = "toolId", required = false) Long toolId,
                                     @RequestParam(value = "consumableId", required = false) Long consumableId,
                                     @RequestParam(value = "partId", required = false) Long partId,
+                                    @RequestParam(value = "partIdDel", required = false) Long partIdDel,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Model model) {
         switch (action) {
