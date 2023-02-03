@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Item Info</title>
@@ -18,7 +19,7 @@
 <img th:src="@{/IMG/{fileName}(fileName=${picture})}">
 <br/>
 
-<div th:if="${userRole} == admin">
+<div sec:authorize="hasRole('ROLE_ADMIN')">
     <div th:text="'ID - ' + ${usableObject.getId()}"></div>
     <div th:text="'Name - ' + ${usableObject.getName()}"></div>
     <div th:text="'Manufacturer - ' + ${manufacture}"></div>

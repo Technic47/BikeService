@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
-<h1 th:text="${user}"></h1>
+<h1>
+    <div sec:authentication="principal.username"></div>
+</h1>
 
+<p></p>
 <a href="bikes">My bikes</a>
 <br/>
 <a href="parts">My parts</a>

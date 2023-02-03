@@ -31,7 +31,6 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 @Component
 @Scope("prototype")
 public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>> {
-    // todo Create parent controller with user credentials storage
     protected final CommonAbstractEntityService<T> dao;
     protected UserService userService;
     protected PictureService pictureDao;
@@ -68,7 +67,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         if (user.getStatus().contains(ROLE_ADMIN)) {
             objects = dao.index();
         }
-        model.addAttribute("user", user.getUsername());
         model.addAttribute("objects", objects);
         model.addAttribute("category", category);
         return "/show/index";
@@ -77,11 +75,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Showable currentObject = dao.show(id);
-        String userRole;
-        if (user.getStatus().contains(ROLE_ADMIN)) {
-            userRole = "admin";
-        } else userRole = "user";
-        model.addAttribute("userRole", userRole);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
         switch (category) {
@@ -125,8 +118,8 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
     @PostMapping()
     public String create(@Valid T item,
-                         BindingResult bindingResult
-            , @RequestPart("newImage") MultipartFile file
+                         BindingResult bindingResult,
+                         @RequestPart("newImage") MultipartFile file
     ) {
         if (bindingResult.hasErrors()) {
             return category + "/new";

@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.UserService;
 
-import java.security.Principal;
-
 @Controller
 @RequestMapping("/")
 public class HomeController {
@@ -27,8 +25,7 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String login(Principal principal, Model model) {
-        model.addAttribute("user", principal.getName());
+    public String login() {
         return "title";
     }
 
@@ -51,7 +48,7 @@ public class HomeController {
     public String createUser(UserModel user, Model model) {
         if (!userService.createUser(user)) {
             model.addAttribute("message", "Current user name '" + user.getUsername() + "' is occupied");
-        return "/registration";
+            return "/registration";
         }
         userService.createUser(user);
         return "redirect:/login";

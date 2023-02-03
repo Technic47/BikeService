@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>List of items</title>
 </head>
 <body>
 
-<h1 th:text="${user}"></h1>
+<h1>
+    <div sec:authentication="principal.username"></div>
+</h1>
 
 <div th:each="object : ${objects}">
     <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
