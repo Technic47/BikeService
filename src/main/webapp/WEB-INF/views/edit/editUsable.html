@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:action="@{/{link}/{id}/edit(link=${category}, id=${usableObject.getId()})}" th:method="POST"
+<form enctype="multipart/form-data" th:action="@{/{link}/{id}/edit(link=${category}, id=${usableObject.getId()})}" th:method="POST"
       th:object="${usableObject}">
     <label for="name">Enter name:</label>
     <input id="name" th:field="*{name}" type="text"/>
@@ -43,7 +43,9 @@
     <input id="model" th:field="*{model}" type="text"/>
     <div style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></div>
     <br/>
-
+    <label for="picture">Upload new picture:</label>
+    <input accept="image/*" id="picture" name="newImage" type="file"/>
+    <br/>
     <br/>
     <label for="pictures">Choose picture:</label>
     <div th:object="${allPictures}">

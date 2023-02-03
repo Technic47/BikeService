@@ -28,6 +28,11 @@ public class Manufacturer extends AbstractShowableEntity implements Showable {
     }
 
     @Override
+    public String getValueName() {
+        return "Country";
+    }
+
+    @Override
     public void setValue(String value) {
         this.country = value;
     }

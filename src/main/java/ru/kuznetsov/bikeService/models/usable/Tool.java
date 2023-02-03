@@ -31,6 +31,11 @@ public class Tool extends AbstractUsableEntity {
     }
 
     @Override
+    public String getValueName() {
+        return "Size";
+    }
+
+    @Override
     public void setValue(String value) {
         this.size = value;
     }

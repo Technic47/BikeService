@@ -5,6 +5,7 @@ public interface Showable {
     String getName();
     String getValue();
     void setValue(String value);
+    String getValueName();
     String getDescription();
     String getLink();
     Long getPicture();

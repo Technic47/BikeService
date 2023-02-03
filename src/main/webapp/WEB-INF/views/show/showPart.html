@@ -10,11 +10,12 @@
 
 <div th:text="${manufacture} + ' ' + ${serviceObject.getModel()}"></div>
 
-<div th:text="'Part number - ' + ${serviceObject.getPartNumber()}"></div>
+<div th:text="${serviceObject.getValueName()} + ' - ' + ${serviceObject.getValue()}"></div>
 
 <div th:text="${serviceObject.getDescription()}"></div>
 
-<a th:href="@{${serviceObject.getLink()}}"></a>
+<a th:href="@{${serviceObject.getLink()}}"
+   th:text="${serviceObject.getLink()}"></a>
 
 <img th:src="@{/IMG/{fileName}(fileName=${picture})}">
 <br/>

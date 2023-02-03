@@ -8,11 +8,12 @@
 <body>
 <h1 th:text="${usableObject.getName()}"></h1>
 
-<a th:href="@{${usableObject.getLink()}}"></a>
+<a th:href="@{${usableObject.getLink()}}"
+   th:text="${usableObject.getLink()}"></a>
 
 <div th:text="${manufacture} + ' ' + ${usableObject.getModel()}"></div>
 
-<div th:text="'Value - ' + ${usableObject.getValue()}"></div>
+<div th:text="${usableObject.getValueName()} + ' - ' + ${usableObject.getValue()}"></div>
 
 <div th:text="${usableObject.getDescription()}"></div>
 

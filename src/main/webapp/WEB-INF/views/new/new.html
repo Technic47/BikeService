@@ -19,6 +19,10 @@
     <input id="link" th:field="*{link}" type="text"/>
     <div style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></div>
     <br/>
+    <label for="value" th:text="'Enter ' + ${showableObject.getValueName()} + ':'"></label>
+    <input id="value" th:field="*{value}" type="text"/>
+    <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('link')}"></div>
+    <br/>
     <label for="picture">Upload new picture:</label>
     <input accept="image/*" id="picture" name="newImage" type="file"/>
     <br/>

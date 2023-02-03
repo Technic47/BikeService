@@ -27,6 +27,11 @@ public class Fastener extends AbstractShowableEntity implements Showable {
         this.specs = value;
     }
 
+    @Override
+    public String getValueName() {
+        return "Specs";
+    }
+
     public String getSpecs() {
         return specs;
     }

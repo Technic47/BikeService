@@ -8,7 +8,10 @@
 <body>
 <h1 th:text="${showableObject.getName()}"></h1>
 
-<a th:href="@{${showableObject.getLink()}}"></a>
+<a th:href="@{${showableObject.getLink()}}"
+th:text="${showableObject.getLink()}"></a>
+
+<div th:text="${showableObject.getValueName()} + ' - ' + ${showableObject.getValue()}"></div>
 
 <div th:text="${showableObject.getDescription()}"></div>
 

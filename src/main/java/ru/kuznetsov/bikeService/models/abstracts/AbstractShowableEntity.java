@@ -21,6 +21,8 @@ public abstract class AbstractShowableEntity implements Showable {
     protected String link;
     @Transient
     protected String value;
+    @Transient
+    protected String valueName;
     @Column(name = "creator")
     protected Long creator;
 
@@ -75,6 +77,14 @@ public abstract class AbstractShowableEntity implements Showable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getValueName() {
+        return valueName;
+    }
+
+    public void setValueName(String valueName) {
+        this.valueName = valueName;
     }
 
     public Long getCreator() {

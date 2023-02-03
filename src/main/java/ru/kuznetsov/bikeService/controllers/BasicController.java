@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
@@ -18,8 +18,6 @@ import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Usable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.PictureService;
-import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import javax.validation.Valid;
@@ -30,10 +28,11 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 @Component
 @Scope("prototype")
-public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>> {
+public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>>
+        extends AbstractController {
     protected final CommonAbstractEntityService<T> dao;
-    protected UserService userService;
-    protected PictureService pictureDao;
+    //    protected UserService userService;
+//    protected PictureService pictureDao;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -118,11 +117,15 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
     @PostMapping()
     public String create(@Valid T item,
+                         Principal principal,
                          BindingResult bindingResult,
                          @RequestPart("newImage") MultipartFile file
     ) {
         if (bindingResult.hasErrors()) {
             return category + "/new";
+        }
+        if (this.user == null) {
+            this.user = userService.findByName(principal.getName());
         }
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork(new Picture());
@@ -160,7 +163,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
     @PostMapping("/{id}/edit")
     public String update(@Valid T item, BindingResult bindingResult,
-                         @RequestPart("newImage") MultipartFile file,
+                         @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
             return category + "/edit";
@@ -181,13 +184,13 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         return "redirect:/" + category;
     }
 
-    @Autowired
-    public void setPictureDAO(PictureService pictureDao) {
-        this.pictureDao = pictureDao;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+//    @Autowired
+//    public void setPictureDAO(PictureService pictureDao) {
+//        this.pictureDao = pictureDao;
+//    }
+//
+//    @Autowired
+//    public void setUserService(UserService userService) {
+//        this.userService = userService;
+//    }
 }
