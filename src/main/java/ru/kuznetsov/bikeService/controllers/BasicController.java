@@ -31,8 +31,6 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>>
         extends AbstractController {
     protected final CommonAbstractEntityService<T> dao;
-    //    protected UserService userService;
-//    protected PictureService pictureDao;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;
@@ -57,14 +55,17 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
 
     @GetMapping()
-    public String index(Principal principal, Model model) {
-        this.user = userService.findByName(principal.getName());
+    public String index(Principal principal,
+                        Model model) {
+        this.checkUser(principal);
         Iterable<T> objects = null;
         if (user.getStatus().contains(ROLE_USER)) {
             objects = dao.findByCreator(user.getId());
+            logger.info("personal " + category + " are shown to '" + user.getUsername() + "'");
         }
         if (user.getStatus().contains(ROLE_ADMIN)) {
             objects = dao.index();
+            logger.info(category + " are shown to " + user.getUsername());
         }
         model.addAttribute("objects", objects);
         model.addAttribute("category", category);
@@ -72,10 +73,14 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String show(@PathVariable("id") Long id,
+                       Principal principal,
+                       Model model) {
         Showable currentObject = dao.show(id);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
+        this.checkUser(principal);
+        logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
         switch (category) {
             case "parts", "bikes" -> {
                 model.addAttribute("serviceObject", (Serviceable) currentObject);
@@ -124,9 +129,9 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         if (bindingResult.hasErrors()) {
             return category + "/new";
         }
-        if (this.user == null) {
-            this.user = userService.findByName(principal.getName());
-        }
+
+        this.checkUser(principal);
+
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork(new Picture());
             picWorker.managePicture(file);
@@ -134,7 +139,21 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         }
         item.setCreator(user.getId());
         userService.addCreatedItem(user, new UserEntity(thisObject.getClass().getSimpleName(), dao.save(item).getId()));
-
+        switch (category) {
+            case "tools", "consumables", "parts", "bikes" -> {
+                logger.debug(thisObject.getClass().getSimpleName()
+                        + " " + ((Usable) item).getName() + " " + ((Usable) item).getValueName()
+                        + " " + ((Usable) item).getValue() + " " + ((Usable) item).getLink()
+                        + " " + ((Usable) item).getManufacturer() + " " + ((Usable) item).getModel()
+                        + " was created by '" + user.getUsername() + "'");
+            }
+            case "documents", "fasteners", "manufacturers" -> {
+                logger.debug(thisObject.getClass().getSimpleName()
+                        + " " + ((Showable) item).getName() + " " + ((Showable) item).getValueName()
+                        + " " + ((Showable) item).getValue() + " " + ((Showable) item).getLink()
+                        + " was created by '" + user.getUsername() + "'");
+            }
+        }
         return "redirect:/" + category;
     }
 
@@ -162,35 +181,38 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     }
 
     @PostMapping("/{id}/edit")
-    public String update(@Valid T item, BindingResult bindingResult,
+    public String update(@Valid T item,
+                         Principal principal,
+                         BindingResult bindingResult,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
             return category + "/edit";
         }
+        this.checkUser(principal);
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork(new Picture());
             picWorker.managePicture(file);
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
         }
         dao.update(id, item);
+        logger.info(thisObject.getClass().getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
         return "redirect:/" + category;
     }
 
     @PostMapping(value = "/{id}")
-    public String delete(@PathVariable("id") Long id) {
+    public String delete(@PathVariable("id") Long id,
+                         Principal principal) {
+        this.checkUser(principal);
         userService.delCreatedItem(user, new UserEntity(thisObject.getClass().getSimpleName(), id));
         dao.delete(id);
+        logger.info(thisObject.getClass().getSimpleName() + " id:" + id + " was deleted by '" + user.getUsername() + "'");
         return "redirect:/" + category;
     }
 
-//    @Autowired
-//    public void setPictureDAO(PictureService pictureDao) {
-//        this.pictureDao = pictureDao;
-//    }
-//
-//    @Autowired
-//    public void setUserService(UserService userService) {
-//        this.userService = userService;
-//    }
+    public void checkUser(Principal principal) {
+        if (this.user == null) {
+            this.user = userService.findByName(principal.getName());
+        }
+    }
 }

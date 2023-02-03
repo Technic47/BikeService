@@ -18,6 +18,7 @@ import ru.kuznetsov.bikeService.services.*;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,14 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
 
     @Override
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String show(@PathVariable("id") Long id,
+                       Principal principal,
+                       Model model) {
         this.updateCacheList(id);
         this.updateCachePartList(id);
         this.addItemServiceableToModel(model);
         this.addItemShowablesToModel(model);
-        return super.show(id, model);
+        return super.show(id, principal, model);
     }
 
     @Override
@@ -60,7 +63,9 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
     }
 
     @RequestMapping(value = "/{id}/update")
-    public String updateServiceList(@Valid T item, BindingResult bindingResult,
+    public String updateServiceList(@Valid T item,
+                                    Principal principal,
+                                    BindingResult bindingResult,
                                     @PathVariable("id") Long id,
                                     @RequestParam(value = "action") String action,
                                     @RequestParam(value = "documentId", required = false) Long documentId,
@@ -73,7 +78,7 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                                     Model model) {
         switch (action) {
             case "finish":
-                return this.update(item, bindingResult, file, id);
+                return this.update(item, principal, bindingResult, file, id);
             case "addDocument":
                 item.addToServiceList(documentDAO.show(documentId));
                 break;

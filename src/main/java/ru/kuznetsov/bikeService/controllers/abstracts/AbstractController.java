@@ -9,10 +9,9 @@ import ru.kuznetsov.bikeService.services.UserService;
 
 @Component
 public abstract class AbstractController {
-    final static Logger logger = LoggerFactory.getLogger("BikeServiceLogger");
+    public final static Logger logger = LoggerFactory.getLogger("BikeServiceLogger");
     protected UserService userService;
     protected PictureService pictureDao;
-
 
     @Autowired
     public void setUserService(UserService userService) {
