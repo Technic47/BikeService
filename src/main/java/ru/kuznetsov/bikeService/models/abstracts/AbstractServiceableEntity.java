@@ -19,10 +19,10 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
     @Column(name = "partNumber")
     protected String partNumber;
     @Column(name = "serviceList")
-
     protected String serviceList;
     @Column(name = "partList")
     protected String partList;
+
     @Transient
     protected Gson converter;
 
@@ -94,6 +94,8 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         currentPartList.remove(item.getId());
         this.updatePartListObject(currentPartList);
     }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -8,7 +8,8 @@ import java.util.Objects;
 
 @MappedSuperclass
 public abstract class AbstractShowableEntity implements Showable {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     @NotEmpty(message = "Fill this field!")
     @Column(name = "name")
@@ -29,8 +30,7 @@ public abstract class AbstractShowableEntity implements Showable {
     public AbstractShowableEntity() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     public Long getId() {
         return id;
     }

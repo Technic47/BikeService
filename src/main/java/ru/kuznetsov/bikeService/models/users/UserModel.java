@@ -18,16 +18,36 @@ public class UserModel implements UserDetails {
     private String username;
     @Column(name = "active")
     private boolean active;
+
     @Column(name = "status")
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> status = new HashSet<>();
+
     @ElementCollection(targetClass = UserEntity.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_item",
             joinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> createdItems = new ArrayList<>();
+
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "user_documents",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "document_id")
+//    )
+//    List<Document> documents = new ArrayList<>();
+//
+//
+//    public List<Document> getDocuments() {
+//        return documents;
+//    }
+//
+//    public void setDocuments(List<Document> documents) {
+//        this.documents = documents;
+//    }
+
 
     @Column(name = "password", length = 1000)
     private String password;
