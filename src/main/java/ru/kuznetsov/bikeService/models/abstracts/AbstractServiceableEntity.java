@@ -2,12 +2,14 @@ package ru.kuznetsov.bikeService.models.abstracts;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
+import ru.kuznetsov.bikeService.models.showable.Document;
+import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.showable.Showable;
+import ru.kuznetsov.bikeService.models.usable.Consumable;
+import ru.kuznetsov.bikeService.models.usable.Tool;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -15,7 +17,41 @@ import java.util.List;
 import java.util.Objects;
 
 @MappedSuperclass
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractServiceableEntity extends AbstractUsableEntity implements Serviceable {
+    @ManyToMany()
+    @JoinTable(
+            name = "part_documents",
+            joinColumns = @JoinColumn(name = "part_id"),
+            inverseJoinColumns = @JoinColumn(name = "document_id")
+    )
+    protected List<Document> documents = new ArrayList<>();
+
+    @ManyToMany()
+    @JoinTable(
+            name = "part_fasteners",
+            joinColumns = @JoinColumn(name = "part_id"),
+            inverseJoinColumns = @JoinColumn(name = "fastener_id")
+    )
+    protected List<Fastener> fasteners = new ArrayList<>();
+
+    @ManyToMany()
+    @JoinTable(
+            name = "part_tools",
+            joinColumns = @JoinColumn(name = "part_id"),
+            inverseJoinColumns = @JoinColumn(name = "tool_id")
+    )
+    protected List<Tool> tools = new ArrayList<>();
+
+    @ManyToMany()
+    @JoinTable(
+            name = "part_consumables",
+            joinColumns = @JoinColumn(name = "part_id"),
+            inverseJoinColumns = @JoinColumn(name = "consumable_id")
+    )
+    protected List<Consumable> consumables = new ArrayList<>();
+
+
     @Column(name = "partNumber")
     protected String partNumber;
     @Column(name = "serviceList")
@@ -95,7 +131,37 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         this.updatePartListObject(currentPartList);
     }
 
+    public List<Document> getDocuments() {
+        return documents;
+    }
 
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
+    }
+
+    public List<Fastener> getFasteners() {
+        return fasteners;
+    }
+
+    public void setFasteners(List<Fastener> fasteners) {
+        this.fasteners = fasteners;
+    }
+
+    public List<Tool> getTools() {
+        return tools;
+    }
+
+    public void setTools(List<Tool> tools) {
+        this.tools = tools;
+    }
+
+    public List<Consumable> getConsumables() {
+        return consumables;
+    }
+
+    public void setConsumables(List<Consumable> consumables) {
+        this.consumables = consumables;
+    }
 
     @Override
     public boolean equals(Object o) {
