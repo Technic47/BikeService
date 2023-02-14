@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
+import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.showable.Document;
@@ -15,7 +16,7 @@ import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.services.*;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
+import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @Component
 @Scope("prototype")
-public class ServiceableController<T extends AbstractServiceableEntity, S extends CommonAbstractEntityService<T>>
+public class ServiceableController<T extends AbstractServiceableEntity, S extends CommonServiceableEntityService<T>>
         extends UsableController<T, S> {
     protected DocumentService documentDAO;
     protected FastenerService fastenerDAO;
@@ -73,17 +74,22 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                                     @RequestParam(value = "toolId", required = false) Long toolId,
                                     @RequestParam(value = "consumableId", required = false) Long consumableId,
                                     @RequestParam(value = "partId", required = false) Long partId,
-                                    @RequestParam(value = "partIdDel", required = false) Long partIdDel,
+//                                    @RequestParam(value = "partIdDel", required = false) Long partIdDel,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Model model) {
+        PartEntity entity;
         switch (action) {
             case "finish":
                 return this.update(item, principal, bindingResult, file, id);
             case "addDocument":
-                item.addToServiceList(documentDAO.show(documentId));
+                entity = new PartEntity(thisObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
+                dao.addToServiceList(item, entity);
+//                item.addToServiceList(documentDAO.show(documentId));
                 break;
             case "delDocument":
-                item.delFromServiceList(documentDAO.show(documentId));
+                entity = new PartEntity(thisObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
+                dao.delFromServiceList(item, entity);
+//                item.delFromServiceList(documentDAO.show(documentId));
                 break;
             case "addFastener":
                 item.addToServiceList(fastenerDAO.show(fastenerId));
@@ -115,7 +121,13 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
     }
 
     private void updateCacheList(Long id) {
-        this.cacheList = dao.show(id).returnServiceListObject();
+        ServiceList newCacheList = new ServiceList();
+        List<PartEntity> entityList = dao.show(id).getLinkedItems();
+        for (PartEntity entity : entityList) {
+            newCacheList.addIdToList(entity);
+        }
+        this.cacheList = newCacheList;
+//        this.cacheList = dao.show(id).returnServiceListObject();
     }
 
     private void updateCachePartList(Long id) {

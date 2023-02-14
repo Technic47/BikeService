@@ -30,7 +30,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 @Scope("prototype")
 public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>>
         extends AbstractController {
-    protected final CommonAbstractEntityService<T> dao;
+    protected final S dao;
     protected T thisObject;
     protected String currentObjectName;
     protected String category;

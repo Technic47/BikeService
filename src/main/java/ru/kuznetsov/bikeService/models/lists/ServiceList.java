@@ -52,35 +52,37 @@ public class ServiceList {
 
     public void addToList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
-            case "Tool":
-                this.addTool(obj.getId());
-                break;
-            case "Fastener":
-                this.addFastener(obj.getId());
-                break;
-            case "Consumable":
-                this.addConsumable(obj.getId());
-                break;
-            case "Document":
-                this.addDocument(obj.getId());
-                break;
+            case "Tool" -> this.addTool(obj.getId());
+            case "Fastener" -> this.addFastener(obj.getId());
+            case "Consumable" -> this.addConsumable(obj.getId());
+            case "Document" -> this.addDocument(obj.getId());
         }
     }
 
     public void delFromList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
-            case "Tool":
-                this.delTool(obj.getId());
-                break;
-            case "Fastener":
-                this.delFastener(obj.getId());
-                break;
-            case "Consumable":
-                this.delConsumable(obj.getId());
-                break;
-            case "Document":
-                this.delDocument(obj.getId());
-                break;
+            case "Tool" -> this.delTool(obj.getId());
+            case "Fastener" -> this.delFastener(obj.getId());
+            case "Consumable" -> this.delConsumable(obj.getId());
+            case "Document" -> this.delDocument(obj.getId());
+        }
+    }
+
+    public void addIdToList(PartEntity obj) {
+        switch (obj.getType()) {
+            case "Tool" -> this.addTool(obj.getItem_id());
+            case "Fastener" -> this.addFastener(obj.getItem_id());
+            case "Consumable" -> this.addConsumable(obj.getItem_id());
+            case "Document" -> this.addDocument(obj.getItem_id());
+        }
+    }
+
+    public void delIdFromList(PartEntity obj) {
+        switch (obj.getType()) {
+            case "Tool" -> this.delTool(obj.getItem_id());
+            case "Fastener" -> this.delFastener(obj.getItem_id());
+            case "Consumable" -> this.delConsumable(obj.getItem_id());
+            case "Document" -> this.delDocument(obj.getItem_id());
         }
     }
 

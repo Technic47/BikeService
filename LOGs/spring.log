@@ -74,7 +74,7 @@
 2023-02-13T18:29:15.119+03:00  INFO 30352 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T18:29:15.260+03:00  WARN 30352 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T18:29:15.631+03:00  INFO 30352 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T18:29:15.868+03:00 ERROR 30352 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T18:29:15.868+03:00 ERROR 30352 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T18:29:15.871+03:00  WARN 30352 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T18:29:15.873+03:00  INFO 30352 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T18:29:15.886+03:00  INFO 30352 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -152,7 +152,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -165,11 +165,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -213,7 +213,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T18:30:55.602+03:00  INFO 5276 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T18:30:55.722+03:00  WARN 5276 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T18:30:56.133+03:00  INFO 5276 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T18:30:56.329+03:00 ERROR 5276 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T18:30:56.329+03:00 ERROR 5276 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T18:30:56.332+03:00  WARN 5276 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T18:30:56.334+03:00  INFO 5276 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T18:30:56.346+03:00  INFO 5276 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -291,7 +291,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -304,11 +304,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -352,7 +352,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T18:32:37.557+03:00  INFO 21292 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T18:32:37.662+03:00  WARN 21292 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T18:32:37.999+03:00  INFO 21292 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T18:32:38.190+03:00 ERROR 21292 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T18:32:38.190+03:00 ERROR 21292 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T18:32:38.193+03:00  WARN 21292 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T18:32:38.195+03:00  INFO 21292 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T18:32:38.208+03:00  INFO 21292 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -430,7 +430,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -443,11 +443,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -512,7 +512,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T18:34:11.621+03:00  INFO 15404 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T18:34:11.744+03:00  WARN 15404 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T18:34:12.107+03:00  INFO 15404 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T18:34:12.334+03:00 ERROR 15404 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T18:34:12.334+03:00 ERROR 15404 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T18:34:12.338+03:00  WARN 15404 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T18:34:12.340+03:00  INFO 15404 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T18:34:12.352+03:00  INFO 15404 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -590,7 +590,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -603,11 +603,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -672,7 +672,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T18:39:23.397+03:00  INFO 30352 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T18:39:23.505+03:00  WARN 30352 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T18:39:23.925+03:00  INFO 30352 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T18:39:24.191+03:00 ERROR 30352 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T18:39:24.191+03:00 ERROR 30352 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T18:39:24.195+03:00  WARN 30352 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T18:39:24.198+03:00  INFO 30352 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T18:39:24.214+03:00  INFO 30352 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -750,7 +750,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -763,11 +763,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -811,7 +811,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T18:40:11.149+03:00  INFO 14300 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T18:40:11.275+03:00  WARN 14300 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T18:40:11.706+03:00  INFO 14300 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T18:40:11.917+03:00 ERROR 14300 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T18:40:11.917+03:00 ERROR 14300 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T18:40:11.920+03:00  WARN 14300 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T18:40:11.922+03:00  INFO 14300 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T18:40:11.934+03:00  INFO 14300 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -889,7 +889,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -902,11 +902,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -1784,7 +1784,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T19:21:48.368+03:00  INFO 12244 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T19:21:48.493+03:00  WARN 12244 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T19:21:48.875+03:00  INFO 12244 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T19:21:49.105+03:00 ERROR 12244 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T19:21:49.105+03:00 ERROR 12244 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T19:21:49.108+03:00  WARN 12244 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T19:21:49.110+03:00  INFO 12244 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T19:21:49.123+03:00  INFO 12244 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -1862,7 +1862,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -1875,11 +1875,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -1923,7 +1923,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T19:23:12.912+03:00  INFO 6620 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T19:23:13.032+03:00  WARN 6620 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T19:23:13.415+03:00  INFO 6620 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T19:23:13.620+03:00 ERROR 6620 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T19:23:13.620+03:00 ERROR 6620 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T19:23:13.624+03:00  WARN 6620 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T19:23:13.626+03:00  INFO 6620 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T19:23:13.639+03:00  INFO 6620 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -2001,7 +2001,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -2014,11 +2014,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -2062,7 +2062,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T19:27:15.250+03:00  INFO 10360 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T19:27:15.385+03:00  WARN 10360 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T19:27:15.766+03:00  INFO 10360 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T19:27:15.985+03:00 ERROR 10360 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T19:27:15.985+03:00 ERROR 10360 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T19:27:15.988+03:00  WARN 10360 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T19:27:15.990+03:00  INFO 10360 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T19:27:16.002+03:00  INFO 10360 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -2140,7 +2140,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -2153,11 +2153,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -2201,7 +2201,7 @@ Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationExceptio
 2023-02-13T19:31:50.462+03:00  INFO 27792 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T19:31:50.621+03:00  WARN 27792 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T19:31:51.017+03:00  INFO 27792 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T19:31:51.243+03:00 ERROR 27792 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T19:31:51.243+03:00 ERROR 27792 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T19:31:51.246+03:00  WARN 27792 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T19:31:51.248+03:00  INFO 27792 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T19:31:51.260+03:00  INFO 27792 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -2279,7 +2279,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -2292,11 +2292,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -3828,7 +3828,7 @@ Caused by: org.hibernate.HibernateException: No type mapping for org.hibernate.t
 2023-02-13T20:16:23.349+03:00  INFO 26156 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
 2023-02-13T20:16:23.480+03:00  WARN 26156 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
 2023-02-13T20:16:23.889+03:00  INFO 26156 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
-2023-02-13T20:16:24.100+03:00 ERROR 26156 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+2023-02-13T20:16:24.100+03:00 ERROR 26156 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 2023-02-13T20:16:24.104+03:00  WARN 26156 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfiguration' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\config\SecurityConfiguration.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes\ru\kuznetsov\bikeService\services\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in ru.kuznetsov.bikeService.repositories.UserRepository defined in @EnableJpaRepositories declared on SpringConfig: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
 2023-02-13T20:16:24.106+03:00  INFO 26156 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
 2023-02-13T20:16:24.119+03:00  INFO 26156 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
@@ -3906,7 +3906,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 47 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [ru/kuznetsov/bikeService/config/SpringConfig.class]: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:491) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1324) ~[spring-beans-6.0.3.jar:6.0.3]
@@ -3919,11 +3919,11 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 59 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [jakarta.persistence.EntityManagerFactory]: Factory method 'entityManagerFactory' threw exception with message: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.0.3.jar:6.0.3]
 	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.0.3.jar:6.0.3]
 	... 69 common frames omitted
-Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartServiceList`
+Caused by: org.hibernate.type.descriptor.java.spi.JdbcTypeRecommendationException: Could not determine recommended JdbcType for `ru.kuznetsov.bikeService.models.lists.PartEntity`
 	at org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType.getRecommendedJdbcType(UnknownBasicJavaType.java:37) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.type.descriptor.java.spi.BasicCollectionJavaType.getRecommendedJdbcType(BasicCollectionJavaType.java:70) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
 	at org.hibernate.boot.model.process.internal.InferredBasicValueResolver.from(InferredBasicValueResolver.java:222) ~[hibernate-core-6.1.6.Final.jar:6.1.6.Final]
@@ -9982,3 +9982,309 @@ java.util.NoSuchElementException: No value present
 2023-02-13T23:42:07.458+03:00  INFO 20796 --- [http-nio-8080-exec-3] BikeServiceLogger                        : bikes are shown to pavel
 2023-02-13T23:42:08.141+03:00  INFO 20796 --- [http-nio-8080-exec-4] BikeServiceLogger                        : bikes 4 was shown to 'pavel'
 2023-02-13T23:42:15.217+03:00  INFO 20796 --- [http-nio-8080-exec-6] BikeServiceLogger                        : bikes are shown to pavel
+2023-02-14T11:59:10.944+03:00  INFO 17816 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 17816 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-14T11:59:10.946+03:00  INFO 17816 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-14T11:59:11.611+03:00  INFO 17816 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14T11:59:11.687+03:00  INFO 17816 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 9 JPA repository interfaces.
+2023-02-14T11:59:12.263+03:00  INFO 17816 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-14T11:59:12.271+03:00  INFO 17816 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-14T11:59:12.271+03:00  INFO 17816 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-14T11:59:12.357+03:00  INFO 17816 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-14T11:59:12.357+03:00  INFO 17816 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1374 ms
+2023-02-14T11:59:12.541+03:00  INFO 17816 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-14T11:59:12.600+03:00  INFO 17816 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-14T11:59:12.746+03:00  WARN 17816 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-14T11:59:13.149+03:00  INFO 17816 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-14T11:59:14.304+03:00  INFO 17816 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-14T11:59:14.316+03:00  INFO 17816 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-14T11:59:14.539+03:00  WARN 17816 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-14T11:59:14.718+03:00  WARN 17816 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-14T11:59:15.007+03:00  WARN 17816 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-14T11:59:15.218+03:00  INFO 17816 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@69ae7632, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1bbfd42f, org.springframework.security.web.context.SecurityContextHolderFilter@7b6b99c5, org.springframework.security.web.header.HeaderWriterFilter@6ec77cab, org.springframework.security.web.csrf.CsrfFilter@17541204, org.springframework.security.web.authentication.logout.LogoutFilter@79454d8e, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2809e38a, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@7602c65d, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@65f96d58, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@72d7afff, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7ef3aa21, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@48a61e38, org.springframework.security.web.access.ExceptionTranslationFilter@35b79b1f, org.springframework.security.web.access.intercept.AuthorizationFilter@1a56f608]
+2023-02-14T11:59:15.546+03:00  INFO 17816 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-14T11:59:15.556+03:00  INFO 17816 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 5.013 seconds (process running for 5.694)
+2023-02-14T12:11:57.378+03:00  INFO 15980 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 15980 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-14T12:11:57.379+03:00  INFO 15980 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-14T12:11:57.839+03:00  INFO 15980 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14T12:11:57.899+03:00  INFO 15980 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 52 ms. Found 9 JPA repository interfaces.
+2023-02-14T12:11:58.416+03:00  INFO 15980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-14T12:11:58.423+03:00  INFO 15980 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-14T12:11:58.423+03:00  INFO 15980 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-14T12:11:58.500+03:00  INFO 15980 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-14T12:11:58.501+03:00  INFO 15980 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1083 ms
+2023-02-14T12:11:58.652+03:00  INFO 15980 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-14T12:11:58.707+03:00  INFO 15980 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-14T12:11:58.852+03:00  WARN 15980 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-14T12:11:59.246+03:00  INFO 15980 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-14T12:12:00.373+03:00  INFO 15980 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-14T12:12:00.388+03:00  INFO 15980 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-14T12:12:00.601+03:00  WARN 15980 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-14T12:12:00.807+03:00  WARN 15980 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-14T12:12:01.103+03:00  WARN 15980 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-14T12:12:01.332+03:00  INFO 15980 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1e2c0292, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@69988d42, org.springframework.security.web.context.SecurityContextHolderFilter@c7a1db6, org.springframework.security.web.header.HeaderWriterFilter@5a8835c6, org.springframework.security.web.csrf.CsrfFilter@36f80ceb, org.springframework.security.web.authentication.logout.LogoutFilter@7eb94590, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2b9370cc, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3183a37c, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@69ae7632, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7b6b99c5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7b43f95c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1bbfd42f, org.springframework.security.web.access.ExceptionTranslationFilter@37816ea6, org.springframework.security.web.access.intercept.AuthorizationFilter@78ab63b5]
+2023-02-14T12:12:01.626+03:00  INFO 15980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-14T12:12:01.635+03:00  INFO 15980 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.614 seconds (process running for 5.192)
+2023-02-14T12:31:59.446+03:00  INFO 28676 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 28676 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-14T12:31:59.448+03:00  INFO 28676 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-14T12:31:59.896+03:00  INFO 28676 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14T12:31:59.965+03:00  INFO 28676 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 9 JPA repository interfaces.
+2023-02-14T12:32:00.506+03:00  INFO 28676 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-14T12:32:00.514+03:00  INFO 28676 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-14T12:32:00.514+03:00  INFO 28676 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-14T12:32:00.618+03:00  INFO 28676 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-14T12:32:00.618+03:00  INFO 28676 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1131 ms
+2023-02-14T12:32:00.776+03:00  INFO 28676 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-14T12:32:00.819+03:00  INFO 28676 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-14T12:32:00.953+03:00  WARN 28676 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-14T12:32:01.328+03:00  INFO 28676 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-14T12:32:02.426+03:00  INFO 28676 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-14T12:32:02.435+03:00  INFO 28676 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-14T12:32:02.713+03:00  WARN 28676 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-14T12:32:02.886+03:00  WARN 28676 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-14T12:32:03.114+03:00  WARN 28676 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-14T12:32:03.311+03:00  INFO 28676 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@37d8562f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@19656e21, org.springframework.security.web.context.SecurityContextHolderFilter@311453ab, org.springframework.security.web.header.HeaderWriterFilter@72d7afff, org.springframework.security.web.csrf.CsrfFilter@4987142d, org.springframework.security.web.authentication.logout.LogoutFilter@78ab63b5, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1e2c0292, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@5c261c74, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@614ae4eb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2dd4a7a9, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3183a37c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2cd31214, org.springframework.security.web.access.ExceptionTranslationFilter@c7a1db6, org.springframework.security.web.access.intercept.AuthorizationFilter@71806c64]
+2023-02-14T12:32:03.596+03:00  INFO 28676 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-14T12:32:03.606+03:00  INFO 28676 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.523 seconds (process running for 5.085)
+2023-02-14T12:32:14.715+03:00  INFO 28676 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-14T12:32:14.716+03:00  INFO 28676 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-02-14T12:32:14.717+03:00  INFO 28676 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-02-14T12:32:22.026+03:00  INFO 28676 --- [http-nio-8080-exec-9] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:32:22.205+03:00  WARN 28676 --- [http-nio-8080-exec-10] o.s.web.servlet.PageNotFound             : No mapping for GET /favicon.ico
+2023-02-14T12:32:23.805+03:00  INFO 28676 --- [http-nio-8080-exec-2] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:32:24.753+03:00  INFO 28676 --- [http-nio-8080-exec-1] BikeServiceLogger                        : parts 7 was shown to 'pavel'
+2023-02-14T12:32:26.625+03:00  INFO 28676 --- [http-nio-8080-exec-4] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:32:27.695+03:00  INFO 28676 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:32:28.407+03:00  INFO 28676 --- [http-nio-8080-exec-6] BikeServiceLogger                        : bikes are shown to pavel
+2023-02-14T12:32:29.362+03:00  INFO 28676 --- [http-nio-8080-exec-7] BikeServiceLogger                        : bikes 4 was shown to 'pavel'
+2023-02-14T12:32:30.399+03:00  INFO 28676 --- [http-nio-8080-exec-9] BikeServiceLogger                        : bikes are shown to pavel
+2023-02-14T12:32:30.575+03:00  INFO 28676 --- [http-nio-8080-exec-10] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:32:31.666+03:00  INFO 28676 --- [http-nio-8080-exec-2] BikeServiceLogger                        : manufacturers are shown to pavel
+2023-02-14T12:32:32.534+03:00  INFO 28676 --- [http-nio-8080-exec-1] BikeServiceLogger                        : manufacturers 20 was shown to 'pavel'
+2023-02-14T12:32:33.163+03:00  INFO 28676 --- [http-nio-8080-exec-4] BikeServiceLogger                        : manufacturers are shown to pavel
+2023-02-14T12:32:33.310+03:00  INFO 28676 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:32:34.329+03:00  INFO 28676 --- [http-nio-8080-exec-6] BikeServiceLogger                        : documents are shown to pavel
+2023-02-14T12:32:34.999+03:00  INFO 28676 --- [http-nio-8080-exec-7] BikeServiceLogger                        : documents 50 was shown to 'pavel'
+2023-02-14T12:32:36.023+03:00  INFO 28676 --- [http-nio-8080-exec-9] BikeServiceLogger                        : documents are shown to pavel
+2023-02-14T12:32:36.188+03:00  INFO 28676 --- [http-nio-8080-exec-10] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:32:37.257+03:00  INFO 28676 --- [http-nio-8080-exec-2] BikeServiceLogger                        : tools are shown to pavel
+2023-02-14T12:32:37.903+03:00  INFO 28676 --- [http-nio-8080-exec-1] BikeServiceLogger                        : tools 14 was shown to 'pavel'
+2023-02-14T12:32:38.915+03:00  INFO 28676 --- [http-nio-8080-exec-4] BikeServiceLogger                        : tools are shown to pavel
+2023-02-14T12:32:39.002+03:00  INFO 28676 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:38:48.764+03:00  INFO 27552 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 27552 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-14T12:38:48.766+03:00  INFO 27552 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-14T12:38:49.196+03:00  INFO 27552 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14T12:38:49.256+03:00  INFO 27552 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 52 ms. Found 9 JPA repository interfaces.
+2023-02-14T12:38:49.781+03:00  INFO 27552 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-14T12:38:49.788+03:00  INFO 27552 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-14T12:38:49.788+03:00  INFO 27552 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-14T12:38:49.870+03:00  INFO 27552 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-14T12:38:49.871+03:00  INFO 27552 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1065 ms
+2023-02-14T12:38:50.034+03:00  INFO 27552 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-14T12:38:50.082+03:00  INFO 27552 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-14T12:38:50.202+03:00  WARN 27552 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-14T12:38:50.581+03:00  INFO 27552 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-14T12:38:51.757+03:00  INFO 27552 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-14T12:38:51.766+03:00  INFO 27552 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-14T12:38:51.969+03:00  WARN 27552 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-14T12:38:52.150+03:00  WARN 27552 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-14T12:38:52.402+03:00  WARN 27552 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-14T12:38:52.574+03:00  INFO 27552 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@72d7afff, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c41f6a0, org.springframework.security.web.context.SecurityContextHolderFilter@7bbe532b, org.springframework.security.web.header.HeaderWriterFilter@7bd7c4cf, org.springframework.security.web.csrf.CsrfFilter@1fb00a6d, org.springframework.security.web.authentication.logout.LogoutFilter@67376bae, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5a8835c6, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6c9b6332, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@7b43f95c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@abe7d36, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@63ccb1b2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@311453ab, org.springframework.security.web.access.ExceptionTranslationFilter@70940cb8, org.springframework.security.web.access.intercept.AuthorizationFilter@664083f6]
+2023-02-14T12:38:52.902+03:00  INFO 27552 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-14T12:38:52.910+03:00  INFO 27552 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.505 seconds (process running for 5.054)
+2023-02-14T12:39:01.134+03:00  INFO 28244 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 28244 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-14T12:39:01.136+03:00  INFO 28244 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-14T12:39:01.571+03:00  INFO 28244 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14T12:39:01.634+03:00  INFO 28244 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55 ms. Found 9 JPA repository interfaces.
+2023-02-14T12:39:02.165+03:00  INFO 28244 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-14T12:39:02.172+03:00  INFO 28244 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-14T12:39:02.172+03:00  INFO 28244 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-14T12:39:02.258+03:00  INFO 28244 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-14T12:39:02.258+03:00  INFO 28244 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1083 ms
+2023-02-14T12:39:02.442+03:00  INFO 28244 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-14T12:39:02.533+03:00  INFO 28244 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-14T12:39:02.680+03:00  WARN 28244 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-14T12:39:03.117+03:00  INFO 28244 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-14T12:39:04.241+03:00  INFO 28244 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-14T12:39:04.250+03:00  INFO 28244 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-14T12:39:04.499+03:00  WARN 28244 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-14T12:39:04.691+03:00  WARN 28244 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-14T12:39:04.960+03:00  WARN 28244 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-14T12:39:05.155+03:00  INFO 28244 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@72d7afff, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c41f6a0, org.springframework.security.web.context.SecurityContextHolderFilter@7bbe532b, org.springframework.security.web.header.HeaderWriterFilter@7bd7c4cf, org.springframework.security.web.csrf.CsrfFilter@1fb00a6d, org.springframework.security.web.authentication.logout.LogoutFilter@67376bae, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5a8835c6, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6c9b6332, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@7b43f95c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@abe7d36, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@63ccb1b2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@311453ab, org.springframework.security.web.access.ExceptionTranslationFilter@70940cb8, org.springframework.security.web.access.intercept.AuthorizationFilter@664083f6]
+2023-02-14T12:39:05.447+03:00  INFO 28244 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-14T12:39:05.456+03:00  INFO 28244 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.704 seconds (process running for 5.261)
+2023-02-14T12:39:16.636+03:00  INFO 28244 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-14T12:39:16.636+03:00  INFO 28244 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-02-14T12:39:16.637+03:00  INFO 28244 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-02-14T12:39:23.972+03:00  INFO 28244 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:39:26.089+03:00  INFO 28244 --- [http-nio-8080-exec-6] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:39:27.026+03:00  INFO 28244 --- [http-nio-8080-exec-7] BikeServiceLogger                        : parts 7 was shown to 'pavel'
+2023-02-14T12:39:28.892+03:00  WARN 28244 --- [http-nio-8080-exec-9] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.controllers.ServiceableController
+2023-02-14T12:39:55.872+03:00  INFO 28244 --- [http-nio-8080-exec-3] BikeServiceLogger                        : Part id:7 was edited by 'pavel'
+2023-02-14T12:39:55.966+03:00  INFO 28244 --- [http-nio-8080-exec-3] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:39:59.000+03:00  INFO 28244 --- [http-nio-8080-exec-4] BikeServiceLogger                        : parts 6 was shown to 'pavel'
+2023-02-14T12:40:10.273+03:00  INFO 28244 --- [http-nio-8080-exec-9] BikeServiceLogger                        : Part id:6 was edited by 'pavel'
+2023-02-14T12:40:10.374+03:00  INFO 28244 --- [http-nio-8080-exec-9] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:40:11.663+03:00  INFO 28244 --- [http-nio-8080-exec-10] BikeServiceLogger                        : parts 6 was shown to 'pavel'
+2023-02-14T12:51:50.337+03:00  INFO 11216 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 11216 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-14T12:51:50.339+03:00  INFO 11216 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-14T12:51:50.786+03:00  INFO 11216 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14T12:51:50.866+03:00  INFO 11216 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 73 ms. Found 9 JPA repository interfaces.
+2023-02-14T12:51:51.421+03:00  INFO 11216 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-14T12:51:51.429+03:00  INFO 11216 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-14T12:51:51.430+03:00  INFO 11216 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-14T12:51:51.528+03:00  INFO 11216 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-14T12:51:51.530+03:00  INFO 11216 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1154 ms
+2023-02-14T12:51:51.701+03:00  INFO 11216 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-14T12:51:51.751+03:00  INFO 11216 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-14T12:51:51.881+03:00  WARN 11216 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-14T12:51:52.259+03:00  INFO 11216 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-14T12:51:53.349+03:00  INFO 11216 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-14T12:51:53.358+03:00  INFO 11216 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-14T12:51:53.601+03:00  WARN 11216 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-14T12:51:53.791+03:00  WARN 11216 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-14T12:51:54.035+03:00  WARN 11216 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-14T12:51:54.248+03:00  INFO 11216 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@227fc322, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@63053b71, org.springframework.security.web.context.SecurityContextHolderFilter@7668f8fd, org.springframework.security.web.header.HeaderWriterFilter@31a80c88, org.springframework.security.web.csrf.CsrfFilter@35b79b1f, org.springframework.security.web.authentication.logout.LogoutFilter@69ae7632, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2cd31214, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3777fc44, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@4687c184, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6785786d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@d7c4fcb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@65f3f9e2, org.springframework.security.web.access.ExceptionTranslationFilter@49392256, org.springframework.security.web.access.intercept.AuthorizationFilter@614ae4eb]
+2023-02-14T12:51:54.557+03:00  INFO 11216 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-14T12:51:54.565+03:00  INFO 11216 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.581 seconds (process running for 5.159)
+2023-02-14T12:52:00.561+03:00  INFO 11216 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-14T12:52:00.562+03:00  INFO 11216 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-02-14T12:52:00.563+03:00  INFO 11216 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-02-14T12:52:06.177+03:00  INFO 11216 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:52:07.765+03:00  INFO 11216 --- [http-nio-8080-exec-6] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:52:09.421+03:00 ERROR 11216 --- [http-nio-8080-exec-7] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.lists.ServiceList.getDocsList()" because "this.cacheList" is null] with root cause
+
+java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.lists.ServiceList.getDocsList()" because "this.cacheList" is null
+	at ru.kuznetsov.bikeService.controllers.ServiceableController.getObjectDocuments(ServiceableController.java:162) ~[classes/:na]
+	at ru.kuznetsov.bikeService.controllers.ServiceableController.addItemShowablesToModel(ServiceableController.java:138) ~[classes/:na]
+	at ru.kuznetsov.bikeService.controllers.ServiceableController.show(ServiceableController.java:51) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:578) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:207) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:152) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1080) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:973) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:705) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:814) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:223) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter.doFilterInternal(DefaultLogoutPageGeneratingFilter.java:58) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:188) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:174) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:116) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:351) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:119) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:400) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:859) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1734) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]
+
+2023-02-14T12:53:45.715+03:00  INFO 29792 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 29792 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-14T12:53:45.717+03:00  INFO 29792 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-14T12:53:46.142+03:00  INFO 29792 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14T12:53:46.210+03:00  INFO 29792 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 60 ms. Found 9 JPA repository interfaces.
+2023-02-14T12:53:46.754+03:00  INFO 29792 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-14T12:53:46.762+03:00  INFO 29792 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-14T12:53:46.762+03:00  INFO 29792 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-14T12:53:46.840+03:00  INFO 29792 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-14T12:53:46.840+03:00  INFO 29792 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1085 ms
+2023-02-14T12:53:46.979+03:00  INFO 29792 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-14T12:53:47.030+03:00  INFO 29792 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-14T12:53:47.153+03:00  WARN 29792 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-14T12:53:47.578+03:00  INFO 29792 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-14T12:53:48.641+03:00  INFO 29792 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-14T12:53:48.655+03:00  INFO 29792 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-14T12:53:48.893+03:00  WARN 29792 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-14T12:53:49.072+03:00  WARN 29792 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-14T12:53:49.338+03:00  WARN 29792 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-14T12:53:49.525+03:00  INFO 29792 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5c41f6a0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7b43f95c, org.springframework.security.web.context.SecurityContextHolderFilter@3e0a112f, org.springframework.security.web.header.HeaderWriterFilter@5b9df3b3, org.springframework.security.web.csrf.CsrfFilter@1c65ec63, org.springframework.security.web.authentication.logout.LogoutFilter@6d6d81c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@67216c33, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@384b3fe7, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@311453ab, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7da1ef46, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1165a952, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7ef3aa21, org.springframework.security.web.access.ExceptionTranslationFilter@47fce2c4, org.springframework.security.web.access.intercept.AuthorizationFilter@5a8835c6]
+2023-02-14T12:53:49.831+03:00  INFO 29792 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-14T12:53:49.839+03:00  INFO 29792 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.482 seconds (process running for 5.017)
+2023-02-14T12:53:57.720+03:00  INFO 29792 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-14T12:53:57.720+03:00  INFO 29792 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-02-14T12:53:57.721+03:00  INFO 29792 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-02-14T12:54:03.389+03:00  INFO 29792 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-14T12:54:04.744+03:00  INFO 29792 --- [http-nio-8080-exec-6] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:54:05.429+03:00  INFO 29792 --- [http-nio-8080-exec-7] BikeServiceLogger                        : parts 7 was shown to 'pavel'
+2023-02-14T12:54:06.338+03:00  INFO 29792 --- [http-nio-8080-exec-9] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:54:07.241+03:00  INFO 29792 --- [http-nio-8080-exec-10] BikeServiceLogger                        : parts 6 was shown to 'pavel'
+2023-02-14T12:54:08.727+03:00  WARN 29792 --- [http-nio-8080-exec-2] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.controllers.ServiceableController
+2023-02-14T12:54:26.592+03:00  INFO 29792 --- [http-nio-8080-exec-7] BikeServiceLogger                        : Part id:6 was edited by 'pavel'
+2023-02-14T12:54:26.683+03:00  INFO 29792 --- [http-nio-8080-exec-7] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:54:30.660+03:00  INFO 29792 --- [http-nio-8080-exec-8] BikeServiceLogger                        : parts 6 was shown to 'pavel'
+2023-02-14T12:55:17.432+03:00  INFO 29792 --- [http-nio-8080-exec-3] BikeServiceLogger                        : Part id:6 was edited by 'pavel'
+2023-02-14T12:55:17.529+03:00  INFO 29792 --- [http-nio-8080-exec-3] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:55:28.956+03:00  INFO 29792 --- [http-nio-8080-exec-4] BikeServiceLogger                        : parts 8 was shown to 'pavel'
+2023-02-14T12:55:33.574+03:00  WARN 29792 --- [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "link"]
+2023-02-14T12:55:36.884+03:00  INFO 29792 --- [http-nio-8080-exec-7] BikeServiceLogger                        : parts 8 was shown to 'pavel'
+2023-02-14T12:56:03.351+03:00  INFO 29792 --- [http-nio-8080-exec-3] BikeServiceLogger                        : Part id:8 was edited by 'pavel'
+2023-02-14T12:56:03.436+03:00  INFO 29792 --- [http-nio-8080-exec-3] BikeServiceLogger                        : parts are shown to pavel
+2023-02-14T12:56:24.376+03:00  INFO 29792 --- [http-nio-8080-exec-4] BikeServiceLogger                        : parts 8 was shown to 'pavel'
+2023-02-14T12:56:27.565+03:00  INFO 29792 --- [http-nio-8080-exec-6] BikeServiceLogger                        : documents 50 was shown to 'pavel'
+2023-02-14T12:56:30.081+03:00  INFO 29792 --- [http-nio-8080-exec-8] BikeServiceLogger                        : parts 8 was shown to 'pavel'
