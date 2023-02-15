@@ -34,7 +34,7 @@
     <div th:text="'Picture`s ID - ' + ${serviceObject.getPicture()}"></div>
     <div th:text="'Manufacturer`s ID - ' + ${serviceObject.getManufacturer()}"></div>
 <!--    <div th:text="'ServiceList - ' + ${serviceObject.getServiceList()}"></div>-->
-    <div th:text="'PartList - ' + ${serviceObject.getPartList()}"></div>
+<!--    <div th:text="'PartList - ' + ${serviceObject.getPartList()}"></div>-->
 </div>
 
 <form th:action="@{/{link}/{id}/edit(link=${category}, id=${serviceObject.getId()})}">

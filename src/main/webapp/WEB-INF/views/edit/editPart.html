@@ -47,12 +47,6 @@
     <div sec:authorize="hasRole('ROLE_ADMIN')">
         <label for="creator">Enter creator:</label>
         <input id="creator" th:field="*{creator}" type="text"/>
-
-<!--        <label for="serviceList">ServiceList:</label>-->
-<!--        <input id="serviceList" th:field="*{serviceList}" type="text"/>-->
-
-        <label for="partList">PartList:</label>
-        <input id="partList" th:field="*{partList}" type="text"/>
     </div>
     <br/>
     <label for="picture">Upload new picture:</label>
@@ -109,6 +103,11 @@
                     th:value="${item.getId()}">
             </option>
         </select>
+        <br/>
+
+        <label for="docVol">Enter Document quantity:</label>
+        <input id="docVol" th:name="docVol" type="text"/>
+
         <input th:name="action" th:type="submit" th:value="addDocument"/>
         <input th:name="action" th:type="submit" th:value="delDocument"/>
     </div>

@@ -20,6 +20,7 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityServic
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -44,9 +45,7 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                        Principal principal,
                        Model model) {
         this.updateCacheList(id);
-//        this.updateCachePartList(id);
-//        this.addItemServiceableToModel(model);
-        this.addItemShowablesToModel(model);
+        this.addLinkedItemsToModel(model);
         return super.show(id, principal, model);
     }
 
@@ -55,9 +54,7 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
     public String edit(Model model, @PathVariable Long id) {
         this.updateCacheList(id);
         this.addAllShowablesToModel(model);
-        this.addItemShowablesToModel(model);
-//        this.updateCachePartList(id);
-//        this.addItemServiceableToModel(model);
+        this.addLinkedItemsToModel(model);
         this.addAllServicableToModel(model);
         return super.edit(model, id);
     }
@@ -139,12 +136,13 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
         this.cacheList = newCacheList;
     }
 
-//    private void updateCachePartList(Long id) {
+    @Deprecated
+    private void updateCachePartList(Long id) {
 //        this.cachePartList = dao.show(id).returnPartListObject();
-//    }
+    }
 
 
-    private void addItemShowablesToModel(Model model) {
+    private void addLinkedItemsToModel(Model model) {
         model.addAttribute("documents", this.cacheList.getDocsList());
         model.addAttribute("fasteners", this.cacheList.getFastenerList());
         model.addAttribute("tools", this.cacheList.getToolList());
@@ -159,7 +157,7 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
         model.addAttribute("allConsumables", consumableDAO.index());
     }
 
-
+    @Deprecated
     private void addItemServiceableToModel(Model model) {
 //        model.addAttribute("parts", this.cacheList.getPartList());
     }
@@ -168,33 +166,34 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
         model.addAttribute("allParts", partDAO.index());
     }
 
-//    private List<Document> getObjectDocuments() {
-//        return new ArrayList<>(cacheList.getDocsList());
-//    }
-//
-//    private List<Fastener> getObjectFasteners() {
-//        return new ArrayList<>(cacheList.getFastenerList());
-//    }
-//
-//    private List<Tool> getObjectTools() {
-//        return new ArrayList<>(cacheList.getToolList());
-//    }
-//
-//    private List<Consumable> getObjectConsumables() {
-//        return new ArrayList<>(cacheList.getConsumableList());
-//    }
-//
-//    private List<Part> getObjectParts() {
-//        return new ArrayList<>(cacheList.getPartList());
-//    }
+    @Deprecated
+    private List<Document> getObjectDocuments() {
+        return new ArrayList<>(cacheList.getDocsList());
+    }
 
-//    private List<Part> getObjectParts() {
-//        List<Part> partsList = new ArrayList<>();
+    @Deprecated
+    private List<Fastener> getObjectFasteners() {
+        return new ArrayList<>(cacheList.getFastenerList());
+    }
+
+    @Deprecated
+    private List<Tool> getObjectTools() {
+        return new ArrayList<>(cacheList.getToolList());
+    }
+
+    @Deprecated
+    private List<Consumable> getObjectConsumables() {
+        return new ArrayList<>(cacheList.getConsumableList());
+    }
+
+    @Deprecated
+    private List<Part> getObjectParts() {
+        List<Part> partsList = new ArrayList<>();
 //        for (Long item : cachePartList) {
 //            partsList.add(partDAO.show(item));
 //        }
-//        return partsList;
-//    }
+        return partsList;
+    }
 
     @Override
     public String newItem(Model model) {
