@@ -4,14 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
-import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
-import ru.kuznetsov.bikeService.models.showable.Showable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @MappedSuperclass
 public abstract class AbstractServiceableEntity extends AbstractUsableEntity implements Serviceable {
@@ -56,8 +53,8 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
 
     @Column(name = "partNumber")
     protected String partNumber;
-    @Column(name = "serviceList")
-    protected String serviceList;
+    //    @Column(name = "serviceList")
+//    protected String serviceList;
     @Column(name = "partList")
     protected String partList;
 
@@ -75,21 +72,21 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         this.partNumber = partNumber;
     }
 
-    public ServiceList returnServiceListObject() {
-        return converter.fromJson(this.serviceList, ServiceList.class);
-    }
-
-    public String getServiceList() {
-        return this.serviceList;
-    }
-
-    public void setServiceList(String newServiceList) {
-        this.serviceList = newServiceList;
-    }
-
-    private void updateServiceListObject(ServiceList newList) {
-        this.serviceList = converter.toJson(newList);
-    }
+//    public ServiceList returnServiceListObject() {
+//        return converter.fromJson(this.serviceList, ServiceList.class);
+//    }
+//
+//    public String getServiceList() {
+//        return this.serviceList;
+//    }
+//
+//    public void setServiceList(String newServiceList) {
+//        this.serviceList = newServiceList;
+//    }
+//
+//    private void updateServiceListObject(ServiceList newList) {
+//        this.serviceList = converter.toJson(newList);
+//    }
 
     public List<PartEntity> getLinkedItems() {
         return linkedItems;
@@ -99,17 +96,17 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         this.linkedItems = linkedItems;
     }
 
-    public void addToServiceList(Showable item) {
-        ServiceList currentServiceList = this.returnServiceListObject();
-        currentServiceList.addToList(item);
-        this.updateServiceListObject(currentServiceList);
-    }
-
-    public void delFromServiceList(Showable item) {
-        ServiceList currentServiceList = this.returnServiceListObject();
-        currentServiceList.delFromList(item);
-        this.updateServiceListObject(currentServiceList);
-    }
+//    public void addToServiceList(Showable item) {
+//        ServiceList currentServiceList = this.returnServiceListObject();
+//        currentServiceList.addToList(item);
+//        this.updateServiceListObject(currentServiceList);
+//    }
+//
+//    public void delFromServiceList(Showable item) {
+//        ServiceList currentServiceList = this.returnServiceListObject();
+//        currentServiceList.delFromList(item);
+//        this.updateServiceListObject(currentServiceList);
+//    }
 
     public String getPartList() {
         return this.partList;
@@ -173,17 +170,17 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
 //        this.consumables = consumables;
 //    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AbstractServiceableEntity)) return false;
-        if (!super.equals(o)) return false;
-        AbstractServiceableEntity that = (AbstractServiceableEntity) o;
-        return Objects.equals(partNumber, that.partNumber) && serviceList.equals(that.serviceList) && partList.equals(that.partList) && Objects.equals(converter, that.converter);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), partNumber, serviceList, partList, converter);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof AbstractServiceableEntity)) return false;
+//        if (!super.equals(o)) return false;
+//        AbstractServiceableEntity that = (AbstractServiceableEntity) o;
+//        return Objects.equals(partNumber, that.partNumber) && serviceList.equals(that.serviceList) && partList.equals(that.partList) && Objects.equals(converter, that.converter);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(super.hashCode(), partNumber, serviceList, partList, converter);
+//    }
 }

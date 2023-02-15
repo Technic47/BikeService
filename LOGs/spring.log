@@ -2435,3 +2435,289 @@ java.util.NoSuchElementException: No value present
 2023-02-15T15:13:36.264+03:00  INFO 6560 --- [http-nio-8080-exec-8] BikeServiceLogger                        : parts 8 was shown to 'pavel'
 2023-02-15T15:13:44.302+03:00  INFO 6560 --- [http-nio-8080-exec-5] BikeServiceLogger                        : Part id:8 was edited by 'pavel'
 2023-02-15T15:13:44.415+03:00  INFO 6560 --- [http-nio-8080-exec-5] BikeServiceLogger                        : parts are shown to pavel
+2023-02-15T17:51:36.051+03:00  INFO 6024 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 6024 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-15T17:51:36.053+03:00  INFO 6024 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-15T17:51:36.589+03:00  INFO 6024 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-15T17:51:36.650+03:00  INFO 6024 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 54 ms. Found 9 JPA repository interfaces.
+2023-02-15T17:51:37.234+03:00  INFO 6024 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-15T17:51:37.243+03:00  INFO 6024 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-15T17:51:37.243+03:00  INFO 6024 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-15T17:51:37.335+03:00  INFO 6024 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-15T17:51:37.335+03:00  INFO 6024 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1246 ms
+2023-02-15T17:51:37.518+03:00  INFO 6024 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-15T17:51:37.574+03:00  INFO 6024 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-15T17:51:37.696+03:00  WARN 6024 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-15T17:51:38.076+03:00  INFO 6024 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-15T17:51:39.320+03:00  INFO 6024 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-15T17:51:39.329+03:00  INFO 6024 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-15T17:51:39.527+03:00  WARN 6024 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-15T17:51:39.718+03:00  WARN 6024 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-15T17:51:39.976+03:00  WARN 6024 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-15T17:51:40.185+03:00  INFO 6024 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@384b3fe7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4889fbba, org.springframework.security.web.context.SecurityContextHolderFilter@3b11deb6, org.springframework.security.web.header.HeaderWriterFilter@18ffc008, org.springframework.security.web.csrf.CsrfFilter@3b663112, org.springframework.security.web.authentication.logout.LogoutFilter@67b20b4c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1165a952, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3c38e2bf, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@6018d82c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5c13534a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2643ed03, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@572db5ee, org.springframework.security.web.access.ExceptionTranslationFilter@71b32407, org.springframework.security.web.access.intercept.AuthorizationFilter@63ccb1b2]
+2023-02-15T17:51:40.485+03:00  INFO 6024 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-15T17:51:40.494+03:00  INFO 6024 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.802 seconds (process running for 5.384)
+2023-02-15T17:51:47.052+03:00  INFO 6024 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-15T17:51:47.052+03:00  INFO 6024 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-02-15T17:51:47.053+03:00  INFO 6024 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-02-15T17:51:54.268+03:00  INFO 6024 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-15T17:51:57.232+03:00  INFO 6024 --- [http-nio-8080-exec-6] BikeServiceLogger                        : parts are shown to pavel
+2023-02-15T17:51:58.407+03:00  INFO 6024 --- [http-nio-8080-exec-7] BikeServiceLogger                        : parts 11 was shown to 'pavel'
+2023-02-15T17:51:58.438+03:00 ERROR 6024 --- [http-nio-8080-exec-7] org.thymeleaf.TemplateEngine             : [THYMELEAF][http-nio-8080-exec-7] Exception processing template "/show/showPart": Exception evaluating SpringEL expression: "serviceObject.getServiceList()" (template: "/show/showPart" - line 36, col 10)
+
+org.thymeleaf.exceptions.TemplateProcessingException: Exception evaluating SpringEL expression: "serviceObject.getServiceList()" (template: "/show/showPart" - line 36, col 10)
+	at org.thymeleaf.spring6.expression.SPELVariableExpressionEvaluator.evaluate(SPELVariableExpressionEvaluator.java:292) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.VariableExpression.executeVariableExpression(VariableExpression.java:166) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.SimpleExpression.executeSimple(SimpleExpression.java:66) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.Expression.execute(Expression.java:109) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.AdditionExpression.executeAddition(AdditionExpression.java:96) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.ComplexExpression.executeComplex(ComplexExpression.java:62) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.Expression.execute(Expression.java:112) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.Expression.execute(Expression.java:138) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor.doProcess(AbstractStandardExpressionAttributeTagProcessor.java:144) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.processor.element.AbstractAttributeTagProcessor.doProcess(AbstractAttributeTagProcessor.java:74) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.processor.element.AbstractElementTagProcessor.process(AbstractElementTagProcessor.java:95) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.util.ProcessorConfigurationUtils$ElementTagProcessorWrapper.process(ProcessorConfigurationUtils.java:633) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.ProcessorTemplateHandler.handleOpenElement(ProcessorTemplateHandler.java:1314) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.OpenElementTag.beHandled(OpenElementTag.java:205) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.TemplateModel.process(TemplateModel.java:136) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:661) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1414) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1158) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1097) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:973) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:705) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:814) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:223) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter.doFilterInternal(DefaultLogoutPageGeneratingFilter.java:58) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:188) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:174) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:116) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:351) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:119) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:400) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:859) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1734) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]
+Caused by: org.springframework.expression.spel.SpelEvaluationException: EL1004E: Method call: Method getServiceList() cannot be found on type ru.kuznetsov.bikeService.models.servicable.Part
+	at org.springframework.expression.spel.ast.MethodReference.findAccessorForMethod(MethodReference.java:225) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.MethodReference.getValueInternal(MethodReference.java:135) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.MethodReference$MethodValueRef.getValue(MethodReference.java:386) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.CompoundExpression.getValueInternal(CompoundExpression.java:92) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.SpelNodeImpl.getValue(SpelNodeImpl.java:112) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.standard.SpelExpression.getValue(SpelExpression.java:338) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.thymeleaf.spring6.expression.SPELVariableExpressionEvaluator.evaluate(SPELVariableExpressionEvaluator.java:265) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	... 100 common frames omitted
+
+2023-02-15T17:51:58.446+03:00 ERROR 6024 --- [http-nio-8080-exec-7] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.thymeleaf.exceptions.TemplateProcessingException: Exception evaluating SpringEL expression: "serviceObject.getServiceList()" (template: "/show/showPart" - line 36, col 10)] with root cause
+
+org.springframework.expression.spel.SpelEvaluationException: EL1004E: Method call: Method getServiceList() cannot be found on type ru.kuznetsov.bikeService.models.servicable.Part
+	at org.springframework.expression.spel.ast.MethodReference.findAccessorForMethod(MethodReference.java:225) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.MethodReference.getValueInternal(MethodReference.java:135) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.MethodReference$MethodValueRef.getValue(MethodReference.java:386) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.CompoundExpression.getValueInternal(CompoundExpression.java:92) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.ast.SpelNodeImpl.getValue(SpelNodeImpl.java:112) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.springframework.expression.spel.standard.SpelExpression.getValue(SpelExpression.java:338) ~[spring-expression-6.0.3.jar:6.0.3]
+	at org.thymeleaf.spring6.expression.SPELVariableExpressionEvaluator.evaluate(SPELVariableExpressionEvaluator.java:265) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.VariableExpression.executeVariableExpression(VariableExpression.java:166) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.SimpleExpression.executeSimple(SimpleExpression.java:66) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.Expression.execute(Expression.java:109) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.AdditionExpression.executeAddition(AdditionExpression.java:96) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.ComplexExpression.executeComplex(ComplexExpression.java:62) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.Expression.execute(Expression.java:112) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.expression.Expression.execute(Expression.java:138) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor.doProcess(AbstractStandardExpressionAttributeTagProcessor.java:144) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.processor.element.AbstractAttributeTagProcessor.doProcess(AbstractAttributeTagProcessor.java:74) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.processor.element.AbstractElementTagProcessor.process(AbstractElementTagProcessor.java:95) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.util.ProcessorConfigurationUtils$ElementTagProcessorWrapper.process(ProcessorConfigurationUtils.java:633) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.ProcessorTemplateHandler.handleOpenElement(ProcessorTemplateHandler.java:1314) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.OpenElementTag.beHandled(OpenElementTag.java:205) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.TemplateModel.process(TemplateModel.java:136) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:661) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1414) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1158) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1097) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:973) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:705) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.4.jar:6.0.4]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:814) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:223) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter.doFilterInternal(DefaultLogoutPageGeneratingFilter.java:58) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:188) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:174) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:116) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.0.1.jar:6.0.1]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:351) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.4.jar:6.0.4]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:119) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:400) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:859) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1734) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]
+
+2023-02-15T17:52:04.901+03:00  INFO 6024 --- [http-nio-8080-exec-9] BikeServiceLogger                        : parts are shown to pavel
+2023-02-15T17:53:16.591+03:00  INFO 20488 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 20488 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-15T17:53:16.594+03:00  INFO 20488 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-15T17:53:17.029+03:00  INFO 20488 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-15T17:53:17.093+03:00  INFO 20488 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 56 ms. Found 9 JPA repository interfaces.
+2023-02-15T17:53:17.638+03:00  INFO 20488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-15T17:53:17.647+03:00  INFO 20488 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-15T17:53:17.647+03:00  INFO 20488 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-15T17:53:17.731+03:00  INFO 20488 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-15T17:53:17.731+03:00  INFO 20488 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1099 ms
+2023-02-15T17:53:17.911+03:00  INFO 20488 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-15T17:53:17.954+03:00  INFO 20488 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-15T17:53:18.079+03:00  WARN 20488 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-15T17:53:18.457+03:00  INFO 20488 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-15T17:53:19.499+03:00  INFO 20488 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-15T17:53:19.509+03:00  INFO 20488 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-15T17:53:19.723+03:00  WARN 20488 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-15T17:53:19.912+03:00  WARN 20488 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-15T17:53:20.195+03:00  WARN 20488 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-15T17:53:20.398+03:00  INFO 20488 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1d686622, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@400df2b3, org.springframework.security.web.context.SecurityContextHolderFilter@5d2bc446, org.springframework.security.web.header.HeaderWriterFilter@659ac28c, org.springframework.security.web.csrf.CsrfFilter@1e0c898c, org.springframework.security.web.authentication.logout.LogoutFilter@24a1858a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@21be80f6, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6a9ac8b, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@70044113, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4a0ee0ba, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7c751692, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@18ffc008, org.springframework.security.web.access.ExceptionTranslationFilter@5c0f508b, org.springframework.security.web.access.intercept.AuthorizationFilter@47f416d0]
+2023-02-15T17:53:20.701+03:00  INFO 20488 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-15T17:53:20.711+03:00  INFO 20488 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.48 seconds (process running for 5.064)
+2023-02-15T17:53:27.743+03:00  INFO 20488 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-15T17:53:27.743+03:00  INFO 20488 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-02-15T17:53:27.744+03:00  INFO 20488 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-02-15T17:53:32.149+03:00  INFO 20488 --- [http-nio-8080-exec-4] BikeServiceLogger                        : parts are shown to pavel
+2023-02-15T17:53:34.700+03:00  INFO 20488 --- [http-nio-8080-exec-5] BikeServiceLogger                        : parts 11 was shown to 'pavel'
+2023-02-15T17:53:37.290+03:00  WARN 20488 --- [http-nio-8080-exec-7] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.controllers.ServiceableController
+2023-02-15T17:53:45.669+03:00  INFO 20488 --- [http-nio-8080-exec-9] BikeServiceLogger                        : Part id:11 was edited by 'pavel'
+2023-02-15T17:53:45.783+03:00  INFO 20488 --- [http-nio-8080-exec-9] BikeServiceLogger                        : parts are shown to pavel
+2023-02-15T17:53:48.149+03:00  INFO 20488 --- [http-nio-8080-exec-10] BikeServiceLogger                        : parts 11 was shown to 'pavel'
+2023-02-15T17:53:50.580+03:00  INFO 20488 --- [http-nio-8080-exec-2] BikeServiceLogger                        : parts are shown to pavel
+2023-02-15T17:53:52.159+03:00  INFO 20488 --- [http-nio-8080-exec-3] BikeServiceLogger                        : parts 11 was shown to 'pavel'
+2023-02-15T17:53:54.370+03:00  INFO 20488 --- [http-nio-8080-exec-5] BikeServiceLogger                        : parts are shown to pavel

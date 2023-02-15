@@ -11,11 +11,14 @@ public class ServiceList {
     private List<Long> consumableList;
     private List<Long> docsList;
 
+    private List<Long> partList;
+
     public ServiceList() {
         this.toolList = new ArrayList<>();
         this.fastenerList = new ArrayList<>();
         this.consumableList = new ArrayList<>();
         this.docsList = new ArrayList<>();
+        this.partList = new ArrayList<>();
     }
 
     public List<Long> getToolList() {

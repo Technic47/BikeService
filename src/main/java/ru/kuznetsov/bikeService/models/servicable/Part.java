@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
-import ru.kuznetsov.bikeService.models.lists.ServiceList;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 public class Part extends AbstractServiceableEntity {
     public Part() {
         this.converter = new Gson();
-        this.serviceList = this.converter.toJson(new ServiceList());
+//        this.serviceList = this.converter.toJson(new ServiceList());
         this.partList = this.converter.toJson(new ArrayList<Integer>());
     }
 

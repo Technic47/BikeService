@@ -48,7 +48,6 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
         this.updateCachePartList(id);
         this.addItemServiceableToModel(model);
         this.addItemShowablesToModel(model);
-        model.addAttribute("linkedItems", dao.show(id).getLinkedItems());
         return super.show(id, principal, model);
     }
 
@@ -78,50 +77,41 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
 //                                    @RequestParam(value = "partIdDel", required = false) Long partIdDel,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Model model) {
-        PartEntity entity;
         item.setLinkedItems(this.currentObject.getLinkedItems());
         switch (action) {
             case "finish":
                 return this.update(item, principal, bindingResult, file, id);
             case "addDocument":
-//                entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
-//                dao.addToServiceList(item, entity);
                 this.itemsManipulation(item, 1, Document.class, documentId, 1);
                 break;
             case "delDocument":
-//                entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
-//                dao.delFromServiceList(item, entity);
                 this.itemsManipulation(item, 0, Document.class, documentId, 1);
                 break;
             case "addFastener":
-//                item.addToServiceList(fastenerDAO.show(fastenerId));
                 this.itemsManipulation(item, 1, Fastener.class, fastenerId, 1);
                 break;
             case "delFastener":
-//                item.delFromServiceList(fastenerDAO.show(fastenerId));
                 this.itemsManipulation(item, 0, Fastener.class, fastenerId, 1);
                 break;
             case "addTool":
-//                item.addToServiceList(toolDAO.show(toolId));
                 this.itemsManipulation(item, 1, Tool.class, toolId, 1);
                 break;
             case "delTool":
-//                item.delFromServiceList(toolDAO.show(toolId));
                 this.itemsManipulation(item, 0, Tool.class, toolId, 1);
                 break;
             case "addConsumable":
-//                item.addToServiceList(consumableDAO.show(consumableId));
                 this.itemsManipulation(item, 1, Consumable.class, consumableId, 1);
                 break;
             case "delConsumable":
-//                item.delFromServiceList(consumableDAO.show(consumableId));
                 this.itemsManipulation(item, 0, Consumable.class, consumableId, 1);
                 break;
             case "addPart":
-                item.addToPartList(partDAO.show(partId));
+                this.itemsManipulation(item, 1, Part.class, partId, 1);
+//                item.addToPartList(partDAO.show(partId));
                 break;
             case "delPart":
-                item.delFromPartList(partDAO.show(partId));
+                this.itemsManipulation(item, 0, Part.class, partId, 1);
+//                item.delFromPartList(partDAO.show(partId));
                 break;
         }
         dao.update(id, item);
@@ -143,7 +133,6 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
             newCacheList.addIdToList(entity);
         }
         this.cacheList = newCacheList;
-//        this.cacheList = dao.show(id).returnServiceListObject();
     }
 
     private void updateCachePartList(Long id) {
