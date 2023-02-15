@@ -103,11 +103,6 @@
                     th:value="${item.getId()}">
             </option>
         </select>
-        <br/>
-
-        <label for="docVol">Enter Document quantity:</label>
-        <input id="docVol" th:name="docVol" type="text"/>
-
         <input th:name="action" th:type="submit" th:value="addDocument"/>
         <input th:name="action" th:type="submit" th:value="delDocument"/>
     </div>
@@ -121,6 +116,10 @@
                     th:value="${item.getId()}">
             </option>
         </select>
+
+        <label for="fastenerQuantity">Enter fastener quantity:</label>
+        <input id="fastenerQuantity" th:name="fastenerQuantity" type="text"/>
+
         <input th:name="action" th:type="submit" th:value="addFastener"/>
         <input th:name="action" th:type="submit" th:value="delFastener"/>
     </div>
@@ -147,6 +146,10 @@
                     th:value="${item.getId()}">
             </option>
         </select>
+
+        <label for="consumableQuantity">Enter consumable quantity:</label>
+        <input id="consumableQuantity" th:name="consumableQuantity" type="text"/>
+
         <input th:name="action" th:type="submit" th:value="addConsumable"/>
         <input th:name="action" th:type="submit" th:value="delConsumable"/>
     </div>

@@ -67,8 +67,10 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                                     @RequestParam(value = "action") String action,
                                     @RequestParam(value = "documentId", required = false) Long documentId,
                                     @RequestParam(value = "fastenerId", required = false) Long fastenerId,
+                                    @RequestParam(value = "fastenerQuantity", required = false) String fastenerQuantity,
                                     @RequestParam(value = "toolId", required = false) Long toolId,
                                     @RequestParam(value = "consumableId", required = false) Long consumableId,
+                                    @RequestParam(value = "consumableQuantity", required = false) String consumableQuantity,
                                     @RequestParam(value = "partId", required = false) Long partId,
 //                                    @RequestParam(value = "partIdDel", required = false) Long partIdDel,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
@@ -84,10 +86,10 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                 this.itemsManipulation(item, 0, Document.class, documentId, 1);
                 break;
             case "addFastener":
-                this.itemsManipulation(item, 1, Fastener.class, fastenerId, 1);
+                this.itemsManipulation(item, 1, Fastener.class, fastenerId, Integer.parseInt(fastenerQuantity));
                 break;
             case "delFastener":
-                this.itemsManipulation(item, 0, Fastener.class, fastenerId, 1);
+                this.itemsManipulation(item, 0, Fastener.class, fastenerId, Integer.parseInt(fastenerQuantity));
                 break;
             case "addTool":
                 this.itemsManipulation(item, 1, Tool.class, toolId, 1);
@@ -96,10 +98,10 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                 this.itemsManipulation(item, 0, Tool.class, toolId, 1);
                 break;
             case "addConsumable":
-                this.itemsManipulation(item, 1, Consumable.class, consumableId, 1);
+                this.itemsManipulation(item, 1, Consumable.class, consumableId, Integer.parseInt(consumableQuantity));
                 break;
             case "delConsumable":
-                this.itemsManipulation(item, 0, Consumable.class, consumableId, 1);
+                this.itemsManipulation(item, 0, Consumable.class, consumableId, Integer.parseInt(consumableQuantity));
                 break;
             case "addPart":
                 this.itemsManipulation(item, 1, Part.class, partId, 1);

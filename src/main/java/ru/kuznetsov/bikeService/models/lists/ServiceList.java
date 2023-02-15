@@ -68,39 +68,42 @@ public class ServiceList {
 
     public void addToList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
-            case "Tool" -> this.addTool((Tool)obj);
+            case "Tool" -> this.addTool((Tool) obj);
             case "Fastener" -> this.addFastener((Fastener) obj);
             case "Consumable" -> this.addConsumable((Consumable) obj);
             case "Document" -> this.addDocument((Document) obj);
         }
     }
 
+    @Deprecated
     public void delFromList(Showable obj) {
         switch (obj.getClass().getSimpleName()) {
-            case "Tool" -> this.delTool((Tool)obj);
+            case "Tool" -> this.delTool((Tool) obj);
             case "Fastener" -> this.delFastener((Fastener) obj);
             case "Consumable" -> this.delConsumable((Consumable) obj);
             case "Document" -> this.delDocument((Document) obj);
         }
     }
 
-//    public void addIdToList(PartEntity obj) {
+    @Deprecated
+    public void addIdToList(PartEntity obj) {
 //        switch (obj.getType()) {
 //            case "Tool" -> this.addTool(obj.getItem_id());
 //            case "Fastener" -> this.addFastener(obj.getItem_id());
 //            case "Consumable" -> this.addConsumable(obj.getItem_id());
 //            case "Document" -> this.addDocument(obj.getItem_id());
 //        }
-//    }
-//
-//    public void delIdFromList(PartEntity obj) {
+    }
+
+    @Deprecated
+    public void delIdFromList(PartEntity obj) {
 //        switch (obj.getType()) {
 //            case "Tool" -> this.delTool(obj.getItem_id());
 //            case "Fastener" -> this.delFastener(obj.getItem_id());
 //            case "Consumable" -> this.delConsumable(obj.getItem_id());
 //            case "Document" -> this.delDocument(obj.getItem_id());
 //        }
-//    }
+    }
 
     public void addTool(Tool id) {
         this.toolList.add(id);
