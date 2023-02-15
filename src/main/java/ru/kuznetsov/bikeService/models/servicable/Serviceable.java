@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.models.servicable;
 
+import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Usable;
@@ -12,6 +13,8 @@ public interface Serviceable extends Usable {
     ServiceList returnServiceListObject();
 
     String getServiceList();
+
+    List<PartEntity> getLinkedItems();
 
     void addToServiceList(Showable item);
 

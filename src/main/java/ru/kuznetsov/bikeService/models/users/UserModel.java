@@ -112,13 +112,13 @@ public class UserModel implements UserDetails {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof UserModel)) return false;
         UserModel userModel = (UserModel) o;
-        return active == userModel.active && id.equals(userModel.id) && username.equals(userModel.username) && status.equals(userModel.status) && password.equals(userModel.password);
+        return active == userModel.active && Objects.equals(id, userModel.id) && Objects.equals(username, userModel.username) && Objects.equals(status, userModel.status) && Objects.equals(createdItems, userModel.createdItems) && Objects.equals(password, userModel.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, active, status, password);
+        return Objects.hash(id, username, active, status, createdItems, password);
     }
 }

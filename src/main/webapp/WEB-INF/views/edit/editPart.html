@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit Part</title>
@@ -43,7 +44,7 @@
     <input id="link" th:field="*{link}" type="text"/>
     <div style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></div>
     <br/>
-    <div hidden="hidden">
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
         <label for="creator">Enter creator:</label>
         <input id="creator" th:field="*{creator}" type="text"/>
 

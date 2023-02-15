@@ -48,6 +48,7 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
         this.updateCachePartList(id);
         this.addItemServiceableToModel(model);
         this.addItemShowablesToModel(model);
+        model.addAttribute("linkedItems", dao.show(id).getLinkedItems());
         return super.show(id, principal, model);
     }
 
@@ -78,36 +79,43 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Model model) {
         PartEntity entity;
+        item.setLinkedItems(this.currentObject.getLinkedItems());
         switch (action) {
             case "finish":
                 return this.update(item, principal, bindingResult, file, id);
             case "addDocument":
-                entity = new PartEntity(thisObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
-                dao.addToServiceList(item, entity);
-//                item.addToServiceList(documentDAO.show(documentId));
+//                entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
+//                dao.addToServiceList(item, entity);
+                this.itemsManipulation(item, 1, Document.class, documentId, 1);
                 break;
             case "delDocument":
-                entity = new PartEntity(thisObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
-                dao.delFromServiceList(item, entity);
-//                item.delFromServiceList(documentDAO.show(documentId));
+//                entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), Document.class.getSimpleName(), documentId, 1);
+//                dao.delFromServiceList(item, entity);
+                this.itemsManipulation(item, 0, Document.class, documentId, 1);
                 break;
             case "addFastener":
-                item.addToServiceList(fastenerDAO.show(fastenerId));
+//                item.addToServiceList(fastenerDAO.show(fastenerId));
+                this.itemsManipulation(item, 1, Fastener.class, fastenerId, 1);
                 break;
             case "delFastener":
-                item.delFromServiceList(fastenerDAO.show(fastenerId));
+//                item.delFromServiceList(fastenerDAO.show(fastenerId));
+                this.itemsManipulation(item, 0, Fastener.class, fastenerId, 1);
                 break;
             case "addTool":
-                item.addToServiceList(toolDAO.show(toolId));
+//                item.addToServiceList(toolDAO.show(toolId));
+                this.itemsManipulation(item, 1, Tool.class, toolId, 1);
                 break;
             case "delTool":
-                item.delFromServiceList(toolDAO.show(toolId));
+//                item.delFromServiceList(toolDAO.show(toolId));
+                this.itemsManipulation(item, 0, Tool.class, toolId, 1);
                 break;
             case "addConsumable":
-                item.addToServiceList(consumableDAO.show(consumableId));
+//                item.addToServiceList(consumableDAO.show(consumableId));
+                this.itemsManipulation(item, 1, Consumable.class, consumableId, 1);
                 break;
             case "delConsumable":
-                item.delFromServiceList(consumableDAO.show(consumableId));
+//                item.delFromServiceList(consumableDAO.show(consumableId));
+                this.itemsManipulation(item, 0, Consumable.class, consumableId, 1);
                 break;
             case "addPart":
                 item.addToPartList(partDAO.show(partId));
@@ -118,6 +126,14 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
         }
         dao.update(id, item);
         return edit(model, id);
+    }
+
+    private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
+        PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), itemClass.getSimpleName(), id, amount);
+        switch (action) {
+            case 1 -> dao.addToServiceList(item, entity);
+            case 0 -> dao.delFromServiceList(item, entity);
+        }
     }
 
     private void updateCacheList(Long id) {

@@ -27,9 +27,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
     }
 
     public void addToServiceList(E item, PartEntity entity){
-        List<PartEntity> entityList = item.getLinkedItems();
-        entityList.add(entity);
-        item.setLinkedItems(entityList);
+        item.getLinkedItems().add(entity);
         repository.save(item);
     }
 

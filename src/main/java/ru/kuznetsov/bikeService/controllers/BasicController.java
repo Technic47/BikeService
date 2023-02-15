@@ -31,7 +31,8 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>>
         extends AbstractController {
     protected final S dao;
-    protected T thisObject;
+    protected T thisClassNewObject;
+    protected T currentObject;
     protected String currentObjectName;
     protected String category;
     protected UserModel user;
@@ -47,7 +48,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         this.category = currentObjectName + "s";
         try {
             assert false;
-            this.thisObject = currentClass.getConstructor().newInstance();
+            this.thisClassNewObject = currentClass.getConstructor().newInstance();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -76,7 +77,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     public String show(@PathVariable("id") Long id,
                        Principal principal,
                        Model model) {
-        Showable currentObject = dao.show(id);
+        this.currentObject = dao.show(id);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
         model.addAttribute("category", category);
         this.checkUser(principal);
@@ -105,15 +106,15 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         model.addAttribute("allPictures", pictureDao.index());
         switch (category) {
             case "parts", "bikes" -> {
-                model.addAttribute("serviceObject", (Serviceable) thisObject);
+                model.addAttribute("serviceObject", (Serviceable) thisClassNewObject);
                 return "/new/newPart";
             }
             case "tools", "consumables" -> {
-                model.addAttribute("usableObject", (Usable) thisObject);
+                model.addAttribute("usableObject", (Usable) thisClassNewObject);
                 return "/new/newUsable";
             }
             case "documents", "fasteners", "manufacturers" -> {
-                model.addAttribute("showableObject", (Showable) thisObject);
+                model.addAttribute("showableObject", (Showable) thisClassNewObject);
                 return "/new/new";
             }
         }
@@ -138,17 +139,17 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
         }
         item.setCreator(user.getId());
-        userService.addCreatedItem(user, new UserEntity(thisObject.getClass().getSimpleName(), dao.save(item).getId()));
+        userService.addCreatedItem(user, new UserEntity(thisClassNewObject.getClass().getSimpleName(), dao.save(item).getId()));
         switch (category) {
             case "tools", "consumables", "parts", "bikes" -> {
-                logger.debug(thisObject.getClass().getSimpleName()
+                logger.debug(thisClassNewObject.getClass().getSimpleName()
                         + " " + ((Usable) item).getName() + " " + ((Usable) item).getValueName()
                         + " " + ((Usable) item).getValue() + " " + ((Usable) item).getLink()
                         + " " + ((Usable) item).getManufacturer() + " " + ((Usable) item).getModel()
                         + " was created by '" + user.getUsername() + "'");
             }
             case "documents", "fasteners", "manufacturers" -> {
-                logger.debug(thisObject.getClass().getSimpleName()
+                logger.debug(thisClassNewObject.getClass().getSimpleName()
                         + " " + ((Showable) item).getName() + " " + ((Showable) item).getValueName()
                         + " " + ((Showable) item).getValue() + " " + ((Showable) item).getLink()
                         + " was created by '" + user.getUsername() + "'");
@@ -159,7 +160,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
-        T currentObject = dao.show(id);
+        this.currentObject = dao.show(id);
         model.addAttribute("category", category);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
         model.addAttribute("allPictures", pictureDao.index());
@@ -196,7 +197,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
         }
         dao.update(id, item);
-        logger.info(thisObject.getClass().getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
+        logger.info(thisClassNewObject.getClass().getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
         return "redirect:/" + category;
     }
 
@@ -204,9 +205,9 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
     public String delete(@PathVariable("id") Long id,
                          Principal principal) {
         this.checkUser(principal);
-        userService.delCreatedItem(user, new UserEntity(thisObject.getClass().getSimpleName(), id));
+        userService.delCreatedItem(user, new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
         dao.delete(id);
-        logger.info(thisObject.getClass().getSimpleName() + " id:" + id + " was deleted by '" + user.getUsername() + "'");
+        logger.info(thisClassNewObject.getClass().getSimpleName() + " id:" + id + " was deleted by '" + user.getUsername() + "'");
         return "redirect:/" + category;
     }
 

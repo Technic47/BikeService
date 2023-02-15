@@ -20,13 +20,6 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
             joinColumns = @JoinColumn(name = "part_id"))
     private List<PartEntity> linkedItems = new ArrayList<>();
 
-    public List<PartEntity> getLinkedItems() {
-        return linkedItems;
-    }
-
-    public void setLinkedItems(List<PartEntity> linkedItems) {
-        this.linkedItems = linkedItems;
-    }
 
     //    @ManyToMany()
 //    @JoinTable(
@@ -96,6 +89,14 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
 
     private void updateServiceListObject(ServiceList newList) {
         this.serviceList = converter.toJson(newList);
+    }
+
+    public List<PartEntity> getLinkedItems() {
+        return linkedItems;
+    }
+
+    public void setLinkedItems(List<PartEntity> linkedItems) {
+        this.linkedItems = linkedItems;
     }
 
     public void addToServiceList(Showable item) {
