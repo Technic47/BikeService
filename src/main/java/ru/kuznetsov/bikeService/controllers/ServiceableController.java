@@ -72,7 +72,6 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
                                     @RequestParam(value = "consumableId", required = false) Long consumableId,
                                     @RequestParam(value = "consumableQuantity", required = false) String consumableQuantity,
                                     @RequestParam(value = "partId", required = false) Long partId,
-//                                    @RequestParam(value = "partIdDel", required = false) Long partIdDel,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Model model) {
         item.setLinkedItems(this.currentObject.getLinkedItems());
@@ -116,6 +115,7 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
         PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), itemClass.getSimpleName(), id, amount);
+        this.cacheList.contains(entity);
         switch (action) {
             case 1 -> dao.addToServiceList(item, entity);
             case 0 -> dao.delFromServiceList(item, entity);

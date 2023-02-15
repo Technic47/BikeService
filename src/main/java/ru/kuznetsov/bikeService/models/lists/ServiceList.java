@@ -9,6 +9,7 @@ import ru.kuznetsov.bikeService.models.usable.Tool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ServiceList {
     private List<Tool> toolList;
@@ -64,6 +65,41 @@ public class ServiceList {
 
     public void setPartList(List<Part> partList) {
         this.partList = partList;
+    }
+
+    public boolean contains(PartEntity entity) {
+        switch (entity.getType()) {
+            case "Tool" -> {
+                for (Tool tool : toolList) {
+                    if (Objects.equals(tool.getId(), entity.getItem_id())) {
+                        return true;
+                    }
+                }
+            }
+
+            case "Fastener" -> {
+                for (Document doc : docsList) {
+                    if (Objects.equals(doc.getId(), entity.getItem_id())) {
+                        return true;
+                    }
+                }
+            }
+            case "Consumable" -> {
+                for (Fastener fastener : fastenerList) {
+                    if (Objects.equals(fastener.getId(), entity.getItem_id())) {
+                        return true;
+                    }
+                }
+            }
+            case "Document" -> {
+                for (Consumable consumable : consumableList) {
+                    if (Objects.equals(consumable.getId(), entity.getItem_id())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void addToList(Showable obj) {

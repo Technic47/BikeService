@@ -58,16 +58,20 @@ public class PartEntity {
         this.amount = amount;
     }
 
+
+    /*
+    Do not count volume!
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PartEntity)) return false;
         PartEntity that = (PartEntity) o;
-        return Objects.equals(type, that.type) && Objects.equals(item_id, that.item_id) && Objects.equals(amount, that.amount);
+        return Objects.equals(type, that.type) && Objects.equals(item_id, that.item_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, item_id, amount);
+        return Objects.hash(type, item_id);
     }
 }
