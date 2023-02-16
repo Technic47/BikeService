@@ -33,8 +33,6 @@
     <div th:text="'Creator`s ID - ' + ${serviceObject.getCreator()}"></div>
     <div th:text="'Picture`s ID - ' + ${serviceObject.getPicture()}"></div>
     <div th:text="'Manufacturer`s ID - ' + ${serviceObject.getManufacturer()}"></div>
-<!--    <div th:text="'ServiceList - ' + ${serviceObject.getServiceList()}"></div>-->
-<!--    <div th:text="'PartList - ' + ${serviceObject.getPartList()}"></div>-->
 </div>
 
 <form th:action="@{/{link}/{id}/edit(link=${category}, id=${serviceObject.getId()})}">
@@ -64,8 +62,8 @@
     <tbody>
     <tr th:each="part : ${parts}">
         <td>
-            <a th:href="@{/parts/{id}(id=${part.getId()})}"
-               th:text="${part.getName()} + ' ' + ${part.getModel()}"></a>
+            <a th:href="@{/parts/{id}(id=${part.getKey().getId()})}"
+               th:text="${part.getKey().getName()} + ' ' + ${part.getKey().getModel()}"></a>
         </td>
     </tr>
     </tbody>
@@ -86,8 +84,8 @@
         <table>
             <tr th:each="document : ${documents}">
                 <td>
-                    <a th:href="@{/documents/{id}(id=${document.getId()})}"
-                       th:text="${document.getName()}"></a>
+                    <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
+                       th:text="${document.getKey().getName()} + ' ' + ${document.getValue()}"></a>
                 </td>
             </tr>
         </table>
@@ -96,8 +94,8 @@
         <table>
             <tr th:each="fastener : ${fasteners}">
                 <td>
-                    <a th:href="@{/fasteners/{id}(id=${fastener.getId()})}"
-                       th:text="${fastener.getName()}"></a>
+                    <a th:href="@{/fasteners/{id}(id=${fastener.getKey().getId()})}"
+                       th:text="${fastener.getKey().getName()} + ' ' + ${fastener.getValue()}"></a>
                 </td>
             </tr>
         </table>
@@ -106,8 +104,8 @@
         <table>
             <tr th:each="tool : ${tools}">
                 <td>
-                    <a th:href="@{/tools/{id}(id=${tool.getId()})}"
-                       th:text="${tool.getName()}"></a>
+                    <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
+                       th:text="${tool.getKey().getName()} + ' ' + ${tool.getValue()}"></a>
                 </td>
             </tr>
         </table>
@@ -116,8 +114,8 @@
         <table>
             <tr th:each="consumable : ${consumables}">
                 <td>
-                    <a th:href="@{/consumables/{id}(id=${consumable.getId()})}"
-                       th:text="${consumable.getName()}"></a>
+                    <a th:href="@{/consumables/{id}(id=${consumable.getKey().getId()})}"
+                       th:text="${consumable.getKey().getName()} + ' ' + ${consumable.getValue()}"></a>
                 </td>
             </tr>
         </table>

@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -116,7 +117,6 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
         PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), itemClass.getSimpleName(), id, amount);
-        this.cacheList.contains(entity);
         switch (action) {
             case 1 -> dao.addToLinkedItems(item, entity);
             case 0 -> dao.delFromLinkedItems(item, entity);
@@ -129,11 +129,14 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
 
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
-                case "Tool" -> newCacheList.addTool(this.toolDAO.show(entity.getItem_id()));
-                case "Fastener" -> newCacheList.addFastener(this.fastenerDAO.show(entity.getItem_id()));
-                case "Consumable" -> newCacheList.addConsumable(this.consumableDAO.show(entity.getItem_id()));
-                case "Document" -> newCacheList.addDocument(this.documentDAO.show(entity.getItem_id()));
-                case "Part" -> newCacheList.addPart(this.partDAO.show(entity.getItem_id()));
+                case "Tool" -> newCacheList.addToToolMap(this.toolDAO.show(entity.getItem_id()), entity.getAmount());
+                case "Fastener" ->
+                        newCacheList.addToFastenerMap(this.fastenerDAO.show(entity.getItem_id()), entity.getAmount());
+                case "Consumable" ->
+                        newCacheList.addToConsumableMap(this.consumableDAO.show(entity.getItem_id()), entity.getAmount());
+                case "Document" ->
+                        newCacheList.addToDocumentMap(this.documentDAO.show(entity.getItem_id()), entity.getAmount());
+                case "Part" -> newCacheList.addToPartMap(this.partDAO.show(entity.getItem_id()), entity.getAmount());
             }
         }
         this.cacheList = newCacheList;
@@ -146,11 +149,12 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
 
 
     private void addLinkedItemsToModel(Model model) {
-        model.addAttribute("documents", this.cacheList.getDocsList());
-        model.addAttribute("fasteners", this.cacheList.getFastenerList());
-        model.addAttribute("tools", this.cacheList.getToolList());
-        model.addAttribute("consumables", this.cacheList.getConsumableList());
-        model.addAttribute("parts", this.cacheList.getPartList());
+        Map<Tool, Integer> toolMap = this.cacheList.getToolMap();
+        model.addAttribute("documents", this.cacheList.getDocsMap());
+        model.addAttribute("fasteners", this.cacheList.getFastenerMap());
+        model.addAttribute("tools", this.cacheList.getToolMap());
+        model.addAttribute("consumables", this.cacheList.getConsumableMap());
+        model.addAttribute("parts", this.cacheList.getPartMap());
     }
 
     private void addAllShowablesToModel(Model model) {

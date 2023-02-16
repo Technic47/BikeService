@@ -7,17 +7,19 @@ import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ServiceList {
     private List<Tool> toolList;
     private List<Fastener> fastenerList;
     private List<Consumable> consumableList;
     private List<Document> docsList;
-
     private List<Part> partList;
+    private Map<Tool, Integer> toolMap;
+    private Map<Fastener, Integer> fastenerMap;
+    private Map<Consumable, Integer> consumableMap;
+    private Map<Document, Integer> docsMap;
+    private Map<Part, Integer> partMap;
 
     public ServiceList() {
         this.toolList = new ArrayList<>();
@@ -25,6 +27,11 @@ public class ServiceList {
         this.consumableList = new ArrayList<>();
         this.docsList = new ArrayList<>();
         this.partList = new ArrayList<>();
+        this.toolMap = new HashMap<>();
+        this.fastenerMap = new HashMap<>();
+        this.consumableMap = new HashMap<>();
+        this.docsMap = new HashMap<>();
+        this.partMap = new HashMap<>();
     }
 
     public List<Tool> getToolList() {
@@ -67,6 +74,47 @@ public class ServiceList {
         this.partList = partList;
     }
 
+    public Map<Tool, Integer> getToolMap() {
+        return toolMap;
+    }
+
+    public void setToolMap(Map<Tool, Integer> toolMap) {
+        this.toolMap = toolMap;
+    }
+
+    public Map<Fastener, Integer> getFastenerMap() {
+        return fastenerMap;
+    }
+
+    public void setFastenerMap(Map<Fastener, Integer> fastenerMap) {
+        this.fastenerMap = fastenerMap;
+    }
+
+    public Map<Consumable, Integer> getConsumableMap() {
+        return consumableMap;
+    }
+
+    public void setConsumableMap(Map<Consumable, Integer> consumableMap) {
+        this.consumableMap = consumableMap;
+    }
+
+    public Map<Document, Integer> getDocsMap() {
+        return docsMap;
+    }
+
+    public void setDocsMap(Map<Document, Integer> docsMap) {
+        this.docsMap = docsMap;
+    }
+
+    public Map<Part, Integer> getPartMap() {
+        return partMap;
+    }
+
+    public void setPartMap(Map<Part, Integer> partMap) {
+        this.partMap = partMap;
+    }
+
+    @Deprecated
     public boolean contains(PartEntity entity) {
         switch (entity.getType()) {
             case "Tool" -> {
@@ -122,13 +170,34 @@ public class ServiceList {
     }
 
     @Deprecated
-    public void addIdToList(PartEntity obj) {
-//        switch (obj.getType()) {
-//            case "Tool" -> this.addTool(obj.getItem_id());
-//            case "Fastener" -> this.addFastener(obj.getItem_id());
-//            case "Consumable" -> this.addConsumable(obj.getItem_id());
-//            case "Document" -> this.addDocument(obj.getItem_id());
-//        }
+    public void addEntityToMap(Showable obj, Integer amount) {
+        switch (obj.getClass().getSimpleName()) {
+            case "Tool" -> this.toolMap.put((Tool) obj, amount);
+            case "Fastener" -> this.fastenerMap.put((Fastener) obj, amount);
+            case "Consumable" -> this.consumableMap.put((Consumable) obj, amount);
+            case "Document" -> this.docsMap.put((Document) obj, amount);
+            case "Part" -> this.partMap.put((Part) obj, amount);
+        }
+    }
+
+    public void addToToolMap(Tool obj, Integer amount) {
+        this.toolMap.put(obj, amount);
+    }
+
+    public void addToFastenerMap(Fastener obj, Integer amount) {
+        this.fastenerMap.put(obj, amount);
+    }
+
+    public void addToConsumableMap(Consumable obj, Integer amount) {
+        this.consumableMap.put(obj, amount);
+    }
+
+    public void addToDocumentMap(Document obj, Integer amount) {
+        this.docsMap.put(obj, amount);
+    }
+
+    public void addToPartMap(Part obj, Integer amount) {
+        this.partMap.put(obj, amount);
     }
 
     @Deprecated
