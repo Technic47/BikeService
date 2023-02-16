@@ -4,7 +4,8 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public abstract class AbstractServiceableService<E extends AbstractServiceableEntity, R extends AbstractShowableEntityRepository<E>>
         extends AbstractUsableService<E, R> {
@@ -26,16 +27,39 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         this.usableToRepo(toRepo, newItem);
     }
 
-    public void addToServiceList(E item, PartEntity entity){
-        item.getLinkedItems().add(entity);
-//        item.getLinkedItems().contains(entity);
+    public void addToLinkedItems(E item, PartEntity entity) {
+        Set<PartEntity> entitySet = item.getLinkedItems();
+        Optional<PartEntity> searchItem = entitySet.stream()
+                .parallel()
+                .filter(part -> part.equals(entity))
+                .findFirst();
+        if (searchItem.isPresent()) {
+            PartEntity changeAmount = searchItem.get();
+            entitySet.remove(changeAmount);
+            changeAmount.setAmount(changeAmount.getAmount() + entity.getAmount());
+            entitySet.add(changeAmount);
+        } else {
+            entitySet.add(entity);
+        }
         repository.save(item);
     }
 
-    public void delFromServiceList(E item, PartEntity entity){
-        List<PartEntity> entityList = item.getLinkedItems();
-        entityList.remove(entity);
-        item.setLinkedItems(entityList);
-        repository.save(item);
+    public void delFromLinkedItems(E item, PartEntity entity) {
+        Set<PartEntity> entitySet = item.getLinkedItems();
+        Optional<PartEntity> searchItem = entitySet.stream()
+                .parallel()
+                .filter(part -> part.equals(entity))
+                .findFirst();
+        if (searchItem.isPresent()) {
+            PartEntity changeAmount = searchItem.get();
+            if ((changeAmount.getAmount() - entity.getAmount()) <= 0) {
+                entitySet.remove(changeAmount);
+            } else {
+                entitySet.remove(changeAmount);
+                changeAmount.setAmount(changeAmount.getAmount() - entity.getAmount());
+                entitySet.add(changeAmount);
+            }
+            repository.save(item);
+        }
     }
 }

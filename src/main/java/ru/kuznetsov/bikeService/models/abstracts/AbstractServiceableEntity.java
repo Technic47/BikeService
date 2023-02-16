@@ -7,16 +7,14 @@ import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @MappedSuperclass
 public abstract class AbstractServiceableEntity extends AbstractUsableEntity implements Serviceable {
     @ElementCollection(targetClass = PartEntity.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "part_item",
             joinColumns = @JoinColumn(name = "part_id"))
-    private List<PartEntity> linkedItems = new ArrayList<>();
+    private Set<PartEntity> linkedItems = new HashSet<>();
 
     @Column(name = "partNumber")
     protected String partNumber;
@@ -38,11 +36,11 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         this.partNumber = partNumber;
     }
 
-    public List<PartEntity> getLinkedItems() {
+    public Set<PartEntity> getLinkedItems() {
         return linkedItems;
     }
 
-    public void setLinkedItems(List<PartEntity> linkedItems) {
+    public void setLinkedItems(Set<PartEntity> linkedItems) {
         this.linkedItems = linkedItems;
     }
 

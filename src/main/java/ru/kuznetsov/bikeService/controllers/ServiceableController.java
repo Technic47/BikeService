@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Scope("prototype")
@@ -117,14 +118,14 @@ public class ServiceableController<T extends AbstractServiceableEntity, S extend
         PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), itemClass.getSimpleName(), id, amount);
         this.cacheList.contains(entity);
         switch (action) {
-            case 1 -> dao.addToServiceList(item, entity);
-            case 0 -> dao.delFromServiceList(item, entity);
+            case 1 -> dao.addToLinkedItems(item, entity);
+            case 0 -> dao.delFromLinkedItems(item, entity);
         }
     }
 
     private void updateCacheList(Long id) {
         ServiceList newCacheList = new ServiceList();
-        List<PartEntity> entityList = dao.show(id).getLinkedItems();
+        Set<PartEntity> entityList = dao.show(id).getLinkedItems();
 
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
