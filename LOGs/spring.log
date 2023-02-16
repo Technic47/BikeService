@@ -1608,3 +1608,49 @@ org.springframework.expression.spel.SpelEvaluationException: EL1008E: Property o
 2023-02-16T22:14:35.541+03:00  INFO 10272 --- [http-nio-8080-exec-5] BikeServiceLogger                        : parts are shown to pavel
 2023-02-16T22:14:36.932+03:00  INFO 10272 --- [http-nio-8080-exec-6] BikeServiceLogger                        : parts 11 was shown to 'pavel'
 2023-02-16T22:14:46.018+03:00  INFO 10272 --- [http-nio-8080-exec-10] BikeServiceLogger                        : parts 11 was shown to 'pavel'
+2023-02-16T23:16:07.180+03:00  INFO 14524 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 14524 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-02-16T23:16:07.182+03:00  INFO 14524 --- [main] ru.kuznetsov.bikeService.Starter         : No active profile set, falling back to 1 default profile: "default"
+2023-02-16T23:16:07.607+03:00  INFO 14524 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-16T23:16:07.666+03:00  INFO 14524 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 9 JPA repository interfaces.
+2023-02-16T23:16:08.248+03:00  INFO 14524 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-02-16T23:16:08.257+03:00  INFO 14524 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-02-16T23:16:08.258+03:00  INFO 14524 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-02-16T23:16:08.351+03:00  INFO 14524 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-02-16T23:16:08.352+03:00  INFO 14524 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1135 ms
+2023-02-16T23:16:08.524+03:00  INFO 14524 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-02-16T23:16:08.566+03:00  INFO 14524 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-02-16T23:16:08.686+03:00  WARN 14524 --- [main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-02-16T23:16:09.132+03:00  INFO 14524 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-02-16T23:16:10.124+03:00  INFO 14524 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-02-16T23:16:10.133+03:00  INFO 14524 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-02-16T23:16:10.332+03:00  WARN 14524 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-02-16T23:16:10.542+03:00  WARN 14524 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-02-16T23:16:10.807+03:00  WARN 14524 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-02-16T23:16:11.021+03:00  INFO 14524 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@32068aef, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@8ab231, org.springframework.security.web.context.SecurityContextHolderFilter@430db481, org.springframework.security.web.header.HeaderWriterFilter@656672fb, org.springframework.security.web.csrf.CsrfFilter@78324e97, org.springframework.security.web.authentication.logout.LogoutFilter@32f54c2a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3bf41cd0, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@14d513ca, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@5b3a8bea, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1a22c1ba, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2941631f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6ba0dcba, org.springframework.security.web.access.ExceptionTranslationFilter@6b170692, org.springframework.security.web.access.intercept.AuthorizationFilter@245b0bd7]
+2023-02-16T23:16:11.344+03:00  INFO 14524 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-02-16T23:16:11.354+03:00  INFO 14524 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 4.539 seconds (process running for 5.079)
+2023-02-16T23:16:17.361+03:00  INFO 14524 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-02-16T23:16:17.362+03:00  INFO 14524 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-02-16T23:16:17.363+03:00  INFO 14524 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-02-16T23:16:24.667+03:00  INFO 14524 --- [http-nio-8080-exec-5] BikeServiceLogger                        : pavel logged in
+2023-02-16T23:16:26.294+03:00  INFO 14524 --- [http-nio-8080-exec-6] BikeServiceLogger                        : parts are shown to pavel
+2023-02-16T23:16:27.465+03:00  INFO 14524 --- [http-nio-8080-exec-7] BikeServiceLogger                        : parts 11 was shown to 'pavel'
+2023-02-16T23:16:30.961+03:00  WARN 14524 --- [http-nio-8080-exec-9] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.controllers.ServiceableController
+2023-02-16T23:16:32.160+03:00  INFO 14524 --- [http-nio-8080-exec-10] BikeServiceLogger                        : parts 11 was shown to 'pavel'
+2023-02-16T23:16:33.427+03:00  INFO 14524 --- [http-nio-8080-exec-1] BikeServiceLogger                        : parts are shown to pavel
+2023-02-16T23:16:35.968+03:00  INFO 14524 --- [http-nio-8080-exec-3] BikeServiceLogger                        : documents are shown to pavel
+2023-02-16T23:16:36.833+03:00  INFO 14524 --- [http-nio-8080-exec-4] BikeServiceLogger                        : documents 25 was shown to 'pavel'
+2023-02-16T23:16:38.019+03:00  INFO 14524 --- [http-nio-8080-exec-6] BikeServiceLogger                        : documents are shown to pavel
+2023-02-16T23:16:39.680+03:00  INFO 14524 --- [http-nio-8080-exec-8] BikeServiceLogger                        : fasteners are shown to pavel
+2023-02-16T23:16:40.433+03:00  INFO 14524 --- [http-nio-8080-exec-9] BikeServiceLogger                        : fasteners 12 was shown to 'pavel'
+2023-02-16T23:16:42.076+03:00  INFO 14524 --- [http-nio-8080-exec-1] BikeServiceLogger                        : fasteners are shown to pavel
+2023-02-16T23:16:43.474+03:00  INFO 14524 --- [http-nio-8080-exec-3] BikeServiceLogger                        : manufacturers are shown to pavel
+2023-02-16T23:16:44.651+03:00  INFO 14524 --- [http-nio-8080-exec-4] BikeServiceLogger                        : manufacturers 20 was shown to 'pavel'
+2023-02-16T23:16:45.769+03:00  INFO 14524 --- [http-nio-8080-exec-6] BikeServiceLogger                        : manufacturers are shown to pavel
+2023-02-16T23:16:47.233+03:00  INFO 14524 --- [http-nio-8080-exec-8] BikeServiceLogger                        : manufacturers are shown to pavel
+2023-02-16T23:16:48.345+03:00  INFO 14524 --- [http-nio-8080-exec-10] BikeServiceLogger                        : tools are shown to pavel
+2023-02-16T23:16:49.516+03:00  INFO 14524 --- [http-nio-8080-exec-1] BikeServiceLogger                        : tools 13 was shown to 'pavel'
+2023-02-16T23:16:50.535+03:00  INFO 14524 --- [http-nio-8080-exec-3] BikeServiceLogger                        : tools are shown to pavel
+2023-02-16T23:16:52.135+03:00  INFO 14524 --- [http-nio-8080-exec-5] BikeServiceLogger                        : consumables are shown to pavel
+2023-02-16T23:16:52.998+03:00  INFO 14524 --- [http-nio-8080-exec-6] BikeServiceLogger                        : consumables 12 was shown to 'pavel'
+2023-02-16T23:16:54.533+03:00  INFO 14524 --- [http-nio-8080-exec-8] BikeServiceLogger                        : consumables are shown to pavel

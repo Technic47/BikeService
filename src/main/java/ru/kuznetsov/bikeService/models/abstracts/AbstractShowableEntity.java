@@ -100,11 +100,11 @@ public abstract class AbstractShowableEntity implements Showable {
         if (this == o) return true;
         if (!(o instanceof AbstractShowableEntity)) return false;
         AbstractShowableEntity that = (AbstractShowableEntity) o;
-        return id.equals(that.id) && name.equals(that.name) && description.equals(that.description) && Objects.equals(picture, that.picture) && Objects.equals(link, that.link) && Objects.equals(value, that.value);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(picture, that.picture) && Objects.equals(link, that.link) && Objects.equals(value, that.value) && Objects.equals(valueName, that.valueName) && Objects.equals(creator, that.creator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, picture, link, value);
+        return Objects.hash(id, name, description, picture, link, value, valueName, creator);
     }
 }
