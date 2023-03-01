@@ -4,26 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <title>List of items</title>
+    <link href="/css/center.css" rel="stylesheet"/>
 </head>
 <body>
+<div class="center">
+    <h1>
+        <div sec:authentication="principal.username"></div>
+    </h1>
 
-<h1>
-    <div sec:authentication="principal.username"></div>
-</h1>
+    <div th:each="object : ${objects}">
+        <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
+           th:text="${object.getName()}">item</a>
+    </div>
 
-<div th:each="object : ${objects}">
-    <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
-       th:text="${object.getName()}">item</a>
+    <br/>
+    <hr/>
+
+    <a th:href="@{/{link}/new(link=${category})}">Create new</a>
+
+    <form method="get" th:action="@{/title}">
+        <input type="submit" value="Home"/>
+    </form>
 </div>
 
-<br/>
-<hr/>
-
-<a th:href="@{/{link}/new(link=${category})}">Create new</a>
-
-<form method="get" th:action="@{/title}">
-    <input type="submit" value="Home"/>
-</form>
 
 </body>
 </html>

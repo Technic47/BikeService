@@ -35,7 +35,7 @@ public class SecurityConfiguration {
         http
 //                .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/home", "/registration").permitAll();
+                    auth.requestMatchers("/", "/home", "/registration", "/static/**").permitAll();
                     auth.requestMatchers("/**").authenticated();
                 })
                 .formLogin(Customizer.withDefaults())

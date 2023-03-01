@@ -55,21 +55,6 @@ public class SpringConfig implements WebMvcConfigurer {
         return templateResolver;
     }
 
-//    @Bean
-//    public SpringTemplateEngine templateEngine() {
-//        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-//        templateEngine.setTemplateResolver(templateResolver());
-//        templateEngine.setEnableSpringELCompiler(true);
-//        return templateEngine;
-//    }
-
-//    @Override
-//    public void configureViewResolvers(ViewResolverRegistry registry) {
-//        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-//        resolver.setTemplateEngine(templateEngine());
-//        registry.viewResolver(resolver);
-//    }
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -79,7 +64,6 @@ public class SpringConfig implements WebMvcConfigurer {
         dataSource.setPassword(password);
         return dataSource;
     }
-
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
@@ -111,18 +95,13 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
+        registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/");
         registry.addResourceHandler("/IMG/**")
                 .addResourceLocations("classpath:/IMG/");
         registry.addResourceHandler("/preview/**")
                 .addResourceLocations("classpath:/IMG/preview/");
         registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/resources/static/");
+                .addResourceLocations("classpath:/static/");
     }
-
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/home").setViewName("title");
-//        registry.addViewController("/").setViewName("title");
-//    }
 }
