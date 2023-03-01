@@ -39,4 +39,16 @@ public class Fastener extends AbstractShowableEntity implements Showable {
     public void setSpecs(String specs) {
         this.specs = specs;
     }
+
+    @Override
+    public String toString() {
+        return "Fastener{" +
+                "specs='" + specs + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", value='" + value + '\'' +
+                ", valueName='" + valueName + '\'' +
+                '}';
+    }
 }

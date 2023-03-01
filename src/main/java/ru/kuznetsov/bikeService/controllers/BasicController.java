@@ -47,7 +47,6 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         this.currentObjectName = currentClass.getSimpleName().toLowerCase();
         this.category = currentObjectName + "s";
         try {
-            assert false;
             this.thisClassNewObject = currentClass.getConstructor().newInstance();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -140,21 +139,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
         }
         item.setCreator(user.getId());
         userService.addCreatedItem(user, new UserEntity(thisClassNewObject.getClass().getSimpleName(), dao.save(item).getId()));
-        switch (category) {
-            case "tools", "consumables", "parts", "bikes" -> {
-                logger.debug(thisClassNewObject.getClass().getSimpleName()
-                        + " " + ((Usable) item).getName() + " " + ((Usable) item).getValueName()
-                        + " " + ((Usable) item).getValue() + " " + ((Usable) item).getLink()
-                        + " " + ((Usable) item).getManufacturer() + " " + ((Usable) item).getModel()
-                        + " was created by '" + user.getUsername() + "'");
-            }
-            case "documents", "fasteners", "manufacturers" -> {
-                logger.debug(thisClassNewObject.getClass().getSimpleName()
-                        + " " + ((Showable) item).getName() + " " + ((Showable) item).getValueName()
-                        + " " + ((Showable) item).getValue() + " " + ((Showable) item).getLink()
-                        + " was created by '" + user.getUsername() + "'");
-            }
-        }
+        logger.info(item + " was created by '" + user.toString());
         return "redirect:/" + category;
     }
 
@@ -197,7 +182,7 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
         }
         dao.update(id, item);
-        logger.info(thisClassNewObject.getClass().getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
+        logger.info(item.getClass().getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
         return "redirect:/" + category;
     }
 

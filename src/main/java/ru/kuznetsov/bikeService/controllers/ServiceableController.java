@@ -59,8 +59,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
 
     @RequestMapping(value = "/{id}/update")
     public String updateServiceList(@Valid T item,
-                                    Principal principal,
                                     BindingResult bindingResult,
+                                    Principal principal,
                                     @PathVariable("id") Long id,
                                     @RequestParam(value = "action") String action,
                                     @RequestParam(value = "documentId", required = false) Long documentId,

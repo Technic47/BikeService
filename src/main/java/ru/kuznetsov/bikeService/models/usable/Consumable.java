@@ -39,4 +39,17 @@ public class Consumable extends AbstractUsableEntity {
     public void setValue(String value) {
         this.volume = value;
     }
+
+    @Override
+    public String toString() {
+        return "Consumable{" +
+                "volume='" + volume + '\'' +
+                ", model='" + model + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", value='" + value + '\'' +
+                ", valueName='" + valueName + '\'' +
+                '}';
+    }
 }

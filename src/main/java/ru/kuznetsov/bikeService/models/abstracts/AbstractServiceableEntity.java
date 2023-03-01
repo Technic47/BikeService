@@ -50,4 +50,17 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
     public int hashCode() {
         return Objects.hash(super.hashCode(), linkedItems, partNumber);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" +
+                "partNumber='" + partNumber + '\'' +
+                ", model='" + model + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", value='" + value + '\'' +
+                ", valueName='" + valueName + '\'' +
+                '}';
+    }
 }

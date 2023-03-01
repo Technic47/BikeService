@@ -8,7 +8,7 @@ import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService extends AbstractService<UserModel, UserRepository> {
@@ -30,15 +30,14 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         return true;
     }
 
-    public void addCreatedItem(UserModel user, UserEntity entity){
+    public void addCreatedItem(UserModel user, UserEntity entity) {
         user.getCreatedItems().add(entity);
         repository.save(user);
     }
 
-    public void delCreatedItem(UserModel user, UserEntity entity){
-        List<UserEntity> entityList = user.getCreatedItems();
-        entityList.remove(entity);
-        user.setCreatedItems(entityList);
+    public void delCreatedItem(UserModel user, UserEntity entity) {
+        user.setCreatedItems(user.getCreatedItems().stream()
+                .filter(item -> !item.equals(entity)).collect(Collectors.toList()));
         repository.save(user);
     }
 

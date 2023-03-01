@@ -39,4 +39,4 @@ build/
 
 ### local ###
 src/main/resources/IMG/
-/LOGS/
+LOGS/

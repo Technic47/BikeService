@@ -74,11 +74,9 @@ public class UserModel implements UserDetails {
         this.createdItems = createdItems;
     }
 
-
     public String getPassword() {
         return password;
     }
-
 
     public void setPassword(String password) {
         this.password = password;
@@ -120,5 +118,14 @@ public class UserModel implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, active, status, createdItems, password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", active=" + active +
+                '}';
     }
 }

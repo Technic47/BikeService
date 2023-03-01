@@ -36,4 +36,16 @@ public class Manufacturer extends AbstractShowableEntity implements Showable {
     public void setValue(String value) {
         this.country = value;
     }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{" +
+                "country='" + country + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", value='" + value + '\'' +
+                ", valueName='" + valueName + '\'' +
+                '}';
+    }
 }

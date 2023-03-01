@@ -107,4 +107,15 @@ public abstract class AbstractShowableEntity implements Showable {
     public int hashCode() {
         return Objects.hash(id, name, description, picture, link, value, valueName, creator);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", value='" + value + '\'' +
+                ", valueName='" + valueName + '\'' +
+                '}';
+    }
 }
