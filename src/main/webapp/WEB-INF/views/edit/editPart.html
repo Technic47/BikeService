@@ -78,23 +78,6 @@
         <input th:name="action" th:type="submit" th:value="delPart"/>
     </div>
     <br/>
-
-    <!--    <table border="1">-->
-    <!--        <tbody>-->
-    <!--        <tr th:each="part : ${parts}" th:name="partId">-->
-    <!--            <td>-->
-    <!--                <a th:href="@{/parts/{id}(id=${part.getId()})}"-->
-    <!--                   th:text="${part.getName()} + ' ' + ${part.getModel()}"-->
-
-    <!--                   th:value="${part.getId()}"></a>-->
-    <!--                <button class="btn btn-success" th:name="action" th:type="submit" th:value="delPart">-->
-    <!--                    <i class="fa-solid fa-trash"></i>-->
-    <!--                </button>-->
-    <!--            </td>-->
-    <!--        </tr>-->
-    <!--        </tbody>-->
-    <!--    </table>-->
-
     <label for="documents">Choose document to add:</label>
     <div th:object="${allDocuments}">
         <select id="documents" th:name="documentId">

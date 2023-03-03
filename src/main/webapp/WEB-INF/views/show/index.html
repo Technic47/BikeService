@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html lang="ru" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>List of items</title>
     <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/table.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="main">
@@ -14,20 +15,33 @@
         </h1>
     </div>
     <p></p>
-
-    <div th:each="object : ${objects}">
-        <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"
-           th:text="${object.getName()}">item</a>
+    <div class="center">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Созданные вами позиции:</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="object : ${objects}">
+                <td>
+                    <img alt="Picture of item" th:src="@{/preview/{filename}(filename=${object.getValue()})}">
+                    <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
+                       th:text="${object.getKey().getName()}">item</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
     <br/>
-    <hr/>
-
-    <a th:href="@{/{link}/new(link=${category})}">Create new</a>
-
-    <form method="get" th:action="@{/title}">
-        <input type="submit" value="Home"/>
-    </form>
+    <div class="center">
+        <form method="get" th:action="@{/{link}/new(link=${category})}">
+            <input type="submit" value="Создать"/>
+        </form>
+        <form method="get" th:action="@{/title}">
+            <input type="submit" value="На главную"/>
+        </form>
+    </div>
 </div>
 
 

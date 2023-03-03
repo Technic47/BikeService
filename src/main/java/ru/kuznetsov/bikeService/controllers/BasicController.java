@@ -22,13 +22,15 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 @Component
 @Scope("prototype")
-public class BasicController<T extends AbstractShowableEntity & Showable, S extends CommonAbstractEntityService<T>>
+public class BasicController<T extends AbstractShowableEntity, S extends CommonAbstractEntityService<T>>
         extends AbstractController {
     protected final S dao;
     protected T thisClassNewObject;
@@ -67,7 +69,14 @@ public class BasicController<T extends AbstractShowableEntity & Showable, S exte
             objects = dao.index();
             logger.info(category + " are shown to " + user.getUsername());
         }
-        model.addAttribute("objects", objects);
+
+        Map<T, String> objectMap = new HashMap<>();
+        if (objects != null) {
+            for (T object : objects) {
+                objectMap.put(object, pictureDao.show(object.getPicture()).getName());
+            }
+        }
+        model.addAttribute("objects", objectMap);
         model.addAttribute("category", category);
         return "/show/index";
     }
