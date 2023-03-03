@@ -114,8 +114,14 @@ public abstract class AbstractShowableEntity implements Showable {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", link='" + link + '\'' +
-                ", value='" + value + '\'' +
-                ", valueName='" + valueName + '\'' +
+                ", value='" + this.getValue() + '\'' +
+                ", valueName='" + this.getValueName() + '\'' +
                 '}';
+    }
+
+    public String getCredentials() {
+        return name +
+                ", " + this.getValueName() +
+                ": " + this.getValue();
     }
 }

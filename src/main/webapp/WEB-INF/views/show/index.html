@@ -5,29 +5,31 @@
     <meta charset="UTF-8">
     <title>List of items</title>
     <link href="/static/css/center.css" rel="stylesheet"/>
-    <link href="/static/css/table.css" rel="stylesheet"/>
+    <link href="/static/css/table-no-border.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="main">
     <div class="center">
         <h1>
             <div sec:authentication="principal.username"></div>
+            <br/>
+            <br/>
+            <br/>
         </h1>
+        <h3>
+            Созданные вами позиции:
+        </h3>
     </div>
     <p></p>
-    <div class="center">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Созданные вами позиции:</th>
-            </tr>
-            </thead>
+    <div class="border-block">
+        <table class="table-no-border">
             <tbody>
             <tr th:each="object : ${objects}">
                 <td>
                     <img alt="Picture of item" th:src="@{/preview/{filename}(filename=${object.getValue()})}">
                     <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
-                       th:text="${object.getKey().getName()}">item</a>
+                       th:text="${object.getKey().getCredentials()}">item</a>
                 </td>
             </tr>
             </tbody>

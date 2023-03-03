@@ -74,6 +74,8 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         if (objects != null) {
             for (T object : objects) {
                 objectMap.put(object, pictureDao.show(object.getPicture()).getName());
+                object.getValueName();
+                object.getValue();
             }
         }
         model.addAttribute("objects", objectMap);

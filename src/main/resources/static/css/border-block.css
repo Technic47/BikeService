@@ -1,0 +1,9 @@
+.border-block {
+    border: 3px solid black;
+    width: 60%;
+    max-width: 1200px;
+    height: 50%;
+    overflow: auto;
+    margin: auto; /* Выравниваем по центру */
+    text-align: center;
+}
