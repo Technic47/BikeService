@@ -7,7 +7,6 @@ import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.services.DocumentService;
 
 @Controller
-
 @RequestMapping("/documents")
 public class DocumentController extends BasicController<Document, DocumentService> {
     public DocumentController(DocumentService service) {

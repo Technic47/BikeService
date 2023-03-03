@@ -1,36 +1,62 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="ru"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
 </head>
 <body>
+<div class="main">
+    <div class="center">
+        <h1>
+            <div sec:authentication="principal.username"></div>
+        </h1>
+    </div>
+    <p></p>
+    <div class="container">
+        <div class="col-1-2">
+            <h3>Мои Велосипеды</h3>
+            <a href="bikes"><img alt="My bikes" height="300"
+                                 src="/static/siteIMG/bicycle set.jpg"></a>
+        <br/>
+        </div>
+        <div class="col-1-2">
+            <h3>Мои запчасти</h3>
+            <a href="parts"><img alt="My bikes" height="300"
+                                 src="/static/siteIMG/bicycle parts.jpg"></a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-5-2">
+            <h3>Мои документы</h3>
+            <a href="documents"><img alt="My documents" height="200"
+                                     src="/static/siteIMG/documents.jpg" width="200"></a>
+        </div>
+        <div class="col-5-2">
+            <h3>Мой крепёж</h3>
+            <a href="fasteners"><img alt="My fasteners" height="200"
+                                     src="/static/siteIMG/fasteners.jpg" width="200"></a>
+        </div>
+        <div class="col-5-2">
+            <h3>Мои инструменты</h3>
+            <a href="tools"><img alt="My tools" height="200"
+                                     src="/static/siteIMG/tools.jpg" width="200"></a>
+        </div>
+        <div class="col-5-2">
+            <h3>Мои производители</h3>
+            <a href="manufacturers"><img alt="My manufacturers" height="200"
+                                     src="/static/siteIMG/manufacturers.jpg" width="200"></a>
+        </div>
+        <div class="col-5-2">
+            <h3>Мои расходники</h3>
+            <a href="consumables"><img alt="My consumables" height="200"
+                                 src="/static/siteIMG/consumables.jpg" width="200"></a>
+        </div>
+    </div>
+</div>
 
-<h1>
-    <div sec:authentication="principal.username"></div>
-</h1>
 
-<p></p>
-<a href="bikes">My bikes</a>
-<br/>
-<a href="parts">My parts</a>
-<br/>
-
-<br/>
-<br/>
-<br/>
-<a href="documents">My documents</a>
-<br/>
-<a href="fasteners">My fasteners</a>
-<br/>
-<a href="manufacturers">My manufacturers</a>
-<br/>
-<a href="tools">My tools</a>
-<br/>
-<a href="consumables">My consumables</a>
-<br/>
-<a href="pictures">My pictures</a>
-<br/>
 </body>
 </html>

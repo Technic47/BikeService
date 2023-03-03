@@ -1,0 +1,25 @@
+.container {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    text-align: center;
+}
+.container div {
+    float: left;
+    margin-bottom: 15px;
+}
+.col-1-2 {
+    width: 50%;
+    outline: 2px solid #000;
+    border-radius: 10px;
+}
+.col-1-1 {
+    width: 100%;
+    outline: 2px solid #000;
+    border-radius: 10px;
+}
+.col-5-2 {
+    width: 20%;
+    outline: 2px solid #000;
+    border-radius: 10px;
+}

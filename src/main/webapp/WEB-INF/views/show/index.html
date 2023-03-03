@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>List of items</title>
-    <link href="/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/center.css" rel="stylesheet"/>
 </head>
 <body>
-<div class="center">
-    <h1>
-        <div sec:authentication="principal.username"></div>
-    </h1>
+<div class="main">
+    <div class="center">
+        <h1>
+            <div sec:authentication="principal.username"></div>
+        </h1>
+    </div>
+    <p></p>
 
     <div th:each="object : ${objects}">
         <a th:href="@{/{category}/{id}(category=${category}, id=${object.getId()})}"

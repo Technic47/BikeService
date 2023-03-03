@@ -39,4 +39,5 @@ build/
 
 ### local ###
 src/main/resources/IMG/
+src/main/resources/static/siteIMG/big
 LOGS/
