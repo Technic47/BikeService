@@ -32,7 +32,7 @@ public class Tool extends AbstractUsableEntity {
 
     @Override
     public String getValueName() {
-        return "Size";
+        return "Размерность";
     }
 
     @Override

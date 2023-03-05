@@ -32,7 +32,7 @@ public class Consumable extends AbstractUsableEntity {
 
     @Override
     public String getValueName() {
-        return "Volume";
+        return "Объём";
     }
 
     @Override

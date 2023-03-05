@@ -10,7 +10,6 @@ public class Part extends AbstractServiceableEntity {
     public Part() {
     }
 
-
     @Override
     public String getValue() {
         return this.partNumber;
@@ -18,7 +17,7 @@ public class Part extends AbstractServiceableEntity {
 
     @Override
     public String getValueName() {
-        return "Part number";
+        return "Заводской номер";
     }
 
     @Override

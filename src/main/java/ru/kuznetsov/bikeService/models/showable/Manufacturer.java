@@ -29,7 +29,7 @@ public class Manufacturer extends AbstractShowableEntity implements Showable {
 
     @Override
     public String getValueName() {
-        return "Country";
+        return "Страна";
     }
 
     @Override

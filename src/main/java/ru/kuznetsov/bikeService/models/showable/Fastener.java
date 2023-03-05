@@ -29,7 +29,7 @@ public class Fastener extends AbstractShowableEntity implements Showable {
 
     @Override
     public String getValueName() {
-        return "Specs";
+        return "Характеристики";
     }
 
     public String getSpecs() {

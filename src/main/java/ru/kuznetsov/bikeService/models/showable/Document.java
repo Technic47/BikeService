@@ -17,7 +17,7 @@ public class Document extends AbstractShowableEntity implements Showable {
 
     @Override
     public String getValueName() {
-        return "Link";
+        return "Ссылка";
     }
 
     @Override
