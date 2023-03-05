@@ -4,49 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Item Info</title>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/table-no-border.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-<h1 th:text="${usableObject.getName()}"></h1>
-
-<a th:href="@{${usableObject.getLink()}}"
-   th:text="${usableObject.getLink()}"></a>
-
-<div th:text="${manufacture} + ' ' + ${usableObject.getModel()}"></div>
-
-<div th:text="${usableObject.getValueName()} + ' - ' + ${usableObject.getValue()}"></div>
-
-<div th:text="${usableObject.getDescription()}"></div>
-
-<img th:src="@{/IMG/{fileName}(fileName=${picture})}">
-<br/>
-
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <div th:text="'ID - ' + ${usableObject.getId()}"></div>
-    <div th:text="'Name - ' + ${usableObject.getName()}"></div>
-    <div th:text="'Manufacturer - ' + ${manufacture}"></div>
-    <div th:text="'Model - ' + ${usableObject.getModel()}"></div>
-    <div th:text="'Description - ' + ${usableObject.getDescription()}"></div>
-    <div th:text="'Link - ' + ${usableObject.getLink()}"></div>
-    <div th:text="'Value - ' + ${usableObject.getValue()}"></div>
-    <div th:text="'Creator`s ID - ' + ${usableObject.getCreator()}"></div>
-    <div th:text="'Picture`s ID - ' + ${usableObject.getPicture()}"></div>
-    <div th:text="'Manufacturer`s ID - ' + ${usableObject.getManufacturer()}"></div>
+<header class="header">
+    <h1>
+        <div sec:authentication="principal.username"></div>
+    </h1>
+    <nav>
+        <a th:href="@{/title}">На главную</a>
+        <a th:href="@{/logout}">Log out</a>
+    </nav>
+</header>
+<div class="main">
+    <div class="border-block">
+        <div class="container">
+            <div class="col-1-2-no-boarder">
+                <img th:src="@{/IMG/{fileName}(fileName=${picture})}">
+            </div>
+            <div class="col-1-2-no-boarder">
+                <h1 th:text="${usableObject.getName()}"></h1>
+                <a th:href="@{${usableObject.getLink()}}"
+                   th:text="${usableObject.getLink()}"></a>
+                <p th:text="${manufacture} + ' ' + ${usableObject.getModel()}"></p>
+                <p th:text="${usableObject.getValueName()} + ' - ' + ${usableObject.getValue()}"></p>
+                <p th:text="${usableObject.getDescription()}"></p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="container-buttons">
+                <form th:action="@{/{link}/{id}/edit(link=${category}, id=${usableObject.getId()})}">
+                    <button th:type="submit">Редактировать</button>
+                </form>
+                <form th:action="@{/{link}/{id}(link=${category}, id=${usableObject.getId()})}" th:method="POST">
+                    <button th:type="submit">Удалить</button>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-1-1-no-boarder" sec:authorize="hasRole('ROLE_ADMIN')">
+                <ul>
+                    <li th:text="'ID - ' + ${usableObject.getId()}"></li>
+                    <li th:text="'Name - ' + ${usableObject.getName()}"></li>
+                    <li th:text="'Manufacturer - ' + ${manufacture}"></li>
+                    <li th:text="'Model - ' + ${usableObject.getModel()}"></li>
+                    <li th:text="'Description - ' + ${usableObject.getDescription()}"></li>
+                    <li th:text="'Link - ' + ${usableObject.getLink()}"></li>
+                    <li th:text="'Value - ' + ${usableObject.getValue()}"></li>
+                    <li th:text="'Creator`s ID - ' + ${usableObject.getCreator()}"></li>
+                    <li th:text="'Picture`s ID - ' + ${usableObject.getPicture()}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-<form th:action="@{/{link}/{id}/edit(link=${category}, id=${usableObject.getId()})}">
-    <label>
-        <input th:type="submit" value="Edit">
-    </label>
-</form>
-<br/>
-<br/>
-
-<form th:action="@{/{link}/{id}(link=${category}, id=${usableObject.getId()})}" th:method="POST">
-    <label>
-        <input th:type="submit" value="Delete">
-    </label>
-</form>
-
 </body>
 </html>

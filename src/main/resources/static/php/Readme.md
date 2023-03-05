@@ -1,3 +1,0 @@
-
-# FullHD Site
-

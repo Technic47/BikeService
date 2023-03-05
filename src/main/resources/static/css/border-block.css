@@ -2,8 +2,8 @@
     border: 3px solid black;
     width: 60%;
     max-width: 1200px;
-    height: 50%;
+    height: 600px;
     overflow: auto;
-    margin: auto; /* Выравниваем по центру */
+    margin: auto;
     text-align: center;
 }

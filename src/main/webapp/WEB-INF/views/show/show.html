@@ -4,44 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Item Info</title>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/table-no-border.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-<h1 th:text="${showableObject.getName()}"></h1>
+<header class="header">
+    <h1>
+        <div sec:authentication="principal.username"></div>
+    </h1>
+    <nav>
+        <a th:href="@{/title}">На главную</a>
+        <a th:href="@{/logout}">Log out</a>
+    </nav>
+</header>
+<div class="main">
+    <div class="border-block">
+        <div class="container">
+            <div class="col-1-2-no-boarder">
+                <img th:src="@{/IMG/{fileName}(fileName=${picture})}">
+            </div>
+            <div class="col-1-2-no-boarder">
+                <h1 th:text="${showableObject.getName()}"></h1>
 
-<a th:href="@{${showableObject.getLink()}}"
-th:text="${showableObject.getLink()}"></a>
+                <a th:href="@{${showableObject.getLink()}}"
+                   th:text="${showableObject.getLink()}"></a>
 
-<div th:text="${showableObject.getValueName()} + ' - ' + ${showableObject.getValue()}"></div>
+                <p th:text="${showableObject.getValueName()} + ' - ' + ${showableObject.getValue()}"></p>
 
-<div th:text="${showableObject.getDescription()}"></div>
-
-<img th:src="@{/IMG/{fileName}(fileName=${picture})}">
-<br/>
-
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <div th:text="'ID - ' + ${showableObject.getId()}"></div>
-    <div th:text="'Name - ' + ${showableObject.getName()}"></div>
-    <div th:text="'Description - ' + ${showableObject.getDescription()}"></div>
-    <div th:text="'Link - ' + ${showableObject.getLink()}"></div>
-    <div th:text="'Value - ' + ${showableObject.getValue()}"></div>
-    <div th:text="'Creator`s ID - ' + ${showableObject.getCreator()}"></div>
-    <div th:text="'Picture`s ID - ' + ${showableObject.getPicture()}"></div>
+                <p th:text="${showableObject.getDescription()}"></p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="container-buttons">
+                <form th:action="@{/{link}/{id}/edit(link=${category}, id=${showableObject.getId()})}">
+                    <button th:type="submit">Редактировать</button>
+                </form>
+                <form th:action="@{/{link}/{id}(link=${category}, id=${showableObject.getId()})}" th:method="POST">
+                    <button th:type="submit">Удалить</button>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-1-1-no-boarder" sec:authorize="hasRole('ROLE_ADMIN')">
+                <ul>
+                    <li th:text="'ID - ' + ${showableObject.getId()}"></li>
+                    <li th:text="'Name - ' + ${showableObject.getName()}"></li>
+                    <li th:text="'Description - ' + ${showableObject.getDescription()}"></li>
+                    <li th:text="'Link - ' + ${showableObject.getLink()}"></li>
+                    <li th:text="'Value - ' + ${showableObject.getValue()}"></li>
+                    <li th:text="'Creator`s ID - ' + ${showableObject.getCreator()}"></li>
+                    <li th:text="'Picture`s ID - ' + ${showableObject.getPicture()}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-<form th:action="@{/{link}/{id}/edit(link=${category}, id=${showableObject.getId()})}">
-    <label>
-        <input th:type="submit" value="Edit">
-    </label>
-</form>
-<br/>
-<br/>
-
-<form th:action="@{/{link}/{id}(link=${category}, id=${showableObject.getId()})}" th:method="POST">
-    <label>
-        <input th:type="submit" value="Delete">
-    </label>
-</form>
-
 </body>
 </html>
