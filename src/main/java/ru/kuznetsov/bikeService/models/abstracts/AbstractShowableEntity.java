@@ -22,6 +22,7 @@ public abstract class AbstractShowableEntity implements Showable {
     protected String description;
     @Column(name = "picture")
     protected Long picture;
+    @Size(max = 100)
     @Column(name = "link")
     protected String link;
     @Transient

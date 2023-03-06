@@ -108,7 +108,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     @GetMapping(value = "/new")
     public String newItem(Model model) {
         this.newItemCheck(model, thisClassNewObject);
-        return "/new/newPart";
+        return "/new/new";
     }
 
     private void newItemCheck(Model model, T item) {
@@ -131,7 +131,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     ) {
         if (bindingResult.hasErrors()) {
             this.newItemCheck(model, item);
-            return "/new/newPart";
+            return "/new/new";
         }
 
         this.checkUser(principal);

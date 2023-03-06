@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 
 
@@ -11,6 +12,7 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 @Table(name = "tools")
 public class Tool extends AbstractUsableEntity {
     @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 100)
     @Column(name = "size")
     private String size;
 

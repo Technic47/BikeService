@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 
@@ -11,6 +12,7 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 @Table(name = "fasteners")
 public class Fastener extends AbstractShowableEntity implements Showable {
     @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 200)
     @Column(name = "specs")
     private String specs;
 

@@ -3,11 +3,13 @@ package ru.kuznetsov.bikeService.models.showable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 @Entity
 @Table(name = "manufacturers")
 public class Manufacturer extends AbstractShowableEntity implements Showable {
+    @Size(max = 100)
     @Column(name = "country")
     private String country;
 
