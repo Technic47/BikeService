@@ -54,7 +54,29 @@ public class SpringConfig implements WebMvcConfigurer {
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
-
+/////
+//    @Bean
+//    public SpringTemplateEngine templateEngine() {
+//
+//        var templateEngine = new SpringTemplateEngine();
+//        templateEngine.setTemplateResolver(templateResolver());
+//        templateEngine.setEnableSpringELCompiler(true);
+//
+//        return templateEngine;
+//    }
+//
+//    @Bean
+//    public ViewResolver viewResolver() {
+//
+//        var resolver = new ThymeleafViewResolver();
+//        var registry = new ViewResolverRegistry(null, applicationContext);
+//
+//        resolver.setTemplateEngine(templateEngine());
+//        registry.viewResolver(resolver);
+//
+//        return resolver;
+//    }
+/////
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

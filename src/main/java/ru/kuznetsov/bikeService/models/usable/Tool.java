@@ -3,14 +3,14 @@ package ru.kuznetsov.bikeService.models.usable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "tools")
 public class Tool extends AbstractUsableEntity {
-    @NotEmpty(message = "Fill this field!")
+    @NotBlank(message = "Поле не должно быть пустым!")
     @Column(name = "size")
     private String size;
 

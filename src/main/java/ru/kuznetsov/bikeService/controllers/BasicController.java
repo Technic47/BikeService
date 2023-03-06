@@ -1,13 +1,11 @@
 package ru.kuznetsov.bikeService.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
@@ -20,7 +18,6 @@ import ru.kuznetsov.bikeService.models.usable.Usable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,8 +71,6 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         if (objects != null) {
             for (T object : objects) {
                 objectMap.put(object, pictureDao.show(object.getPicture()).getName());
-                object.getValueName();
-                object.getValue();
             }
         }
         model.addAttribute("objects", objectMap);
@@ -112,33 +107,31 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
 
     @GetMapping(value = "/new")
     public String newItem(Model model) {
+        this.newItemCheck(model, thisClassNewObject);
+        return "/new/newPart";
+    }
+
+    private void newItemCheck(Model model, T item) {
         model.addAttribute("category", category);
         model.addAttribute("allPictures", pictureDao.index());
+        model.addAttribute("object", item);
         switch (category) {
-            case "parts", "bikes" -> {
-                model.addAttribute("serviceObject", (Serviceable) thisClassNewObject);
-                return "/new/newPart";
-            }
-            case "tools", "consumables" -> {
-                model.addAttribute("usableObject", (Usable) thisClassNewObject);
-                return "/new/newUsable";
-            }
-            case "documents", "fasteners", "manufacturers" -> {
-                model.addAttribute("showableObject", (Showable) thisClassNewObject);
-                return "/new/new";
-            }
+            case "parts", "bikes" -> model.addAttribute("type", "Serviceable");
+            case "tools", "consumables" -> model.addAttribute("type", "Usable");
+            case "documents", "fasteners", "manufacturers" -> model.addAttribute("type", "Showable");
         }
-        return category + "/new";
     }
 
     @PostMapping()
-    public String create(@Valid T item,
-                         Principal principal,
+    public String create(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,
-                         @RequestPart("newImage") MultipartFile file
+                         Principal principal,
+                         @RequestPart("newImage") MultipartFile file,
+                         Model model
     ) {
         if (bindingResult.hasErrors()) {
-            return category + "/new";
+            this.newItemCheck(model, item);
+            return "/new/newPart";
         }
 
         this.checkUser(principal);

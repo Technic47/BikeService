@@ -3,14 +3,14 @@ package ru.kuznetsov.bikeService.models.showable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "fasteners")
 public class Fastener extends AbstractShowableEntity implements Showable {
-    @NotEmpty(message = "Fill this field!")
+    @NotBlank(message = "Поле не должно быть пустым!")
     @Column(name = "specs")
     private String specs;
 

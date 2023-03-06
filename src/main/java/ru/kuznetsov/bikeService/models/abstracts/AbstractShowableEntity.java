@@ -1,9 +1,10 @@
 package ru.kuznetsov.bikeService.models.abstracts;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -11,10 +12,13 @@ public abstract class AbstractShowableEntity implements Showable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-    @NotEmpty(message = "Fill this field!")
+    @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 100)
     @Column(name = "name")
     protected String name;
     @Column(name = "description")
+    @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 255)
     protected String description;
     @Column(name = "picture")
     protected Long picture;
