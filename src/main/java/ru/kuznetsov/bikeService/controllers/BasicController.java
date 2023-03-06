@@ -150,34 +150,38 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         this.currentObject = dao.show(id);
-        model.addAttribute("category", category);
+        this.newItemCheck(model, currentObject);
+//        model.addAttribute("category", category);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
-        model.addAttribute("allPictures", pictureDao.index());
-        switch (category) {
-            case "parts", "bikes" -> {
-                model.addAttribute("serviceObject", (Serviceable) currentObject);
-                return "/edit/editPart";
-            }
-            case "tools", "consumables" -> {
-                model.addAttribute("usableObject", (Usable) currentObject);
-                return "/edit/editUsable";
-            }
-            case "documents", "fasteners", "manufacturers" -> {
-                model.addAttribute("showableObject", (Showable) currentObject);
-                return "/edit/edit";
-            }
-        }
-        return category + "/{id}/edit";
+//        model.addAttribute("allPictures", pictureDao.index());
+//        switch (category) {
+//            case "parts", "bikes" -> {
+//                model.addAttribute("serviceObject", (Serviceable) currentObject);
+//                return "/edit/editPart";
+//            }
+//            case "tools", "consumables" -> {
+//                model.addAttribute("usableObject", (Usable) currentObject);
+//                return "/edit/editUsable";
+//            }
+//            case "documents", "fasteners", "manufacturers" -> {
+//                model.addAttribute("showableObject", (Showable) currentObject);
+//                return "/edit/edit";
+//            }
+//        }
+        return "/edit/editUsable";
     }
 
     @PostMapping("/{id}/edit")
     public String update(@Valid T item,
-                         Principal principal,
                          BindingResult bindingResult,
+                         Principal principal,
                          @RequestPart(value = "newImage") MultipartFile file,
-                         @PathVariable("id") Long id) {
+                         @PathVariable("id") Long id,
+                         Model model) {
         if (bindingResult.hasErrors()) {
-            return category + "/edit";
+            this.newItemCheck(model, item);
+            model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
+            return "/edit/editUsable";
         }
         this.checkUser(principal);
         if (!file.isEmpty()) {

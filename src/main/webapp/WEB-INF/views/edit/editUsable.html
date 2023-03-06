@@ -1,65 +1,159 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit item</title>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-
-<form enctype="multipart/form-data" th:action="@{/{link}/{id}/edit(link=${category}, id=${usableObject.getId()})}" th:method="POST"
-      th:object="${usableObject}">
-    <label for="name">Enter name:</label>
-    <input id="name" th:field="*{name}" type="text"/>
-    <div style="color:red" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
-    <br/>
-    <label for="description">Enter description:</label>
-    <input id="description" th:field="*{description}" type="text"/>
-    <div style="color:red" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></div>
-    <br/>
-    <label for="link">Enter link:</label>
-    <input id="link" th:field="*{link}" type="text"/>
-    <div style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></div>
-    <br/>
-    <label for="value">Enter value:</label>
-    <input id="value" th:field="*{value}" type="text"/>
-    <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></div>
-    <br/>
-    <div hidden="hidden">
-        <label for="creator">Enter creator:</label>
-        <input id="creator" th:field="*{creator}" type="text"/>
+<header class="header">
+    <h1>
+        <div sec:authentication="principal.username"></div>
+    </h1>
+    <nav>
+        <a th:href="@{/title}">На главную</a>
+        <a th:href="@{/logout}">Log out</a>
+    </nav>
+</header>
+<div class="main">
+    <div class="container">
+        <form enctype="multipart/form-data"
+              th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}" th:method="POST"
+              th:object="${object}">
+            <div class="col-1-1">
+                <br/>
+                <label for="name">Название:</label>
+                <input id="name" th:field="*{name}" type="text"/>
+                <br/>
+                <span style="color:red" th:errors="*{name}"
+                      th:if="${#fields.hasErrors('name')}"></span>
+                <br/>
+                <br/>
+                <label for="description">Описание:</label>
+                <input id="description" th:field="*{description}" type="text"/>
+                <br/>
+                <span style="color:red" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></span>
+                <br/>
+                <br/>
+                <label for="link">Ссылка:</label>
+                <input id="link" th:field="*{link}" type="text"/>
+                <br/>
+                <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
+                <br/>
+                <br/>
+                <span hidden="hidden">
+                    <label for="creator">Enter creator:</label>
+                    <input id="creator" th:field="*{creator}" type="text"/>
+                </span>
+                <div th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
+                    <span th:object="${manufacturers}">
+                        <label for="manufacturers">Choose manufacturer:</label>
+                        <select id="manufacturers" name="manufacturer">
+                            <option selected th:text="${manufacture.getName()}"
+                                    th:value="${manufacture.getId()}"></option>
+                            <option th:each="item : ${manufacturers}"
+                                    th:text="${item.getName()}"
+                                    th:value="${item.getId()}">
+                            </option>
+                        </select>
+                    </span>
+                    <br/>
+                    <br/>
+                    <label for="model">Модель:</label>
+                    <input id="model" th:field="*{model}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
+                    <br/>
+                    <br/>
+                    <div th:if="${type == 'Serviceable'}">
+                        <label for="partNumber">Серийный номер:</label>
+                        <input id="partNumber" th:field="*{partNumber}" type="text"/>
+                        <br/>
+                        <div style="color:red" th:errors="*{partNumber}"
+                             th:if="${#fields.hasErrors('partNumber')}"></div>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+                <label for="picture">Загрузить новое изображение:</label>
+                <br/>
+                <input accept="image/*" id="picture" name="newImage" type="file"/>
+                <br/>
+                <br/>
+                <div th:object="${allPictures}">
+                    <label for="pictures">Choose picture:</label>
+                    <select id="pictures" name="picture">
+                        <option selected th:text="${picture.getName()}"
+                                th:value="${picture.getId()}"></option>
+                        <option th:each="item : ${allPictures}"
+                                th:text="${item.getName()}"
+                                th:value="${item.getId()}">
+                        </option>
+                    </select>
+                </div>
+                <br/>
+                <br/>
+            </div>
+            <input type="submit" value="Создать!"/>
+        </form>
     </div>
-    <label for="manufacturers">Choose manufacturer:</label>
-    <div th:object="${manufacturers}">
-        <select id="manufacturers" name="manufacturer">
-            <option selected th:text="${manufacture.getName()}"
-                    th:value="${manufacture.getId()}"></option>
-            <option th:each="item : ${manufacturers}"
-                    th:text="${item.getName()}"
-                    th:value="${item.getId()}">
-            </option>
-        </select>
-    </div>
-    <label for="model">Enter model:</label>
-    <input id="model" th:field="*{model}" type="text"/>
-    <div style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></div>
-    <br/>
-    <label for="picture">Upload new picture:</label>
-    <input accept="image/*" id="picture" name="newImage" type="file"/>
-    <br/>
-    <br/>
-    <label for="pictures">Choose picture:</label>
-    <div th:object="${allPictures}">
-        <select id="pictures" name="picture">
-            <option selected th:text="${picture.getName()}"
-                    th:value="${picture.getId()}"></option>
-            <option th:each="item : ${allPictures}"
-                    th:text="${item.getName()}"
-                    th:value="${item.getId()}">
-            </option>
-        </select>
-    </div>
-    <input type="submit" value="Update!"/>
-</form>
+</div>
+<!--<form enctype="multipart/form-data" th:action="@{/{link}/{id}/edit(link=${category}, id=${usableObject.getId()})}" th:method="POST"-->
+<!--      th:object="${usableObject}">-->
+<!--    <label for="name">Enter name:</label>-->
+<!--    <input id="name" th:field="*{name}" type="text"/>-->
+<!--    <div style="color:red" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>-->
+<!--    <br/>-->
+<!--    <label for="description">Enter description:</label>-->
+<!--    <input id="description" th:field="*{description}" type="text"/>-->
+<!--    <div style="color:red" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></div>-->
+<!--    <br/>-->
+<!--    <label for="link">Enter link:</label>-->
+<!--    <input id="link" th:field="*{link}" type="text"/>-->
+<!--    <div style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></div>-->
+<!--    <br/>-->
+<!--    <label for="value">Enter value:</label>-->
+<!--    <input id="value" th:field="*{value}" type="text"/>-->
+<!--    <div style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></div>-->
+<!--    <br/>-->
+<!--<div hidden="hidden">-->
+<!--    <label for="creator">Enter creator:</label>-->
+<!--    <input id="creator" th:field="*{creator}" type="text"/>-->
+<!--</div>-->
+<!--<label for="manufacturers">Choose manufacturer:</label>-->
+<!--<div th:object="${manufacturers}">-->
+<!--    <select id="manufacturers" name="manufacturer">-->
+<!--        <option selected th:text="${manufacture.getName()}"-->
+<!--                th:value="${manufacture.getId()}"></option>-->
+<!--        <option th:each="item : ${manufacturers}"-->
+<!--                th:text="${item.getName()}"-->
+<!--                th:value="${item.getId()}">-->
+<!--        </option>-->
+<!--    </select>-->
+<!--</div>-->
+<!--    <label for="model">Enter model:</label>-->
+<!--    <input id="model" th:field="*{model}" type="text"/>-->
+<!--    <div style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></div>-->
+<!--    <br/>-->
+<!--    <label for="picture">Upload new picture:</label>-->
+<!--    <input accept="image/*" id="picture" name="newImage" type="file"/>-->
+<!--    <br/>-->
+<!--    <br/>-->
+<!--    <label for="pictures">Choose picture:</label>-->
+<!--    <div th:object="${allPictures}">-->
+<!--        <select id="pictures" name="picture">-->
+<!--            <option selected th:text="${picture.getName()}"-->
+<!--                    th:value="${picture.getId()}"></option>-->
+<!--            <option th:each="item : ${allPictures}"-->
+<!--                    th:text="${item.getName()}"-->
+<!--                    th:value="${item.getId()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--    </div>-->
+<!--    <input type="submit" value="Update!"/>-->
+<!--</form>-->
 
 </body>
 </html>

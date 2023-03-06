@@ -75,7 +75,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         item.setLinkedItems(this.currentObject.getLinkedItems());
         switch (action) {
             case "finish":
-                return this.update(item, principal, bindingResult, file, id);
+                return this.update(item, bindingResult, principal,  file, id, model);
             case "addDocument":
                 this.itemsManipulation(item, 1, Document.class, documentId, 1);
                 break;
