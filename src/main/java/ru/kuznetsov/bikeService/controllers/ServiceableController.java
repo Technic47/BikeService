@@ -156,8 +156,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     @Override
-    protected void addItemAttributes(Model model, T item) {
-        super.addItemAttributes(model, item);
+    protected void addItemAttributesNew(Model model, T item) {
+        super.addItemAttributesNew(model, item);
     }
 
     @Autowired

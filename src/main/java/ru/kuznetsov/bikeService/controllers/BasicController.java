@@ -107,11 +107,11 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
 
     @GetMapping(value = "/new")
     public String newItem(Model model) {
-        this.addItemAttributes(model, thisClassNewObject);
+        this.addItemAttributesNew(model, thisClassNewObject);
         return "/new/new";
     }
 
-    protected void addItemAttributes(Model model, T item) {
+    protected void addItemAttributesNew(Model model, T item) {
         model.addAttribute("category", category);
         model.addAttribute("allPictures", pictureDao.index());
         model.addAttribute("object", item);
@@ -122,6 +122,10 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         }
     }
 
+    protected void addItemAttributesEdit(Model model, T item) {
+        this.addItemAttributesNew(model, item);
+    }
+
     @PostMapping()
     public String create(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,
@@ -130,7 +134,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                          Model model
     ) {
         if (bindingResult.hasErrors()) {
-            this.addItemAttributes(model, item);
+            this.addItemAttributesNew(model, item);
             return "/new/new";
         }
 
@@ -150,7 +154,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         this.currentObject = dao.show(id);
-        this.addItemAttributes(model, currentObject);
+        this.addItemAttributesEdit(model, currentObject);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
         return "/edit/editUsable";
     }
@@ -163,7 +167,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                          @PathVariable("id") Long id,
                          Model model) {
         if (bindingResult.hasErrors()) {
-            this.addItemAttributes(model, item);
+            this.addItemAttributesNew(model, item);
             model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
             return "/edit/editUsable";
         }
