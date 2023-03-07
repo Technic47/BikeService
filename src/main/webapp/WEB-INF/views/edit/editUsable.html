@@ -43,6 +43,12 @@
                 <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
                 <br/>
                 <br/>
+                <label for="value" th:text="${object.getValueName()}">:</label>
+                <input id="value" th:field="*{value}" type="text"/>
+                <br/>
+                <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
+                <br/>
+                <br/>
                 <span hidden="hidden">
                     <label for="creator">Enter creator:</label>
                     <input id="creator" th:field="*{creator}" type="text"/>
@@ -67,15 +73,6 @@
                     <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
                     <br/>
                     <br/>
-                    <div th:if="${type == 'Serviceable'}">
-                        <label for="partNumber">Серийный номер:</label>
-                        <input id="partNumber" th:field="*{partNumber}" type="text"/>
-                        <br/>
-                        <div style="color:red" th:errors="*{partNumber}"
-                             th:if="${#fields.hasErrors('partNumber')}"></div>
-                        <br/>
-                        <br/>
-                    </div>
                 </div>
                 <label for="picture">Загрузить новое изображение:</label>
                 <br/>
@@ -96,7 +93,7 @@
                 <br/>
                 <br/>
             </div>
-            <input type="submit" value="Создать!"/>
+            <input type="submit" value="Обновить!"/>
         </form>
     </div>
 </div>

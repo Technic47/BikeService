@@ -155,10 +155,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         model.addAttribute("allParts", partDAO.index());
     }
 
-
     @Override
     protected void addItemAttributes(Model model, T item) {
-        this.addAllItemsToModel(model);
         super.addItemAttributes(model, item);
     }
 

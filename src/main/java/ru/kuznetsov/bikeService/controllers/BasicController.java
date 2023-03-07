@@ -151,23 +151,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     public String edit(Model model, @PathVariable("id") Long id) {
         this.currentObject = dao.show(id);
         this.addItemAttributes(model, currentObject);
-//        model.addAttribute("category", category);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
-//        model.addAttribute("allPictures", pictureDao.index());
-//        switch (category) {
-//            case "parts", "bikes" -> {
-//                model.addAttribute("serviceObject", (Serviceable) currentObject);
-//                return "/edit/editPart";
-//            }
-//            case "tools", "consumables" -> {
-//                model.addAttribute("usableObject", (Usable) currentObject);
-//                return "/edit/editUsable";
-//            }
-//            case "documents", "fasteners", "manufacturers" -> {
-//                model.addAttribute("showableObject", (Showable) currentObject);
-//                return "/edit/edit";
-//            }
-//        }
         return "/edit/editUsable";
     }
 

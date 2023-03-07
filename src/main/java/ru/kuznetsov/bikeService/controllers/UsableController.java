@@ -33,24 +33,20 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
         return super.show(id, principal, model);
     }
 
-    @Override
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        Long manufactureIndex = dao.show(id).getManufacturer();
-        model.addAttribute("manufacture", daoManufacturer.show(manufactureIndex));
-        model.addAttribute("manufacturers", daoManufacturer.index());
-        return super.edit(model, id);
-    }
-
 //    @Override
-//    @GetMapping("/new")
-//    public String newItem(Model model) {
-//        model.addAttribute("manufacturers", daoManufacturer.index());
-//        return super.newItem(model);
+//    @GetMapping("/{id}/edit")
+//    public String edit(Model model, @PathVariable("id") Long id) {
+////        Long manufactureIndex = dao.show(id).getManufacturer();
+////        model.addAttribute("manufacture", daoManufacturer.show(manufactureIndex));
+////        model.addAttribute("manufacturers", daoManufacturer.index());
+//        this.addItemAttributes(model, dao.show(id));
+//        return super.edit(model, id);
 //    }
+
 
     @Override
     protected void addItemAttributes(Model model, T item) {
+        model.addAttribute("manufacture", daoManufacturer.show(item.getManufacturer()));
         model.addAttribute("manufacturers", daoManufacturer.index());
         super.addItemAttributes(model, item);
     }
