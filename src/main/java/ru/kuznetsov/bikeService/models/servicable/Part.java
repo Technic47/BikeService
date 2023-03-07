@@ -11,17 +11,7 @@ public class Part extends AbstractServiceableEntity {
     }
 
     @Override
-    public String getValue() {
-        return this.partNumber;
-    }
-
-    @Override
     public String getValueName() {
         return "Заводской номер";
-    }
-
-    @Override
-    public void setValue(String value) {
-        this.partNumber = value;
     }
 }

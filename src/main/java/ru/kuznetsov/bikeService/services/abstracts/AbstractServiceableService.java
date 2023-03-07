@@ -21,7 +21,6 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
     }
 
     public void serviceableToRepo(E toRepo, E newItem) {
-        toRepo.setPartNumber(newItem.getPartNumber());
         this.usableToRepo(toRepo, newItem);
     }
 

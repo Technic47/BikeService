@@ -42,10 +42,19 @@
                 <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
                 <br/>
                 <br/>
+                <label for="value" th:text="${object.getValueName()}">:</label>
+                <input id="value" th:field="*{value}" type="text"/>
+                <br/>
+                <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
+                <br/>
+                <br/>
                 <div th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
                     <span th:object="${manufacturers}">
                         <label for="manufacturers">Производитель:</label>
                         <select id="manufacturers" name="manufacturer">
+                            <option selected th:text="Default"
+                                    th:value="1">
+                            </option>
                             <option th:each="item : ${manufacturers}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -60,15 +69,6 @@
                     <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
                     <br/>
                     <br/>
-                    <div th:if="${type == 'Serviceable'}">
-                        <label for="partNumber">Серийный номер:</label>
-                        <input id="partNumber" th:field="*{partNumber}" type="text"/>
-                        <br/>
-                        <div style="color:red" th:errors="*{partNumber}"
-                             th:if="${#fields.hasErrors('partNumber')}"></div>
-                        <br/>
-                        <br/>
-                    </div>
                 </div>
                 <label for="picture">Загрузить новое изображение:</label>
                 <br/>

@@ -75,7 +75,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         item.setLinkedItems(this.currentObject.getLinkedItems());
         switch (action) {
             case "finish":
-                return this.update(item, bindingResult, principal,  file, id, model);
+                return this.update(item, bindingResult, principal, file, id, model);
             case "addDocument":
                 this.itemsManipulation(item, 1, Document.class, documentId, 1);
                 break;
@@ -157,11 +157,10 @@ public class ServiceableController<T extends AbstractServiceableEntity,
 
 
     @Override
-    public String newItem(Model model) {
+    protected void addItemAttributes(Model model, T item) {
         this.addAllItemsToModel(model);
-        return super.newItem(model);
+        super.addItemAttributes(model, item);
     }
-
 
     @Autowired
     public void setDocumentDAO(DocumentService documentDAO) {

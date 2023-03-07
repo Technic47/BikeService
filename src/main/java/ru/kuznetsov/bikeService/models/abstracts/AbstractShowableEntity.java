@@ -25,7 +25,9 @@ public abstract class AbstractShowableEntity implements Showable {
     @Size(max = 100)
     @Column(name = "link")
     protected String link;
-    @Transient
+    @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 200)
+    @Column(name = "value")
     protected String value;
     @Transient
     protected String valueName;
@@ -34,7 +36,6 @@ public abstract class AbstractShowableEntity implements Showable {
 
     public AbstractShowableEntity() {
     }
-
 
     public Long getId() {
         return id;

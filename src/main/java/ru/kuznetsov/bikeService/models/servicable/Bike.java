@@ -10,19 +10,8 @@ public class Bike extends AbstractServiceableEntity {
     public Bike() {
     }
 
-
-    @Override
-    public String getValue() {
-        return this.partNumber;
-    }
-
     @Override
     public String getValueName() {
-        return "Part number";
-    }
-
-    @Override
-    public void setValue(String value) {
-        this.partNumber = value;
+        return "Заводской номер";
     }
 }

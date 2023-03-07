@@ -42,11 +42,17 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
         return super.edit(model, id);
     }
 
+//    @Override
+//    @GetMapping("/new")
+//    public String newItem(Model model) {
+//        model.addAttribute("manufacturers", daoManufacturer.index());
+//        return super.newItem(model);
+//    }
+
     @Override
-    @GetMapping("/new")
-    public String newItem(Model model) {
+    protected void addItemAttributes(Model model, T item) {
         model.addAttribute("manufacturers", daoManufacturer.index());
-        return super.newItem(model);
+        super.addItemAttributes(model, item);
     }
 
     @Autowired

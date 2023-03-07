@@ -6,7 +6,5 @@ import ru.kuznetsov.bikeService.models.usable.Usable;
 import java.util.Set;
 
 public interface Serviceable extends Usable {
-    String getPartNumber();
-
     Set<PartEntity> getLinkedItems();
 }

@@ -15,19 +15,10 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
             joinColumns = @JoinColumn(name = "part_id"))
     private Set<PartEntity> linkedItems = new HashSet<>();
 
-    @Column(name = "partNumber")
-    protected String partNumber;
 
     public AbstractServiceableEntity() {
     }
 
-    public String getPartNumber() {
-        return partNumber;
-    }
-
-    public void setPartNumber(String partNumber) {
-        this.partNumber = partNumber;
-    }
 
     public Set<PartEntity> getLinkedItems() {
         return linkedItems;
@@ -43,18 +34,17 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         if (!(o instanceof AbstractServiceableEntity)) return false;
         if (!super.equals(o)) return false;
         AbstractServiceableEntity that = (AbstractServiceableEntity) o;
-        return Objects.equals(linkedItems, that.linkedItems) && Objects.equals(partNumber, that.partNumber);
+        return Objects.equals(linkedItems, that.linkedItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), linkedItems, partNumber);
+        return Objects.hash(super.hashCode(), linkedItems);
     }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
-                "partNumber='" + partNumber + '\'' +
                 ", model='" + model + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

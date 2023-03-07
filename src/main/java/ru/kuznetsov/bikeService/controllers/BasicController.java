@@ -107,11 +107,11 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
 
     @GetMapping(value = "/new")
     public String newItem(Model model) {
-        this.newItemCheck(model, thisClassNewObject);
+        this.addItemAttributes(model, thisClassNewObject);
         return "/new/new";
     }
 
-    private void newItemCheck(Model model, T item) {
+    protected void addItemAttributes(Model model, T item) {
         model.addAttribute("category", category);
         model.addAttribute("allPictures", pictureDao.index());
         model.addAttribute("object", item);
@@ -130,7 +130,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                          Model model
     ) {
         if (bindingResult.hasErrors()) {
-            this.newItemCheck(model, item);
+            this.addItemAttributes(model, item);
             return "/new/new";
         }
 
@@ -150,7 +150,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         this.currentObject = dao.show(id);
-        this.newItemCheck(model, currentObject);
+        this.addItemAttributes(model, currentObject);
 //        model.addAttribute("category", category);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
 //        model.addAttribute("allPictures", pictureDao.index());
@@ -179,7 +179,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                          @PathVariable("id") Long id,
                          Model model) {
         if (bindingResult.hasErrors()) {
-            this.newItemCheck(model, item);
+            this.addItemAttributes(model, item);
             model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
             return "/edit/editUsable";
         }

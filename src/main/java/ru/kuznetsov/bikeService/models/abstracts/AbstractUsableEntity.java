@@ -15,6 +15,7 @@ public abstract class AbstractUsableEntity extends AbstractShowableEntity implem
     @Column(name = "model")
     protected String model;
 
+
     public AbstractUsableEntity() {
     }
 
