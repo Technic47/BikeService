@@ -123,6 +123,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     }
 
     protected void addItemAttributesEdit(Model model, T item) {
+        model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
         this.addItemAttributesNew(model, item);
     }
 
@@ -160,15 +161,14 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     }
 
     @PostMapping("/{id}/edit")
-    public String update(@Valid T item,
+    public String update(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,
                          Principal principal,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model) {
         if (bindingResult.hasErrors()) {
-            this.addItemAttributesNew(model, item);
-            model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
+            this.addItemAttributesEdit(model, item);
             return "/edit/editUsable";
         }
         this.checkUser(principal);

@@ -37,6 +37,10 @@
     border-radius: 10px;
 }
 
+.col-5-2-no-boarders {
+    width: 20%;
+}
+
 .container-buttons {
     display: flex;
     justify-content: center;

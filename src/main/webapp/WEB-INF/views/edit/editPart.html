@@ -8,8 +8,10 @@
 <body>
 <script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
 
-<form enctype="multipart/form-data" th:action="@{/{link}/{id}/update(link=${category}, id=${serviceObject.getId()})}"
-      th:method="POST" th:object="${serviceObject}">
+<form enctype="multipart/form-data"
+      th:action="@{/{link}/{id}/update(link=${category}, id=${serviceObject.getId()})}"
+      th:method="POST"
+      th:object="${serviceObject}">
 
     <label for="name">Enter name:</label>
     <input id="name" th:field="*{name}" type="text"/>
