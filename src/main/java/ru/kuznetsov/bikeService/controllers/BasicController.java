@@ -12,9 +12,6 @@ import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
-import ru.kuznetsov.bikeService.models.servicable.Serviceable;
-import ru.kuznetsov.bikeService.models.showable.Showable;
-import ru.kuznetsov.bikeService.models.usable.Usable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -85,24 +82,10 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                        Model model) {
         this.currentObject = dao.show(id);
         model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
-        model.addAttribute("category", category);
+        this.addItemAttributesShow(model, currentObject);
         this.checkUser(principal);
         logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
-        switch (category) {
-            case "parts", "bikes" -> {
-                model.addAttribute("serviceObject", (Serviceable) currentObject);
-                return "/show/showPart";
-            }
-            case "tools", "consumables" -> {
-                model.addAttribute("usableObject", (Usable) currentObject);
-                return "/show/showUsable";
-            }
-            case "documents", "fasteners", "manufacturers" -> {
-                model.addAttribute("showableObject", (Showable) currentObject);
-                return "/show/show";
-            }
-        }
-        return "/{id}";
+        return "/show/show";
     }
 
 
@@ -112,15 +95,20 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         return "/new/new";
     }
 
-    protected void addItemAttributesNew(Model model, T item) {
+    private void addItemAttributesShow(Model model, T item){
         model.addAttribute("category", category);
-        model.addAttribute("allPictures", pictureDao.index());
         model.addAttribute("object", item);
         switch (category) {
             case "parts", "bikes" -> model.addAttribute("type", "Serviceable");
             case "tools", "consumables" -> model.addAttribute("type", "Usable");
             case "documents", "fasteners", "manufacturers" -> model.addAttribute("type", "Showable");
         }
+    }
+
+    protected void addItemAttributesNew(Model model, T item) {
+        model.addAttribute("allPictures", pictureDao.index());
+        this.addItemAttributesShow(model, item);
+
     }
 
     protected void addItemAttributesEdit(Model model, T item) {

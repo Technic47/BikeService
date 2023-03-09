@@ -41,6 +41,10 @@
     width: 20%;
 }
 
+.col-3-1-no-boarder {
+    width: 33.3%;
+}
+
 .container-buttons {
     display: flex;
     justify-content: center;

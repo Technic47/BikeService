@@ -22,33 +22,36 @@
         <form enctype="multipart/form-data" th:action="@{/{link}(link=${category})}" th:method="POST"
               th:object="${object}">
             <div class="col-1-1">
-                <br/>
-                <label for="name">Название:</label>
-                <input id="name" th:field="*{name}" type="text"/>
-                <br/>
-                <span style="color:red" th:errors="*{name}"
-                      th:if="${#fields.hasErrors('name')}"></span>
-                <br/>
-                <br/>
-                <label for="description">Описание:</label>
-                <input id="description" th:field="*{description}" type="text"/>
-                <br/>
-                <span style="color:red" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></span>
-                <br/>
-                <br/>
-                <label for="link">Ссылка:</label>
-                <input id="link" th:field="*{link}" type="text"/>
-                <br/>
-                <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
-                <br/>
-                <br/>
-                <label for="value" th:text="${object.getValueName()}">:</label>
-                <input id="value" th:field="*{value}" type="text"/>
-                <br/>
-                <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
-                <br/>
-                <br/>
-                <div th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
+                <div class="col-3-1-no-boarder">
+                    <br/>
+                    <label for="name">Название:</label>
+                    <input id="name" th:field="*{name}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{name}"
+                          th:if="${#fields.hasErrors('name')}"></span>
+                    <br/>
+                    <br/>
+                    <label for="description">Описание:</label>
+                    <input id="description" th:field="*{description}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"></span>
+                    <br/>
+                    <br/>
+                    <label for="link">Ссылка:</label>
+                    <input id="link" th:field="*{link}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
+                    <br/>
+                    <br/>
+                    <label for="value" th:text="${object.getValueName()}">:</label>
+                    <input id="value" th:field="*{value}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
+                    <br/>
+                    <br/>
+                </div>
+
+                <div class="col-3-1-no-boarder" th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
                     <span th:object="${manufacturers}">
                         <label for="manufacturers">Производитель:</label>
                         <select id="manufacturers" name="manufacturer">
@@ -70,23 +73,25 @@
                     <br/>
                     <br/>
                 </div>
-                <label for="picture">Загрузить новое изображение:</label>
-                <br/>
-                <input accept="image/*" id="picture" name="newImage" type="file"/>
-                <br/>
-                <br/>
-                <span th:object="${allPictures}">
+                <div class="col-3-1-no-boarder">
+                    <label for="picture">Загрузить новое изображение:</label>
+                    <br/>
+                    <input accept="image/*" id="picture" name="newImage" type="file"/>
+                    <br/>
+                    <br/>
+                    <span th:object="${allPictures}">
                         <label for="pictures">Выбрать из уже загруженных:</label>
                         <br/>
-                        <select id="pictures" name="picture">
+                        <select id="pictures" name="picture" style="width: 150px">
                             <option th:each="item : ${allPictures}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
                             </option>
                         </select>
                     </span>
-                <br/>
-                <br/>
+                    <br/>
+                    <br/>
+                </div>
             </div>
             <input type="submit" value="Создать!"/>
         </form>
