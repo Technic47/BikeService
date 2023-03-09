@@ -21,6 +21,7 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
@@ -156,7 +157,10 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     public String edit(Model model, @PathVariable("id") Long id) {
         this.currentObject = dao.show(id);
         this.addItemAttributesEdit(model, currentObject);
-        model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
+
+        if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
+            return "/edit/editPart";
+        }
         return "/edit/editUsable";
     }
 
@@ -169,6 +173,9 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                          Model model) {
         if (bindingResult.hasErrors()) {
             this.addItemAttributesEdit(model, item);
+            if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
+                return "/edit/editPart";
+            }
             return "/edit/editUsable";
         }
         this.checkUser(principal);

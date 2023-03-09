@@ -1,7 +1,7 @@
 .table-no-border {
     table-layout: fixed;
     width: 100%;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
 }
 
 thead th:nth-child(1) {

@@ -57,6 +57,16 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         return super.edit(model, id);
     }
 
+//    @RequestMapping(value = "/{id}/edit", params = "updateType=editFinish")
+//    public void updateToSuper(@Valid @ModelAttribute("object") T item,
+//                         BindingResult bindingResult,
+//                         Principal principal,
+//                         @RequestPart(value = "newImage") MultipartFile file,
+//                         @PathVariable("id") Long id,
+//                         Model model){
+//        this.update(item, bindingResult, principal, file, id, model);
+//    }
+
     @RequestMapping(value = "/{id}/update")
     public String updateServiceList(@Valid T item,
                                     BindingResult bindingResult,
