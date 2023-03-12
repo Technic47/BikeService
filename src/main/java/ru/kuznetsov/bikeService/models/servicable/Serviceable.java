@@ -7,4 +7,5 @@ import java.util.Set;
 
 public interface Serviceable extends Usable {
     Set<PartEntity> getLinkedItems();
+    void setLinkedItems(Set<PartEntity> linkedItems);
 }

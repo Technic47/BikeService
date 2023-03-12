@@ -1,17 +1,50 @@
 package ru.kuznetsov.bikeService.models.servicable;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
+import ru.kuznetsov.bikeService.models.lists.PartEntity;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "parts")
 public class Part extends AbstractServiceableEntity {
+    @ElementCollection(targetClass = PartEntity.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "part_item",
+            joinColumns = @JoinColumn(name = "part_id"))
+    private Set<PartEntity> linkedItems = new HashSet<>();
+
     public Part() {
+    }
+
+    @Override
+    public Set<PartEntity> getLinkedItems() {
+        return linkedItems;
+    }
+
+    @Override
+    public void setLinkedItems(Set<PartEntity> linkedItems) {
+        this.linkedItems = linkedItems;
     }
 
     @Override
     public String getValueName() {
         return "Заводской номер";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Part)) return false;
+        if (!super.equals(o)) return false;
+        Part part = (Part) o;
+        return Objects.equals(linkedItems, part.linkedItems);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), linkedItems);
     }
 }
