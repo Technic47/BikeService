@@ -43,6 +43,7 @@
 
 .col-3-1-no-boarder {
     width: 33.3%;
+    text-align: right !important;
 }
 
 .container-buttons {

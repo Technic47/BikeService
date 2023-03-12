@@ -119,6 +119,7 @@
             <br/>
             <div class="col-1-1" th:if="${type == 'Serviceable'}">
                 <div class="col-5-2-no-boarders">
+                    <br/>
                     <label for="allParts">Choose part to add:</label>
                     <div th:object="${allParts}">
                         <select id="allParts" th:name="partId">
@@ -129,12 +130,13 @@
                             </option>
                         </select>
                         <br/>
-                        <input th:name="action" th:type="submit" th:value="addPart"/>
-                        <input th:name="action" th:type="submit" th:value="delPart"/>
+                        <button th:name="action" th:type="submit" th:value="addPart">Добавить</button>
+                        <button th:name="action" th:type="submit" th:value="delPart">Убрать</button>
                     </div>
                     <br/>
                 </div>
                 <div class="col-5-2-no-boarders">
+                    <br/>
                     <label for="documents">Choose document to add:</label>
                     <div th:object="${allDocuments}">
                         <select id="documents" th:name="documentId">
@@ -144,12 +146,13 @@
                             </option>
                         </select>
                         <br/>
-                        <input th:name="action" th:type="submit" th:value="addDocument"/>
-                        <input th:name="action" th:type="submit" th:value="delDocument"/>
+                        <button th:name="action" th:type="submit" th:value="addDocument">Добавить</button>
+                        <button th:name="action" th:type="submit" th:value="delDocument">Убрать</button>
                     </div>
                     <br/>
                 </div>
                 <div class="col-5-2-no-boarders">
+                    <br/>
                     <label for="tools">Choose tool to add:</label>
                     <div th:object="${allTools}">
                         <select id="tools" th:name="toolId">
@@ -159,12 +162,13 @@
                             </option>
                         </select>
                         <br/>
-                        <input th:name="action" th:type="submit" th:value="addTool"/>
-                        <input th:name="action" th:type="submit" th:value="delTool"/>
+                        <button th:name="action" th:type="submit" th:value="addTool">Добавить</button>
+                        <button th:name="action" th:type="submit" th:value="delTool">Убрать</button>
                     </div>
                     <br/>
                 </div>
                 <div class="col-5-2-no-boarders">
+                    <br/>
                     <label for="fasteners">Choose fasteners to add:</label>
                     <div th:object="${allFasteners}">
                         <select id="fasteners" th:name="fastenerId">
@@ -177,12 +181,13 @@
                         <label for="fastenerQuantity">Enter fastener quantity:</label>
                         <input id="fastenerQuantity" th:name="fastenerQuantity" type="text"/>
                         <br/>
-                        <input th:name="action" th:type="submit" th:value="addFastener"/>
-                        <input th:name="action" th:type="submit" th:value="delFastener"/>
+                        <button th:name="action" th:type="submit" th:value="addFastener">Добавить</button>
+                        <button th:name="action" th:type="submit" th:value="delFastener">Убрать</button>
                     </div>
                     <br/>
                 </div>
                 <div class="col-5-2-no-boarders">
+                    <br/>
                     <label for="consumables">Choose consumable to add:</label>
                     <div th:object="${allConsumables}">
                         <select id="consumables" th:name="consumableId">
@@ -195,12 +200,11 @@
                         <label for="consumableQuantity">Enter consumable quantity:</label>
                         <input id="consumableQuantity" th:name="consumableQuantity" type="text"/>
                         <br/>
-                        <input th:name="action" th:type="submit" th:value="addConsumable"/>
-                        <input th:name="action" th:type="submit" th:value="delConsumable"/>
+                        <button th:name="action" th:type="submit" th:value="addConsumable">Добавить</button>
+                        <button th:name="action" th:type="submit" th:value="delConsumable">Убрать</button>
                     </div>
                     <br/>
                 </div>
-                <!--                <button th:name="action" th:type="submit" th:value="finish">Обновить список</button>-->
                 <br/>
                 <br/>
             </div>

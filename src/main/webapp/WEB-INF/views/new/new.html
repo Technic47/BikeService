@@ -50,8 +50,8 @@
                     <br/>
                     <br/>
                 </div>
-
                 <div class="col-3-1-no-boarder" th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
+                    <br/>
                     <span th:object="${manufacturers}">
                         <label for="manufacturers">Производитель:</label>
                         <select id="manufacturers" name="manufacturer">
@@ -74,6 +74,7 @@
                     <br/>
                 </div>
                 <div class="col-3-1-no-boarder">
+                    <br/>
                     <label for="picture">Загрузить новое изображение:</label>
                     <br/>
                     <input accept="image/*" id="picture" name="newImage" type="file"/>
