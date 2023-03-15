@@ -19,6 +19,12 @@ public abstract class AbstractUsableEntity extends AbstractShowableEntity implem
     public AbstractUsableEntity() {
     }
 
+    public AbstractUsableEntity(Long id, String name, String description, Long picture, String link, String value, Long creator, Long manufacturer, String model) {
+        super(id, name, description, picture, link, value, creator);
+        this.manufacturer = manufacturer;
+        this.model = model;
+    }
+
     public Long getManufacturer() {
         return manufacturer;
     }

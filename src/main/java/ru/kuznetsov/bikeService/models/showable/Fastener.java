@@ -11,6 +11,10 @@ public class Fastener extends AbstractShowableEntity implements Showable {
     public Fastener() {
     }
 
+    public Fastener(Long id, String name, String description, Long picture, String link, String value, Long creator) {
+        super(id, name, description, picture, link, value, creator);
+    }
+
     @Override
     public String getValueName() {
         return "Характеристики";

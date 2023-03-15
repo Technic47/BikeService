@@ -10,6 +10,10 @@ public class Manufacturer extends AbstractShowableEntity implements Showable {
     public Manufacturer() {
     }
 
+    public Manufacturer(Long id, String name, String description, Long picture, String link, String value, Long creator) {
+        super(id, name, description, picture, link, value, creator);
+    }
+
     @Override
     public String getValueName() {
         return "Страна";

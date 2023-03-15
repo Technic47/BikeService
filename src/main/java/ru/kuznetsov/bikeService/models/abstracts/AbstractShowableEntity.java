@@ -37,6 +37,16 @@ public abstract class AbstractShowableEntity implements Showable {
     public AbstractShowableEntity() {
     }
 
+    public AbstractShowableEntity(Long id, String name, String description, Long picture, String link, String value, Long creator) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this.link = link;
+        this.value = value;
+        this.creator = creator;
+    }
+
     public Long getId() {
         return id;
     }
@@ -87,10 +97,6 @@ public abstract class AbstractShowableEntity implements Showable {
 
     public String getValueName() {
         return valueName;
-    }
-
-    public void setValueName(String valueName) {
-        this.valueName = valueName;
     }
 
     public Long getCreator() {

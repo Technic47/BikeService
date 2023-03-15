@@ -3,7 +3,6 @@ package ru.kuznetsov.bikeService.models.lists;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
-import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
 
@@ -43,18 +42,6 @@ public class ServiceList {
 
     public Map<Part, Integer> getPartMap() {
         return partMap;
-    }
-
-
-    @Deprecated
-    public void addEntityToMap(Showable obj, Integer amount) {
-        switch (obj.getClass().getSimpleName()) {
-            case "Tool" -> this.toolMap.put((Tool) obj, amount);
-            case "Fastener" -> this.fastenerMap.put((Fastener) obj, amount);
-            case "Consumable" -> this.consumableMap.put((Consumable) obj, amount);
-            case "Document" -> this.docsMap.put((Document) obj, amount);
-            case "Part" -> this.partMap.put((Part) obj, amount);
-        }
     }
 
     public void addToToolMap(Tool obj, Integer amount) {

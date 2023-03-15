@@ -19,6 +19,10 @@ public class Part extends AbstractServiceableEntity {
     public Part() {
     }
 
+    public Part(Long id, String name, String description, Long picture, String link, String value, Long creator, Long manufacturer, String model) {
+        super(id, name, description, picture, link, value, creator, manufacturer, model);
+    }
+
     @Override
     public Set<PartEntity> getLinkedItems() {
         return linkedItems;

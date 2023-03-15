@@ -12,6 +12,10 @@ public class Tool extends AbstractUsableEntity {
     public Tool() {
     }
 
+    public Tool(Long id, String name, String description, Long picture, String link, String value, Long creator, Long manufacturer, String model) {
+        super(id, name, description, picture, link, value, creator, manufacturer, model);
+    }
+
     @Override
     public String getValueName() {
         return "Размерность";

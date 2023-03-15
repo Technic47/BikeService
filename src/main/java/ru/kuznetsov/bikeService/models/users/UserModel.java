@@ -112,7 +112,7 @@ public class UserModel implements UserDetails {
         if (this == o) return true;
         if (!(o instanceof UserModel)) return false;
         UserModel userModel = (UserModel) o;
-        return active == userModel.active && Objects.equals(id, userModel.id) && Objects.equals(username, userModel.username) && Objects.equals(status, userModel.status) && Objects.equals(createdItems, userModel.createdItems) && Objects.equals(password, userModel.password);
+        return active == userModel.active && Objects.equals(id, userModel.id) && Objects.equals(username, userModel.username);
     }
 
     @Override

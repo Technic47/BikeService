@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "pictures")
 public class Picture {
-
     private Long id;
     @Column(name = "name")
     private String name;
@@ -35,7 +34,7 @@ public class Picture {
         if (this == o) return true;
         if (!(o instanceof Picture)) return false;
         Picture picture = (Picture) o;
-        return id.equals(picture.id) && name.equals(picture.name);
+        return Objects.equals(id, picture.id) && Objects.equals(name, picture.name);
     }
 
     @Override
