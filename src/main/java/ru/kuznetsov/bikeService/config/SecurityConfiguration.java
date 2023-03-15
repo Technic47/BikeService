@@ -33,13 +33,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/", "/home", "/registration", "/static/**").permitAll();
                     auth.requestMatchers("/**").authenticated();
                 })
-                .formLogin(Customizer.withDefaults())
-        ;
+                .formLogin(Customizer.withDefaults());
         return http.build();
     }
 
@@ -48,7 +46,6 @@ public class SecurityConfiguration {
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder)
-        ;
+                .passwordEncoder(passwordEncoder);
     }
 }

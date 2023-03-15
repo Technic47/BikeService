@@ -1,11 +1,10 @@
-package models;
+package ru.kuznetsov.bikeService.models;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.kuznetsov.bikeService.Starter;
-import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
@@ -45,14 +44,14 @@ public class ModelTests {
     private static final Long TEST_MANUFACTURER = 33L;
     private static final String TEST_MODEL = "testModel";
     private final Set<PartEntity> testLinkedItems = new HashSet<>();
-    Document document;
-    Fastener fastener;
-    Manufacturer manufacturer;
-    Consumable consumable;
-    Tool tool;
-    Part part;
-    Bike bike;
-    UserModel userModel;
+    private Document document;
+    private Fastener fastener;
+    private Manufacturer manufacturer;
+    private Consumable consumable;
+    private Tool tool;
+    private Part part;
+    private Bike bike;
+    private UserModel userModel;
     private ServiceList serviceList;
 
     @BeforeAll

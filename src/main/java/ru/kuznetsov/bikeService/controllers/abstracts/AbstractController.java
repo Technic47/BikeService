@@ -22,4 +22,12 @@ public abstract class AbstractController {
     public void setPictureDao(PictureService pictureDao) {
         this.pictureDao = pictureDao;
     }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public PictureService getPictureDao() {
+        return pictureDao;
+    }
 }
