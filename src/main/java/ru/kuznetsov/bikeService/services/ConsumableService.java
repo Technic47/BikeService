@@ -7,7 +7,6 @@ import ru.kuznetsov.bikeService.services.abstracts.AbstractUsableService;
 
 @Service
 public class ConsumableService extends AbstractUsableService<Consumable, ConsumableRepository> {
-
     public ConsumableService(ConsumableRepository repository) {
         super(repository);
     }

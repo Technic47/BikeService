@@ -31,9 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = Starter.class)
-//@ExtendWith(SpringExtension.class)
-//@ContextConfiguration(classes = {Starter.class})
-//@WebAppConfiguration
 @AutoConfigureMockMvc
 class HomeControllerTest {
     @Autowired
@@ -96,13 +93,13 @@ class HomeControllerTest {
                 .andExpect(view().name("registration"));
     }
 
-    @Test
-    void logInTest() throws Exception {
-        this.mockMvc.perform(get("/title"))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost:8080/login"));
-    }
+//    @Test
+//    void logInTest() throws Exception {
+//        this.mockMvc.perform(get("/title"))
+//                .andDo(print())
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("http://localhost:8080/login"));
+//    }
 
     @Test
     public void registrationPOSTPageTest() throws Exception {

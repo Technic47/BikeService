@@ -28,22 +28,13 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.kuznetsov.bikeService.TestCridentials.*;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = Starter.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ModelTests {
-    private static final Long TEST_ID = 1L;
-    private static final String TEST_NAME = "testName";
-    private static final String TEST_DESCRIPTION = "testDescription";
-    private static final Long TEST_PICTURE = 13L;
-    private static final String TEST_LINK = "testLink";
-    private static final String TEST_VALUE = "testValue";
-    private static final Long TEST_CREATOR = 3L;
-    private static final Long TEST_MANUFACTURER = 33L;
-    private static final String TEST_MODEL = "testModel";
-    private final Set<PartEntity> testLinkedItems = new HashSet<>();
     private Document document;
     private Fastener fastener;
     private Manufacturer manufacturer;
@@ -63,14 +54,14 @@ public class ModelTests {
         this.tool = new Tool(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER, TEST_MODEL);
         this.part = new Part(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER, TEST_MODEL);
         this.bike = new Bike(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER, TEST_MODEL);
-        PartEntity part1 = new PartEntity("Bike", "Fastener", 1L, 5);
-        PartEntity part2 = new PartEntity("Bike", "Tool", 2L, 220);
-        PartEntity part3 = new PartEntity("Part", "Consumable", 3L, 100);
-        PartEntity part4 = new PartEntity("Part", "Document", 4L, 1);
-        this.testLinkedItems.add(part1);
-        this.testLinkedItems.add(part2);
-        this.testLinkedItems.add(part3);
-        this.testLinkedItems.add(part4);
+//        PartEntity part1 = new PartEntity("Bike", "Fastener", 1L, 5);
+//        PartEntity part2 = new PartEntity("Bike", "Tool", 2L, 220);
+//        PartEntity part3 = new PartEntity("Part", "Consumable", 3L, 100);
+//        PartEntity part4 = new PartEntity("Part", "Document", 4L, 1);
+//        this.testLinkedItems.add(part1);
+//        this.testLinkedItems.add(part2);
+//        this.testLinkedItems.add(part3);
+//        this.testLinkedItems.add(part4);
         this.userModel = new UserModel();
         this.userModel.setId(TEST_ID);
         this.userModel.setUsername(TEST_NAME);
@@ -86,7 +77,7 @@ public class ModelTests {
         testList.add(this.fastener);
         testList.add(this.manufacturer);
         for (Showable showable : testList) {
-            assertEquals(1L, showable.getId());
+            assertEquals(TEST_ID, showable.getId());
             assertEquals(TEST_NAME, showable.getName());
             if (showable instanceof Document) {
                 assertEquals(TEST_LINK, showable.getValue());
@@ -150,12 +141,12 @@ public class ModelTests {
         testList.add(this.part);
         testList.add(this.bike);
         for (Serviceable serviceable : testList) {
-            serviceable.setLinkedItems(this.testLinkedItems);
+            serviceable.setLinkedItems(TEST_ITEM_LIST);
             assertThat(serviceable.getLinkedItems()).isNotNull();
-            assertEquals(this.testLinkedItems, serviceable.getLinkedItems());
+            assertEquals(TEST_ITEM_LIST, serviceable.getLinkedItems());
         }
-        this.part.setLinkedItems(this.testLinkedItems);
-        this.bike.setLinkedItems(this.testLinkedItems);
+        this.part.setLinkedItems(TEST_ITEM_LIST);
+        this.bike.setLinkedItems(TEST_ITEM_LIST);
     }
 
     private String credentialsBuilder(String valueName) {
@@ -163,7 +154,7 @@ public class ModelTests {
                 ", " +
                 valueName +
                 ": " +
-                ModelTests.TEST_VALUE;
+                TEST_VALUE;
     }
 
     @Test
@@ -296,7 +287,7 @@ public class ModelTests {
         picture2.setName("qwe");
         assertNotEquals(picture, picture2);
         picture2.setName(TEST_NAME);
-        picture2.setId(666L);
+        picture2.setId(111L);
         assertNotEquals(picture, picture2);
     }
 

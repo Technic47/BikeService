@@ -3,22 +3,18 @@ package ru.kuznetsov.bikeService.controllers;
 import jakarta.servlet.ServletContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 import ru.kuznetsov.bikeService.Starter;
-import ru.kuznetsov.bikeService.config.SpringConfig;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.controllers.showable.DocumentController;
 import ru.kuznetsov.bikeService.models.showable.Document;
@@ -40,11 +36,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = Starter.class)
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringConfig.class})
-@WebAppConfiguration
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(classes = {SpringConfig.class})
+//@WebAppConfiguration
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//@AutoConfigureMockMvc
+@AutoConfigureMockMvc
 class BasicControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -85,7 +81,7 @@ class BasicControllerTest {
 
     @Test
     public void homePageTest() throws Exception {
-        this.mockMvc.perform(get("/documents")).andDo(print())
+        this.mockMvc.perform(get("/documents").principal(this.principal)).andDo(print())
                 .andExpect(view().name("show/index"));
     }
 
