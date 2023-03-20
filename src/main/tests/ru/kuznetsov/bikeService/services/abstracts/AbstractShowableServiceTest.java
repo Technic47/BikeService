@@ -33,11 +33,10 @@ class AbstractShowableServiceTest {
 
     @Test
     void update() {
-        Document newDoc = new Document(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);
         doReturn(Optional.of(defaultDocument))
                 .when(repository)
                 .findById(TEST_ID);
-        documentService.update(TEST_ID, newDoc);
+        documentService.update(TEST_ID, TEST_DOCUMENT);
 
         assertEquals(TEST_NAME, this.defaultDocument.getName());
         assertEquals(TEST_DESCRIPTION, this.defaultDocument.getDescription());

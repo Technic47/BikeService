@@ -1,6 +1,13 @@
 package ru.kuznetsov.bikeService;
 
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
+import ru.kuznetsov.bikeService.models.servicable.Bike;
+import ru.kuznetsov.bikeService.models.servicable.Part;
+import ru.kuznetsov.bikeService.models.showable.Document;
+import ru.kuznetsov.bikeService.models.showable.Fastener;
+import ru.kuznetsov.bikeService.models.showable.Manufacturer;
+import ru.kuznetsov.bikeService.models.usable.Consumable;
+import ru.kuznetsov.bikeService.models.usable.Tool;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,10 +20,17 @@ public class TestCridentials {
     public static final String TEST_LINK = "testLink";
     public static final String TEST_VALUE = "testValue";
     public static final Long TEST_CREATOR = 3L;
-    public static final Long TEST_MANUFACTURER = 33L;
+    public static final Long TEST_MANUFACTURER_ID = 33L;
     public static final String TEST_MODEL = "testModel";
     public static final String TEST_PASS = "testPass";
     public static final Set<PartEntity> TEST_ITEM_LIST = testLinkedItemsFill();
+    public static final Document TEST_DOCUMENT = new Document(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);
+    public static final Fastener TEST_FASTENER = new Fastener(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);;
+    public static final Manufacturer TEST_MANUFACTURER = new Manufacturer(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);
+    public static final Consumable TEST_CONSUMABLE = new Consumable(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER_ID, TEST_MODEL);
+    public static final Tool TEST_TOOL = new Tool(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER_ID, TEST_MODEL);
+    public static final Part TEST_PART = new Part(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER_ID, TEST_MODEL);
+    public static final Bike TEST_BIKE = new Bike(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER_ID, TEST_MODEL);
 
     private static Set<PartEntity> testLinkedItemsFill(){
         Set<PartEntity> newItemsSet = new HashSet<>();

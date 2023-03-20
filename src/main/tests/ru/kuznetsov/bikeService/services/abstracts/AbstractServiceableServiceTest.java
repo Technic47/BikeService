@@ -34,18 +34,17 @@ class AbstractServiceableServiceTest {
 
     @Test
     void update() {
-        Part newPart = new Part(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR, TEST_MANUFACTURER, TEST_MODEL);
         doReturn(Optional.of(defaultPart))
                 .when(repository)
                 .findById(TEST_ID);
-        partService.update(TEST_ID, newPart);
+        partService.update(TEST_ID, TEST_PART);
 
         assertEquals(TEST_NAME, this.defaultPart.getName());
         assertEquals(TEST_DESCRIPTION, this.defaultPart.getDescription());
         assertEquals(TEST_PICTURE, this.defaultPart.getPicture());
         assertEquals(TEST_LINK, this.defaultPart.getLink());
         assertEquals(TEST_VALUE, this.defaultPart.getValue());
-        assertEquals(TEST_MANUFACTURER, this.defaultPart.getManufacturer());
+        assertEquals(TEST_MANUFACTURER_ID, this.defaultPart.getManufacturer());
         assertEquals(TEST_MODEL, this.defaultPart.getModel());
         verify(repository, times(1)).findById(TEST_ID);
         verify(repository, times(1)).save(this.defaultPart);
