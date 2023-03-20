@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.models;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.models.showable.Showable;
@@ -16,6 +17,28 @@ import static ru.kuznetsov.bikeService.TestCridentials.*;
 
 @SpringBootTest
 public class ModelTests {
+    @Test
+    void creationTest(){
+        Part part = new Part();
+        part.setId(TEST_ID);
+        part.setName(TEST_NAME);
+        part.setDescription(TEST_DESCRIPTION);
+        part.setPicture(TEST_PICTURE);
+        part.setLink(TEST_LINK);
+        part.setValue(TEST_VALUE);
+        part.setCreator(TEST_CREATOR);
+        part.setManufacturer(TEST_MANUFACTURER_ID);
+        part.setModel(TEST_MODEL);
+        assertEquals(TEST_ID, TEST_PART.getId());
+        assertEquals(TEST_NAME, TEST_PART.getName());
+        assertEquals(TEST_DESCRIPTION, TEST_PART.getDescription());
+        assertEquals(TEST_PICTURE, TEST_PART.getPicture());
+        assertEquals(TEST_LINK, TEST_PART.getLink());
+        assertEquals(TEST_VALUE, TEST_PART.getValue());
+        assertEquals(TEST_CREATOR, TEST_PART.getCreator());
+        assertEquals(TEST_MANUFACTURER_ID, TEST_PART.getManufacturer());
+        assertEquals(TEST_MODEL, TEST_PART.getModel());
+    }
     @Test
     void showableInterfaceTest() {
         List<Showable> testList = new ArrayList<>();
