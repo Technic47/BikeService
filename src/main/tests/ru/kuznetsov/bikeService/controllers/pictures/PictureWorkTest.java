@@ -21,7 +21,7 @@ import static ru.kuznetsov.bikeService.TestCridentials.TEST_NAME;
 import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 
 class PictureWorkTest {
-    private static final String PATH_WIDE_FILE = "src/main/testresources/testImage.jpg";
+    public static final String PATH_WIDE_FILE = "src/main/testresources/testImage.jpg";
     private static final String PATH_TALL_FILE = "src/main/testresources/testImage2.jpg";
     private PictureWork pictureWork;
     private MultipartFile multipartFile;
