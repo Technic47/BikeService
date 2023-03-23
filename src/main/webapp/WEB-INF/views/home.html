@@ -1,29 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Welcome!</title>
+    <link href="/static/css/main.css" rel="stylesheet"/>
     <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
 </head>
 <body>
-<div class="center">
-    <h2>Nice to see you!</h2>
+<div class="main">
+    <div class="container">
+        <div class="col-1-1">
+            <h2>Добро пожаловать!</h2>
+            <br/>
+            <p>Если у вас уже есть аккаунт:</p>
 
-    <br/>
+            <form th:action="@{/title}" th:method="GET">
+                <input type="submit" value="На главную">
+            </form>
+            <br/>
+            <form th:action="@{/login}" th:method="GET">
+                <input type="submit" value="LogIn">
+            </form>
 
-    <p>If you have account, please:</p>
+            <p>Если вы новенький, то создайте аккаунт:</p>
 
-    <form th:action="@{/login}" th:method="GET">
-        <input type="submit" value="LogIn">
-    </form>
-
-    <p>If you are new here, please:</p>
-
-    <form th:action="@{/registration}" th:method="GET">
-        <input type="submit" value="Create account">
-    </form>
+            <form th:action="@{/registration}" th:method="GET">
+                <input type="submit" value="Create account">
+            </form>
+            <br/>
+            <br/>
+        </div>
+    </div>
 </div>
-
-
 </body>
 </html>

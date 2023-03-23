@@ -15,8 +15,6 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/")
 public class HomeController extends AbstractController {
-    private final UserService userService;
-
     @Autowired
     public HomeController(UserService userService) {
         this.userService = userService;
@@ -51,7 +49,7 @@ public class HomeController extends AbstractController {
     @PostMapping("/registration")
     public String createUser(UserModel user, Model model) {
         if (!userService.createUser(user)) {
-            model.addAttribute("message", "Current user name '" + user.getUsername() + "' is occupied");
+            model.addAttribute("message", "Имя '" + user.getUsername() + "' уже занято!");
             return "/registration";
         }
         userService.createUser(user);
