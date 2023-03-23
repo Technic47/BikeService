@@ -1,9 +1,7 @@
 package ru.kuznetsov.bikeService.controllers;
 
 import jakarta.servlet.ServletContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,12 +34,7 @@ class HomeControllerTest {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private MockMvc mockMvc;
-    private Logger logger;
 
-    @BeforeEach
-    void StartUp() {
-        this.logger = AbstractController.logger;
-    }
 
     @Test
     public void givenWac_whenServletContext_thenItProvidesHomeController() {

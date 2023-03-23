@@ -41,7 +41,10 @@ class PicturesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().size(1))
                 .andExpect(model().attribute("allPictures", hasSize(3)))
-                .andExpect(view().name("pictures/index"));
+                .andExpect(view().name("pictures/index"))
+                .andExpect(xpath("//div/form/img[@src='/preview/test']").exists())
+                .andExpect(xpath("//div/form/img[@src='/preview/test2']").exists())
+                .andExpect(xpath("//div/form/img[@src='/preview/test3']").exists());
     }
 
     @Test
@@ -70,6 +73,10 @@ class PicturesControllerTest {
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/pictures"));
+        this.mockMvc.perform(get("/pictures"))
+                .andDo(print())
+                .andExpect(model().attribute("allPictures", hasSize(4)))
+                .andExpect(xpath("//div/form/img[@src='/preview/testImage.jpg']").exists());
     }
 
     @Test
@@ -78,9 +85,9 @@ class PicturesControllerTest {
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/pictures"));
-    }
-
-    @Test
-    void setPictureDAO() {
+        this.mockMvc.perform(get("/pictures"))
+                .andDo(print())
+                .andExpect(model().attribute("allPictures", hasSize(2)))
+                .andExpect(xpath("//div/form/img[@src='/preview/test']").doesNotExist());
     }
 }
