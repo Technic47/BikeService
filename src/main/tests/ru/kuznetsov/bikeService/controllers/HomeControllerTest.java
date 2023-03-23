@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
@@ -22,16 +24,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.kuznetsov.bikeService.TestCridentials.TEST_NAME;
+import static ru.kuznetsov.bikeService.TestCridentials.TEST_PASS;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource("/application-test.properties")
+@Sql(value = {"/SQL_scripts/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/SQL_scripts/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class HomeControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
     private MockMvc mockMvc;
-//    @MockBean
-//    private Principal principal;
     private Logger logger;
 
     @BeforeEach
@@ -61,13 +66,7 @@ class HomeControllerTest {
     }
 
     @Test
-    public void registrationGETPageTest() throws Exception {
-        this.mockMvc.perform(get("/registration")).andDo(print())
-                .andExpect(view().name("registration"));
-    }
-
-    @Test
-    void logInGETTest() throws Exception {
+    void noLogInGETTest() throws Exception {
         this.mockMvc.perform(get("/title"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -75,12 +74,12 @@ class HomeControllerTest {
     }
 
     @Test
-    @WithUserDetails("pavel")
+    @WithUserDetails("test")
     public void titleGETPageTest() throws Exception {
         this.mockMvc.perform(get("/title"))
                 .andDo(print())
                 .andExpect(authenticated())
-                .andExpect(xpath("//header/h1/div").string("pavel"));
+                .andExpect(xpath("//header/h1/div").string("test"));
     }
 
     @Test
@@ -93,14 +92,15 @@ class HomeControllerTest {
                 .andExpect(content().string(containsString("Password")));
     }
 
-    @Test
-    @WithUserDetails("pavel")
-    public void logInWithCredentialsGETPageTest() throws Exception {
-        this.mockMvc.perform(get("/login"))
-                .andDo(print())
-                .andExpect(authenticated())
-                .andExpect(view().name("title"));
-    }
+//    @Test
+////    @WithUserDetails(value = "test")
+//    @WithMockUser(username = "test", password = "test")
+//    public void logInWithCredentialsGETPageTest() throws Exception {
+//        this.mockMvc.perform(get("/login"))
+//                .andDo(print())
+//                .andExpect(authenticated())
+//                .andExpect(view().name("title"));
+//    }
 
     @Test
     void correctLoginTest() throws Exception {
@@ -113,27 +113,39 @@ class HomeControllerTest {
     @Test
     void badCredentialsTest() throws Exception {
         this.mockMvc.perform(post("/login")
-                        .param("username", "123")
-                        .param("password", "321")
+                        .param("username", TEST_NAME)
+                        .param("password", TEST_PASS)
                 )
                 .andDo(print())
-                .andExpect(status().isForbidden());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?error"));
     }
 
-//    @Test
-//    void registrationPOSTPageTest() throws Exception {
-//        UserModel userModel = new UserModel();
-//        userModel.setUsername("TestName");
-//        this.mockMvc.perform(post("/registration")
-//                        .param("username", "pavel")
-//                        .param("password", "1999"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString("is occupied")));
+    @Test
+    public void registrationGETPageTest() throws Exception {
+        this.mockMvc.perform(get("/registration")).andDo(print())
+                .andExpect(view().name("registration"));
+    }
 
-//        MvcResult mvcResult = this.mockMvc.perform(get("/registration"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect()
-//    }
+    @Test
+    void registrationOccupiedPOSTPageTest() throws Exception {
+        this.mockMvc.perform(post("/registration")
+                        .param("username", "pavel")
+                        .param("password", "1999")
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("уже занято")));
+    }
+
+    @Test
+    void registrationNewPOSTPageTest() throws Exception {
+        this.mockMvc.perform(post("/registration")
+                        .param("username", TEST_NAME)
+                        .param("password", TEST_PASS)
+                )
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+    }
 }

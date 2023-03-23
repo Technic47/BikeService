@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Welcome!</title>
@@ -15,11 +16,11 @@
             <br/>
             <p>Если у вас уже есть аккаунт:</p>
 
-            <form th:action="@{/title}" th:method="GET">
+            <form sec:authorize="isAuthenticated()" th:action="@{/title}" th:method="GET">
                 <input type="submit" value="На главную">
             </form>
-            <br/>
-            <form th:action="@{/login}" th:method="GET">
+
+            <form sec:authorize="!isAuthenticated()" th:action="@{/login}" th:method="GET">
                 <input type="submit" value="LogIn">
             </form>
 

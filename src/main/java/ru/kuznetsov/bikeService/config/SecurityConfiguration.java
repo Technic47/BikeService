@@ -33,6 +33,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/", "/home", "/registration", "/static/**").permitAll();
                     auth.requestMatchers("/**").authenticated();
