@@ -25,8 +25,8 @@ import static ru.kuznetsov.bikeService.controllers.pictures.PictureWorkTest.PATH
 @AutoConfigureMockMvc
 @WithUserDetails("test")
 @TestPropertySource("/application-test.properties")
-@Sql(value = {"/SQL_scripts/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = {"/SQL_scripts/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(value = {"/SQL_scripts/create-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/SQL_scripts/create-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(value = {"/SQL_scripts/create-images-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/SQL_scripts/create-images-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class PicturesControllerTest {
