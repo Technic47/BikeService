@@ -112,7 +112,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     }
 
     protected void addItemAttributesEdit(Model model, T item) {
-        model.addAttribute("picture", pictureDao.show(currentObject.getPicture()));
+        model.addAttribute("picture", pictureDao.show(item.getPicture()));
         this.addItemAttributesNew(model, item);
     }
 
@@ -164,7 +164,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
             if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
                 return "/edit/editPart";
             }
-            return "/edit/editUsable";
+            return "/edit/edit";
         }
         this.checkUser(principal);
         if (!file.isEmpty()) {
@@ -193,7 +193,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         }
     }
 
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
+//    public void setUser(UserModel user) {
+//        this.user = user;
+//    }
 }

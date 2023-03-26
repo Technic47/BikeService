@@ -10,15 +10,20 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.services.DocumentService;
 import ru.kuznetsov.bikeService.services.PictureService;
+import ru.kuznetsov.bikeService.services.UserService;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.kuznetsov.bikeService.TestCridentials.TEST_DOCUMENT;
@@ -37,12 +42,14 @@ class BasicControllerUSERTest {
     private DocumentService documentService;
     @Autowired
     private PictureService pictureService;
+    @Autowired
+    private UserService userService;
     private Document testDocFromDb;
     @Mock
     private Document emptyDocument;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         this.testDocFromDb = this.documentService.show(1L);
 
     }
@@ -128,7 +135,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
-    void create() throws Exception {
+    void createNoErrors() throws Exception {
         this.mockMvc.perform(multipart("/documents")
                         .file(getMultipartFile())
                         .flashAttr("object", TEST_DOCUMENT))
@@ -156,10 +163,51 @@ class BasicControllerUSERTest {
     }
 
     @Test
-    void update() {
+    void updateWithErrors() throws Exception {
+        this.testDocFromDb.setName("");
+
+        this.mockMvc.perform(multipart("/documents/1/edit")
+                        .file(getMultipartFile())
+                        .flashAttr("object", this.testDocFromDb))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasErrors("object"))
+                .andExpect(view().name("/edit/edit"));
     }
 
     @Test
-    void delete() {
+    void updateNoErrors() throws Exception {
+        this.testDocFromDb.setName("123654");
+
+        this.mockMvc.perform(multipart("/documents/1/edit")
+                        .file(getMultipartFile())
+                        .flashAttr("object", this.testDocFromDb))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/documents"));
+
+        this.mockMvc.perform(get("/documents/1"))
+                .andExpect(xpath("//div/div/div/div/h1").string("123654"));
+
+        this.mockMvc.perform(get("/pictures"))
+                .andExpect(model().attribute("allPictures", hasSize(4)))
+                .andExpect(xpath("//div/form/img[@src='/preview/testImage.jpg']").exists());
+    }
+
+    @Test
+    void delete() throws Exception {
+        this.mockMvc.perform(post("/documents/1"))
+                .andDo(print());
+
+        this.mockMvc.perform(get("/documents"))
+                .andExpect(model().attribute("objects", aMapWithSize(1)))
+                .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/1']").doesNotExist());
+
+        UserEntity entity = new UserEntity("Document", 1L);
+        List<UserEntity> entityList = this.userService.findByName("test").getCreatedItems();
+        assertEquals(1, entityList.size());
+        assertThat(entityList).doesNotContain(entity);
     }
 }
