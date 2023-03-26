@@ -2,7 +2,7 @@
 <html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Edit item</title>
     <link href="/static/css/container.css" rel="stylesheet"/>
     <link href="/static/css/main.css" rel="stylesheet"/>
@@ -61,7 +61,8 @@
                         <br/>
                         <select id="manufacturers" name="manufacturer">
                             <option selected th:text="${manufacture.getName()}"
-                                    th:value="${manufacture.getId()}"></option>
+                                    th:value="${manufacture.getId()}">
+                            </option>
                             <option th:each="item : ${manufacturers}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">

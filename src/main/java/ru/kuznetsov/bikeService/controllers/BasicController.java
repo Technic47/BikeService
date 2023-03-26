@@ -149,7 +149,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
             return "/edit/editPart";
         }
-        return "/edit/editUsable";
+        return "/edit/edit";
     }
 
     @PostMapping("/{id}/edit")
