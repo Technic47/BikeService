@@ -68,27 +68,6 @@ class BasicControllerUSERTest {
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/2']").exists());
     }
 
-    /*
-    Works while started in single, not works with other tests(((
-     */
-//    @Test
-//    @WithUserDetails("pavel")
-//    void indexADMIN() throws Exception {
-//        this.mockMvc.perform(get("/documents"))
-//                .andDo(print())
-//                .andExpect(authenticated())
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("/show/index"))
-//                .andExpect(model().attribute("objects", aMapWithSize(5)))
-//                .andExpect(model().attribute("category", "documents"))
-//                .andExpect(xpath("//div/div/table/tbody/tr").nodeCount(5))
-//                .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/1']").exists())
-//                .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/2']").exists())
-//                .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/3']").exists())
-//                .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/4']").exists())
-//                .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/5']").exists());
-//    }
-
     @Test
     void show() throws Exception {
         this.mockMvc.perform(get("/documents/1"))
