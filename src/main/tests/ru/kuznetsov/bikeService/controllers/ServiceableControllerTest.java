@@ -8,13 +8,19 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.kuznetsov.bikeService.models.lists.PartEntity;
+import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.services.ManufacturerService;
 import ru.kuznetsov.bikeService.services.PartService;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.kuznetsov.bikeService.TestCridentials.getMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -57,11 +63,11 @@ class ServiceableControllerTest {
     void edit() throws Exception {
         this.mockMvc.perform(get("/parts/1/edit"))
                 .andDo(print())
-                .andExpect(model().attribute("allDocuments",  hasSize(5)))
-                .andExpect(model().attribute("allFasteners",  hasSize(1)))
-                .andExpect(model().attribute("allTools",  hasSize(1)))
-                .andExpect(model().attribute("allConsumables",  hasSize(1)))
-                .andExpect(model().attribute("allParts",  hasSize(5)))
+                .andExpect(model().attribute("allDocuments", hasSize(5)))
+                .andExpect(model().attribute("allFasteners", hasSize(1)))
+                .andExpect(model().attribute("allTools", hasSize(1)))
+                .andExpect(model().attribute("allConsumables", hasSize(1)))
+                .andExpect(model().attribute("allParts", hasSize(5)))
                 .andExpect(model().attribute("documents", aMapWithSize(1)))
                 .andExpect(model().attribute("fasteners", aMapWithSize(1)))
                 .andExpect(model().attribute("tools", aMapWithSize(1)))
@@ -84,7 +90,35 @@ class ServiceableControllerTest {
     }
 
     @Test
-    void updateServiceList() {
+    void updateServiceList() throws Exception {
+        Part partTest = this.partService.show(1L);
+        PartEntity entity = new PartEntity("Part", "Document", 2L, 1);
+
+        this.mockMvc.perform(get("/parts/1/edit"));
+
+        this.mockMvc.perform(multipart("/parts/1/update")
+                                .file(getMultipartFile())
+                                .param("action", "addDocument")
+                                .param("documentId", "2")
+                                .flashAttr("object", partTest))
+                .andDo(print())
+                .andExpect(view().name("/edit/editPart"));
+        assertTrue(partTest.getLinkedItems().contains(entity));
+
+        this.mockMvc.perform(multipart("/parts/1/update")
+                .file(getMultipartFile())
+                .param("action", "delDocument")
+                .param("documentId", "2")
+                .flashAttr("object", partTest));
+        assertFalse(partTest.getLinkedItems().contains(entity));
+
+        this.mockMvc.perform(multipart("/parts/1/update")
+                .file(getMultipartFile())
+                .param("action", "finish")
+                .flashAttr("object", partTest))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/parts"));
     }
 
     @Test

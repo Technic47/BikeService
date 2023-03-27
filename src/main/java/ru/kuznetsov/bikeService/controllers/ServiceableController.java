@@ -57,8 +57,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         return super.edit(model, id);
     }
 
-    @RequestMapping(value = "/{id}/update")
-    public String updateServiceList(@Valid T item,
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    public String updateServiceList(@Valid @ModelAttribute("object") T item,
                                     BindingResult bindingResult,
                                     Principal principal,
                                     @PathVariable("id") Long id,
@@ -122,7 +122,6 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     private void updateCacheList(Long id) {
         ServiceList newCacheList = new ServiceList();
         Set<PartEntity> entityList = dao.show(id).getLinkedItems();
-
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
                 case "Tool" -> newCacheList.addToToolMap(this.toolDAO.show(entity.getItem_id()), entity.getAmount());
