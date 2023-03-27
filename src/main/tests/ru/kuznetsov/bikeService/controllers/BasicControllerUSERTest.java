@@ -51,7 +51,6 @@ class BasicControllerUSERTest {
     @BeforeEach
     void setUp() {
         this.testDocFromDb = this.documentService.show(1L);
-
     }
 
     @Test

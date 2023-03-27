@@ -2,7 +2,7 @@
 <html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Edit item</title>
     <link href="/static/css/container.css" rel="stylesheet"/>
     <link href="/static/css/table-no-border.css" rel="stylesheet"/>
@@ -61,7 +61,7 @@
                         <label for="manufacturers">Выберите производителя:</label>
                         <br/>
                         <select id="manufacturers" name="manufacturer">
-                            <option selected th:text="${manufacture.getName()}"
+                            <option selected="selected" th:text="${manufacture.getName()}"
                                     th:value="${manufacture.getId()}"></option>
                             <option th:each="item : ${manufacturers}"
                                     th:text="${item.getName()}"
@@ -88,7 +88,7 @@
                     <div th:object="${allPictures}">
                         <label for="pictures">Выберите из уже загруженных:</label>
                         <select id="pictures" name="picture" style="width: 150px">
-                            <option selected th:text="${picture.getName()}"
+                            <option selected="selected" th:text="${picture.getName()}"
                                     th:value="${picture.getId()}"></option>
                             <option th:each="item : ${allPictures}"
                                     th:text="${item.getName()}"
@@ -107,9 +107,6 @@
                     <label for="creatorAdmin">Id создателя:</label>
                     <br/>
                     <input id="creatorAdmin" th:field="*{creator}" type="text"/>
-                    <!--                    <br/>-->
-                    <!--                    <span style="color:red" th:errors="*{creator}"-->
-                    <!--                          th:if="${#fields.hasErrors('creator')}"></span>-->
                     <br/>
                     <br/>
                 </div>
