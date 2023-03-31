@@ -176,7 +176,7 @@
                         </select>
                         <br/>
                         <label for="fastenerQuantity">Enter fastener quantity:</label>
-                        <input id="fastenerQuantity" th:name="fastenerQuantity" type="text"/>
+                        <input id="fastenerQuantity" th:name="fastenerQuantity" th:value="1" type="number"/>
                         <br/>
                         <button th:name="action" th:type="submit" th:value="addFastener">Добавить</button>
                         <button th:name="action" th:type="submit" th:value="delFastener">Убрать</button>
@@ -195,7 +195,7 @@
                         </select>
                         <br/>
                         <label for="consumableQuantity">Enter consumable quantity:</label>
-                        <input id="consumableQuantity" th:name="consumableQuantity" type="text"/>
+                        <input id="consumableQuantity" th:name="consumableQuantity" th:value="1" type="number"/>
                         <br/>
                         <button th:name="action" th:type="submit" th:value="addConsumable">Добавить</button>
                         <button th:name="action" th:type="submit" th:value="delConsumable">Убрать</button>
