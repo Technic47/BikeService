@@ -97,10 +97,10 @@ class ServiceableControllerTest {
         this.mockMvc.perform(get("/parts/1/edit"));
 
         this.mockMvc.perform(multipart("/parts/1/update")
-                                .file(getMultipartFile())
-                                .param("action", "addDocument")
-                                .param("documentId", "2")
-                                .flashAttr("object", partTest))
+                        .file(getMultipartFile())
+                        .param("action", "addDocument")
+                        .param("documentId", "2")
+                        .flashAttr("object", partTest))
                 .andDo(print())
                 .andExpect(view().name("/edit/editPart"));
         assertTrue(partTest.getLinkedItems().contains(entity));
@@ -113,15 +113,11 @@ class ServiceableControllerTest {
         assertFalse(partTest.getLinkedItems().contains(entity));
 
         this.mockMvc.perform(multipart("/parts/1/update")
-                .file(getMultipartFile())
-                .param("action", "finish")
-                .flashAttr("object", partTest))
+                        .file(getMultipartFile())
+                        .param("action", "finish")
+                        .flashAttr("object", partTest))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/parts"));
-    }
-
-    @Test
-    void addItemAttributesNew() {
     }
 }

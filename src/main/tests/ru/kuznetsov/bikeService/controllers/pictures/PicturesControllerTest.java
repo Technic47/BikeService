@@ -22,8 +22,6 @@ import static ru.kuznetsov.bikeService.TestCridentials.getMultipartFile;
 @TestPropertySource("/application-test.properties")
 @Sql(value = {"/SQL_scripts/create-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/SQL_scripts/create-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-@Sql(value = {"/SQL_scripts/create-images-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = {"/SQL_scripts/create-images-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class PicturesControllerTest {
     @Autowired
     private MockMvc mockMvc;

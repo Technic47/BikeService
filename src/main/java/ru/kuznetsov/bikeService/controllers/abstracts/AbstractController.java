@@ -23,11 +23,11 @@ public abstract class AbstractController {
         this.pictureDao = pictureDao;
     }
 
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public PictureService getPictureDao() {
-        return pictureDao;
-    }
+//    public UserService getUserService() {
+//        return userService;
+//    }
+//
+//    public PictureService getPictureDao() {
+//        return pictureDao;
+//    }
 }
