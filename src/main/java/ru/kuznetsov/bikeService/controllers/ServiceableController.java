@@ -65,10 +65,10 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                                     @RequestParam(value = "action") String action,
                                     @RequestParam(value = "documentId", required = false) Long documentId,
                                     @RequestParam(value = "fastenerId", required = false) Long fastenerId,
-                                    @RequestParam(value = "fastenerQuantity", required = false) String fastenerQuantity,
+                                    @RequestParam(value = "fastenerQuantity", required = false) Integer fastenerQuantity,
                                     @RequestParam(value = "toolId", required = false) Long toolId,
                                     @RequestParam(value = "consumableId", required = false) Long consumableId,
-                                    @RequestParam(value = "consumableQuantity", required = false) String consumableQuantity,
+                                    @RequestParam(value = "consumableQuantity", required = false) Integer consumableQuantity,
                                     @RequestParam(value = "partId", required = false) Long partId,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Model model) {
@@ -83,10 +83,10 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                 this.itemsManipulation(item, 0, Document.class, documentId, 1);
                 break;
             case "addFastener":
-                this.itemsManipulation(item, 1, Fastener.class, fastenerId, Integer.parseInt(fastenerQuantity));
+                this.itemsManipulation(item, 1, Fastener.class, fastenerId, fastenerQuantity);
                 break;
             case "delFastener":
-                this.itemsManipulation(item, 0, Fastener.class, fastenerId, Integer.parseInt(fastenerQuantity));
+                this.itemsManipulation(item, 0, Fastener.class, fastenerId, fastenerQuantity);
                 break;
             case "addTool":
                 this.itemsManipulation(item, 1, Tool.class, toolId, 1);
@@ -95,10 +95,10 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                 this.itemsManipulation(item, 0, Tool.class, toolId, 1);
                 break;
             case "addConsumable":
-                this.itemsManipulation(item, 1, Consumable.class, consumableId, Integer.parseInt(consumableQuantity));
+                this.itemsManipulation(item, 1, Consumable.class, consumableId, consumableQuantity);
                 break;
             case "delConsumable":
-                this.itemsManipulation(item, 0, Consumable.class, consumableId, Integer.parseInt(consumableQuantity));
+                this.itemsManipulation(item, 0, Consumable.class, consumableId, consumableQuantity);
                 break;
             case "addPart":
                 this.itemsManipulation(item, 1, Part.class, partId, 1);

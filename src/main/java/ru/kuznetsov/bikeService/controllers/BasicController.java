@@ -192,8 +192,4 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
             this.user = userService.findByName(principal.getName());
         }
     }
-
-//    public void setUser(UserModel user) {
-//        this.user = user;
-//    }
 }
