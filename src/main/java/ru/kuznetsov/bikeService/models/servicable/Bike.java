@@ -11,10 +11,12 @@ import java.util.Set;
 @Entity
 @Table(name = "bikes")
 public class Bike extends AbstractServiceableEntity {
-    @ElementCollection(targetClass = PartEntity.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = PartEntity.class,
+            fetch = FetchType.EAGER)
     @CollectionTable(name = "bike_part",
             joinColumns = @JoinColumn(name = "bike_id"))
     private Set<PartEntity> linkedParts = new HashSet<>();
+
     public Bike() {
     }
 

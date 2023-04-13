@@ -11,7 +11,8 @@ import java.util.Set;
 @Entity
 @Table(name = "parts")
 public class Part extends AbstractServiceableEntity {
-    @ElementCollection(targetClass = PartEntity.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = PartEntity.class,
+            fetch = FetchType.EAGER)
     @CollectionTable(name = "part_item",
             joinColumns = @JoinColumn(name = "part_id"))
     private Set<PartEntity> linkedItems = new HashSet<>();

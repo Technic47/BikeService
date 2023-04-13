@@ -8,7 +8,6 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 @Entity
 @Table(name = "tools")
 public class Tool extends AbstractUsableEntity {
-
     public Tool() {
     }
 

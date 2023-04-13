@@ -1,6 +1,0 @@
-.center {
-    width: 1024px; /* Ширина элемента в пикселах */
-    padding: 10px; /* Поля вокруг текста */
-    margin: auto; /* Выравниваем по центру */
-    text-align: center;
-}
