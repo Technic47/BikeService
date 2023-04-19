@@ -25,15 +25,15 @@ public class HomeController extends AbstractController {
         return "home";
     }
 
+    @GetMapping("/")
+    public String root() {
+        return "home";
+    }
+
     @GetMapping("/login")
     public String login(Principal principal) {
         logger.info(principal.getName() + " logged in");
         return "title";
-    }
-
-    @GetMapping("/")
-    public String root() {
-        return "home";
     }
 
     @GetMapping("/title")

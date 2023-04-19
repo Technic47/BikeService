@@ -11,7 +11,7 @@ import ru.kuznetsov.bikeService.services.UserService;
 public abstract class AbstractController {
     public final static Logger logger = LoggerFactory.getLogger("BikeServiceLogger");
     protected UserService userService;
-    protected PictureService pictureDao;
+    protected PictureService pictureService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -19,15 +19,7 @@ public abstract class AbstractController {
     }
 
     @Autowired
-    public void setPictureDao(PictureService pictureDao) {
-        this.pictureDao = pictureDao;
+    public void setPictureService(PictureService pictureService) {
+        this.pictureService = pictureService;
     }
-
-//    public UserService getUserService() {
-//        return userService;
-//    }
-//
-//    public PictureService getPictureDao() {
-//        return pictureDao;
-//    }
 }

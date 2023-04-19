@@ -5,7 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.models.Picture;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
+import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

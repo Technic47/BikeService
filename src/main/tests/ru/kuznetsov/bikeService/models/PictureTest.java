@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.models;
 
 import org.junit.jupiter.api.Test;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

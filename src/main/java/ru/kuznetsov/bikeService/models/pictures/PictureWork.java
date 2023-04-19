@@ -1,8 +1,7 @@
-package ru.kuznetsov.bikeService.controllers.pictures;
+package ru.kuznetsov.bikeService.models.pictures;
 
 import org.imgscalr.Scalr;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.models.Picture;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,6 +11,10 @@ import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 
 public class PictureWork {
     private final Picture picture;
+    private final static Integer PICTURE_WIDTH = 400;
+    private final static Integer PICTURE_HEIGHT = 300;
+    private final static Integer PREVIEW_WIDTH = 64;
+    private final static Integer PREVIEW_HEIGHT = 64;
 
     public PictureWork(Picture picture) {
         this.picture = picture;
@@ -21,8 +24,8 @@ public class PictureWork {
     public void managePicture(MultipartFile file) {
         try {
             BufferedImage uploadedImage = ImageIO.read(file.getInputStream());
-            BufferedImage bigImageOut = resizePicture(uploadedImage, 400, 300);
-            BufferedImage smallImageOut = resizePicture(uploadedImage, 64, 64);
+            BufferedImage bigImageOut = resizePicture(uploadedImage, PICTURE_WIDTH, PICTURE_HEIGHT);
+            BufferedImage smallImageOut = resizePicture(uploadedImage, PREVIEW_WIDTH, PREVIEW_HEIGHT);
             File uploadDir = new File(UPLOAD_PATH);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();

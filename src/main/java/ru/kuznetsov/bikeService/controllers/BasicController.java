@@ -8,10 +8,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
-import ru.kuznetsov.bikeService.controllers.pictures.PictureWork;
-import ru.kuznetsov.bikeService.models.Picture;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
+import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -68,7 +68,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         Map<T, String> objectMap = new HashMap<>();
         if (objects != null) {
             for (T object : objects) {
-                objectMap.put(object, pictureDao.show(object.getPicture()).getName());
+                objectMap.put(object, pictureService.show(object.getPicture()).getName());
             }
         }
         model.addAttribute("objects", objectMap);
@@ -81,7 +81,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                        Principal principal,
                        Model model) {
         this.currentObject = dao.show(id);
-        model.addAttribute("picture", pictureDao.show(currentObject.getPicture()).getName());
+        model.addAttribute("picture", pictureService.show(currentObject.getPicture()).getName());
         this.addItemAttributesShow(model, currentObject);
         this.checkUser(principal);
         logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
@@ -106,13 +106,13 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     }
 
     protected void addItemAttributesNew(Model model, T item) {
-        model.addAttribute("allPictures", pictureDao.index());
+        model.addAttribute("allPictures", pictureService.index());
         this.addItemAttributesShow(model, item);
 
     }
 
     protected void addItemAttributesEdit(Model model, T item) {
-        model.addAttribute("picture", pictureDao.show(item.getPicture()));
+        model.addAttribute("picture", pictureService.show(item.getPicture()));
         this.addItemAttributesNew(model, item);
     }
 
@@ -133,7 +133,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork(new Picture());
             picWorker.managePicture(file);
-            item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
+            item.setPicture(pictureService.save(picWorker.getPicture()).getId());
         }
         item.setCreator(user.getId());
         userService.addCreatedItem(user, new UserEntity(thisClassNewObject.getClass().getSimpleName(), dao.save(item).getId()));
@@ -170,7 +170,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork(new Picture());
             picWorker.managePicture(file);
-            item.setPicture(pictureDao.save(picWorker.getPicture()).getId());
+            item.setPicture(pictureService.save(picWorker.getPicture()).getId());
         }
         dao.update(id, item);
         logger.info(item.getClass().getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
