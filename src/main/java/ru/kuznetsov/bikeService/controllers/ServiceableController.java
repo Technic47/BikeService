@@ -107,21 +107,21 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                 this.itemsManipulation(item, 0, Part.class, partId, 1);
                 break;
         }
-        dao.update(id, item);
+        service.update(id, item);
         return edit(model, id);
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
         PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), itemClass.getSimpleName(), id, amount);
         switch (action) {
-            case 1 -> dao.addToLinkedItems(item, entity);
-            case 0 -> dao.delFromLinkedItems(item, entity);
+            case 1 -> service.addToLinkedItems(item, entity);
+            case 0 -> service.delFromLinkedItems(item, entity);
         }
     }
 
     private void updateCacheList(Long id) {
         ServiceList newCacheList = new ServiceList();
-        Set<PartEntity> entityList = dao.show(id).getLinkedItems();
+        Set<PartEntity> entityList = service.show(id).getLinkedItems();
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
                 case "Tool" -> newCacheList.addToToolMap(this.toolDAO.show(entity.getItem_id()), entity.getAmount());

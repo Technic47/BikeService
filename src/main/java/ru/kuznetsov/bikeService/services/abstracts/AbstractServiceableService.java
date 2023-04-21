@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public abstract class AbstractServiceableService<E extends AbstractServiceableEntity, R extends AbstractShowableEntityRepository<E>>
-        extends AbstractUsableService<E, R> {
+        extends AbstractUsableService<E, R> implements CommonServiceableEntityService<E>{
 
     public AbstractServiceableService(R repository) {
         super(repository);

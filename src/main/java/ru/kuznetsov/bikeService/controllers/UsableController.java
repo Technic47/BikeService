@@ -16,7 +16,7 @@ import java.security.Principal;
 @Scope("prototype")
 public class UsableController<T extends AbstractUsableEntity, S extends CommonAbstractEntityService<T>>
         extends BasicController<T, S> {
-    protected ManufacturerService daoManufacturer;
+    protected ManufacturerService manufacturerService;
 
     public UsableController(S dao) {
         super(dao);
@@ -28,26 +28,26 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
     public String show(@PathVariable("id") Long id,
                        Principal principal,
                        Model model) {
-        Long manufactureIndex = dao.show(id).getManufacturer();
-        model.addAttribute("manufacture", daoManufacturer.show(manufactureIndex).getName());
+        Long manufactureIndex = service.show(id).getManufacturer();
+        model.addAttribute("manufacture", manufacturerService.show(manufactureIndex).getName());
         return super.show(id, principal, model);
     }
 
 
     @Override
     protected void addItemAttributesNew(Model model, T item) {
-        model.addAttribute("manufacturers", daoManufacturer.index());
+        model.addAttribute("manufacturers", manufacturerService.index());
         super.addItemAttributesNew(model, item);
     }
 
     @Override
     protected void addItemAttributesEdit(Model model, T item) {
-        model.addAttribute("manufacture", daoManufacturer.show(item.getManufacturer()));
+        model.addAttribute("manufacture", manufacturerService.show(item.getManufacturer()));
         super.addItemAttributesEdit(model, item);
     }
 
     @Autowired
-    public void setDaoManufacturer(ManufacturerService daoManufacturer) {
-        this.daoManufacturer = daoManufacturer;
+    public void setManufacturerService(ManufacturerService manufacturerService) {
+        this.manufacturerService = manufacturerService;
     }
 }
