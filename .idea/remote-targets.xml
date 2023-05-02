@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="technic47@192.168.1.79:22" type="ssh/sftp" uuid="dc9d931e-655e-443b-b70a-03a6d2ecdd70">
+        <config>
+          <option name="projectRootOnTarget" value="/home/technic47/bikeService" />
+          <option name="serverName" value="technic47@192.168.1.81:22 key" />
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config>
+            <option name="homePath" value="/lib/jvm/java-11-openjdk-amd64" />
+            <option name="javaVersionString" value="11.0.18" />
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

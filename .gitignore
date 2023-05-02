@@ -1,4 +1,5 @@
 target/
+out/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -41,3 +42,6 @@ build/
 src/main/resources/IMG/
 src/main/resources/static/siteIMG/big
 LOGS/
+scripts/
+Dockerfile
+Compose_file.yml

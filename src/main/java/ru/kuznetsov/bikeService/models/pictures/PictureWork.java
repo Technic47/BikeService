@@ -39,12 +39,15 @@ public class PictureWork {
         }
     }
 
-    private BufferedImage resizePicture(BufferedImage uploadedImage, int newWidth, int newHeight) {
+    private BufferedImage resizePicture(BufferedImage uploadedImage,
+                                        int newWidth, int newHeight) {
         BufferedImage imageOut;
         if (uploadedImage.getWidth() > uploadedImage.getHeight()) {
-            imageOut = Scalr.resize(uploadedImage, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH, newWidth);
+            imageOut = Scalr.resize(uploadedImage,
+                    Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH, newWidth);
         } else {
-            imageOut = Scalr.resize(uploadedImage, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_HEIGHT, newHeight);
+            imageOut = Scalr.resize(uploadedImage,
+                    Scalr.Method.SPEED, Scalr.Mode.FIT_TO_HEIGHT, newHeight);
         }
         return imageOut;
     }

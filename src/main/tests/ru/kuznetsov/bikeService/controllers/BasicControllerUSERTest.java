@@ -51,6 +51,16 @@ class BasicControllerUSERTest {
     @BeforeEach
     void setUp() {
         this.testDocFromDb = this.documentService.show(1L);
+        userService.addCreatedItem(userService.findByName("test"),
+                new UserEntity("Document", 1L));
+        userService.addCreatedItem(userService.findByName("test"),
+                new UserEntity("Document", 2L));
+        userService.addCreatedItem(userService.findByName("pavel"),
+                new UserEntity("Document", 3L));
+        userService.addCreatedItem(userService.findByName("pavel"),
+                new UserEntity("Document", 4L));
+        userService.addCreatedItem(userService.findByName("pavel"),
+                new UserEntity("Document", 5L));
     }
 
     @Test

@@ -8,7 +8,8 @@ import ru.kuznetsov.bikeService.models.showable.Showable;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class AbstractShowableEntity implements Showable {
+public abstract class AbstractShowableEntity
+        implements Showable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

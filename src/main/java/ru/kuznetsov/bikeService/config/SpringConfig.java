@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -18,14 +17,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application-dev.properties")
+//@PropertySource("classpath:application-prod.properties")
 @ComponentScan("ru.kuznetsov.bikeService")
 @EnableJpaRepositories("ru.kuznetsov.bikeService.repositories")
 @EntityScan("ru.kuznetsov.bikeService.models")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
-    public static final String UPLOAD_PATH = "C:\\Users\\Techn\\Documents\\JavaProjects\\BikeServiceStuff\\bikeService\\src\\main\\resources\\IMG";
+    public static String UPLOAD_PATH;
+    @Value("${upload.path}")
+    private String path;
     @Value("${datasource.driver}")
     private String driver;
     @Value("${spring.datasource.url}")
@@ -35,6 +37,10 @@ public class SpringConfig implements WebMvcConfigurer {
     @Value("${spring.datasource.password}")
     private String password;
 
+    @Value("${upload.path}")
+    public void setUploadPath() {
+        UPLOAD_PATH = this.path;
+    }
 
     @Autowired
     public SpringConfig(ApplicationContext applicationContext) {

@@ -46,6 +46,7 @@ public class BasicControllerADMINTest {
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
+                .andExpect(view().name("/show/index"))
                 .andExpect(model().attribute("objects", aMapWithSize(5)))
                 .andExpect(xpath("//div/div/table/tbody/tr").nodeCount(5))
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/1']").exists())

@@ -18,8 +18,8 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
         extends BasicController<T, S> {
     protected ManufacturerService manufacturerService;
 
-    public UsableController(S dao) {
-        super(dao);
+    public UsableController(S service) {
+        super(service);
     }
 
 

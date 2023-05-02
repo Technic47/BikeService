@@ -1,7 +1,6 @@
 package ru.kuznetsov.bikeService.models;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Document;
@@ -15,11 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.kuznetsov.bikeService.TestCridentials.*;
 
-@SpringBootTest
 public class ModelTests {
     @Test
-    void creationTest(){
+    void creationTest() {
         Part part = new Part();
+
         part.setId(TEST_ID);
         part.setName(TEST_NAME);
         part.setDescription(TEST_DESCRIPTION);
@@ -29,6 +28,7 @@ public class ModelTests {
         part.setCreator(TEST_CREATOR);
         part.setManufacturer(TEST_MANUFACTURER_ID);
         part.setModel(TEST_MODEL);
+
         assertEquals(TEST_ID, TEST_PART.getId());
         assertEquals(TEST_NAME, TEST_PART.getName());
         assertEquals(TEST_DESCRIPTION, TEST_PART.getDescription());
@@ -39,6 +39,7 @@ public class ModelTests {
         assertEquals(TEST_MANUFACTURER_ID, TEST_PART.getManufacturer());
         assertEquals(TEST_MODEL, TEST_PART.getModel());
     }
+
     @Test
     void showableInterfaceTest() {
         List<Showable> testList = new ArrayList<>();
@@ -61,7 +62,7 @@ public class ModelTests {
                 assertEquals(TEST_LINK, showable.getLink());
             }
             assertEquals(TEST_DESCRIPTION, showable.getDescription());
-            assertEquals(13L, showable.getPicture());
+            assertEquals(TEST_PICTURE, showable.getPicture());
             showable.setPicture(22L);
             assertEquals(22L, showable.getPicture());
             assertEquals(3L, showable.getCreator());

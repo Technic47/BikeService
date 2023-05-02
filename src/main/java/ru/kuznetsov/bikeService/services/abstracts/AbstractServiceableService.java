@@ -7,7 +7,8 @@ import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRep
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class AbstractServiceableService<E extends AbstractServiceableEntity, R extends AbstractShowableEntityRepository<E>>
+public abstract class AbstractServiceableService<E extends AbstractServiceableEntity,
+        R extends AbstractShowableEntityRepository<E>>
         extends AbstractUsableService<E, R> implements CommonServiceableEntityService<E>{
 
     public AbstractServiceableService(R repository) {
@@ -20,7 +21,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         this.serviceableToRepo(toRepo, newItem);
     }
 
-    public void serviceableToRepo(E toRepo, E newItem) {
+    private void serviceableToRepo(E toRepo, E newItem) {
         this.usableToRepo(toRepo, newItem);
     }
 

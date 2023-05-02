@@ -6,7 +6,8 @@ import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRep
 import java.util.List;
 
 
-public abstract class AbstractShowableService<E extends AbstractShowableEntity, R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R>
+public abstract class AbstractShowableService<E extends AbstractShowableEntity,
+        R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R>
         implements CommonAbstractEntityService<E> {
 
     public AbstractShowableService(R repository) {
@@ -15,11 +16,11 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity, 
 
     @Override
     public void update(Long id, E newItem) {
-        E torepo = this.show(id);
-        this.showableToRepo(torepo, newItem);
+        E toRepo = this.show(id);
+        this.showableToRepo(toRepo, newItem);
     }
 
-    public void showableToRepo(E toRepo, E newItem) {
+    protected void showableToRepo(E toRepo, E newItem) {
         toRepo.setName(newItem.getName());
         toRepo.setDescription(newItem.getDescription());
         toRepo.setPicture(newItem.getPicture());

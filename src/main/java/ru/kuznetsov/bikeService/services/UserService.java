@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class UserService extends AbstractService<UserModel, UserRepository> {
     private final PasswordEncoder passwordEncoder;
 
-    protected UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
         this.passwordEncoder = passwordEncoder;
     }

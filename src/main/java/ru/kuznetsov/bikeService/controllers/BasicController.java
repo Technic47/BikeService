@@ -101,14 +101,14 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         switch (category) {
             case "parts", "bikes" -> model.addAttribute("type", "Serviceable");
             case "tools", "consumables" -> model.addAttribute("type", "Usable");
-            case "documents", "fasteners", "manufacturers" -> model.addAttribute("type", "Showable");
+            case "documents", "fasteners", "manufacturers" ->
+                    model.addAttribute("type", "Showable");
         }
     }
 
     protected void addItemAttributesNew(Model model, T item) {
         model.addAttribute("allPictures", pictureService.index());
         this.addItemAttributesShow(model, item);
-
     }
 
     protected void addItemAttributesEdit(Model model, T item) {
@@ -136,7 +136,8 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
             item.setPicture(pictureService.save(picWorker.getPicture()).getId());
         }
         item.setCreator(user.getId());
-        userService.addCreatedItem(user, new UserEntity(thisClassNewObject.getClass().getSimpleName(), service.save(item).getId()));
+        userService.addCreatedItem(user,
+                new UserEntity(thisClassNewObject.getClass().getSimpleName(), service.save(item).getId()));
         logger.info(item + " was created by '" + user.toString());
         return "redirect:/" + category;
     }
@@ -173,7 +174,8 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
             item.setPicture(pictureService.save(picWorker.getPicture()).getId());
         }
         service.update(id, item);
-        logger.info(item.getClass().getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
+        logger.info(item.getClass()
+                .getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
         return "redirect:/" + category;
     }
 
@@ -181,15 +183,21 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     public String delete(@PathVariable("id") Long id,
                          Principal principal) {
         this.checkUser(principal);
-        userService.delCreatedItem(user, new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
+        userService.delCreatedItem(user,
+                new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
         service.delete(id);
-        logger.info(thisClassNewObject.getClass().getSimpleName() + " id:" + id + " was deleted by '" + user.getUsername() + "'");
+        logger.info(thisClassNewObject.getClass().getSimpleName() +
+                " id:" + id + " was deleted by '" + user.getUsername() + "'");
         return "redirect:/" + category;
     }
 
     public void checkUser(Principal principal) {
         if (this.user == null) {
             this.user = userService.findByName(principal.getName());
+        } else {
+            if (!Objects.equals(this.user.getUsername(), principal.getName())) {
+                this.user = userService.findByName(principal.getName());
+            }
         }
     }
 }

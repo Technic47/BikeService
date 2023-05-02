@@ -34,8 +34,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     private PartService partDAO;
     protected ServiceList cacheList;
 
-    public ServiceableController(S dao) {
-        super(dao);
+    public ServiceableController(S service) {
+        super(service);
     }
 
     @Override
@@ -58,20 +58,21 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-    public String updateServiceList(@Valid @ModelAttribute("object") T item,
-                                    BindingResult bindingResult,
-                                    Principal principal,
-                                    @PathVariable("id") Long id,
-                                    @RequestParam(value = "action") String action,
-                                    @RequestParam(value = "documentId", required = false) Long documentId,
-                                    @RequestParam(value = "fastenerId", required = false) Long fastenerId,
-                                    @RequestParam(value = "fastenerQuantity", required = false) Integer fastenerQuantity,
-                                    @RequestParam(value = "toolId", required = false) Long toolId,
-                                    @RequestParam(value = "consumableId", required = false) Long consumableId,
-                                    @RequestParam(value = "consumableQuantity", required = false) Integer consumableQuantity,
-                                    @RequestParam(value = "partId", required = false) Long partId,
-                                    @RequestPart(value = "newImage", required = false) MultipartFile file,
-                                    Model model) {
+    public String updateServiceList(
+            @Valid @ModelAttribute("object") T item,
+            BindingResult bindingResult,
+            Principal principal,
+            @PathVariable("id") Long id,
+            @RequestParam(value = "action") String action,
+            @RequestParam(value = "documentId", required = false) Long documentId,
+            @RequestParam(value = "fastenerId", required = false) Long fastenerId,
+            @RequestParam(value = "fastenerQuantity", required = false) Integer fastenerQuantity,
+            @RequestParam(value = "toolId", required = false) Long toolId,
+            @RequestParam(value = "consumableId", required = false) Long consumableId,
+            @RequestParam(value = "consumableQuantity", required = false) Integer consumableQuantity,
+            @RequestParam(value = "partId", required = false) Long partId,
+            @RequestPart(value = "newImage", required = false) MultipartFile file,
+            Model model) {
         item.setLinkedItems(this.currentObject.getLinkedItems());
         switch (action) {
             case "finish":
@@ -112,7 +113,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
-        PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(), itemClass.getSimpleName(), id, amount);
+        PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(),
+                itemClass.getSimpleName(), id, amount);
         switch (action) {
             case 1 -> service.addToLinkedItems(item, entity);
             case 0 -> service.delFromLinkedItems(item, entity);
