@@ -20,7 +20,7 @@ services:
       - db
     restart: always
     ports:
-      - 8000:8080
+      - "8000:8080"
 
   bikeservice:
     build:
@@ -29,8 +29,9 @@ services:
     depends_on:
       - db
     ports:
-      - 9090:9090
+      - "8080:8080"
     environment:
+#      - spring.profiles.active=prod
       - datasource.driver=org.postgresql.Driver
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/BikeService
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -47,3 +48,15 @@ services:
       - logging.file.path=LOGs
       - upload.path=C:\\Users\\Techn\\Documents\\JavaProjects\\BikeServiceStuff\\bikeService\\src\\main\\resources\\IMG
 
+#  pgadmin:
+#    image: dpage/pgadmin4:latest
+#    container_name: pgadmin
+#    depends_on:
+#      - db
+#    restart: always
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=technic47@gmail.com
+#      - PGADMIN_DEFAULT_PASSWORD=1999
+#      - PGADMIN_LISTEN_PORT=9000
