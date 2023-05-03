@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 
@@ -17,30 +18,35 @@ import static ru.kuznetsov.bikeService.TestCridentials.TEST_NAME;
 @SpringBootTest
 class CustomUserDetailsServiceTest {
     private CustomUserDetailsService detailsService;
+
+    private UserService userService;
     @MockBean
-    private UserRepository repository;
+    private PasswordEncoder passwordEncoder;
+    @MockBean
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        this.detailsService = new CustomUserDetailsService(repository);
+        this.userService = new UserService(userRepository, passwordEncoder);
+        this.detailsService = new CustomUserDetailsService(userService);
     }
 
     @Test
     void loadUserByUsername() {
         doReturn(new UserModel())
-                .when(repository)
-                .findByUsername(TEST_NAME);
+                .when(userService)
+                .findByName(TEST_NAME);
         UserDetails result = detailsService.loadUserByUsername(TEST_NAME);
 
         assertEquals(new UserModel(), result);
-        verify(repository, times(1)).findByUsername(TEST_NAME);
+        verify(userService, times(1)).findByName(TEST_NAME);
     }
 
     @Test
     void loadUserByUsernameNull() {
         doReturn(null)
-                .when(repository)
-                .findByUsername(TEST_NAME);
+                .when(userService)
+                .findByName(TEST_NAME);
 
         assertThrows(UsernameNotFoundException.class, () -> detailsService.loadUserByUsername(TEST_NAME));
     }

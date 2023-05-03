@@ -11,6 +11,7 @@ RUN ./mvnw clean package spring-boot:repackage
 
 FROM eclipse-temurin:19-jre-alpine
 WORKDIR /app
+RUN mkdir /app/IMG
 COPY --from=builder /app/target/bikeService.jar /app/app.jar
 
 EXPOSE 8080

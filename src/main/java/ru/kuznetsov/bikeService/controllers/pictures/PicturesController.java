@@ -14,12 +14,12 @@ public class PicturesController extends AbstractController {
     @GetMapping
     public String index(Model model) {
         model.addAttribute("allPictures", pictureService.index());
-        return "pictures/index";
+        return "picture_index";
     }
 
     @GetMapping("/new")
     public String newPicture() {
-        return "pictures/new";
+        return "picture_new";
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)

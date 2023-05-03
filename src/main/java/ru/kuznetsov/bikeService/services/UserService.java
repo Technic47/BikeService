@@ -30,6 +30,17 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         return true;
     }
 
+    public boolean createAdmin(UserModel userModel) {
+        if (repository.findByUsername(userModel.getUsername()) != null) {
+            return false;
+        }
+        userModel.setActive(true);
+        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
+        userModel.getStatus().add(UserRole.ROLE_ADMIN);
+        repository.save(userModel);
+        return true;
+    }
+
     public void addCreatedItem(UserModel user, UserEntity entity) {
         user.getCreatedItems().add(entity);
         repository.save(user);

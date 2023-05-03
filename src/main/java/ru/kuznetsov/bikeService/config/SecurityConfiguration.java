@@ -42,6 +42,7 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {

@@ -73,7 +73,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         }
         model.addAttribute("objects", objectMap);
         model.addAttribute("category", category);
-        return "/show/index";
+        return "index";
     }
 
     @GetMapping("/{id}")
@@ -85,14 +85,14 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.addItemAttributesShow(model, currentObject);
         this.checkUser(principal);
         logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
-        return "/show/show";
+        return "show";
     }
 
 
     @GetMapping(value = "/new")
     public String newItem(Model model) {
         this.addItemAttributesNew(model, thisClassNewObject);
-        return "/new/new";
+        return "new";
     }
 
     private void addItemAttributesShow(Model model, T item){
@@ -125,7 +125,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     ) {
         if (bindingResult.hasErrors()) {
             this.addItemAttributesNew(model, item);
-            return "/new/new";
+            return "new";
         }
 
         this.checkUser(principal);
@@ -148,9 +148,9 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.addItemAttributesEdit(model, currentObject);
 
         if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
-            return "/edit/editPart";
+            return "editPart";
         }
-        return "/edit/edit";
+        return "edit";
     }
 
     @PostMapping("/{id}/edit")
@@ -163,9 +163,9 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         if (bindingResult.hasErrors()) {
             this.addItemAttributesEdit(model, item);
             if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
-                return "/edit/editPart";
+                return "editPart";
             }
-            return "/edit/edit";
+            return "edit";
         }
         this.checkUser(principal);
         if (!file.isEmpty()) {
