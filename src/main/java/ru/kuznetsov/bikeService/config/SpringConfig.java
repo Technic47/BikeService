@@ -17,8 +17,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.sql.DataSource;
 
 @Configuration
-//@PropertySource("classpath:application-dev.properties")
-//@PropertySource("classpath:application-prod.properties")
 @ComponentScan("ru.kuznetsov.bikeService")
 @EnableJpaRepositories("ru.kuznetsov.bikeService.repositories")
 @EntityScan("ru.kuznetsov.bikeService.models")

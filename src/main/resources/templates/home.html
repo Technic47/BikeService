@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main">
+    <div class="container">
+        <div class="col-1-1">
+            <h2>Добро пожаловать отсюда!</h2>
+            <br/>
+            <p>Если у вас уже есть аккаунт:</p>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/title}" th:method="GET">
+                <input type="submit" value="На главную">
+            </form>
+
+            <form sec:authorize="!isAuthenticated()" th:action="@{/login}" th:method="GET">
+                <input type="submit" value="LogIn">
+            </form>
+
+            <p>Если вы новенький, то создайте аккаунт:</p>
+
+            <form th:action="@{/registration}" th:method="GET">
+                <input type="submit" value="Create account">
+            </form>
+            <br/>
+            <br/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

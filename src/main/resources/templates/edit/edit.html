@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit item</title>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
+<header class="header">
+    <h1>
+        <div sec:authentication="principal.username"></div>
+    </h1>
+    <nav>
+        <a th:href="@{/title}">На главную</a>
+        <a th:href="@{/logout}">Log out</a>
+    </nav>
+</header>
+<div class="main">
+    <div class="container">
+        <form enctype="multipart/form-data"
+              th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}"
+              th:method="POST"
+              th:object="${object}">
+            <div class="col-1-1">
+                <div class="col-5-2-no-boarders">
+                    <label for="name">Название:</label>
+                    <br/>
+                    <input id="name" th:field="*{name}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{name}"
+                          th:if="${#fields.hasErrors('name')}"></span>
+                    <br/>
+                    <label for="description">Описание:</label>
+                    <br/>
+                    <input id="description" th:field="*{description}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{description}"
+                          th:if="${#fields.hasErrors('description')}"></span>
+                    <br/>
+                </div>
+                <div class="col-5-2-no-boarders">
+                    <label for="link">Ссылка:</label>
+                    <br/>
+                    <input id="link" th:field="*{link}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
+                    <br/>
+                    <label for="value" th:text="${object.getValueName()}">:</label>
+                    <br/>
+                    <input id="value" th:field="*{value}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
+                    <br/>
+                </div>
+                <div class="col-5-2-no-boarders" th:if="${type == 'Usable'}">
+                    <span th:object="${manufacturers}">
+                        <label for="manufacturers">Выберите производителя:</label>
+                        <br/>
+                        <select id="manufacturers" name="manufacturer">
+                            <option selected="selected" th:text="${manufacture.getName()}"
+                                    th:value="${manufacture.getId()}">
+                            </option>
+                            <option th:each="item : ${manufacturers}"
+                                    th:text="${item.getName()}"
+                                    th:value="${item.getId()}">
+                            </option>
+                        </select>
+                    </span>
+                    <br/>
+                    <br/>
+                    <label for="model">Модель:</label>
+                    <br/>
+                    <input id="model" th:field="*{model}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
+                    <br/>
+                    <br/>
+                </div>
+                <div class="col-5-2-no-boarders">
+                    <label for="picture">Загрузить новое изображение:</label>
+                    <br/>
+                    <input accept="image/*" id="picture" name="newImage" type="file"/>
+                    <br/>
+                    <br/>
+                    <div th:object="${allPictures}">
+                        <label for="pictures">Выберите из уже загруженных:</label>
+                        <select id="pictures" name="picture" style="width: 150px">
+                            <option selected="selected" th:text="${picture.getName()}"
+                                    th:value="${picture.getId()}"></option>
+                            <option th:each="item : ${allPictures}"
+                                    th:text="${item.getName()}"
+                                    th:value="${item.getId()}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-5-2-no-boarders" sec:authorize="hasRole('ROLE_USER')">
+                    <span hidden="hidden">
+                    <label for="creator">Enter creator:</label>
+                    <input id="creator" th:field="*{creator}" type="text"/>
+                    </span>
+                </div>
+                <div class="col-5-2-no-boarders" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <label for="creatorAdmin">Id создателя:</label>
+                    <br/>
+                    <input id="creatorAdmin" th:field="*{creator}" type="text"/>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+            <button type="submit" value="Обновить">Обновить</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

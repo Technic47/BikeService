@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of items</title>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/table-no-border.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header">
+    <h1>
+        <div sec:authentication="principal.username"></div>
+    </h1>
+    <nav>
+        <a th:href="@{/title}">На главную</a>
+        <a th:href="@{/logout}">Log out</a>
+    </nav>
+</header>
+<div class="main">
+    <div class="center">
+        <h3>
+            Созданные вами позиции:
+        </h3>
+    </div>
+    <p></p>
+    <div class="border-block">
+        <table class="table-no-border">
+            <tbody>
+            <tr th:each="object : ${objects}">
+                <td>
+                    <img alt="Picture of item" th:src="@{/preview/{filename}(filename=${object.getValue()})}"/>
+                    <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
+                       th:text="${object.getKey().getCredentials()}">item</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br/>
+    <div class="center">
+        <form method="get" th:action="@{/{link}/new(link=${category})}">
+            <input type="submit" value="Создать новую позицию"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

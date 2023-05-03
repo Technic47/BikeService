@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>All pictures</title>
+</head>
+<body>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
+
+<div th:each="object : ${allPictures}">
+    <form method="POST" th:action="@{/pictures/{id}(id=${object.getId()})}">
+        <img alt="img preview" th:src="@{/preview/{fileName}(fileName=${object.getName()})}"/>
+        <button class="btn btn-success" type="submit">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    </form>
+</div>
+<br/>
+<hr/>
+
+<a th:href="@{/pictures/new}">Create new</a>
+<br/>
+<a th:href="@{/title}"> <i class="fa-solid fa-house"></i></a>
+
+<form method="GET" th:action="@{/title}">
+    <input type="submit" value="Home"/>
+</form>
+
+</body>
+</html>

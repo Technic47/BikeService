@@ -20,3 +20,499 @@
 2023-05-03T00:23:06.750+03:00  INFO 12160 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 2023-05-03T00:23:06.761+03:00  INFO 12160 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.675 seconds (process running for 7.576)
 2023-05-03T00:23:16.354+03:00  INFO 12160 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:00:46.035+03:00  INFO 17060 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 17060 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:00:46.038+03:00  INFO 17060 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:00:46.792+03:00  INFO 17060 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:00:46.899+03:00  INFO 17060 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 95 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:00:47.839+03:00  INFO 17060 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:00:47.851+03:00  INFO 17060 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:00:47.852+03:00  INFO 17060 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:00:47.982+03:00  INFO 17060 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:00:47.983+03:00  INFO 17060 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1880 ms
+2023-05-03T13:00:48.086+03:00  INFO 17060 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:00:48.456+03:00  INFO 17060 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:00:48.518+03:00  INFO 17060 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:00:49.011+03:00  INFO 17060 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:00:50.908+03:00  INFO 17060 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:00:50.922+03:00  INFO 17060 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:00:51.233+03:00  WARN 17060 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:00:51.502+03:00  WARN 17060 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:00:51.868+03:00  WARN 17060 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:00:52.139+03:00  INFO 17060 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5eff5e4c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2fe2fcc2, org.springframework.security.web.context.SecurityContextHolderFilter@1e4a4ed5, org.springframework.security.web.header.HeaderWriterFilter@1a6a4595, org.springframework.security.web.authentication.logout.LogoutFilter@3c5bb37d, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@29ae2517, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@37b5a51c, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@69926b6e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@445f6f73, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@251e2f4a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7ea8224b, org.springframework.security.web.access.ExceptionTranslationFilter@448fa659, org.springframework.security.web.access.intercept.AuthorizationFilter@2175d53f]
+2023-05-03T13:00:52.466+03:00  WARN 17060 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/views (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-05-03T13:00:52.543+03:00  INFO 17060 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:00:52.554+03:00  INFO 17060 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 7.12 seconds (process running for 8.127)
+2023-05-03T13:00:58.372+03:00  INFO 17060 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:01:23.572+03:00  INFO 13300 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 13300 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:01:23.575+03:00  INFO 13300 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:01:24.294+03:00  INFO 13300 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:01:24.403+03:00  INFO 13300 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:01:25.351+03:00  INFO 13300 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:01:25.364+03:00  INFO 13300 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:01:25.364+03:00  INFO 13300 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:01:25.495+03:00  INFO 13300 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:01:25.496+03:00  INFO 13300 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1863 ms
+2023-05-03T13:01:25.601+03:00  INFO 13300 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:01:25.917+03:00  INFO 13300 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:01:25.979+03:00  INFO 13300 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:01:26.463+03:00  INFO 13300 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:01:28.058+03:00  INFO 13300 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:01:28.073+03:00  INFO 13300 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:01:28.395+03:00  WARN 13300 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:01:28.657+03:00  WARN 13300 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:01:29.024+03:00  WARN 13300 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:01:29.304+03:00  INFO 13300 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4853f592, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@52d434c1, org.springframework.security.web.context.SecurityContextHolderFilter@69f24965, org.springframework.security.web.header.HeaderWriterFilter@533e8807, org.springframework.security.web.authentication.logout.LogoutFilter@5644f664, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5a9ef32e, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@62525dd3, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@5d035ab6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5a45c218, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3163e03b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3407ded1, org.springframework.security.web.access.ExceptionTranslationFilter@3085befb, org.springframework.security.web.access.intercept.AuthorizationFilter@6f5288c5]
+2023-05-03T13:01:29.696+03:00  INFO 13300 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:01:29.707+03:00  INFO 13300 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.702 seconds (process running for 7.586)
+2023-05-03T13:01:33.849+03:00  INFO 13300 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-03T13:01:33.850+03:00  INFO 13300 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-03T13:01:33.852+03:00  INFO 13300 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-05-03T13:01:34.077+03:00 ERROR 13300 --- [http-nio-8080-exec-1] org.thymeleaf.TemplateEngine             : [THYMELEAF][http-nio-8080-exec-1] Exception processing template "home": Error resolving template [home], template might not exist or might not be accessible by any of the configured Template Resolvers
+
+org.thymeleaf.exceptions.TemplateInputException: Error resolving template [home], template might not exist or might not be accessible by any of the configured Template Resolvers
+	at org.thymeleaf.engine.TemplateManager.resolveTemplate(TemplateManager.java:869) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:607) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1415) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1159) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1098) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:705) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:814) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:223) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter.doFilterInternal(DefaultLogoutPageGeneratingFilter.java:58) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:188) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:174) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:119) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:400) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:859) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1734) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]
+
+2023-05-03T13:01:34.088+03:00 ERROR 13300 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.thymeleaf.exceptions.TemplateInputException: Error resolving template [home], template might not exist or might not be accessible by any of the configured Template Resolvers] with root cause
+
+org.thymeleaf.exceptions.TemplateInputException: Error resolving template [home], template might not exist or might not be accessible by any of the configured Template Resolvers
+	at org.thymeleaf.engine.TemplateManager.resolveTemplate(TemplateManager.java:869) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.engine.TemplateManager.parseAndProcess(TemplateManager.java:607) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1103) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.TemplateEngine.process(TemplateEngine.java:1077) ~[thymeleaf-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.renderFragment(ThymeleafView.java:372) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.thymeleaf.spring6.view.ThymeleafView.render(ThymeleafView.java:192) ~[thymeleaf-spring6-3.1.1.RELEASE.jar:3.1.1.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1415) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1159) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1098) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:705) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.6.jar:6.0.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:814) ~[tomcat-embed-core-10.1.5.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:223) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter.doFilterInternal(DefaultLogoutPageGeneratingFilter.java:58) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:188) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:174) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.0.2.jar:6.0.2]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.6.jar:6.0.6]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:185) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:158) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:119) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:400) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:859) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1734) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.5.jar:10.1.5]
+	at java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]
+
+2023-05-03T13:02:23.058+03:00  INFO 13300 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:02:38.643+03:00  INFO 26320 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 26320 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:02:38.646+03:00  INFO 26320 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:02:39.290+03:00  INFO 26320 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:02:39.399+03:00  INFO 26320 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 97 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:02:40.227+03:00  INFO 26320 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:02:40.240+03:00  INFO 26320 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:02:40.241+03:00  INFO 26320 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:02:40.373+03:00  INFO 26320 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:02:40.374+03:00  INFO 26320 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1675 ms
+2023-05-03T13:02:40.487+03:00  INFO 26320 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:02:40.817+03:00  INFO 26320 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:02:40.881+03:00  INFO 26320 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:02:41.362+03:00  INFO 26320 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:02:42.990+03:00  INFO 26320 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:02:43.004+03:00  INFO 26320 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:02:43.305+03:00  WARN 26320 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:02:43.580+03:00  WARN 26320 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:02:43.908+03:00  WARN 26320 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:02:44.173+03:00  INFO 26320 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2bb84aa5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4853f592, org.springframework.security.web.context.SecurityContextHolderFilter@2b4ba2d9, org.springframework.security.web.header.HeaderWriterFilter@4ed19540, org.springframework.security.web.authentication.logout.LogoutFilter@1e4a4ed5, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6f5288c5, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1a712f12, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@52d434c1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4eab9aec, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4542af89, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5d035ab6, org.springframework.security.web.access.ExceptionTranslationFilter@41948c13, org.springframework.security.web.access.intercept.AuthorizationFilter@1abea1ed]
+2023-05-03T13:02:44.482+03:00  WARN 26320 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: "classpath:/views" (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-05-03T13:02:44.557+03:00  INFO 26320 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:02:44.568+03:00  INFO 26320 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.526 seconds (process running for 7.518)
+2023-05-03T13:03:09.848+03:00  INFO 26320 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:03:26.554+03:00  INFO 20592 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 20592 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:03:26.557+03:00  INFO 20592 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:03:27.276+03:00  INFO 20592 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:03:27.400+03:00  INFO 20592 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 103 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:03:28.320+03:00  INFO 20592 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:03:28.332+03:00  INFO 20592 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:03:28.332+03:00  INFO 20592 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:03:28.464+03:00  INFO 20592 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:03:28.464+03:00  INFO 20592 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1847 ms
+2023-05-03T13:03:28.569+03:00  INFO 20592 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:03:28.884+03:00  INFO 20592 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:03:28.947+03:00  INFO 20592 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:03:29.426+03:00  INFO 20592 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:03:30.994+03:00  INFO 20592 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:03:31.009+03:00  INFO 20592 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:03:31.325+03:00  WARN 20592 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:03:31.578+03:00  WARN 20592 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:03:31.910+03:00  WARN 20592 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:03:32.181+03:00  INFO 20592 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4e782401, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2bb84aa5, org.springframework.security.web.context.SecurityContextHolderFilter@322eb1a, org.springframework.security.web.header.HeaderWriterFilter@2bc0603f, org.springframework.security.web.authentication.logout.LogoutFilter@4965454c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1abea1ed, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@440d2d64, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@4853f592, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@69f24965, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@57ac236a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@52d434c1, org.springframework.security.web.access.ExceptionTranslationFilter@3fdede3a, org.springframework.security.web.access.intercept.AuthorizationFilter@251e2f4a]
+2023-05-03T13:03:32.503+03:00  WARN 20592 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: /resources/views (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-05-03T13:03:32.579+03:00  INFO 20592 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:03:32.592+03:00  INFO 20592 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.603 seconds (process running for 7.488)
+2023-05-03T13:04:30.016+03:00  INFO 20592 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:04:35.951+03:00  INFO 4352 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 4352 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:04:35.954+03:00  INFO 4352 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:04:36.674+03:00  INFO 4352 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:04:36.782+03:00  INFO 4352 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:04:37.708+03:00  INFO 4352 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:04:37.720+03:00  INFO 4352 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:04:37.721+03:00  INFO 4352 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:04:37.854+03:00  INFO 4352 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:04:37.855+03:00  INFO 4352 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1842 ms
+2023-05-03T13:04:37.958+03:00  INFO 4352 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:04:38.279+03:00  INFO 4352 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:04:38.345+03:00  INFO 4352 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:04:38.822+03:00  INFO 4352 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:04:40.412+03:00  INFO 4352 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:04:40.427+03:00  INFO 4352 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:04:40.732+03:00  WARN 4352 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:04:40.984+03:00  WARN 4352 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:04:41.328+03:00  WARN 4352 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:04:41.603+03:00  INFO 4352 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6f5288c5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5a9ef32e, org.springframework.security.web.context.SecurityContextHolderFilter@41948c13, org.springframework.security.web.header.HeaderWriterFilter@7730da00, org.springframework.security.web.authentication.logout.LogoutFilter@448fa659, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5644f664, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@4542af89, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@e2ee348, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@62264d4f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@322eb1a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@61f08aa9, org.springframework.security.web.access.ExceptionTranslationFilter@125a8ab6, org.springframework.security.web.access.intercept.AuthorizationFilter@1e4a4ed5]
+2023-05-03T13:04:41.926+03:00  WARN 4352 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/resources/views (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-05-03T13:04:42.002+03:00  INFO 4352 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:04:42.013+03:00  INFO 4352 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.627 seconds (process running for 7.517)
+2023-05-03T13:07:08.187+03:00  INFO 4352 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:07:30.864+03:00  INFO 21304 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 21304 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:07:30.867+03:00  INFO 21304 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:07:31.575+03:00  INFO 21304 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:07:31.680+03:00  INFO 21304 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 93 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:07:32.604+03:00  INFO 21304 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:07:32.616+03:00  INFO 21304 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:07:32.617+03:00  INFO 21304 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:07:32.752+03:00  INFO 21304 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:07:32.752+03:00  INFO 21304 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1826 ms
+2023-05-03T13:07:32.856+03:00  INFO 21304 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:07:33.185+03:00  INFO 21304 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:07:33.250+03:00  INFO 21304 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:07:33.727+03:00  INFO 21304 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:07:35.303+03:00  INFO 21304 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:07:35.317+03:00  INFO 21304 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:07:35.617+03:00  WARN 21304 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:07:35.888+03:00  WARN 21304 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:07:36.226+03:00  WARN 21304 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:07:36.503+03:00  INFO 21304 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@e2ee348, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@61f08aa9, org.springframework.security.web.context.SecurityContextHolderFilter@62264d4f, org.springframework.security.web.header.HeaderWriterFilter@3fdede3a, org.springframework.security.web.authentication.logout.LogoutFilter@7c6fc278, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@27f31d91, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6aa18912, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@1a1f22f2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4ed19540, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@69f24965, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@37b5a51c, org.springframework.security.web.access.ExceptionTranslationFilter@cbc3bf3, org.springframework.security.web.access.intercept.AuthorizationFilter@445f6f73]
+2023-05-03T13:07:36.910+03:00  INFO 21304 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:07:36.922+03:00  INFO 21304 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.632 seconds (process running for 7.523)
+2023-05-03T13:07:59.275+03:00  INFO 21304 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-03T13:07:59.276+03:00  INFO 21304 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-03T13:07:59.278+03:00  INFO 21304 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-05-03T13:08:02.414+03:00  INFO 21304 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:29:02.195+03:00  INFO 9948 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 9948 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:29:02.198+03:00  INFO 9948 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:29:03.177+03:00  INFO 9948 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:29:03.285+03:00  INFO 9948 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 95 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:29:04.194+03:00  INFO 9948 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:29:04.215+03:00  INFO 9948 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:29:04.215+03:00  INFO 9948 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:29:04.375+03:00  INFO 9948 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:29:04.375+03:00  INFO 9948 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2119 ms
+2023-05-03T13:29:04.478+03:00  INFO 9948 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:29:04.835+03:00  INFO 9948 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:29:04.897+03:00  INFO 9948 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:29:05.376+03:00  INFO 9948 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:29:07.040+03:00  INFO 9948 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:29:07.057+03:00  INFO 9948 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:29:07.378+03:00  WARN 9948 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:29:07.637+03:00  WARN 9948 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:29:07.984+03:00  WARN 9948 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:29:08.264+03:00  INFO 9948 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@267b678f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4803bf73, org.springframework.security.web.context.SecurityContextHolderFilter@24a807a9, org.springframework.security.web.header.HeaderWriterFilter@573f2e67, org.springframework.security.web.authentication.logout.LogoutFilter@11896124, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4c0ab04f, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@4423692a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@13731ff4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@736f2fb8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3fc051ce, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1ce8084a, org.springframework.security.web.access.ExceptionTranslationFilter@5d035ab6, org.springframework.security.web.access.intercept.AuthorizationFilter@20462820]
+2023-05-03T13:29:08.685+03:00  INFO 9948 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:29:08.696+03:00  INFO 9948 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 7.069 seconds (process running for 8.559)
+2023-05-03T13:30:32.244+03:00  INFO 9948 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:30:37.854+03:00  INFO 11948 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 11948 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:30:37.857+03:00  INFO 11948 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:30:38.580+03:00  INFO 11948 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:30:38.687+03:00  INFO 11948 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 95 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:30:39.598+03:00  INFO 11948 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:30:39.611+03:00  INFO 11948 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:30:39.612+03:00  INFO 11948 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:30:39.746+03:00  INFO 11948 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:30:39.747+03:00  INFO 11948 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1831 ms
+2023-05-03T13:30:39.855+03:00  INFO 11948 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:30:40.192+03:00  INFO 11948 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:30:40.254+03:00  INFO 11948 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:30:40.744+03:00  INFO 11948 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:30:42.328+03:00  INFO 11948 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:30:42.342+03:00  INFO 11948 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:30:42.636+03:00  WARN 11948 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:30:42.887+03:00  WARN 11948 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:30:43.209+03:00  WARN 11948 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:30:43.480+03:00  INFO 11948 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5a45c218, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2c6efee3, org.springframework.security.web.context.SecurityContextHolderFilter@58e4aa67, org.springframework.security.web.header.HeaderWriterFilter@2fc40856, org.springframework.security.web.authentication.logout.LogoutFilter@cbc3bf3, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2bc0603f, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@7a2fd94c, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@57ac236a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1c25deb0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6fe337a5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4542af89, org.springframework.security.web.access.ExceptionTranslationFilter@16c1d11, org.springframework.security.web.access.intercept.AuthorizationFilter@62264d4f]
+2023-05-03T13:30:43.808+03:00  WARN 11948 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-05-03T13:30:43.885+03:00  INFO 11948 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:30:43.897+03:00  INFO 11948 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.613 seconds (process running for 7.503)
+2023-05-03T13:31:20.505+03:00  INFO 11948 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:31:31.008+03:00  INFO 24292 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 24292 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:31:31.011+03:00  INFO 24292 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:31:31.733+03:00  INFO 24292 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:31:31.839+03:00  INFO 24292 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 94 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:31:32.787+03:00  INFO 24292 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:31:32.799+03:00  INFO 24292 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:31:32.800+03:00  INFO 24292 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:31:32.948+03:00  INFO 24292 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:31:32.949+03:00  INFO 24292 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1880 ms
+2023-05-03T13:31:33.054+03:00  INFO 24292 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:31:33.386+03:00  INFO 24292 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:31:33.448+03:00  INFO 24292 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:31:33.942+03:00  INFO 24292 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:31:35.512+03:00  INFO 24292 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:31:35.526+03:00  INFO 24292 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:31:35.827+03:00  WARN 24292 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:31:36.081+03:00  WARN 24292 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:31:36.408+03:00  WARN 24292 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:31:36.679+03:00  INFO 24292 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@41948c13, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3085befb, org.springframework.security.web.context.SecurityContextHolderFilter@5eb9bf7d, org.springframework.security.web.header.HeaderWriterFilter@38e052b2, org.springframework.security.web.authentication.logout.LogoutFilter@34f8ce89, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@125a8ab6, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1be12e05, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@62264d4f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2f64f99f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4e210016, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2bc0603f, org.springframework.security.web.access.ExceptionTranslationFilter@7c4a5ef2, org.springframework.security.web.access.intercept.AuthorizationFilter@27234b7c]
+2023-05-03T13:31:37.096+03:00  INFO 24292 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:31:37.107+03:00  INFO 24292 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.662 seconds (process running for 7.547)
+2023-05-03T13:31:47.137+03:00  INFO 24292 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-03T13:31:47.137+03:00  INFO 24292 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-03T13:31:47.140+03:00  INFO 24292 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2023-05-03T13:31:50.814+03:00  INFO 24292 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:31:58.726+03:00  INFO 15912 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 15912 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:31:58.729+03:00  INFO 15912 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:31:59.454+03:00  INFO 15912 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:31:59.569+03:00  INFO 15912 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 103 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:32:00.479+03:00  INFO 15912 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:32:00.492+03:00  INFO 15912 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:32:00.492+03:00  INFO 15912 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:32:00.621+03:00  INFO 15912 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:32:00.622+03:00  INFO 15912 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1832 ms
+2023-05-03T13:32:00.725+03:00  INFO 15912 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:32:01.049+03:00  INFO 15912 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:32:01.110+03:00  INFO 15912 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:32:01.593+03:00  INFO 15912 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:32:03.193+03:00  INFO 15912 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:32:03.207+03:00  INFO 15912 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:32:03.505+03:00  WARN 15912 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:32:03.754+03:00  WARN 15912 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:32:04.083+03:00  WARN 15912 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:32:04.357+03:00  INFO 15912 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2bb84aa5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4853f592, org.springframework.security.web.context.SecurityContextHolderFilter@2b4ba2d9, org.springframework.security.web.header.HeaderWriterFilter@4ed19540, org.springframework.security.web.authentication.logout.LogoutFilter@1e4a4ed5, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6f5288c5, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1a712f12, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@52d434c1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4eab9aec, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4542af89, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5d035ab6, org.springframework.security.web.access.ExceptionTranslationFilter@41948c13, org.springframework.security.web.access.intercept.AuthorizationFilter@1abea1ed]
+2023-05-03T13:32:04.750+03:00  INFO 15912 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:32:04.762+03:00  INFO 15912 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.612 seconds (process running for 7.493)
+2023-05-03T13:32:08.369+03:00  INFO 15912 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-03T13:32:08.370+03:00  INFO 15912 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-03T13:32:08.371+03:00  INFO 15912 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-05-03T13:32:14.326+03:00  INFO 15912 --- [http-nio-8080-exec-3] BikeServiceLogger                        : pavel logged in
+2023-05-03T13:32:15.763+03:00  INFO 15912 --- [http-nio-8080-exec-1] BikeServiceLogger                        : bikes are shown to pavel
+2023-05-03T13:32:37.960+03:00  INFO 15912 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:32:45.152+03:00  INFO 9248 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 9248 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:32:45.156+03:00  INFO 9248 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:32:45.861+03:00  INFO 9248 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:32:45.968+03:00  INFO 9248 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 94 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:32:46.888+03:00  INFO 9248 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:32:46.900+03:00  INFO 9248 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:32:46.901+03:00  INFO 9248 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:32:47.030+03:00  INFO 9248 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:32:47.031+03:00  INFO 9248 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1815 ms
+2023-05-03T13:32:47.134+03:00  INFO 9248 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:32:47.474+03:00  INFO 9248 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:32:47.537+03:00  INFO 9248 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:32:48.009+03:00  INFO 9248 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:32:49.595+03:00  INFO 9248 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:32:49.610+03:00  INFO 9248 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:32:49.908+03:00  WARN 9248 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:32:50.155+03:00  WARN 9248 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:32:50.473+03:00  WARN 9248 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:32:50.738+03:00  INFO 9248 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4853f592, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@52d434c1, org.springframework.security.web.context.SecurityContextHolderFilter@69f24965, org.springframework.security.web.header.HeaderWriterFilter@533e8807, org.springframework.security.web.authentication.logout.LogoutFilter@5644f664, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5a9ef32e, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@62525dd3, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@5d035ab6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5a45c218, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3163e03b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3407ded1, org.springframework.security.web.access.ExceptionTranslationFilter@3085befb, org.springframework.security.web.access.intercept.AuthorizationFilter@6f5288c5]
+2023-05-03T13:32:51.129+03:00  INFO 9248 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:32:51.141+03:00  INFO 9248 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.55 seconds (process running for 7.437)
+2023-05-03T13:32:53.678+03:00  INFO 9248 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-03T13:32:53.679+03:00  INFO 9248 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-03T13:32:53.681+03:00  INFO 9248 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-05-03T13:33:06.048+03:00  INFO 9248 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:41:26.424+03:00  INFO 21076 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 21076 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:41:26.427+03:00  INFO 21076 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:41:27.150+03:00  INFO 21076 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:41:27.255+03:00  INFO 21076 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 93 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:41:28.181+03:00  INFO 21076 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:41:28.193+03:00  INFO 21076 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:41:28.194+03:00  INFO 21076 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:41:28.322+03:00  INFO 21076 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:41:28.323+03:00  INFO 21076 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1837 ms
+2023-05-03T13:41:28.425+03:00  INFO 21076 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:41:28.752+03:00  INFO 21076 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:41:28.814+03:00  INFO 21076 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:41:29.291+03:00  INFO 21076 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:41:30.924+03:00  INFO 21076 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:41:30.938+03:00  INFO 21076 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:41:31.235+03:00  WARN 21076 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:41:31.478+03:00  WARN 21076 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:41:31.799+03:00  WARN 21076 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:41:32.070+03:00  INFO 21076 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6b03c35c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1a05ff8e, org.springframework.security.web.context.SecurityContextHolderFilter@31f9f9b3, org.springframework.security.web.header.HeaderWriterFilter@125a8ab6, org.springframework.security.web.authentication.logout.LogoutFilter@656c0eae, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1a6a4595, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@4eab9aec, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@251e2f4a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@52d01430, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@62264d4f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1abea1ed, org.springframework.security.web.access.ExceptionTranslationFilter@38c1b1a7, org.springframework.security.web.access.intercept.AuthorizationFilter@23ee92df]
+2023-05-03T13:41:32.458+03:00  INFO 21076 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:41:32.469+03:00  INFO 21076 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.605 seconds (process running for 7.492)
+2023-05-03T13:41:36.040+03:00  INFO 21076 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-03T13:41:36.041+03:00  INFO 21076 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-03T13:41:36.043+03:00  INFO 21076 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-05-03T13:41:40.298+03:00  INFO 21076 --- [http-nio-8080-exec-4] BikeServiceLogger                        : documents are shown to pavel
+2023-05-03T13:41:41.909+03:00  INFO 21076 --- [http-nio-8080-exec-10] BikeServiceLogger                        : documents 81 was shown to 'pavel'
+2023-05-03T13:41:43.136+03:00  INFO 21076 --- [http-nio-8080-exec-7] BikeServiceLogger                        : documents are shown to pavel
+2023-05-03T13:41:45.446+03:00  INFO 21076 --- [http-nio-8080-exec-3] BikeServiceLogger                        : parts are shown to pavel
+2023-05-03T13:41:46.912+03:00  INFO 21076 --- [http-nio-8080-exec-2] BikeServiceLogger                        : documents are shown to pavel
+2023-05-03T13:41:52.065+03:00  INFO 21076 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:43:22.426+03:00  INFO 13252 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 13252 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-05-03T13:43:22.428+03:00  INFO 13252 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-05-03T13:43:23.137+03:00  INFO 13252 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-03T13:43:23.244+03:00  INFO 13252 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 94 ms. Found 9 JPA repository interfaces.
+2023-05-03T13:43:24.157+03:00  INFO 13252 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-03T13:43:24.170+03:00  INFO 13252 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-03T13:43:24.170+03:00  INFO 13252 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-05-03T13:43:24.300+03:00  INFO 13252 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-03T13:43:24.300+03:00  INFO 13252 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1814 ms
+2023-05-03T13:43:24.409+03:00  INFO 13252 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: public void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-05-03T13:43:24.834+03:00  INFO 13252 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-03T13:43:24.898+03:00  INFO 13252 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-05-03T13:43:25.380+03:00  INFO 13252 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-05-03T13:43:26.943+03:00  INFO 13252 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-03T13:43:26.957+03:00  INFO 13252 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-03T13:43:27.253+03:00  WARN 13252 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-05-03T13:43:27.500+03:00  WARN 13252 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-05-03T13:43:27.811+03:00  WARN 13252 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-03T13:43:28.086+03:00  INFO 13252 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@61f08aa9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1a1f22f2, org.springframework.security.web.context.SecurityContextHolderFilter@3085befb, org.springframework.security.web.header.HeaderWriterFilter@52d01430, org.springframework.security.web.authentication.logout.LogoutFilter@23ee92df, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6b03c35c, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3163e03b, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@37b5a51c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2bc0603f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2b4ba2d9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4e782401, org.springframework.security.web.access.ExceptionTranslationFilter@792b9dd3, org.springframework.security.web.access.intercept.AuthorizationFilter@27f31d91]
+2023-05-03T13:43:28.479+03:00  INFO 13252 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-03T13:43:28.491+03:00  INFO 13252 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 6.628 seconds (process running for 7.515)
+2023-05-03T13:43:28.709+03:00  INFO 13252 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-03T13:43:28.710+03:00  INFO 13252 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-03T13:43:28.712+03:00  INFO 13252 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-05-03T13:43:51.552+03:00  INFO 13252 --- [http-nio-8080-exec-9] BikeServiceLogger                        : parts are shown to pavel
+2023-05-03T13:43:56.452+03:00  INFO 13252 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
