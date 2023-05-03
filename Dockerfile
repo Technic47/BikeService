@@ -1,13 +1,17 @@
-#FROM openjdk:19-alpine
-FROM eclipse-temurin:19-jre-alpine
+FROM eclipse-temurin:19-jdk-alpine as builder
 MAINTAINER Pavel Kuznetsov
-#ADD . /app
-#WORKDIR /app
-#RUN ./mvnw package -DskipTests
-COPY out/artifacts/bikeService_jar/bikeService.jar app.jar
-#COPY target/bikeService.jar app.jar
-#COPY src/main/webapp/WEB-INF/views /views
-#RUN javac /app/src/main/java/ru/kuznetsov/bikeService/Starter.java -d /app
+WORKDIR /app
+
+COPY .mvn .mvn
+COPY mvnw ./
+COPY pom.xml ./
+COPY src/ src
+
+RUN ./mvnw clean package spring-boot:repackage
+
+FROM eclipse-temurin:19-jre-alpine
+WORKDIR /app
+COPY --from=builder /app/target/bikeService.jar /app/app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
-#CMD ["java", "ru.kuznetsov.bikeService.Starter.class"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

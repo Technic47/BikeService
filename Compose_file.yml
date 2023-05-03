@@ -38,7 +38,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=1999
       - spring.jpa.generate-ddl=true
       - spring.thymeleaf.check-template-location=true
-      - spring.thymeleaf.prefix=/WEB-INF/views/
+#      - spring.thymeleaf.prefix=/WEB-INF/views/
       - spring.thymeleaf.suffix=.html
       - spring.thymeleaf.encoding=UTF-8
       - spring.thymeleaf.cache=false

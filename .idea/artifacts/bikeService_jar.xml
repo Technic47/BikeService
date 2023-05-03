@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="bikeService:jar">
+  <artifact type="jar" build-on-make="true" name="bikeService:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/bikeService_jar</output-path>
     <root id="archive" name="bikeService.jar">
       <element id="module-output" name="bikeService" />
