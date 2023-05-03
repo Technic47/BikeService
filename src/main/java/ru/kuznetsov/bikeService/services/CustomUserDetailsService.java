@@ -1,20 +1,19 @@
 package ru.kuznetsov.bikeService.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.ADMIN_NAME;
+import static ru.kuznetsov.bikeService.config.SpringConfig.ADMIN_PASS;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserService userService;
-    @Value("${adminUser.name}")
-    private String adminName;
-    @Value("${adminUser.pass}")
-    private String adminPass;
+
 
     @Autowired
     public CustomUserDetailsService(UserService userService) {
@@ -31,12 +30,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userDetails;
     }
 
-    public void adminSave() {
+    private void adminSave() {
         UserModel adminUser = new UserModel();
-//        adminUser.setUsername(adminName);
-//        adminUser.setPassword(adminPass);
-        adminUser.setUsername("admin");
-        adminUser.setPassword("1999");
+        adminUser.setUsername(ADMIN_NAME);
+        adminUser.setPassword(ADMIN_PASS);
         this.userService.createAdmin(adminUser);
+        ADMIN_NAME = "***";
+        ADMIN_PASS = "***";
     }
 }

@@ -24,8 +24,14 @@ import javax.sql.DataSource;
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
     public static String UPLOAD_PATH;
+    public static String ADMIN_NAME;
+    public static String ADMIN_PASS;
     @Value("${upload.path}")
     private String path;
+    @Value("${admin.name}")
+    private String adminName;
+    @Value("${admin.pass}")
+    private String adminPass;
     @Value("${datasource.driver}")
     private String driver;
     @Value("${spring.datasource.url}")
@@ -36,8 +42,10 @@ public class SpringConfig implements WebMvcConfigurer {
     private String password;
 
     @Value("${upload.path}")
-    public void setUploadPath() {
+    private void setUploadPath() {
         UPLOAD_PATH = this.path;
+        ADMIN_NAME = adminName;
+        ADMIN_PASS = adminPass;
     }
 
     @Autowired
@@ -64,11 +72,11 @@ public class SpringConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/");
-        registry.addResourceHandler("/IMG/**")
-                .addResourceLocations("classpath:/IMG/");
-        registry.addResourceHandler("/preview/**")
-                .addResourceLocations("classpath:/IMG/preview/");
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/IMG/**")
+                .addResourceLocations("file:" + UPLOAD_PATH + "/");
+        registry.addResourceHandler("/preview/**")
+                .addResourceLocations("file:" + UPLOAD_PATH + "/preview/");
     }
 }
