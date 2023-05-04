@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 
 import javax.imageio.ImageIO;
@@ -43,7 +42,7 @@ public class PictureWorkTest {
 
     @BeforeEach
     void setUp() {
-        this.pictureWork = new PictureWork(new Picture());
+        this.pictureWork = new PictureWork();
     }
 
     private MultipartFile getMultipartFile(String path) {

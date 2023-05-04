@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.models.pictures;
 
 import org.imgscalr.Scalr;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -9,15 +10,16 @@ import java.io.File;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 
+@Component
 public class PictureWork {
-    private final Picture picture;
+    private Picture picture;
     private final static Integer PICTURE_WIDTH = 400;
     private final static Integer PICTURE_HEIGHT = 300;
     private final static Integer PREVIEW_WIDTH = 64;
     private final static Integer PREVIEW_HEIGHT = 64;
 
-    public PictureWork(Picture picture) {
-        this.picture = picture;
+    public PictureWork() {
+        this.picture = new Picture();
     }
 
 
@@ -54,5 +56,9 @@ public class PictureWork {
 
     public Picture getPicture() {
         return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 }

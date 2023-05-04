@@ -14,6 +14,10 @@ public class Picture {
     public Picture() {
     }
 
+    public Picture(String name) {
+        this.name = name;
+    }
+
     public Picture(Long id, String name) {
         this.id = id;
         this.name = name;

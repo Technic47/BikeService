@@ -4,6 +4,7 @@ import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractService<E, R extends CommonRepository<E>>
         implements CommonService<E> {
@@ -21,7 +22,8 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
 
     @Override
     public E show(Long id) {
-        return repository.findById(id).get();
+        Optional<E> entity= repository.findById(id);
+        return entity.orElse(null);
     }
 
     @Override

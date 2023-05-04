@@ -5,8 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
-import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 
 @Controller
 @RequestMapping("/pictures")
@@ -25,9 +23,7 @@ public class PicturesController extends AbstractController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String uploadImage(@RequestPart("newImage") MultipartFile file
     ) {
-        PictureWork picWorker = new PictureWork(new Picture());
-        picWorker.managePicture(file);
-        pictureService.save(picWorker.getPicture());
+        pictureService.save(file);
         return "redirect:/pictures";
     }
 

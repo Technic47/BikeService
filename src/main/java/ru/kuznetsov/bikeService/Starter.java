@@ -16,3 +16,11 @@ public class Starter extends SpringBootServletInitializer {
         return builder.sources(Starter.class);
     }
 }
+
+/*TODO
+- Set up volumes for DB container
+- Admin menu for images in title.html
+- Admin menu for users in title.html
+- User work: roles, names.
+ */
+

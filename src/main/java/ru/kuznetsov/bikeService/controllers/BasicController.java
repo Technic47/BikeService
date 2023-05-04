@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -131,7 +130,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.checkUser(principal);
 
         if (!file.isEmpty()) {
-            PictureWork picWorker = new PictureWork(new Picture());
+            PictureWork picWorker = new PictureWork();
             picWorker.managePicture(file);
             item.setPicture(pictureService.save(picWorker.getPicture()).getId());
         }
@@ -169,7 +168,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         }
         this.checkUser(principal);
         if (!file.isEmpty()) {
-            PictureWork picWorker = new PictureWork(new Picture());
+            PictureWork picWorker = new PictureWork();
             picWorker.managePicture(file);
             item.setPicture(pictureService.save(picWorker.getPicture()).getId());
         }
