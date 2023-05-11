@@ -52,4 +52,16 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     public UserModel findByName(String name) {
         return repository.findByUsername(name);
     }
+
+    public void userToAdmin(Long id) {
+        UserModel user = repository.getReferenceById(id);
+        user.getStatus().add(UserRole.ROLE_ADMIN);
+        repository.save(user);
+    }
+
+    public void adminToUser(Long id) {
+        UserModel user = repository.getReferenceById(id);
+        user.getStatus().remove(UserRole.ROLE_ADMIN);
+        repository.save(user);
+    }
 }

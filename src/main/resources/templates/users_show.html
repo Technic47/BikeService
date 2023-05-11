@@ -26,11 +26,15 @@
             <h1 th:text="${user.getUsername()}">
             </h1>
             <div class="col-1-1-no-boarder">
-                <ul>
-                    <li th:text="'ID - ' + ${user.getId()}"></li>
-                    <li th:text="'IsActive - ' + ${user.isActive()}"></li>
-                    <li th:text="'Status - ' + ${user.getStatus().toString()}"></li>
-                </ul>
+                <form th:action="@{/users/update/{id}(id = ${user.getId()})}" th:method="POST">
+                    <ul>
+                        <li th:text="'ID - ' + ${user.getId()}"></li>
+                        <li th:text="'IsActive - ' + ${user.isActive()}"></li>
+                        <li th:text="'Status - ' + ${user.getStatus().toString()}"></li>
+                    </ul>
+                    <button th:name="admin" th:type="submit" th:value="1">Добавить роль администратора</button>
+                    <button th:name="admin" th:type="submit" th:value="0">Удалить роль администратора</button>
+                </form>
             </div>
             <details>
                 <summary>
@@ -137,7 +141,6 @@
                     </tbody>
                 </table>
             </details>
-
         </div>
     </div>
 </div>

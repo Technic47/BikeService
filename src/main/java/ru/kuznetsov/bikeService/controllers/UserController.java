@@ -3,10 +3,7 @@ package ru.kuznetsov.bikeService.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
@@ -60,6 +57,16 @@ public class UserController extends AbstractController {
         return "users_show";
     }
 
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable("id") Long id,
+                         @RequestParam(value = "admin") int role) {
+        switch (role) {
+            case 1 -> userService.userToAdmin(id);
+            case 0 -> userService.adminToUser(id);
+        }
+        return "redirect:/users/{id}";
+    }
+
 //    @GetMapping(value = "/new")
 //    public String newItem(Model model) {
 //        model.addAttribute("newUser", (new UserModel()));
@@ -81,7 +88,7 @@ public class UserController extends AbstractController {
 //        logger.info("User " + user.getUsername() + "was created by " + principal.getName());
 //    }
 
-    @PostMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id,
                          Principal principal) {
         userService.delete(id);

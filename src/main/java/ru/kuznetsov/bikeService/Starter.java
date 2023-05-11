@@ -18,8 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- Admin menu for images in title.html
-- Admin menu for users in title.html
-- User work: roles, names.
+- create search
  */
 
