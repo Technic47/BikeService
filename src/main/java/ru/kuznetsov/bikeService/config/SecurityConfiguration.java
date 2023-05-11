@@ -29,7 +29,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -41,7 +40,6 @@ public class SecurityConfiguration {
                 .formLogin(Customizer.withDefaults());
         return http.build();
     }
-
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)

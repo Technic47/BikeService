@@ -162,27 +162,27 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     @Autowired
-    public void setDocumentDAO(DocumentService documentDAO) {
+    private void setDocumentDAO(DocumentService documentDAO) {
         this.documentDAO = documentDAO;
     }
 
     @Autowired
-    public void setFastenerDAO(FastenerService fastenerDAO) {
+    private void setFastenerDAO(FastenerService fastenerDAO) {
         this.fastenerDAO = fastenerDAO;
     }
 
     @Autowired
-    public void setConsumableDAO(ConsumableService consumableDAO) {
+    private void setConsumableDAO(ConsumableService consumableDAO) {
         this.consumableDAO = consumableDAO;
     }
 
     @Autowired
-    public void setToolDAO(ToolService toolDAO) {
+    private void setToolDAO(ToolService toolDAO) {
         this.toolDAO = toolDAO;
     }
 
     @Autowired
-    public void setPartDAO(PartService partDAO) {
+    private void setPartDAO(PartService partDAO) {
         this.partDAO = partDAO;
     }
 }

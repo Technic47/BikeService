@@ -14,6 +14,7 @@
         <div sec:authentication="principal.username"></div>
     </h1>
     <nav>
+        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users}">Пользователи</a>
         <a th:href="@{/title}">На главную</a>
         <a th:href="@{/logout}">Log out</a>
     </nav>

@@ -18,7 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- Set up volumes for DB container
 - Admin menu for images in title.html
 - Admin menu for users in title.html
 - User work: roles, names.

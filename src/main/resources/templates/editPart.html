@@ -117,11 +117,11 @@
             <div class="col-1-1" th:if="${type == 'Serviceable'}">
                 <div class="col-5-2-no-boarders">
                     <br/>
-                    <label for="allParts">Choose part to add:</label>
+                    <label for="allParts">Выберите запчасть:</label>
                     <div th:object="${allParts}">
                         <select id="allParts" th:name="partId">
                             <option th:each="item : ${allParts}"
-                                    th:if="!${item.getId() == object.getId()}"
+                                    th:if="!${item.getId() == object.getId() and category == 'parts'}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
                             </option>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="col-5-2-no-boarders">
                     <br/>
-                    <label for="documents">Choose document to add:</label>
+                    <label for="documents">Выберите документ:</label>
                     <div th:object="${allDocuments}">
                         <select id="documents" th:name="documentId">
                             <option th:each="item : ${allDocuments}"
@@ -150,7 +150,7 @@
                 </div>
                 <div class="col-5-2-no-boarders">
                     <br/>
-                    <label for="tools">Choose tool to add:</label>
+                    <label for="tools">Выберите инструмент:</label>
                     <div th:object="${allTools}">
                         <select id="tools" th:name="toolId">
                             <option th:each="item : ${allTools}"
@@ -166,7 +166,7 @@
                 </div>
                 <div class="col-5-2-no-boarders">
                     <br/>
-                    <label for="fasteners">Choose fasteners to add:</label>
+                    <label for="fasteners">Выберите крепёж:</label>
                     <div th:object="${allFasteners}">
                         <select id="fasteners" th:name="fastenerId">
                             <option th:each="item : ${allFasteners}"
@@ -175,7 +175,7 @@
                             </option>
                         </select>
                         <br/>
-                        <label for="fastenerQuantity">Enter fastener quantity:</label>
+                        <label for="fastenerQuantity">Выберите количество:</label>
                         <input id="fastenerQuantity" th:name="fastenerQuantity" th:value="1" type="number"/>
                         <br/>
                         <button th:name="action" th:type="submit" th:value="addFastener">Добавить</button>
@@ -185,7 +185,7 @@
                 </div>
                 <div class="col-5-2-no-boarders">
                     <br/>
-                    <label for="consumables">Choose consumable to add:</label>
+                    <label for="consumables">Выберите расходник:</label>
                     <div th:object="${allConsumables}">
                         <select id="consumables" th:name="consumableId">
                             <option th:each="item : ${allConsumables}"
@@ -194,7 +194,7 @@
                             </option>
                         </select>
                         <br/>
-                        <label for="consumableQuantity">Enter consumable quantity:</label>
+                        <label for="consumableQuantity">Выберите количество:</label>
                         <input id="consumableQuantity" th:name="consumableQuantity" th:value="1" type="number"/>
                         <br/>
                         <button th:name="action" th:type="submit" th:value="addConsumable">Добавить</button>

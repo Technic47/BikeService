@@ -7,7 +7,7 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 @Entity
 @Table(name = "fasteners")
-public class Fastener extends AbstractShowableEntity implements Showable {
+public class Fastener extends AbstractShowableEntity {
     public Fastener() {
     }
 

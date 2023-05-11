@@ -1,7 +1,6 @@
 version: '3.1'
 
 services:
-
   db:
     image: postgres
     restart: always
@@ -10,9 +9,9 @@ services:
       - "5432:5432"
     volumes:
 #      Windows:
-      - ../pgdata:/var/lib/postgresql/data
+#      - ../pgdata:/var/lib/postgresql/data
 #      Linux:
-#      - /home/technic47/pgdata:/var/lib/postgresql/data
+      - /home/technic47/pgdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1999
@@ -36,10 +35,11 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ../images:/app/IMG
+#      Windows:
+#      - ../images:/app/IMG
+#      Linux:
+      - /home/technic47/images:/app/IMG
     environment:
-#      - upload.path=/app/IMG
-#      - upload.path=/home/technic47/images
       - spring.config.location=classpath:/application-prod.properties
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/BikeService
 

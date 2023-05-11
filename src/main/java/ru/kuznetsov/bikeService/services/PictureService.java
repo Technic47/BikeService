@@ -39,11 +39,6 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
         this.save(toRepo);
     }
 
-    @Autowired
-    public void setPictureWork(PictureWork pictureWork) {
-        this.pictureWork = pictureWork;
-        this.pictureWork.setPicture(new Picture());
-    }
 
     @Override
     public void delete(Long id) {
@@ -57,9 +52,15 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
                 file.delete();
                 previewFile.delete();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         super.delete(id);
+    }
+
+    @Autowired
+    public void setPictureWork(PictureWork pictureWork) {
+        this.pictureWork = pictureWork;
+        this.pictureWork.setPicture(new Picture());
     }
 }

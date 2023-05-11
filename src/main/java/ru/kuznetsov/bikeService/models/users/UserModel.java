@@ -122,10 +122,8 @@ public class UserModel implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", active=" + active +
-                '}';
+        return "Username='" + username +
+                "', id=" + id +
+                ", active=" + active;
     }
 }

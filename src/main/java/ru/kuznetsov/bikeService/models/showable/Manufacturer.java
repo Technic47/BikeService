@@ -6,7 +6,7 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 @Entity
 @Table(name = "manufacturers")
-public class Manufacturer extends AbstractShowableEntity implements Showable {
+public class Manufacturer extends AbstractShowableEntity {
     public Manufacturer() {
     }
 

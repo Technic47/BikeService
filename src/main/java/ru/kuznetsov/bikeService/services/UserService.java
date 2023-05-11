@@ -20,23 +20,20 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
     public boolean createUser(UserModel userModel) {
-        if (repository.findByUsername(userModel.getUsername()) != null) {
-            return false;
-        }
-        userModel.setActive(true);
-        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        userModel.getStatus().add(UserRole.ROLE_USER);
-        repository.save(userModel);
-        return true;
+        return this.constructRecord(userModel, UserRole.ROLE_USER);
     }
 
     public boolean createAdmin(UserModel userModel) {
+        return this.constructRecord(userModel, UserRole.ROLE_ADMIN);
+    }
+
+    private boolean constructRecord(UserModel userModel, UserRole role) {
         if (repository.findByUsername(userModel.getUsername()) != null) {
             return false;
         }
         userModel.setActive(true);
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        userModel.getStatus().add(UserRole.ROLE_ADMIN);
+        userModel.getStatus().add(role);
         repository.save(userModel);
         return true;
     }
