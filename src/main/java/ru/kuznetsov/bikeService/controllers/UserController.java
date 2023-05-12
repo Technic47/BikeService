@@ -1,23 +1,15 @@
 package ru.kuznetsov.bikeService.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
-import ru.kuznetsov.bikeService.models.servicable.Bike;
-import ru.kuznetsov.bikeService.models.servicable.Part;
-import ru.kuznetsov.bikeService.models.showable.Document;
-import ru.kuznetsov.bikeService.models.showable.Fastener;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.models.usable.Consumable;
-import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.services.*;
 
-import java.security.Principal;
-import java.util.List;
-
 @Controller
+@Secured("ROLE_ADMIN")
 @RequestMapping("/users")
 public class UserController extends AbstractController {
     private DocumentService documentService;
@@ -29,31 +21,21 @@ public class UserController extends AbstractController {
     private BikeService bikeService;
 
     @GetMapping()
-    public String index(Principal principal,
-                        Model model) {
+    public String index(Model model) {
         model.addAttribute("users", userService.index());
         return "users_index";
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id,
-                       Principal principal,
-                       Model model) {
-        List<Document> documentList = documentService.findByCreator(id);
-        List<Fastener> fastenerList = fastenerService.findByCreator(id);
-        List<Manufacturer> manufacturerList = manufacturerService.findByCreator(id);
-        List<Consumable> consumableList = consumableService.findByCreator(id);
-        List<Tool> toolList = toolService.findByCreator(id);
-        List<Part> partList = partService.findByCreator(id);
-        List<Bike> bikeList = bikeService.findByCreator(id);
+    public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.show(id));
-        model.addAttribute("documents", documentList);
-        model.addAttribute("fasteners", fastenerList);
-        model.addAttribute("manufacturers", manufacturerList);
-        model.addAttribute("comsumables", consumableList);
-        model.addAttribute("tools", toolList);
-        model.addAttribute("parts", partList);
-        model.addAttribute("bikes", bikeList);
+        model.addAttribute("documents", documentService.findByCreator(id));
+        model.addAttribute("fasteners", fastenerService.findByCreator(id));
+        model.addAttribute("manufacturers", manufacturerService.findByCreator(id));
+        model.addAttribute("comsumables", consumableService.findByCreator(id));
+        model.addAttribute("tools", toolService.findByCreator(id));
+        model.addAttribute("parts", partService.findByCreator(id));
+        model.addAttribute("bikes", bikeService.findByCreator(id));
         return "users_show";
     }
 
@@ -67,30 +49,8 @@ public class UserController extends AbstractController {
         return "redirect:/users/{id}";
     }
 
-//    @GetMapping(value = "/new")
-//    public String newItem(Model model) {
-//        model.addAttribute("newUser", (new UserModel()));
-//    }
-//
-//    @PostMapping()
-//    public String create(@Valid @ModelAttribute("object") UserModel user,
-//                         BindingResult bindingResult,
-//                         @RequestParam(value = "role") String role,
-//                         Principal principal,
-//                         Model model) {
-//        if (bindingResult.hasErrors()) {
-//
-//        }
-//        switch (role) {
-//            case "user" -> userService.createUser(user);
-//            case "admin" -> userService.createAdmin(user);
-//        }
-//        logger.info("User " + user.getUsername() + "was created by " + principal.getName());
-//    }
-
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id,
-                         Principal principal) {
+    public String delete(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect:/users_index";
     }
