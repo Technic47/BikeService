@@ -18,8 +18,7 @@ import java.util.Set;
 
 import static ru.kuznetsov.bikeService.controllers.pictures.PictureWorkTest.PATH_WIDE_FILE;
 
-
-public class TestCridentials {
+public final class TestCridentials {
     public static final Long TEST_ID = 666L;
     public static final String TEST_NAME = "testName";
     public static final String TEST_DESCRIPTION = "testDescription";

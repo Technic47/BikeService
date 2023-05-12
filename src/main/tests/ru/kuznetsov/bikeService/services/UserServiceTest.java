@@ -6,19 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.kuznetsov.bikeService.TestCridentials.*;
+import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
+import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 @SpringBootTest
+@TestPropertySource("/application-test.properties")
 class UserServiceTest {
     private UserService userService;
     @MockBean
@@ -105,5 +112,40 @@ class UserServiceTest {
 
         assertNull(result);
         verify(repository, times(1)).findByUsername(TEST_NAME);
+    }
+
+    @Test
+    void userToAdmin(){
+        UserModel user = new UserModel();
+        Set<UserRole> roles = new HashSet<>();
+        roles.add(ROLE_USER);
+        user.setStatus(roles);
+        user.setId(TEST_ID);
+        doReturn(user)
+                .when(repository)
+                .getReferenceById(TEST_ID);
+
+        userService.userToAdmin(TEST_ID);
+
+        assertThat(user.getStatus()).hasSize(2).contains(ROLE_ADMIN);
+        verify(repository, times(1)).save(user);
+    }
+
+    @Test
+    void adminToUser(){
+        UserModel user = new UserModel();
+        Set<UserRole> roles = new HashSet<>();
+        roles.add(ROLE_ADMIN);
+        roles.add(ROLE_USER);
+        user.setStatus(roles);
+        user.setId(TEST_ID);
+        doReturn(user)
+                .when(repository)
+                .getReferenceById(TEST_ID);
+
+        userService.adminToUser(TEST_ID);
+
+        assertThat(user.getStatus()).hasSize(1).doesNotContain(ROLE_ADMIN);
+        verify(repository, times(1)).save(user);
     }
 }
