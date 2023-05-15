@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.repositories.ToolRepository;
 import ru.kuznetsov.bikeService.services.ToolService;
@@ -13,9 +14,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static ru.kuznetsov.bikeService.TestCridentials.*;
+import static ru.kuznetsov.bikeService.TestCredentials.*;
 
 @SpringBootTest
+@TestPropertySource("/application-test.properties")
 class AbstractUsableServiceTest {
     private ToolService toolService;
     @MockBean

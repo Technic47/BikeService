@@ -16,9 +16,9 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ru.kuznetsov.bikeService.controllers.pictures.PictureWorkTest.PATH_WIDE_FILE;
+import static ru.kuznetsov.bikeService.controllers.additional.PictureWorkTest.PATH_WIDE_FILE;
 
-public final class TestCridentials {
+public final class TestCredentials {
     public static final Long TEST_ID = 666L;
     public static final String TEST_NAME = "testName";
     public static final String TEST_DESCRIPTION = "testDescription";

@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.pictures;
+package ru.kuznetsov.bikeService.controllers.additional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

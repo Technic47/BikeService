@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers;
+package ru.kuznetsov.bikeService.controllers.additional;
 
 import jakarta.servlet.ServletContext;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCridentials.TEST_NAME;
-import static ru.kuznetsov.bikeService.TestCridentials.TEST_PASS;
+import static ru.kuznetsov.bikeService.TestCredentials.TEST_NAME;
+import static ru.kuznetsov.bikeService.TestCredentials.TEST_PASS;
 
 @SpringBootTest
 @AutoConfigureMockMvc

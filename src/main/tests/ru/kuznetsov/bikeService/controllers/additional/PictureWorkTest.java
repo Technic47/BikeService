@@ -1,9 +1,11 @@
-package ru.kuznetsov.bikeService.controllers.pictures;
+package ru.kuznetsov.bikeService.controllers.additional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 
@@ -17,9 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.kuznetsov.bikeService.TestCridentials.TEST_NAME;
+import static ru.kuznetsov.bikeService.TestCredentials.TEST_NAME;
 import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 
+@SpringBootTest
+@TestPropertySource("/application-test.properties")
 public class PictureWorkTest {
     public static final String PATH_WIDE_FILE = "src/main/testresources/testImage.jpg";
     private static final String PATH_TALL_FILE = "src/main/testresources/testImage2.jpg";

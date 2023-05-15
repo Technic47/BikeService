@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class PartEntityTest {
-
     @Test
     void partEntityTest() {
         PartEntity part1 = new PartEntity();

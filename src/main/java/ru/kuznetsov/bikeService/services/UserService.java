@@ -8,8 +8,6 @@ import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
-import java.util.stream.Collectors;
-
 @Service
 public class UserService extends AbstractService<UserModel, UserRepository> {
     private final PasswordEncoder passwordEncoder;
@@ -44,8 +42,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
     public void delCreatedItem(UserModel user, UserEntity entity) {
-        user.setCreatedItems(user.getCreatedItems().stream()
-                .filter(item -> !item.equals(entity)).collect(Collectors.toList()));
+        user.getCreatedItems().remove(entity);
         repository.save(user);
     }
 

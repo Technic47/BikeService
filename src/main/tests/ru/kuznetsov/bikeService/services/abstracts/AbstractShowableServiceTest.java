@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.repositories.DocumentRepository;
 import ru.kuznetsov.bikeService.services.DocumentService;
@@ -14,9 +15,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
-import static ru.kuznetsov.bikeService.TestCridentials.*;
+import static ru.kuznetsov.bikeService.TestCredentials.*;
 
 @SpringBootTest
+@TestPropertySource("/application-test.properties")
 class AbstractShowableServiceTest {
     private DocumentService documentService;
     @MockBean

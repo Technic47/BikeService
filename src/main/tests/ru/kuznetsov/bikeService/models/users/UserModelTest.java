@@ -11,10 +11,9 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.kuznetsov.bikeService.TestCridentials.*;
+import static ru.kuznetsov.bikeService.TestCredentials.*;
 
 class UserModelTest {
-
     private UserModel userModel;
 
     @BeforeEach

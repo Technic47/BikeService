@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.kuznetsov.bikeService.TestCridentials.*;
+import static ru.kuznetsov.bikeService.TestCredentials.*;
 
 public class ModelTests {
     @Test

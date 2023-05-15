@@ -26,8 +26,8 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCridentials.TEST_DOCUMENT;
-import static ru.kuznetsov.bikeService.TestCridentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.TEST_DOCUMENT;
+import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -69,7 +69,7 @@ class BasicControllerUSERTest {
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
-                .andExpect(view().name("/show/index"))
+                .andExpect(view().name("index"))
                 .andExpect(model().attribute("objects", aMapWithSize(2)))
                 .andExpect(model().attribute("category", "documents"))
                 .andExpect(xpath("//div/div/table/tbody/tr").nodeCount(2))
@@ -83,7 +83,7 @@ class BasicControllerUSERTest {
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
-                .andExpect(view().name("/show/show"))
+                .andExpect(view().name("show"))
                 .andExpect(model().attribute("category", "documents"))
                 .andExpect(model().attribute("object", this.testDocFromDb))
                 .andExpect(model().attribute("type", "Showable"))
@@ -99,7 +99,7 @@ class BasicControllerUSERTest {
     void newItem() throws Exception {
         this.mockMvc.perform(get("/documents/new"))
                 .andDo(print())
-                .andExpect(view().name("/new/new"))
+                .andExpect(view().name("new"))
                 .andExpect(model().attribute("allPictures", hasSize(3)))
                 .andExpect(model().attribute("category", "documents"))
                 .andExpect(model().attribute("object", new Document()))
@@ -119,7 +119,7 @@ class BasicControllerUSERTest {
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasErrors("object"))
-                .andExpect(view().name("/new/new"));
+                .andExpect(view().name("new"));
     }
 
     @Test
@@ -146,7 +146,7 @@ class BasicControllerUSERTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("picture", pictureService.show(this.testDocFromDb.getPicture())))
                 .andExpect(model().attribute("object", this.testDocFromDb))
-                .andExpect(view().name("/edit/edit"))
+                .andExpect(view().name("edit"))
                 .andExpect(xpath("//div/div/form[@action='/documents/1/edit']").exists());
     }
 
@@ -161,7 +161,7 @@ class BasicControllerUSERTest {
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasErrors("object"))
-                .andExpect(view().name("/edit/edit"));
+                .andExpect(view().name("edit"));
     }
 
     @Test

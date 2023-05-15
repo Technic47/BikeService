@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCridentials.TEST_DOCUMENT;
-import static ru.kuznetsov.bikeService.TestCridentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.TEST_DOCUMENT;
+import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc

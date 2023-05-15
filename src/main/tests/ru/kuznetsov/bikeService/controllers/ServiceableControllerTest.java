@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCridentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -74,7 +74,7 @@ class ServiceableControllerTest {
                 .andExpect(model().attribute("consumables", aMapWithSize(1)))
                 .andExpect(model().attribute("parts", aMapWithSize(1)))
                 .andExpect(model().attribute("type", "Serviceable"))
-                .andExpect(view().name("/edit/editPart"))
+                .andExpect(view().name("editPart"))
                 .andExpect(xpath("//div/div/form[@action='/parts/1/update']").exists())
                 .andExpect(xpath("//div/div/form/div/div/div/select[@id='allParts']/option").nodeCount(4))
                 .andExpect(xpath("//div/div/form/div/div/div/select[@id='documents']/option").nodeCount(5))
@@ -102,7 +102,7 @@ class ServiceableControllerTest {
                         .param("documentId", "2")
                         .flashAttr("object", partTest))
                 .andDo(print())
-                .andExpect(view().name("/edit/editPart"));
+                .andExpect(view().name("editPart"));
         assertTrue(partTest.getLinkedItems().contains(entity));
 
         this.mockMvc.perform(multipart("/parts/1/update")

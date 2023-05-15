@@ -5,11 +5,10 @@ import ru.kuznetsov.bikeService.models.pictures.Picture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static ru.kuznetsov.bikeService.TestCridentials.TEST_ID;
-import static ru.kuznetsov.bikeService.TestCridentials.TEST_NAME;
+import static ru.kuznetsov.bikeService.TestCredentials.TEST_ID;
+import static ru.kuznetsov.bikeService.TestCredentials.TEST_NAME;
 
 class PictureTest {
-
     @Test
     void pictureTest() {
         Picture picture = new Picture();

@@ -3,8 +3,8 @@
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/tests/ru/kuznetsov/bikeService/controllers/HomeControllerTest.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/tests/ru/kuznetsov/bikeService/controllers/pictures/PictureWorkTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/tests/ru/kuznetsov/bikeService/controllers/additional/HomeControllerTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/tests/ru/kuznetsov/bikeService/controllers/additional/PictureWorkTest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/tests/ru/kuznetsov/bikeService/models/ModelTests.java" charset="windows-1252" />
     <file url="PROJECT" charset="UTF-8" />
   </component>

@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers;
+package ru.kuznetsov.bikeService.controllers.additional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

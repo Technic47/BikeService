@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.pictures;
+package ru.kuznetsov.bikeService.controllers.additional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCridentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,7 +34,7 @@ class PicturesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().size(1))
                 .andExpect(model().attribute("allPictures", hasSize(3)))
-                .andExpect(view().name("pictures/index"))
+                .andExpect(view().name("picture_index"))
                 .andExpect(xpath("//div/form/img[@src='/preview/test']").exists())
                 .andExpect(xpath("//div/form/img[@src='/preview/test2']").exists())
                 .andExpect(xpath("//div/form/img[@src='/preview/test3']").exists());
@@ -44,7 +44,7 @@ class PicturesControllerTest {
     void newPicture() throws Exception {
         this.mockMvc.perform(get("/pictures/new"))
                 .andDo(print())
-                .andExpect(view().name("pictures/new"));
+                .andExpect(view().name("picture_new"));
     }
 
 
