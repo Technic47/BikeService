@@ -16,7 +16,7 @@ public abstract class AbstractUsableService<E extends AbstractUsableEntity,
         this.usableToRepo(toRepo, newItem);
     }
 
-    protected void usableToRepo(E toRepo, E newItem) {
+    void usableToRepo(E toRepo, E newItem) {
         toRepo.setManufacturer(newItem.getManufacturer());
         toRepo.setModel(newItem.getModel());
         this.showableToRepo(toRepo, newItem);

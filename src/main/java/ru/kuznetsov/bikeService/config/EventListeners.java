@@ -20,6 +20,9 @@ public class EventListeners {
         this.manufacturerService = manufacturerService;
     }
 
+    /**
+     * Checking for default picture and manufacture in db.
+     */
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
         System.out.println("Checking default picture...");

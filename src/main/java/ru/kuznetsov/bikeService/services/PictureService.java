@@ -29,6 +29,12 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
         return super.save(entity);
     }
 
+    /**
+     * Multipart file is sent to PictureWork and it`s result is saved to DB.
+     *
+     * @param file MultipartFile with picture
+     * @return Picture object processed by PictureWork.
+     */
     public Picture save(MultipartFile file) {
         this.pictureWork.managePicture(file);
         return super.save(pictureWork.getPicture());
@@ -41,7 +47,12 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
         this.save(toRepo);
     }
 
-
+    /**
+     * Delete picture with Long id from DB.
+     * If record is present file is deleted from UPLOAD_PATH and preview.
+     *
+     * @param id picture id.
+     */
     @Override
     public void delete(Long id) {
         try {

@@ -21,6 +21,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.adminSave();
     }
 
+    /**
+     * Find user by userName and return if it is present.
+     *
+     * @param username search parameter
+     * @return UserDetails object
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails userDetails = userService.findByName(username);
@@ -30,6 +37,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userDetails;
     }
 
+    /**
+     * Creates built in admin user and send it to DB.
+     * Deletes admin credentials.
+     */
     private void adminSave() {
         UserModel adminUser = new UserModel();
         adminUser.setUsername(ADMIN_NAME);
