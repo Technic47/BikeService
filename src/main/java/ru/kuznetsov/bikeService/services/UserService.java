@@ -3,6 +3,7 @@ package ru.kuznetsov.bikeService.services;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
+import ru.kuznetsov.bikeService.models.users.UserBuilder;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
@@ -27,7 +28,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @return false if user already exists.
      */
     public boolean createUser(UserModel userModel) {
-        return this.constructRecord(userModel, ROLE_USER);
+        return this.constructRecordAndSave(userModel, ROLE_USER);
     }
 
     /**
@@ -37,17 +38,17 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @return false if user already exists.
      */
     public boolean createAdmin(UserModel userModel) {
-        return this.constructRecord(userModel, ROLE_ADMIN);
+        return this.constructRecordAndSave(userModel, ROLE_ADMIN);
     }
 
-    private boolean constructRecord(UserModel userModel, UserRole role) {
+    private boolean constructRecordAndSave(UserModel userModel, UserRole role) {
         if (repository.findByUsername(userModel.getUsername()) != null) {
             return false;
         }
-        userModel.setActive(true);
-        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        userModel.getStatus().add(role);
-        repository.save(userModel);
+        UserModel newUser = new UserBuilder(userModel)
+                .encodePassword(this.passwordEncoder).setActive(true)
+                .setRole(role).build();
+        repository.save(newUser);
         return true;
     }
 

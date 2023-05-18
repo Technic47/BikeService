@@ -2,12 +2,9 @@ package ru.kuznetsov.bikeService.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 import ru.kuznetsov.bikeService.repositories.PictureRepository;
@@ -28,8 +25,6 @@ class PictureServiceTest {
     @MockBean
     private PictureRepository repository;
     private Picture defaultPicture;
-    @Mock
-    private static Logger logger = AbstractController.logger;
 
     @BeforeEach
     void setUp() {
