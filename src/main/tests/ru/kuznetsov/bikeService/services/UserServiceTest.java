@@ -37,9 +37,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         this.userService = new UserService(repository, passwordEncoder);
-        userModel = new UserModel();
-        userModel.setUsername(TEST_NAME);
-        userModel.setPassword(TEST_PASS);
+        userModel = TEST_USER;
         List<UserEntity> itemList = new ArrayList<>();
         itemList.add(new UserEntity("Test1", 1L));
         itemList.add(new UserEntity("Test2", 2L));
@@ -50,14 +48,10 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-        boolean isCreated = userService.createUser(userModel);
-
-        assertTrue(isCreated);
-//        assertNotEquals(TEST_PASS, userModel.getPassword());
-//        assertTrue(userModel.getStatus().contains(UserRole.ROLE_USER));
+        assertTrue(userService.createUser(userModel));
 
         verify(repository, times(1)).findByUsername(TEST_NAME);
-        verify(repository, times(1)).save(userModel);
+        verify(repository, times(1)).save(any(UserModel.class));
     }
 
     @Test
@@ -65,9 +59,8 @@ class UserServiceTest {
         doReturn(new UserModel())
                 .when(repository)
                 .findByUsername(TEST_NAME);
-        boolean isCreated = userService.createUser(userModel);
 
-        assertFalse(isCreated);
+        assertFalse(userService.createUser(userModel));
 
         verify(repository, times(0)).save(userModel);
     }

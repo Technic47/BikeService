@@ -5,6 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserBuilder {
     private final UserModel user = new UserModel();
 
+    public UserBuilder() {
+    }
+
     public UserBuilder(UserModel user) {
         this.setName(user.getUsername());
         this.setPassword(user.getPassword());

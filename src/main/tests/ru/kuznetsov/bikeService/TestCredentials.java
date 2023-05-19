@@ -9,6 +9,7 @@ import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +30,7 @@ public final class TestCredentials {
     public static final Long TEST_MANUFACTURER_ID = 33L;
     public static final String TEST_MODEL = "testModel";
     public static final String TEST_PASS = "testPass";
+    public static final UserModel TEST_USER = new UserModel(TEST_NAME, TEST_PASS);
     public static final Set<PartEntity> TEST_ITEM_LIST = testLinkedItemsFill();
     public static final Document TEST_DOCUMENT = new Document(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);
     public static final Fastener TEST_FASTENER = new Fastener(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);

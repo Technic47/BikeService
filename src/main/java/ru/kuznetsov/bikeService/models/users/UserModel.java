@@ -34,6 +34,15 @@ public class UserModel implements UserDetails {
     @Column(name = "password", length = 1000)
     private String password;
 
+
+    public UserModel() {
+    }
+
+    public UserModel(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }
