@@ -9,9 +9,9 @@ services:
       - "5432:5432"
     volumes:
 #      Windows:
-#      - ../pgdata:/var/lib/postgresql/data
+      - ../pgdata:/var/lib/postgresql/data
 #      Linux:
-      - /home/technic47/pgdata:/var/lib/postgresql/data
+#      - /home/technic47/pgdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1999
@@ -36,9 +36,9 @@ services:
       - "8080:8080"
     volumes:
 #      Windows:
-#      - ../images:/app/IMG
+      - ../images:/app/IMG
 #      Linux:
-      - /home/technic47/images:/app/IMG
+#      - /home/technic47/images:/app/IMG
     environment:
       - spring.config.location=classpath:/application-prod.properties
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/BikeService

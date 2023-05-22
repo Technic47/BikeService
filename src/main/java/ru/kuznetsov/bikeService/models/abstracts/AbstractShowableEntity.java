@@ -23,7 +23,7 @@ public abstract class AbstractShowableEntity
     protected String description;
     @Column(name = "picture")
     protected Long picture;
-    @Size(max = 100)
+    @Size(max = 1000)
     @Column(name = "link")
     protected String link;
     @NotBlank(message = "Поле не должно быть пустым!")
