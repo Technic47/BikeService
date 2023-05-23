@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
 
@@ -12,6 +13,7 @@ public abstract class AbstractController {
     public final static Logger logger = LoggerFactory.getLogger("BikeServiceLogger");
     protected UserService userService;
     protected PictureService pictureService;
+    protected PDFService pdfService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -21,5 +23,10 @@ public abstract class AbstractController {
     @Autowired
     public void setPictureService(PictureService pictureService) {
         this.pictureService = pictureService;
+    }
+
+    @Autowired
+    public void setPdfService(PDFService pdfService) {
+        this.pdfService = pdfService;
     }
 }

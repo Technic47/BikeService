@@ -94,14 +94,13 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         return "new";
     }
 
-    private void addItemAttributesShow(Model model, T item){
+    private void addItemAttributesShow(Model model, T item) {
         model.addAttribute("category", category);
         model.addAttribute("object", item);
         switch (category) {
             case "parts", "bikes" -> model.addAttribute("type", "Serviceable");
             case "tools", "consumables" -> model.addAttribute("type", "Usable");
-            case "documents", "fasteners", "manufacturers" ->
-                    model.addAttribute("type", "Showable");
+            case "documents", "fasteners", "manufacturers" -> model.addAttribute("type", "Showable");
         }
     }
 
@@ -190,7 +189,21 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         return "redirect:/" + category;
     }
 
-    public void checkUser(Principal principal) {
+    @PostMapping(value = "/pdf/{id}")
+    String createPdf(@PathVariable("id") Long id) {
+        try {
+            T item = this.service.show(id);
+            this.pdfService.newPDFDocument()
+                    .addEntity(item)
+                    .addImage(this.pictureService.show(item.getPicture()).getName())
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/" + category + "/" + id;
+    }
+
+    private void checkUser(Principal principal) {
         if (this.user == null) {
             this.user = userService.findByName(principal.getName());
         } else {

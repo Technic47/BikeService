@@ -41,6 +41,9 @@
                     <form th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}" th:method="POST">
                         <button th:type="submit">Удалить</button>
                     </form>
+                    <form th:action="@{/{link}/pdf/{id}(link=${category}, id=${object.getId()})}" th:method="POST">
+                        <button th:type="submit">Создать лист для печати</button>
+                    </form>
                 </div>
             </div>
         </div>
