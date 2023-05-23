@@ -1,7 +1,6 @@
 package ru.kuznetsov.bikeService.services;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
@@ -12,15 +11,18 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
+
 
 @Component
 public class PDFService {
-    private PdfDocument document;
+    // https://coderlessons.com/tutorials/raznoe/uznaite-itext/itext-kratkoe-rukovodstvo
+    private Document document;
     private AbstractShowableEntity entity;
     private String imagePath;
 
     public PDFService newPDFDocument() {
-        this.document = new PdfDocument();
+        this.document = new Document(PageSize.A4);
         return this;
     }
 
@@ -30,27 +32,33 @@ public class PDFService {
     }
 
     public PDFService addImage(String imgName) {
-        this.imagePath = "IMG/preview/" + imgName;
+        this.imagePath = UPLOAD_PATH + "/preview/" + imgName;
         return this;
     }
 
     public void build() throws IOException, DocumentException, URISyntaxException {
         PdfWriter.getInstance(document, new FileOutputStream(entity.getName() + ".pdf"));
+        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
 
         document.open();
+        document.addLanguage("ru-RU");
 
-        Path path = Paths.get(ClassLoader.getSystemResource(this.imagePath).toURI());
-        Image img = Image.getInstance(path.toAbsolutePath().toString());
-        document.add(img);
-
-        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-        Chunk chunk = new Chunk(entity.getCredentials(), font);
-        document.add(chunk);
-
-        Paragraph name = new Paragraph(entity.getCredentials(), font);
-        document.add(name);
+        insertImage();
+        insertParagraph("\n", font);
+        insertParagraph(entity.getCredentials(), font);
 
         document.close();
+    }
 
+    private void insertParagraph(String string, Font font) throws DocumentException {
+        Paragraph name = new Paragraph(string, font);
+        this.document.add(name);
+    }
+
+    private void insertImage() throws IOException, DocumentException {
+//        Path path = Paths.get(ClassLoader.getSystemResource(this.imagePath).toURI());
+        Path path = Paths.get(this.imagePath);
+        Image img = Image.getInstance(path.toAbsolutePath().toString());
+        this.document.add(img);
     }
 }
