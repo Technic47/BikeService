@@ -121,6 +121,12 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         }
     }
 
+    @Override
+    void preparePDF(T item) {
+        this.pdfService.addServiceList(this.cacheList);
+        super.preparePDF(item);
+    }
+
     private void updateCacheList(Long id) {
         ServiceList newCacheList = new ServiceList();
         Set<PartEntity> entityList = service.show(id).getLinkedItems();

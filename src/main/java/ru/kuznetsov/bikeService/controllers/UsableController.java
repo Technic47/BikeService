@@ -46,6 +46,13 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
         super.addItemAttributesEdit(model, item);
     }
 
+
+    @Override
+    void preparePDF(T item) {
+        this.pdfService.addManufactorer(this.manufacturerService.show(item.getManufacturer()));
+        super.preparePDF(item);
+    }
+
     @Autowired
     public void setManufacturerService(ManufacturerService manufacturerService) {
         this.manufacturerService = manufacturerService;

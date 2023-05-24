@@ -191,16 +191,16 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
 
     @PostMapping(value = "/pdf/{id}")
     String createPdf(@PathVariable("id") Long id) {
-        try {
-            T item = this.service.show(id);
-            this.pdfService.newPDFDocument()
-                    .addEntity(item)
-                    .addImage(this.pictureService.show(item.getPicture()).getName())
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        T item = this.service.show(id);
+        this.preparePDF(item);
+
         return "redirect:/" + category + "/" + id;
+    }
+
+    void preparePDF(T item){
+        this.pdfService.newPDFDocument()
+                .addImage(this.pictureService.show(item.getPicture()).getName())
+                .build(item);
     }
 
     private void checkUser(Principal principal) {
