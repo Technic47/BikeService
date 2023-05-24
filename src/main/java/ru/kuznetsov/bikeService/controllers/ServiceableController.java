@@ -3,6 +3,11 @@ package ru.kuznetsov.bikeService.controllers;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +24,11 @@ import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.services.*;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Set;
 
@@ -43,7 +53,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     public String show(@PathVariable("id") Long id,
                        Principal principal,
                        Model model) {
-        this.updateCacheList(id);
+        this.updateCacheList(service.show(id).getLinkedItems());
         this.addLinkedItemsToModel(model);
         return super.show(id, principal, model);
     }
@@ -51,7 +61,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     @Override
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable Long id) {
-        this.updateCacheList(id);
+        this.updateCacheList(service.show(id).getLinkedItems());
         this.addAllItemsToModel(model);
         this.addLinkedItemsToModel(model);
         return super.edit(model, id);
@@ -127,24 +137,32 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         super.preparePDF(item);
     }
 
-    @PostMapping(value = "/pdfAll/{id}")
-    String createPdfAll(@PathVariable("id") Long id) {
+    @GetMapping(value = "/pdfAll")
+    @ResponseBody
+    public ResponseEntity<Resource> createPdfAll(@Param("id") Long id) throws IOException {
         T item = this.service.show(id);
         ServiceList generalList = new ServiceList();
         generalList.addAllToList(this.cacheList);
         this.cacheList.getPartMap().keySet().forEach(part -> {
-            this.updateCacheList(part.getId());
+            this.updateCacheList(part.getLinkedItems());
             generalList.addAllToList(this.cacheList);
         });
         this.cacheList = generalList;
         this.preparePDF(item);
 
-        return "redirect:/" + category + "/" + id;
+        File file = new File(item.getName() + ".pdf");
+        Path path = Paths.get(file.getAbsolutePath());
+        ByteArrayResource resource = new ByteArrayResource
+                (Files.readAllBytes(path));
+
+        return ResponseEntity.ok().headers(this.headers())
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType
+                        ("application/octet-stream")).body(resource);
     }
 
-    private void updateCacheList(Long id) {
+    private void updateCacheList(Set<PartEntity> entityList) {
         ServiceList newCacheList = new ServiceList();
-        Set<PartEntity> entityList = service.show(id).getLinkedItems();
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
                 case "Tool" -> newCacheList.addToToolMap(this.toolDAO.show(entity.getItem_id()), entity.getAmount());

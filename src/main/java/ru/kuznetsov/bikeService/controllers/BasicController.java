@@ -2,6 +2,12 @@ package ru.kuznetsov.bikeService.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +20,11 @@ import ru.kuznetsov.bikeService.models.pictures.PictureWork;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -189,12 +200,31 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         return "redirect:/" + category;
     }
 
-    @PostMapping(value = "/pdf/{id}")
-    String createPdf(@PathVariable("id") Long id) {
+    @GetMapping(value = "/pdf")
+    @ResponseBody
+    public ResponseEntity<Resource> createPdf(@Param("id") Long id) throws IOException {
         T item = this.service.show(id);
         this.preparePDF(item);
+        File file = new File("FormedList.pdf");
+        Path path = Paths.get(file.getAbsolutePath());
+        ByteArrayResource resource = new ByteArrayResource
+                (Files.readAllBytes(path));
 
-        return "redirect:/" + category + "/" + id;
+        return ResponseEntity.ok().headers(this.headers())
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType
+                        ("application/octet-stream")).body(resource);
+    }
+
+    HttpHeaders headers() {
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=" + "FormedList.pdf");
+        header.add("Cache-Control", "no-cache, no-store,"
+                + " must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+        return header;
     }
 
     void preparePDF(T item){

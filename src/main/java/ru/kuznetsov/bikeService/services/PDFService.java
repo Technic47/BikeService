@@ -13,6 +13,7 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -66,9 +67,17 @@ public class PDFService {
         return this;
     }
 
+    /**
+     * Construct PDF document. Construction is based on T item class.
+     * Usable adds Manufacture info.
+     * Serviceable adds info about linkedItems.
+     * @param item item for list forming.
+     * @param <T> class from .model package.
+     */
     public <T extends AbstractShowableEntity> void build(T item) {
         try {
-            PdfWriter.getInstance(this.document, new FileOutputStream(item.getName() + ".pdf"));
+            String fileName = item.getName() + ".pdf";
+            PdfWriter.getInstance(this.document, new FileOutputStream(fileName));
             document.open();
 
             insertImage();
@@ -82,6 +91,8 @@ public class PDFService {
             }
 
             document.close();
+            this.clean(fileName);
+
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
@@ -149,5 +160,10 @@ public class PDFService {
             fastenerCell.addElement(new Phrase(key.getName() + ", " + value.toString(), commonFont));
         });
         table.addCell(fastenerCell);
+    }
+
+    private void clean(String path){
+        File file = new File(path);
+        file.delete();
     }
 }
