@@ -44,6 +44,10 @@
                     <form th:action="@{/{link}/pdf/{id}(link=${category}, id=${object.getId()})}" th:method="POST">
                         <button th:type="submit">Создать лист для печати</button>
                     </form>
+                    <form th:action="@{/{link}/pdfAll/{id}(link=${category}, id=${object.getId()})}"
+                          th:if="${type == 'Serviceable'}" th:method="POST">
+                        <button th:type="submit">Создать общий лист для печати</button>
+                    </form>
                 </div>
             </div>
         </div>

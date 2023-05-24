@@ -150,8 +150,4 @@ public class PDFService {
         });
         table.addCell(fastenerCell);
     }
-
-    private void addLinkedItemsRows(){
-
-    }
 }

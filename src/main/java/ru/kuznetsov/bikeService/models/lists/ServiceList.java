@@ -24,6 +24,33 @@ public class ServiceList {
         this.partMap = new HashMap<>();
     }
 
+    /**
+     * Add all Maps from newList to current.
+     * Summarize consumableMap`s and fastenerMap`s values. Other are rewritten if doubles.
+     * @param newList other ServiceList
+     */
+    public void addAllToList(ServiceList newList){
+        newList.getFastenerMap().forEach((key, value) ->{
+            if (this.fastenerMap.containsKey(key)) {
+                Integer amount = this.fastenerMap.getOrDefault(key, 1);
+                this.fastenerMap.replace(key, amount + value);
+            } else{
+                this.fastenerMap.put(key, value);
+            }
+        });
+        newList.getConsumableMap().forEach((key, value) ->{
+            if (this.consumableMap.containsKey(key)) {
+                Integer amount = this.consumableMap.getOrDefault(key, 1);
+                this.consumableMap.replace(key, amount + value);
+            } else{
+                this.consumableMap.put(key, value);
+            }
+        });
+        newList.getDocsMap().forEach(this::addToDocumentMap);
+        newList.getToolMap().forEach(this::addToToolMap);
+        newList.getPartMap().forEach(this::addToPartMap);
+    }
+
     public Map<Tool, Integer> getToolMap() {
         return toolMap;
     }

@@ -127,6 +127,21 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         super.preparePDF(item);
     }
 
+    @PostMapping(value = "/pdfAll/{id}")
+    String createPdfAll(@PathVariable("id") Long id) {
+        T item = this.service.show(id);
+        ServiceList generalList = new ServiceList();
+        generalList.addAllToList(this.cacheList);
+        this.cacheList.getPartMap().keySet().forEach(part -> {
+            this.updateCacheList(part.getId());
+            generalList.addAllToList(this.cacheList);
+        });
+        this.cacheList = generalList;
+        this.preparePDF(item);
+
+        return "redirect:/" + category + "/" + id;
+    }
+
     private void updateCacheList(Long id) {
         ServiceList newCacheList = new ServiceList();
         Set<PartEntity> entityList = service.show(id).getLinkedItems();
