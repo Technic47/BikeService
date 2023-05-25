@@ -66,16 +66,3 @@ VALUES (DEFAULT, '$2a$10$I/0KJRXs78nl5Z.Whzs9L.1uBwf9E/gJwqkZtgIZfrwarrOmJ.mBK',
 INSERT INTO bikeservicetest.public.user_role(user_id, status)
 VALUES (1, 'ROLE_USER'),
        (2, 'ROLE_ADMIN');
-
--- INSERT INTO bikeservicetest.public.user_item(user_id, itemid, type)
--- VALUES (1, 1, 'Document'),
---        (1, 2, 'Document'),
---        (2, 3, 'Document'),
---        (2, 4, 'Document'),
---        (2, 5, 'Document');
-
-
-
-
-
-

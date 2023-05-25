@@ -42,16 +42,3 @@ services:
     environment:
       - spring.config.location=classpath:/application-prod.properties
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/BikeService
-
-#  pgadmin:
-#    image: dpage/pgadmin4:latest
-#    container_name: pgadmin
-#    depends_on:
-#      - db
-#    restart: always
-#    ports:
-#      - "9000:9000"
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=technic47@gmail.com
-#      - PGADMIN_DEFAULT_PASSWORD=1999
-#      - PGADMIN_LISTEN_PORT=9000

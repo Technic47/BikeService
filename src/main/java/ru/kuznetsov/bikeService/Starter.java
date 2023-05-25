@@ -20,5 +20,7 @@ public class Starter extends SpringBootServletInitializer {
 /*TODO
 - create search
 - PDF list
+- large image on click in show
+- add button to show all items in category
+- optimise Document show
  */
-

@@ -34,7 +34,6 @@ public class PDFService {
     private String imagePath;
     private Manufacturer manufacturer;
     private ServiceList serviceList;
-//    @Value("${font.path}")
     private String path;
     private Font commonFont;
     private Font bigFont;
@@ -43,17 +42,21 @@ public class PDFService {
     }
 
     @PostConstruct
-    private void setUp(){
+    void setUp() {
         try {
-            BaseFont baseFont = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            this.commonFont = new Font(baseFont, 10, Font.NORMAL);
-
-            BaseFont baseFont2 = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            this.bigFont = new Font(baseFont2, 16, Font.BOLD);
+            this.setFonts(this.path);
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
         }
+    }
+
+    public void setFonts(String string) throws DocumentException, IOException {
+        BaseFont baseFont = BaseFont.createFont(string, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        this.commonFont = new Font(baseFont, 10, Font.NORMAL);
+
+        BaseFont baseFont2 = BaseFont.createFont(string, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        this.bigFont = new Font(baseFont2, 16, Font.BOLD);
     }
 
     public PDFService newPDFDocument() {
@@ -66,12 +69,14 @@ public class PDFService {
         return this;
     }
 
-    public void addManufactorer(Manufacturer manufacturer) {
+    public PDFService addManufactorer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
+        return this;
     }
 
-    public void addServiceList(ServiceList list) {
+    public PDFService addServiceList(ServiceList list) {
         this.serviceList = list;
+        return this;
     }
 
     /**
@@ -148,7 +153,6 @@ public class PDFService {
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.WHITE);
-//                    header.setBorderWidth(1);
                     header.setPhrase(new Phrase(columnTitle, bigFont));
                     table.addCell(header);
                 });
@@ -201,6 +205,10 @@ public class PDFService {
 
     public ServiceList getServiceList() {
         return serviceList;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public Font getCommonFont() {

@@ -221,7 +221,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                         ("application/octet-stream")).body(resource);
     }
 
-    HttpHeaders headers(String fileName) {
+    private HttpHeaders headers(String fileName) {
         HttpHeaders header = new HttpHeaders();
         header.add(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=" + fileName + ".pdf");
