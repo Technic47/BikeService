@@ -204,22 +204,27 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@Param("id") Long id) throws IOException {
         T item = this.service.show(id);
+
+        return this.createResponce(item);
+    }
+
+    protected ResponseEntity<Resource> createResponce(T item) throws IOException {
         this.preparePDF(item);
         File file = new File("FormedList.pdf");
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource
                 (Files.readAllBytes(path));
 
-        return ResponseEntity.ok().headers(this.headers())
+        return ResponseEntity.ok().headers(this.headers(item.getName()))
                 .contentLength(file.length())
                 .contentType(MediaType.parseMediaType
                         ("application/octet-stream")).body(resource);
     }
 
-    HttpHeaders headers() {
+    HttpHeaders headers(String fileName) {
         HttpHeaders header = new HttpHeaders();
         header.add(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=" + "FormedList.pdf");
+                "attachment; filename=" + fileName + ".pdf");
         header.add("Cache-Control", "no-cache, no-store,"
                 + " must-revalidate");
         header.add("Pragma", "no-cache");

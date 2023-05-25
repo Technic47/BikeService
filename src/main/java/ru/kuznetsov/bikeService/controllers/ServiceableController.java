@@ -3,10 +3,8 @@ package ru.kuznetsov.bikeService.controllers;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -24,11 +22,7 @@ import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.services.*;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Set;
 
@@ -148,17 +142,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
             generalList.addAllToList(this.cacheList);
         });
         this.cacheList = generalList;
-        this.preparePDF(item);
 
-        File file = new File(item.getName() + ".pdf");
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource
-                (Files.readAllBytes(path));
-
-        return ResponseEntity.ok().headers(this.headers())
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType
-                        ("application/octet-stream")).body(resource);
+        return this.createResponce(item);
     }
 
     private void updateCacheList(Set<PartEntity> entityList) {

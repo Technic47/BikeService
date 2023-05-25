@@ -5,6 +5,9 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
@@ -31,15 +34,21 @@ public class PDFService {
     private String imagePath;
     private Manufacturer manufacturer;
     private ServiceList serviceList;
+//    @Value("${font.path}")
+    private String path;
     private Font commonFont;
     private Font bigFont;
 
     public PDFService() {
+    }
+
+    @PostConstruct
+    private void setUp(){
         try {
-            BaseFont baseFont = BaseFont.createFont("fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont baseFont = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             this.commonFont = new Font(baseFont, 10, Font.NORMAL);
 
-            BaseFont baseFont2 = BaseFont.createFont("fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont baseFont2 = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             this.bigFont = new Font(baseFont2, 16, Font.BOLD);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,26 +66,25 @@ public class PDFService {
         return this;
     }
 
-    public PDFService addManufactorer(Manufacturer manufacturer) {
+    public void addManufactorer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
-        return this;
     }
 
-    public PDFService addServiceList(ServiceList list) {
+    public void addServiceList(ServiceList list) {
         this.serviceList = list;
-        return this;
     }
 
     /**
      * Construct PDF document. Construction is based on T item class.
      * Usable adds Manufacture info.
      * Serviceable adds info about linkedItems.
+     *
      * @param item item for list forming.
-     * @param <T> class from .model package.
+     * @param <T>  class from .model package.
      */
     public <T extends AbstractShowableEntity> void build(T item) {
         try {
-            String fileName = item.getName() + ".pdf";
+            String fileName = "FormedList.pdf";
             PdfWriter.getInstance(this.document, new FileOutputStream(fileName));
             document.open();
 
@@ -91,8 +99,7 @@ public class PDFService {
             }
 
             document.close();
-            this.clean(fileName);
-
+//            this.clean(fileName);
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
@@ -121,11 +128,19 @@ public class PDFService {
         this.document.add(img);
     }
 
-    private void insertTable() throws DocumentException {
-        PdfPTable table = new PdfPTable(2);
-        addTableHeader(table);
-        addSelfRows(table);
-        document.add(table);
+    /**
+     * Table former
+     */
+    private void insertTable() {
+        try {
+            PdfPTable table = new PdfPTable(2);
+            addTableHeader(table);
+            addSelfRows(table);
+            document.add(table);
+        } catch (Exception e) {
+            e.printStackTrace();
+            AbstractController.logger.warn(e.getMessage());
+        }
     }
 
     private void addTableHeader(PdfPTable table) {
@@ -162,8 +177,37 @@ public class PDFService {
         table.addCell(fastenerCell);
     }
 
-    private void clean(String path){
+    public void clean(String path) {
         File file = new File(path);
         file.delete();
+    }
+
+    @Autowired
+    public void setPath(@Value("${font.path}") String path) {
+        this.path = path;
+    }
+
+    public Document getDocument() {
+        return document;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public ServiceList getServiceList() {
+        return serviceList;
+    }
+
+    public Font getCommonFont() {
+        return commonFont;
+    }
+
+    public Font getBigFont() {
+        return bigFont;
     }
 }
