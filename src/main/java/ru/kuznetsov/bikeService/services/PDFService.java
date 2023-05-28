@@ -34,7 +34,7 @@ public class PDFService {
     private String imagePath;
     private Manufacturer manufacturer;
     private ServiceList serviceList;
-    private String path;
+    private String fontPath;
     private Font commonFont;
     private Font bigFont;
 
@@ -44,7 +44,7 @@ public class PDFService {
     @PostConstruct
     void setUp() {
         try {
-            this.setFonts(this.path);
+            this.setFonts(this.fontPath);
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
@@ -181,14 +181,12 @@ public class PDFService {
         table.addCell(fastenerCell);
     }
 
-    public void clean(String path) {
-        File file = new File(path);
-        file.delete();
+    public boolean clean(String path) {
+        return new File(path).delete();
     }
 
-    @Autowired
-    public void setPath(@Value("${font.path}") String path) {
-        this.path = path;
+    public String getFontPath() {
+        return fontPath;
     }
 
     public Document getDocument() {
@@ -207,8 +205,9 @@ public class PDFService {
         return serviceList;
     }
 
-    public String getPath() {
-        return path;
+    @Autowired
+    public void setFontPath(@Value("${font.path}") String fontPath) {
+        this.fontPath = fontPath;
     }
 
     public Font getCommonFont() {

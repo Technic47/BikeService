@@ -236,6 +236,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.pdfService.newPDFDocument()
                 .addImage(this.pictureService.show(item.getPicture()).getName())
                 .build(item);
+        this.pdfService.clean("FormedList.pdf");
     }
 
     private void checkUser(Principal principal) {
