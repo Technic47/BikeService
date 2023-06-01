@@ -9,6 +9,6 @@ import java.util.List;
 public interface AbstractShowableEntityRepository<E extends AbstractShowableEntity>
         extends CommonRepository<E> {
     List<E> findByCreator(Long id);
-    List<E> findByNameContaining(String name);
-    List<E> findByDescriptionContaining(String description);
+    List<E> findByNameContainingIgnoreCase(String name);
+    List<E> findByDescriptionContainingIgnoreCase(String description);
 }

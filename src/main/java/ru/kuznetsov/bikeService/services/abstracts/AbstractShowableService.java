@@ -47,10 +47,10 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
     }
 
     public List<E> findByNameContainingIgnoreCase(String string) {
-        return this.repository.findByNameContaining(string);
+        return this.repository.findByNameContainingIgnoreCase(string);
     }
 
     public List<E> findByDescriptionContainingIgnoreCase(String string){
-        return this.repository.findByDescriptionContaining(string);
+        return this.repository.findByDescriptionContainingIgnoreCase(string);
     }
 }
