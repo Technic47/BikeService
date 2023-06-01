@@ -46,11 +46,11 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         return repository.findByCreator(id);
     }
 
-    public List<E> findByNameContaining(String string) {
+    public List<E> findByNameContainingIgnoreCase(String string) {
         return this.repository.findByNameContaining(string);
     }
 
-    public List<E> findByDescriptionContaining(String string){
+    public List<E> findByDescriptionContainingIgnoreCase(String string){
         return this.repository.findByDescriptionContaining(string);
     }
 }

@@ -24,6 +24,14 @@
         <h3>
             Созданные вами позиции:
         </h3>
+        <form method="get" th:action="@{/{link}/search(link=${category})}">
+            <input th:name="value" th:type="text"/>
+            <button th:type="submit">Найти</button>
+        </form>
+        <br/>
+        <form method="get" th:action="@{/{link}(link=${category})}">
+            <button th:type="submit">Сбросить</button>
+        </form>
     </div>
     <p></p>
     <div class="border-block">

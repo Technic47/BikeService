@@ -13,25 +13,32 @@ public abstract class AbstractShowableEntity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
+
     @NotBlank(message = "Поле не должно быть пустым!")
     @Size(min = 1, max = 100)
     @Column(name = "name")
     protected String name;
+
     @Column(name = "description")
     @NotBlank(message = "Поле не должно быть пустым!")
     @Size(min = 1, max = 255)
     protected String description;
+
     @Column(name = "picture")
     protected Long picture;
+
     @Size(max = 1000)
     @Column(name = "link")
     protected String link;
+
     @NotBlank(message = "Поле не должно быть пустым!")
     @Size(min = 1, max = 200)
     @Column(name = "value")
     protected String value;
+
     @Transient
     protected String valueName;
+
     @Column(name = "creator")
     protected Long creator;
 

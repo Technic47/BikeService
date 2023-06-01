@@ -26,10 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
@@ -50,6 +47,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
 
     public BasicController(S service) {
         this.service = service;
+        this.itemMap = new HashMap<>();
     }
 
 
@@ -241,15 +239,23 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.pdfService.clean("FormedList.pdf");
     }
 
+    /**
+     * Searching matching in Name and Description. Case is ignored. ResultSet is formed considering creator`s id.
+     * @param value string to search
+     * @param model
+     * @param principal
+     * @return
+     */
     @GetMapping(value = "/search")
     public String search(@RequestParam(value = "value") String value, Model model, Principal principal) {
         this.checkUser(principal);
-        Set<T> resultSet = new HashSet<>(this.service.findByNameContaining(value));
-        resultSet.addAll(this.service.findByDescriptionContaining(value));
+        Set<T> resultSet = new HashSet<>(this.service.findByNameContainingIgnoreCase(value));
+        resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
 
         resultSet = resultSet.stream()
                 .filter(item -> item.getCreator().equals(this.user.getId()))
                 .collect(Collectors.toSet());
+        this.itemMap.clear();
 
         resultSet.forEach(item -> this.itemMap.put(item, pictureService.show(item.getPicture()).getName()));
 
