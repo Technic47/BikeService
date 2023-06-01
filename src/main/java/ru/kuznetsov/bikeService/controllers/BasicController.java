@@ -232,7 +232,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         return header;
     }
 
-    void preparePDF(T item){
+    protected void preparePDF(T item){
         this.pdfService.newPDFDocument()
                 .addImage(this.pictureService.show(item.getPicture()).getName())
                 .build(item);

@@ -126,7 +126,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     @Override
-    void preparePDF(T item) {
+    protected void preparePDF(T item) {
         this.pdfService.addServiceList(this.cacheList);
         super.preparePDF(item);
     }
