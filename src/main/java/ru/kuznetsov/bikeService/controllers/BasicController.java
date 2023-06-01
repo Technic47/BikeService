@@ -26,9 +26,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
@@ -40,6 +42,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     protected final S service;
     protected T thisClassNewObject;
     protected T currentObject;
+    protected Map<T, String> itemMap;
     protected String currentObjectName;
     protected String category;
     protected UserModel user;
@@ -75,13 +78,12 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
             logger.info(category + " are shown to " + user.getUsername());
         }
 
-        Map<T, String> objectMap = new HashMap<>();
         if (objects != null) {
             for (T object : objects) {
-                objectMap.put(object, pictureService.show(object.getPicture()).getName());
+                this.itemMap.put(object, pictureService.show(object.getPicture()).getName());
             }
         }
-        model.addAttribute("objects", objectMap);
+        model.addAttribute("objects", this.itemMap);
         model.addAttribute("category", category);
         return "index";
     }
@@ -232,11 +234,30 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         return header;
     }
 
-    protected void preparePDF(T item){
+    protected void preparePDF(T item) {
         this.pdfService.newPDFDocument()
                 .addImage(this.pictureService.show(item.getPicture()).getName())
                 .build(item);
         this.pdfService.clean("FormedList.pdf");
+    }
+
+    @GetMapping(value = "/search")
+    public String search(@RequestParam(value = "value") String value, Model model, Principal principal) {
+        this.checkUser(principal);
+        Set<T> resultSet = new HashSet<>(this.service.findByNameContaining(value));
+        resultSet.addAll(this.service.findByDescriptionContaining(value));
+
+        resultSet = resultSet.stream()
+                .filter(item -> item.getCreator().equals(this.user.getId()))
+                .collect(Collectors.toSet());
+
+        resultSet.forEach(item -> this.itemMap.put(item, pictureService.show(item.getPicture()).getName()));
+
+        model.addAttribute("objects", this.itemMap);
+        model.addAttribute("category", category);
+
+        logger.info(user.getUsername() + " was searching " + value + " in " + category);
+        return "index";
     }
 
     private void checkUser(Principal principal) {
