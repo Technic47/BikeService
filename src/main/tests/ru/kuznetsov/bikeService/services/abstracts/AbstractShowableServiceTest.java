@@ -53,4 +53,16 @@ class AbstractShowableServiceTest {
     void findByCreator() {
         assertNotNull(documentService.findByCreator(TEST_ID));
     }
+
+    @Test
+    void findByNameContainingIgnoreCase() {
+        assertNotNull(documentService.findByNameContainingIgnoreCase(TEST_NAME));
+        verify(repository, times(1)).findByNameContainingIgnoreCase(TEST_NAME);
+    }
+
+    @Test
+    void findByDescriptionContainingIgnoreCase() {
+        assertNotNull(documentService.findByDescriptionContainingIgnoreCase(TEST_NAME));
+        verify(repository, times(1)).findByDescriptionContainingIgnoreCase(TEST_NAME);
+    }
 }

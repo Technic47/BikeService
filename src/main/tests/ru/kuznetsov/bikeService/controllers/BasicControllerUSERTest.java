@@ -198,4 +198,19 @@ class BasicControllerUSERTest {
         assertEquals(1, entityList.size());
         assertThat(entityList).doesNotContain(entity);
     }
+
+    @Test
+    void searchTest() throws Exception {
+        this.mockMvc.perform(get("/documents/search")
+                .param("value", "doc2"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attribute("objects", aMapWithSize(1)));
+
+        this.mockMvc.perform(get("/documents/search")
+                        .param("value", "tde"))
+                .andExpect(model().attribute("objects", aMapWithSize(1)));
+    }
 }
