@@ -18,7 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- large image on click in show
 - add button to show all items in category
 - optimise Document show
  */

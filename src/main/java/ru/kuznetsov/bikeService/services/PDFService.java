@@ -92,14 +92,7 @@ public class PDFService {
         try {
             PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_PATH));
             document.open();
-            if (this.imagePath != null) {
-                insertImage();
-                insertParagraph("\n", commonFont);
-            }
-
-            insertParagraph("\n", commonFont);
-            insertParagraph(item.getCredentials(), bigFont);
-            insertParagraph(item.getDescription(), commonFont);
+            insertHeaderTable(item);
 
             switch (item.getClass().getSimpleName()) {
                 case "Tool", "Consumable" -> this.buildUsable((AbstractUsableEntity) item);
@@ -124,25 +117,44 @@ public class PDFService {
         this.buildUsable(newEntity);
         insertParagraph("\n", commonFont);
         if (this.serviceList != null) {
-            insertTable();
+            insertServiceTable();
         }
     }
 
     private void insertParagraph(String string, Font font) throws DocumentException {
         Paragraph part = new Paragraph(string, font);
+        part.setAlignment(Element.ALIGN_CENTER);
         this.document.add(part);
     }
 
-    private void insertImage() throws IOException, DocumentException {
-        Path path = Paths.get(this.imagePath);
-        Image img = Image.getInstance(path.toAbsolutePath().toString());
-        this.document.add(img);
+    private <T extends AbstractShowableEntity> void insertHeaderTable(T item){
+        try {
+            PdfPTable table = new PdfPTable(2);
+
+            Path path = Paths.get(this.imagePath);
+            PdfPCell imageCell = new PdfPCell(Image.getInstance(path.toAbsolutePath().toString()));
+            imageCell.setBorder(Rectangle.NO_BORDER);
+
+            PdfPCell content = new PdfPCell();
+            content.setBorder(Rectangle.NO_BORDER);
+            content.setHorizontalAlignment(Element.ALIGN_CENTER);
+            content.addElement(new Paragraph(item.getName(), bigFont));
+            content.addElement(new Paragraph(item.getValueName() + " " + item.getValue(), commonFont));
+            content.addElement(new Paragraph(item.getDescription(), commonFont));
+
+            table.addCell(imageCell);
+            table.addCell(content);
+            document.add(table);
+        } catch (Exception e) {
+            e.printStackTrace();
+            AbstractController.logger.warn(e.getMessage());
+        }
     }
 
     /**
-     * Table former
+     * Table former for serviceList
      */
-    private void insertTable() {
+    private void insertServiceTable() {
         try {
             PdfPTable table = new PdfPTable(2);
             addTableHeader(table);
