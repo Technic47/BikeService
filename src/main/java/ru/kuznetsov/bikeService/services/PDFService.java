@@ -92,7 +92,10 @@ public class PDFService {
             String fileName = "FormedList.pdf";
             PdfWriter.getInstance(this.document, new FileOutputStream(fileName));
             document.open();
-
+            if (this.imagePath != null) {
+                insertImage();
+                insertParagraph("\n", commonFont);
+            }
             insertImage();
             insertParagraph("\n", commonFont);
             insertParagraph(item.getCredentials(), bigFont);
@@ -104,7 +107,6 @@ public class PDFService {
             }
 
             document.close();
-//            this.clean(fileName);
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
@@ -112,14 +114,18 @@ public class PDFService {
     }
 
     private void buildUsable(AbstractUsableEntity newEntity) throws DocumentException {
-        String modelInfo = this.manufacturer.getName() + " - " + newEntity.getModel();
-        insertParagraph(modelInfo, commonFont);
+        if (this.manufacturer != null) {
+            String modelInfo = this.manufacturer.getName() + " - " + newEntity.getModel();
+            insertParagraph(modelInfo, commonFont);
+        }
     }
 
     private void buildServiceable(AbstractServiceableEntity newEntity) throws DocumentException {
         this.buildUsable(newEntity);
         insertParagraph("\n", commonFont);
-        insertTable();
+        if (this.serviceList != null) {
+            insertTable();
+        }
     }
 
     private void insertParagraph(String string, Font font) throws DocumentException {
@@ -169,14 +175,16 @@ public class PDFService {
         table.addCell(new Phrase("Расходные материалы", commonFont));
         PdfPCell consumableCell = new PdfPCell();
         this.serviceList.getConsumableMap().forEach((key, value) -> {
-            consumableCell.addElement(new Phrase(key.getName() + ", " + value.toString(), commonFont));
+            consumableCell.addElement(new Phrase(key.getName()
+                    + ", " + value.toString(), commonFont));
         });
         table.addCell(consumableCell);
 
         table.addCell(new Phrase("Крепёж", commonFont));
         PdfPCell fastenerCell = new PdfPCell();
         this.serviceList.getFastenerMap().forEach((key, value) -> {
-            fastenerCell.addElement(new Phrase(key.getName() + ", " + value.toString(), commonFont));
+            fastenerCell.addElement(new Phrase(key.getName()
+                    + ", " + value.toString(), commonFont));
         });
         table.addCell(fastenerCell);
     }
