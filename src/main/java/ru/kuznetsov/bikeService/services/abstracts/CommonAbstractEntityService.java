@@ -7,4 +7,6 @@ import java.util.List;
 public interface CommonAbstractEntityService<E extends AbstractShowableEntity>
         extends CommonService<E> {
     List<E> findByCreator(Long id);
+    List<E> findByNameContaining(String string);
+    List<E> findByDescriptionContaining(String string);
 }

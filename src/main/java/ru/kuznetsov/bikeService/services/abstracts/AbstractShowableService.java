@@ -45,4 +45,12 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
     public List<E> findByCreator(Long id) {
         return repository.findByCreator(id);
     }
+
+    public List<E> findByNameContaining(String string) {
+        return this.repository.findByNameContaining(string);
+    }
+
+    public List<E> findByDescriptionContaining(String string){
+        return this.repository.findByDescriptionContaining(string);
+    }
 }
