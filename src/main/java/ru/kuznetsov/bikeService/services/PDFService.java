@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
+import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.PDF_DOC_PATH;
 
 
 @Component
@@ -89,14 +90,13 @@ public class PDFService {
      */
     public <T extends AbstractShowableEntity> void build(T item) {
         try {
-            String fileName = "FormedList.pdf";
-            PdfWriter.getInstance(this.document, new FileOutputStream(fileName));
+            PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_PATH));
             document.open();
             if (this.imagePath != null) {
                 insertImage();
                 insertParagraph("\n", commonFont);
             }
-            insertImage();
+
             insertParagraph("\n", commonFont);
             insertParagraph(item.getCredentials(), bigFont);
             insertParagraph(item.getDescription(), commonFont);

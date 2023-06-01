@@ -210,7 +210,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
 
     protected ResponseEntity<Resource> createResponce(T item) throws IOException {
         this.preparePDF(item);
-        File file = new File("FormedList.pdf");
+        File file = new File(PDF_DOC_PATH);
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource
                 (Files.readAllBytes(path));
@@ -236,7 +236,6 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.pdfService.newPDFDocument()
                 .addImage(this.pictureService.show(item.getPicture()).getName())
                 .build(item);
-        this.pdfService.clean("FormedList.pdf");
     }
 
     /**
