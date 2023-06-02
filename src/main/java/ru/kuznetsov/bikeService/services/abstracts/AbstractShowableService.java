@@ -33,6 +33,7 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         toRepo.setPicture(newItem.getPicture());
         toRepo.setLink(newItem.getLink());
         toRepo.setValue(newItem.getValue());
+        toRepo.setIsShared(newItem.getIsShared());
         this.save(toRepo);
     }
 
@@ -46,11 +47,21 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         return repository.findByCreator(id);
     }
 
+    /**
+     * Find records that have either creator id match or are shared.
+     *
+     * @param id creators id
+     * @return list of matching records.
+     */
+    public List<E> findByCreatorOrShared(Long id) {
+        return this.repository.findByCreatorOrIsShared(id, true);
+    }
+
     public List<E> findByNameContainingIgnoreCase(String string) {
         return this.repository.findByNameContainingIgnoreCase(string);
     }
 
-    public List<E> findByDescriptionContainingIgnoreCase(String string){
+    public List<E> findByDescriptionContainingIgnoreCase(String string) {
         return this.repository.findByDescriptionContainingIgnoreCase(string);
     }
 }

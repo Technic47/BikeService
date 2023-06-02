@@ -10,6 +10,13 @@ public interface CommonAbstractEntityService<E extends AbstractShowableEntity>
     List<E> findByCreator(Long id);
 
     /**
+     * Find records that have either creator id match or are shared.
+     * @param id creators id
+     * @return list of matching records.
+     */
+    List<E> findByCreatorOrShared(Long id);
+
+    /**
      * Find records containing argument String in Name field.
      * @param string search value
      * @return list of matching records.

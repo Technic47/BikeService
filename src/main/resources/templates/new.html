@@ -49,6 +49,10 @@
                     <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
                     <br/>
                     <br/>
+                    <label for="isShared">Показать всем:</label>
+                    <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
+                    <br/>
+                    <br/>
                 </div>
                 <div class="col-3-1-no-boarder" th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
                     <br/>

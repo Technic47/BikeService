@@ -68,7 +68,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.checkUser(principal);
         Iterable<T> objects = null;
         if (user.getStatus().contains(ROLE_USER)) {
-            objects = service.findByCreator(user.getId());
+            objects = service.findByCreatorOrShared(user.getId());
             logger.info("personal " + category + " are shown to '" + user.getUsername() + "'");
         }
         if (user.getStatus().contains(ROLE_ADMIN)) {
@@ -77,6 +77,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         }
 
         if (objects != null) {
+            this.itemMap.clear();
             for (T object : objects) {
                 this.itemMap.put(object, pictureService.show(object.getPicture()).getName());
             }
@@ -93,9 +94,18 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.currentObject = service.show(id);
         model.addAttribute("picture", pictureService.show(currentObject.getPicture()).getName());
         this.addItemAttributesShow(model, currentObject);
+        model.addAttribute("access", checkAccess(currentObject));
         this.checkUser(principal);
         logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
         return "show";
+    }
+
+    private boolean checkAccess(T item) {
+        if (this.user.getStatus().contains(ROLE_ADMIN)) {
+            return true;
+        } else {
+            return item.getCreator().equals(this.user.getId());
+        }
     }
 
 
@@ -154,12 +164,14 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         this.currentObject = service.show(id);
-        this.addItemAttributesEdit(model, currentObject);
+        if (checkAccess(this.currentObject)) {
+            this.addItemAttributesEdit(model, currentObject);
 
-        if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
-            return "editPart";
-        }
-        return "edit";
+            if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
+                return "editPart";
+            }
+            return "edit";
+        } else return "redirect:/" + category + "/" + id;
     }
 
     @PostMapping("/{id}/edit")
@@ -192,12 +204,14 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     public String delete(@PathVariable("id") Long id,
                          Principal principal) {
         this.checkUser(principal);
-        userService.delCreatedItem(user,
-                new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
-        service.delete(id);
-        logger.info(thisClassNewObject.getClass().getSimpleName() +
-                " id:" + id + " was deleted by '" + user.getUsername() + "'");
-        return "redirect:/" + category;
+        if (checkAccess(this.currentObject)) {
+            userService.delCreatedItem(user,
+                    new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
+            service.delete(id);
+            logger.info(thisClassNewObject.getClass().getSimpleName() +
+                    " id:" + id + " was deleted by '" + user.getUsername() + "'");
+            return "redirect:/" + category;
+        } else return "redirect:/" + category + "/" + id;
     }
 
     @GetMapping(value = "/pdf")
@@ -240,7 +254,8 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
 
     /**
      * Searching matching in Name and Description. Case is ignored. ResultSet is formed considering creator`s id.
-     * @param value string to search
+     *
+     * @param value     string to search
      * @param model
      * @param principal
      * @return
@@ -250,6 +265,12 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         this.checkUser(principal);
         Set<T> resultSet = new HashSet<>(this.service.findByNameContainingIgnoreCase(value));
         resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
+
+        /*ToDo
+        - optimize serch for shared items.
+        flag in form??
+        Admin search
+         */
 
         resultSet = resultSet.stream()
                 .filter(item -> item.getCreator().equals(this.user.getId()))

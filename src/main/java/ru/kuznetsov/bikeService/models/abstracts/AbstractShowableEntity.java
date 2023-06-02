@@ -42,6 +42,9 @@ public abstract class AbstractShowableEntity
     @Column(name = "creator")
     protected Long creator;
 
+    @Column(name = "isShared")
+    protected boolean isShared;
+
     public AbstractShowableEntity() {
     }
 
@@ -113,6 +116,14 @@ public abstract class AbstractShowableEntity
 
     public void setCreator(Long creator) {
         this.creator = creator;
+    }
+
+    public boolean getIsShared() {
+        return isShared;
+    }
+
+    public void setIsShared(boolean shared) {
+        isShared = shared;
     }
 
     @Override

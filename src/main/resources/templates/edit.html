@@ -40,6 +40,8 @@
                     <span style="color:red" th:errors="*{description}"
                           th:if="${#fields.hasErrors('description')}"></span>
                     <br/>
+                    <label for="isShared">Показать всем:</label>
+                    <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
                 </div>
                 <div class="col-5-2-no-boarders">
                     <label for="link">Ссылка:</label>

@@ -35,10 +35,12 @@
                 <p th:text="${object.getValueName()} + ' - ' + ${object.getValue()}"></p>
                 <p th:text="${object.getDescription()}"></p>
                 <div class="container-buttons">
-                    <form th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}">
+                    <form th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}"
+                          th:if="${access == true}">
                         <button th:type="submit">Редактировать</button>
                     </form>
-                    <form th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}" th:method="POST">
+                    <form th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}"
+                          th:if="${access == true}" th:method="POST">
                         <button th:type="submit">Удалить</button>
                     </form>
                     <a th:href="@{|/${category}/pdf?id=${object.getId()}|}">
@@ -83,7 +85,7 @@
                     <tr th:each="document : ${documents}">
                         <td>
                             <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
-                               th:text="${document.getKey().getName()} + ' ' + ${document.getValue()}"></a>
+                               th:text="${document.getKey().getName()}"></a>
                         </td>
                     </tr>
                     </tbody>
@@ -100,7 +102,7 @@
                     <tr th:each="tool : ${tools}">
                         <td>
                             <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
-                               th:text="${tool.getKey().getName()} + ' ' + ${tool.getValue()}"></a>
+                               th:text="${tool.getKey().getName()}"></a>
                         </td>
                     </tr>
                     </tbody>
@@ -146,6 +148,7 @@
         <div class="col-1-1-no-boarder">
             <ul>
                 <li th:text="'ID - ' + ${object.getId()}"></li>
+                <li th:text="'IsShared - ' + ${object.getIsShared()}"></li>
                 <li th:text="'Name - ' + ${object.getName()}"></li>
                 <li th:if="${type == 'Usable'} or ${type == 'Serviceable'}"
                     th:text="'Manufacturer - ' + ${manufacture}"></li>

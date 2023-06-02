@@ -41,6 +41,8 @@
                     <span style="color:red" th:errors="*{description}"
                           th:if="${#fields.hasErrors('description')}"></span>
                     <br/>
+                    <label for="isShared">Показать всем:</label>
+                    <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
                 </div>
                 <div class="col-5-2-no-boarders">
                     <label for="link">Ссылка:</label>
@@ -119,7 +121,7 @@
                     <br/>
                     <label for="allParts">Выберите запчасть:</label>
                     <div th:object="${allParts}">
-                        <select id="allParts" th:name="partId">
+                        <select id="allParts" style="width: 175px" th:name="partId">
                             <option th:each="item : ${allParts}"
                                     th:if="!${item.getId() == object.getId() and category == 'parts'}"
                                     th:text="${item.getName()}"
@@ -136,7 +138,7 @@
                     <br/>
                     <label for="documents">Выберите документ:</label>
                     <div th:object="${allDocuments}">
-                        <select id="documents" th:name="documentId">
+                        <select id="documents" style="width: 175px" th:name="documentId">
                             <option th:each="item : ${allDocuments}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -152,7 +154,7 @@
                     <br/>
                     <label for="tools">Выберите инструмент:</label>
                     <div th:object="${allTools}">
-                        <select id="tools" th:name="toolId">
+                        <select id="tools" style="width: 175px" th:name="toolId">
                             <option th:each="item : ${allTools}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -168,7 +170,7 @@
                     <br/>
                     <label for="fasteners">Выберите крепёж:</label>
                     <div th:object="${allFasteners}">
-                        <select id="fasteners" th:name="fastenerId">
+                        <select id="fasteners" style="width: 175px" th:name="fastenerId">
                             <option th:each="item : ${allFasteners}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -187,7 +189,7 @@
                     <br/>
                     <label for="consumables">Выберите расходник:</label>
                     <div th:object="${allConsumables}">
-                        <select id="consumables" th:name="consumableId">
+                        <select id="consumables" style="width: 175px" th:name="consumableId">
                             <option th:each="item : ${allConsumables}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -238,7 +240,7 @@
                     <tr th:each="document : ${documents}">
                         <td>
                             <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
-                               th:text="${document.getKey().getName()} + ' ' + ${document.getValue()}"></a>
+                               th:text="${document.getKey().getName()}"></a>
                         </td>
                     </tr>
                     </tbody>
@@ -255,7 +257,7 @@
                     <tr th:each="tool : ${tools}">
                         <td>
                             <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
-                               th:text="${tool.getKey().getName()} + ' ' + ${tool.getValue()}"></a>
+                               th:text="${tool.getKey().getName()}"></a>
                         </td>
                     </tr>
                     </tbody>

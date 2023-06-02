@@ -12,5 +12,7 @@ public interface Showable {
     void setPicture(Long id);
     Long getCreator();
     void setCreator(Long id);
+    boolean getIsShared();
+    void setIsShared(boolean shared);
     String getCredentials();
 }
