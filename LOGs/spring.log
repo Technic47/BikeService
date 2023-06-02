@@ -666,3 +666,71 @@ java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.a
 2023-06-02T00:49:07.218+03:00  INFO 41980 --- [http-nio-8080-exec-5] BikeServiceLogger                        : parts are shown to pavel
 2023-06-02T00:49:08.927+03:00  INFO 41980 --- [http-nio-8080-exec-10] BikeServiceLogger                        : parts 6 was shown to 'pavel'
 2023-06-02T00:49:50.796+03:00  INFO 41980 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-02T15:17:52.428+03:00  INFO 5204 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 5204 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-06-02T15:17:52.431+03:00  INFO 5204 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-06-02T15:17:53.157+03:00  INFO 5204 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-02T15:17:53.264+03:00  INFO 5204 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 94 ms. Found 9 JPA repository interfaces.
+2023-06-02T15:17:54.249+03:00  INFO 5204 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-02T15:17:54.263+03:00  INFO 5204 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-02T15:17:54.263+03:00  INFO 5204 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-06-02T15:17:54.412+03:00  INFO 5204 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-02T15:17:54.413+03:00  INFO 5204 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1921 ms
+2023-06-02T15:17:54.534+03:00  INFO 5204 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: private void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-06-02T15:17:54.909+03:00  INFO 5204 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-02T15:17:54.969+03:00  INFO 5204 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-06-02T15:17:55.457+03:00  INFO 5204 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-06-02T15:17:57.091+03:00  INFO 5204 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-02T15:17:57.105+03:00  INFO 5204 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-02T15:17:57.490+03:00  WARN 5204 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-06-02T15:17:57.656+03:00  WARN 5204 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-06-02T15:17:58.690+03:00  WARN 5204 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-02T15:17:59.046+03:00  INFO 5204 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@64acf8d2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@112a50a1, org.springframework.security.web.context.SecurityContextHolderFilter@5a95aaae, org.springframework.security.web.header.HeaderWriterFilter@6277a496, org.springframework.security.web.authentication.logout.LogoutFilter@32153bbe, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@70dd79f7, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@cc91fe3, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@6258f9d1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7402bfe7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d5958d3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3f31892e, org.springframework.security.web.access.ExceptionTranslationFilter@2d399e88, org.springframework.security.web.access.intercept.AuthorizationFilter@5923210]
+2023-06-02T15:17:59.558+03:00  WARN 5204 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2023-06-02T15:17:59.562+03:00  INFO 5204 --- [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-02T15:17:59.566+03:00  INFO 5204 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2023-06-02T15:17:59.585+03:00  INFO 5204 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2023-06-02T15:17:59.611+03:00 ERROR 5204 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2023-06-02T15:18:13.530+03:00  INFO 34404 --- [main] ru.kuznetsov.bikeService.Starter         : Starting Starter using Java 19 with PID 34404 (C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService\target\classes started by Techn in C:\Users\Techn\Documents\JavaProjects\BikeServiceStuff\bikeService)
+2023-06-02T15:18:13.532+03:00  INFO 34404 --- [main] ru.kuznetsov.bikeService.Starter         : The following 1 profile is active: "dev"
+2023-06-02T15:18:14.191+03:00  INFO 34404 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-02T15:18:14.289+03:00  INFO 34404 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 88 ms. Found 9 JPA repository interfaces.
+2023-06-02T15:18:15.171+03:00  INFO 34404 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-02T15:18:15.182+03:00  INFO 34404 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-02T15:18:15.182+03:00  INFO 34404 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-06-02T15:18:15.302+03:00  INFO 34404 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-02T15:18:15.303+03:00  INFO 34404 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1718 ms
+2023-06-02T15:18:15.428+03:00  INFO 34404 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation should only be used on methods with parameters: private void ru.kuznetsov.bikeService.config.SpringConfig.setUploadPath()
+2023-06-02T15:18:15.826+03:00  INFO 34404 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-02T15:18:15.887+03:00  INFO 34404 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-06-02T15:18:16.373+03:00  INFO 34404 --- [main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2023-06-02T15:18:17.984+03:00  INFO 34404 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-02T15:18:17.998+03:00  INFO 34404 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-02T15:18:18.417+03:00  WARN 34404 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository
+2023-06-02T15:18:18.605+03:00  WARN 34404 --- [main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.repositories.UserRepository
+2023-06-02T15:18:19.747+03:00  WARN 34404 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-02T15:18:20.100+03:00  INFO 34404 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4b37d1a4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@34114276, org.springframework.security.web.context.SecurityContextHolderFilter@1d126f07, org.springframework.security.web.header.HeaderWriterFilter@57777c23, org.springframework.security.web.authentication.logout.LogoutFilter@34be7efb, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5a941fb4, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@42db3ff, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@73c6ae15, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@f2b4303, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@23dda7a3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5923210, org.springframework.security.web.access.ExceptionTranslationFilter@6d94a966, org.springframework.security.web.access.intercept.AuthorizationFilter@893081e]
+2023-06-02T15:18:20.630+03:00  INFO 34404 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-02T15:18:20.642+03:00  INFO 34404 --- [main] ru.kuznetsov.bikeService.Starter         : Started Starter in 7.681 seconds (process running for 8.574)
+2023-06-02T15:18:28.408+03:00  INFO 34404 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-02T15:18:28.408+03:00  INFO 34404 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-02T15:18:28.410+03:00  INFO 34404 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-06-02T15:18:34.391+03:00  INFO 34404 --- [http-nio-8080-exec-4] BikeServiceLogger                        : pavel logged in
+2023-06-02T15:18:36.311+03:00  INFO 34404 --- [http-nio-8080-exec-3] BikeServiceLogger                        : parts are shown to pavel
+2023-06-02T15:18:37.855+03:00  INFO 34404 --- [http-nio-8080-exec-6] BikeServiceLogger                        : parts 7 was shown to 'pavel'
+2023-06-02T15:18:38.950+03:00  WARN 34404 --- [http-nio-8080-exec-7] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: ru.kuznetsov.bikeService.controllers.ServiceableController
+2023-06-02T15:21:21.443+03:00  INFO 34404 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'

@@ -32,6 +32,7 @@ services:
     container_name: app
     depends_on:
       - db
+    restart: always
     ports:
       - "8080:8080"
     volumes:
