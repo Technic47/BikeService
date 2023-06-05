@@ -254,12 +254,15 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     }
 
     /**
-     * Searching matching in Name and Description. Case is ignored. ResultSet is formed considering creator`s id.
+     * Searching matching in Name and Description. Case is ignored. ResultSet is formed considering current user`s ROLE.
+     * If user is ADMIN -> no filtering.
+     * Else -> filtering remains shared and ID-filtered items, or just ID-filtered items.
      *
-     * @param value     string to search
+     * @param value     string to search.
+     * @param shared    flag for including shared items to resultSet.
      * @param model
      * @param principal
-     * @return
+     * @return "index" page with search results.
      */
     @GetMapping(value = "/search")
     public String search(@RequestParam(value = "value") String value,

@@ -44,12 +44,14 @@
                     <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
                 </div>
                 <div class="col-5-2-no-boarders">
-                    <label for="link">Ссылка:</label>
-                    <br/>
-                    <input id="link" th:field="*{link}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
-                    <br/>
+                    <div th:if="${category != 'documents'}">
+                        <label for="link">Ссылка:</label>
+                        <br/>
+                        <input id="link" th:field="*{link}" type="text"/>
+                        <br/>
+                        <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
+                        <br/>
+                    </div>
                     <label for="value" th:text="${object.getValueName()}">:</label>
                     <br/>
                     <input id="value" th:field="*{value}" type="text"/>

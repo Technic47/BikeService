@@ -32,7 +32,8 @@
                    th:text="${object.getLink()}"></a>
                 <p th:if="${type == 'Usable'} or ${type == 'Serviceable'}"
                    th:text="${manufacture} + ' ' + ${object.getModel()}"></p>
-                <p th:text="${object.getValueName()} + ' - ' + ${object.getValue()}"></p>
+                <p th:if="${category != 'documents'}"
+                        th:text="${object.getValueName()} + ' - ' + ${object.getValue()}"></p>
                 <p th:text="${object.getDescription()}"></p>
                 <div class="container-buttons">
                     <form th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}"
@@ -164,6 +165,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>
