@@ -43,7 +43,7 @@ public abstract class AbstractShowableEntity
     protected Long creator;
 
     @Column(name = "isShared")
-    protected boolean isShared;
+    protected boolean isShared = false;
 
     public AbstractShowableEntity() {
     }
