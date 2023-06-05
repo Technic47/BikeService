@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
-import org.springframework.data.repository.query.Param;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 import java.util.List;
@@ -21,12 +20,12 @@ public interface CommonAbstractEntityService<E extends AbstractShowableEntity>
      * @param string search value
      * @return list of matching records.
      */
-    List<E> findByNameContainingIgnoreCase(@Param("name")String string);
+    List<E> findByNameContainingIgnoreCase(String string);
 
     /**
      * Find records containing argument String in Description field.
      * @param string search value
      * @return list of matching records.
      */
-    List<E> findByDescriptionContainingIgnoreCase(@Param("description")String string);
+    List<E> findByDescriptionContainingIgnoreCase(String string);
 }

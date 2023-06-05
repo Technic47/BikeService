@@ -84,6 +84,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
         }
         model.addAttribute("objects", this.itemMap);
         model.addAttribute("category", category);
+        model.addAttribute("sharedCheck", false);
         return "index";
     }
 
@@ -261,22 +262,26 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
      * @return
      */
     @GetMapping(value = "/search")
-    public String search(@RequestParam(value = "value") String value, Model model, Principal principal) {
+    public String search(@RequestParam(value = "value") String value,
+                         @RequestParam(value = "shared", required = false) boolean shared,
+                         Model model,
+                         Principal principal) {
         this.checkUser(principal);
-        Set<T> resultSet = new HashSet<>(this.service.findByNameContainingIgnoreCase(value));
-        resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
-
-        /*ToDo
-        - optimize serch for shared items.
-        flag in form??
-        Admin search
-         */
-
-        resultSet = resultSet.stream()
-                .filter(item -> item.getCreator().equals(this.user.getId()))
-                .collect(Collectors.toSet());
         this.itemMap.clear();
-
+        Set<T> resultSet = new HashSet<>();
+        resultSet.addAll(this.service.findByNameContainingIgnoreCase(value));
+        resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
+        if (!this.user.getStatus().contains(ROLE_ADMIN)) {
+            if (shared) {
+                resultSet = resultSet.stream()
+                        .filter(item -> item.getCreator().equals(this.user.getId()) || item.getIsShared())
+                        .collect(Collectors.toSet());
+            } else {
+                resultSet = resultSet.stream()
+                        .filter(item -> item.getCreator().equals(this.user.getId()))
+                        .collect(Collectors.toSet());
+            }
+        }
         resultSet.forEach(item -> this.itemMap.put(item, pictureService.show(item.getPicture()).getName()));
 
         model.addAttribute("objects", this.itemMap);

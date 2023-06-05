@@ -25,8 +25,11 @@
             Созданные вами позиции:
         </h3>
         <form method="get" th:action="@{/{link}/search(link=${category})}">
-            <input th:name="value" th:type="text"/>
+            <input for="" th:name="value" th:type="text"/>
             <button th:type="submit">Найти</button>
+            <br/>
+            <label for="isShared">Включить общие позиции:</label>
+            <input id="isShared" th:checked="${sharedCheck}" th:name="shared" type="checkbox"/>
         </form>
         <br/>
         <form method="get" th:action="@{/{link}(link=${category})}">
