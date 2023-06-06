@@ -44,9 +44,8 @@ public abstract class AbstractUsableEntity extends AbstractShowableEntity implem
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AbstractUsableEntity)) return false;
+        if (!(o instanceof AbstractUsableEntity that)) return false;
         if (!super.equals(o)) return false;
-        AbstractUsableEntity that = (AbstractUsableEntity) o;
         return Objects.equals(manufacturer, that.manufacturer) && Objects.equals(model, that.model);
     }
 

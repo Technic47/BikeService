@@ -1,6 +1,9 @@
 package ru.kuznetsov.bikeService.models;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Document;
@@ -11,14 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.kuznetsov.bikeService.TestCredentials.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ModelTests {
+    private final Part part = new Part();
     @Test
+    @Order(1)
     void creationTest() {
-        Part part = new Part();
-
         part.setId(TEST_ID);
         part.setName(TEST_NAME);
         part.setDescription(TEST_DESCRIPTION);
@@ -29,15 +33,21 @@ public class ModelTests {
         part.setManufacturer(TEST_MANUFACTURER_ID);
         part.setModel(TEST_MODEL);
 
-        assertEquals(TEST_ID, TEST_PART.getId());
-        assertEquals(TEST_NAME, TEST_PART.getName());
-        assertEquals(TEST_DESCRIPTION, TEST_PART.getDescription());
-        assertEquals(TEST_PICTURE, TEST_PART.getPicture());
-        assertEquals(TEST_LINK, TEST_PART.getLink());
-        assertEquals(TEST_VALUE, TEST_PART.getValue());
-        assertEquals(TEST_CREATOR, TEST_PART.getCreator());
-        assertEquals(TEST_MANUFACTURER_ID, TEST_PART.getManufacturer());
-        assertEquals(TEST_MODEL, TEST_PART.getModel());
+        assertEquals(TEST_ID, part.getId());
+        assertEquals(TEST_NAME, part.getName());
+        assertEquals(TEST_DESCRIPTION, part.getDescription());
+        assertEquals(TEST_PICTURE, part.getPicture());
+        assertEquals(TEST_LINK, part.getLink());
+        assertEquals(TEST_VALUE, part.getValue());
+        assertEquals(TEST_CREATOR, part.getCreator());
+        assertEquals(TEST_MANUFACTURER_ID, part.getManufacturer());
+        assertEquals(TEST_MODEL, part.getModel());
+        assertFalse(part.getIsShared());
+        assertEquals(this.part, TEST_PART);
+
+        this.part.setId(33L);
+
+        assertNotEquals(this.part, TEST_PART);
     }
 
     @Test

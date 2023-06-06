@@ -129,14 +129,16 @@ public abstract class AbstractShowableEntity
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AbstractShowableEntity)) return false;
-        AbstractShowableEntity that = (AbstractShowableEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(picture, that.picture) && Objects.equals(link, that.link) && Objects.equals(value, that.value) && Objects.equals(valueName, that.valueName) && Objects.equals(creator, that.creator);
+        if (!(o instanceof AbstractShowableEntity that)) return false;
+        return id.equals(that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(description, that.description)
+                && Objects.equals(creator, that.creator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, picture, link, value, valueName, creator);
+        return Objects.hash(id, name, description,creator);
     }
 
     @Override

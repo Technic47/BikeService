@@ -42,9 +42,8 @@ public class Bike extends AbstractServiceableEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Bike)) return false;
+        if (!(o instanceof Bike bike)) return false;
         if (!super.equals(o)) return false;
-        Bike bike = (Bike) o;
         return Objects.equals(linkedParts, bike.linkedParts);
     }
 

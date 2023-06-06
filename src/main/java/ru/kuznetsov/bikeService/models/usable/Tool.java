@@ -19,16 +19,4 @@ public class Tool extends AbstractUsableEntity {
     public String getValueName() {
         return "Размерность";
     }
-
-    @Override
-    public String toString() {
-        return "Tool{" +
-                ", model='" + model + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                ", value='" + value + '\'' +
-                ", valueName='" + valueName + '\'' +
-                '}';
-    }
 }

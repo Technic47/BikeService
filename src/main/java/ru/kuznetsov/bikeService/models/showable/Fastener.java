@@ -19,15 +19,4 @@ public class Fastener extends AbstractShowableEntity {
     public String getValueName() {
         return "Характеристики";
     }
-
-    @Override
-    public String toString() {
-        return "Fastener{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                ", value='" + value + '\'' +
-                ", valueName='" + valueName + '\'' +
-                '}';
-    }
 }

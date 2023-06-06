@@ -42,9 +42,8 @@ public class Part extends AbstractServiceableEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Part)) return false;
+        if (!(o instanceof Part part)) return false;
         if (!super.equals(o)) return false;
-        Part part = (Part) o;
         return Objects.equals(linkedItems, part.linkedItems);
     }
 

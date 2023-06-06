@@ -23,16 +23,6 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
                 ", model='" + model + '\'' +

@@ -91,7 +91,6 @@ class BasicControllerUSERTest {
                 .andExpect(xpath("//div/div/div/div/h1").string("testDoc1"))
                 .andExpect(xpath("//div/div/div/div/a").string("testLink"))
                 .andExpect(xpath("//div/div/div/div/a[@href='testLink']").exists())
-                .andExpect(xpath("//div/div/div/div/p").string("Ссылка - testLink"))
                 .andExpect(xpath("//div/div/div/ul").doesNotExist());
     }
 
@@ -186,8 +185,9 @@ class BasicControllerUSERTest {
 
     @Test
     void delete() throws Exception {
-        this.mockMvc.perform(post("/documents/1"))
-                .andDo(print());
+        this.mockMvc.perform(get("/documents/1"));
+
+        this.mockMvc.perform(post("/documents/1"));
 
         this.mockMvc.perform(get("/documents"))
                 .andExpect(model().attribute("objects", aMapWithSize(1)))

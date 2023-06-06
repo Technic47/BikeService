@@ -18,16 +18,4 @@ public class Consumable extends AbstractUsableEntity {
     public String getValueName() {
         return "Объём";
     }
-
-    @Override
-    public String toString() {
-        return "Consumable{" +
-                ", model='" + model + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                ", value='" + value + '\'' +
-                ", valueName='" + valueName + '\'' +
-                '}';
-    }
 }

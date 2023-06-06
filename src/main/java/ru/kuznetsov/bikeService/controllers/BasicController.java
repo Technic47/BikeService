@@ -93,11 +93,11 @@ public class BasicController<T extends AbstractShowableEntity,
     public String show(@PathVariable("id") Long id,
                        Principal principal,
                        Model model) {
+        this.checkUser(principal);
         this.currentObject = service.show(id);
         model.addAttribute("picture", pictureService.show(currentObject.getPicture()).getName());
         this.addItemAttributesShow(model, currentObject);
         model.addAttribute("access", checkAccess(currentObject));
-        this.checkUser(principal);
         logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
         return "show";
     }

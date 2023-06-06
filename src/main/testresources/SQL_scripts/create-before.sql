@@ -26,31 +26,31 @@ VALUES (DEFAULT, 'test'),
        (DEFAULT, 'test2'),
        (DEFAULT, 'test3');
 
-INSERT INTO bikeservicetest.public.documents(id, creator, description, link, name, picture, value)
-VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testDoc1', 1, 'testValue'),
-       (DEFAULT, 1, 'test', 'test', 'testDoc2', 1, 'test'),
-       (DEFAULT, 2, 'test', 'test', 'testDoc3', 1, 'test'),
-       (DEFAULT, 2, 'test', 'test', 'testDoc4', 1, 'test'),
-       (DEFAULT, 2, 'test', 'test', 'testDoc5', 1, 'test');
+INSERT INTO bikeservicetest.public.documents(id, creator, description, link, name, picture, value, is_shared)
+VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testDoc1', 1, 'testValue', false),
+       (DEFAULT, 1, 'test', 'test', 'testDoc2', 1, 'test', false),
+       (DEFAULT, 2, 'test', 'test', 'testDoc3', 1, 'test', false),
+       (DEFAULT, 2, 'test', 'test', 'testDoc4', 1, 'test', false),
+       (DEFAULT, 2, 'test', 'test', 'testDoc5', 1, 'test', false);
 
-INSERT INTO bikeservicetest.public.fasteners(id, creator, description, link, name, picture, value)
-VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testFast1', 1, 'testValue');
+INSERT INTO bikeservicetest.public.fasteners(id, creator, description, link, name, picture, value, is_shared)
+VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testFast1', 1, 'testValue', false);
 
-INSERT INTO bikeservicetest.public.consumables(id, creator, description, link, name, picture, value)
-VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testCons1', 1, 'testValue');
+INSERT INTO bikeservicetest.public.consumables(id, creator, description, link, name, picture, value, is_shared)
+VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testCons1', 1, 'testValue', false);
 
-INSERT INTO bikeservicetest.public.tools(id, creator, description, link, name, picture, value)
-VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testTool1', 1, 'testValue');
+INSERT INTO bikeservicetest.public.tools(id, creator, description, link, name, picture, value, is_shared)
+VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testTool1', 1, 'testValue', false);
 
-INSERT INTO bikeservicetest.public.manufacturers(id, creator, description, link, name, picture, value)
-VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testManufacture', 1, 'testValue');
+INSERT INTO bikeservicetest.public.manufacturers(id, creator, description, link, name, picture, value, is_shared)
+VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testManufacture', 1, 'testValue', false);
 
-INSERT INTO bikeservicetest.public.parts(id, creator, description, link, name, picture, value, manufacturer, model)
-VALUES (DEFAULT, 1, 'test', 'test', 'testPart1', 1, 'test', 1, 'testModel'),
-       (DEFAULT, 1, 'test', 'test', 'testPart2', 1, 'test', 1, 'test'),
-       (DEFAULT, 2, 'test', 'test', 'testPart3', 1, 'test', 1, 'test'),
-       (DEFAULT, 2, 'test', 'test', 'testPart4', 1, 'test', 1, 'test'),
-       (DEFAULT, 2, 'test', 'test', 'testPart5', 1, 'test', 1, 'test');
+INSERT INTO bikeservicetest.public.parts(id, creator, description, link, name, picture, value, manufacturer, model, is_shared)
+VALUES (DEFAULT, 1, 'test', 'test', 'testPart1', 1, 'test', 1, 'testModel', false),
+       (DEFAULT, 1, 'test', 'test', 'testPart2', 1, 'test', 1, 'test', false),
+       (DEFAULT, 2, 'test', 'test', 'testPart3', 1, 'test', 1, 'test', false),
+       (DEFAULT, 2, 'test', 'test', 'testPart4', 1, 'test', 1, 'test', false),
+       (DEFAULT, 2, 'test', 'test', 'testPart5', 1, 'test', 1, 'test', false);
 
 INSERT INTO bikeservicetest.public.part_item(part_id, amount, item_id, part_type, type)
 VALUES (1, 1, 1, 'Part', 'Document'),

@@ -18,15 +18,4 @@ public class Manufacturer extends AbstractShowableEntity {
     public String getValueName() {
         return "Страна";
     }
-
-    @Override
-    public String toString() {
-        return "Manufacturer{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                ", value='" + value + '\'' +
-                ", valueName='" + valueName + '\'' +
-                '}';
-    }
 }

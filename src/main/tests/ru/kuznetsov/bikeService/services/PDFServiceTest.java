@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.kuznetsov.bikeService.TestCredentials.*;
+import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.PDF_DOC_PATH;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
@@ -74,9 +75,9 @@ class PDFServiceTest {
                 .addImage("testImage.jpg")
                 .build(TEST_FASTENER);
 
-        File formedFile = new File("FormedList.pdf");
+        File formedFile = new File(PDF_DOC_PATH);
 
-        PdfReader reader = new PdfReader("FormedList.pdf");
+        PdfReader reader = new PdfReader(PDF_DOC_PATH);
         int pages = reader.getNumberOfPages();
         StringBuilder text = new StringBuilder();
         for (int i = 1; i <= pages; i++) {
@@ -97,9 +98,9 @@ class PDFServiceTest {
                 .addManufactorer(TEST_MANUFACTURER)
                 .build(TEST_TOOL);
 
-        File formedFile = new File("FormedList.pdf");
+        File formedFile = new File(PDF_DOC_PATH);
 
-        PdfReader reader = new PdfReader("FormedList.pdf");
+        PdfReader reader = new PdfReader(PDF_DOC_PATH);
         int pages = reader.getNumberOfPages();
         StringBuilder text = new StringBuilder();
         for (int i = 1; i <= pages; i++) {
@@ -130,9 +131,9 @@ class PDFServiceTest {
                 .addServiceList(list)
                 .build(TEST_PART);
 
-        File formedFile = new File("FormedList.pdf");
+        File formedFile = new File(PDF_DOC_PATH);
 
-        PdfReader reader = new PdfReader("FormedList.pdf");
+        PdfReader reader = new PdfReader(PDF_DOC_PATH);
         int pages = reader.getNumberOfPages();
         StringBuilder text = new StringBuilder();
         for (int i = 1; i <= pages; i++) {
@@ -155,11 +156,9 @@ class PDFServiceTest {
     @Order(9)
     void cleanTest() throws IOException {
         this.buildShowable();
-        String path = "FormedList.pdf";
+        assertTrue(new File(PDF_DOC_PATH).exists());
 
-        assertTrue(new File(path).exists());
-
-        assertFalse(service.clean(path));
+        assertFalse(service.clean(PDF_DOC_PATH));
     }
 
     @Test
