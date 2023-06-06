@@ -37,7 +37,6 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         Set<PartEntity> entitySet = item.getLinkedItems();
 
         Optional<PartEntity> searchItem = entitySet.stream()
-                .parallel()
                 .filter(part -> part.equals(entity))
                 .findFirst();
 
@@ -55,7 +54,6 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         } else {
             entitySet.add(entity);
         }
-
         repository.save(item);
     }
 
@@ -70,7 +68,6 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
     public void delFromLinkedItems(E item, PartEntity entity) {
         Set<PartEntity> entitySet = item.getLinkedItems();
         Optional<PartEntity> searchItem = entitySet.stream()
-                .parallel()
                 .filter(part -> part.equals(entity))
                 .findFirst();
 

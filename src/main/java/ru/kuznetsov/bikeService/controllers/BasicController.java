@@ -34,7 +34,8 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 @Component
 @Scope("prototype")
-public class BasicController<T extends AbstractShowableEntity, S extends CommonAbstractEntityService<T>>
+public class BasicController<T extends AbstractShowableEntity,
+        S extends CommonAbstractEntityService<T>>
         extends AbstractController {
     protected final S service;
     protected T thisClassNewObject;
@@ -254,7 +255,7 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
     }
 
     /**
-     * Searching matching in Name and Description. Case is ignored. ResultSet is formed considering current user`s ROLE.
+     * Searching via matching in Name and Description. Case is ignored. ResultSet is formed considering current user`s ROLE.
      * If user is ADMIN -> no filtering.
      * Else -> filtering remains shared and ID-filtered items, or just ID-filtered items.
      *
@@ -271,13 +272,16 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                          Principal principal) {
         this.checkUser(principal);
         this.itemMap.clear();
+
         Set<T> resultSet = new HashSet<>();
         resultSet.addAll(this.service.findByNameContainingIgnoreCase(value));
         resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
+
         if (!this.user.getStatus().contains(ROLE_ADMIN)) {
             if (shared) {
                 resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(this.user.getId()) || item.getIsShared())
+                        .filter(item -> item.getCreator().equals(this.user.getId())
+                                || item.getIsShared())
                         .collect(Collectors.toSet());
             } else {
                 resultSet = resultSet.stream()
@@ -285,7 +289,8 @@ public class BasicController<T extends AbstractShowableEntity, S extends CommonA
                         .collect(Collectors.toSet());
             }
         }
-        resultSet.forEach(item -> this.itemMap.put(item, pictureService.show(item.getPicture()).getName()));
+        resultSet.forEach(item -> this.itemMap.put(item,
+                pictureService.show(item.getPicture()).getName()));
 
         model.addAttribute("objects", this.itemMap);
         model.addAttribute("category", category);

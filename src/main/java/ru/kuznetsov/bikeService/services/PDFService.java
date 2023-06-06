@@ -127,7 +127,10 @@ public class PDFService {
         this.document.add(part);
     }
 
-    private <T extends AbstractShowableEntity> void insertHeaderTable(T item){
+    /*
+    Table former for header of document
+     */
+    private <T extends AbstractShowableEntity> void insertHeaderTable(T item) {
         try {
             PdfPTable table = new PdfPTable(2);
 
@@ -139,7 +142,8 @@ public class PDFService {
             content.setBorder(Rectangle.NO_BORDER);
             content.setHorizontalAlignment(Element.ALIGN_CENTER);
             content.addElement(new Paragraph(item.getName(), bigFont));
-            content.addElement(new Paragraph(item.getValueName() + " " + item.getValue(), commonFont));
+            content.addElement(new Paragraph(item.getValueName()
+                    + " " + item.getValue(), commonFont));
             content.addElement(new Paragraph(item.getDescription(), commonFont));
 
             table.addCell(imageCell);
@@ -151,8 +155,8 @@ public class PDFService {
         }
     }
 
-    /**
-     * Table former for serviceList
+    /*
+    Table former for serviceList
      */
     private void insertServiceTable() {
         try {
