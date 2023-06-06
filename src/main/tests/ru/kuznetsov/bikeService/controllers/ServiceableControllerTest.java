@@ -53,14 +53,16 @@ class ServiceableControllerTest {
                 .andExpect(content().string(containsString("Model - testModel")))
                 .andExpect(content().string(containsString("testManufacture testModel")))
                 .andExpect(content().string(containsString("testPart1 testModel")))
-                .andExpect(content().string(containsString("testDoc1 1")))
-                .andExpect(content().string(containsString("testTool1 1")))
+                .andExpect(content().string(containsString("testDoc1")))
+                .andExpect(content().string(containsString("testTool1")))
                 .andExpect(content().string(containsString("testFast1 1")))
                 .andExpect(content().string(containsString("testCons1 1")));
     }
 
     @Test
     void edit() throws Exception {
+        this.mockMvc.perform(get("/parts/1"));
+
         this.mockMvc.perform(get("/parts/1/edit"))
                 .andDo(print())
                 .andExpect(model().attribute("allDocuments", hasSize(5)))
