@@ -57,10 +57,22 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         return this.repository.findByCreatorOrIsShared(id, true);
     }
 
+    /**
+     * Find records containing argument String in Name field.
+     *
+     * @param string search value
+     * @return list of matching records.
+     */
     public List<E> findByNameContainingIgnoreCase(String string) {
         return this.repository.findByNameContainingIgnoreCase(string);
     }
 
+    /**
+     * Find records containing argument String in Description field.
+     *
+     * @param string search value
+     * @return list of matching records.
+     */
     public List<E> findByDescriptionContainingIgnoreCase(String string) {
         return this.repository.findByDescriptionContainingIgnoreCase(string);
     }

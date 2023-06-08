@@ -145,17 +145,6 @@ public abstract class AbstractShowableEntity
         return Objects.hash(id, name, description, picture, link, value, valueName, creator, isShared);
     }
 
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                ", value='" + this.getValue() + '\'' +
-                ", valueName='" + this.getValueName() + '\'' +
-                '}';
-    }
-
     public String getCredentials() {
         return name +
                 ", " + this.getValueName() +

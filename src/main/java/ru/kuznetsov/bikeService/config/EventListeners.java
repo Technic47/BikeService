@@ -11,8 +11,8 @@ import ru.kuznetsov.bikeService.services.PictureService;
 
 @Component
 public class EventListeners {
-    private PictureService pictureService;
-    private ManufacturerService manufacturerService;
+    private final PictureService pictureService;
+    private final ManufacturerService manufacturerService;
 
     @Autowired
     public EventListeners(PictureService pictureService, ManufacturerService manufacturerService) {
@@ -20,9 +20,7 @@ public class EventListeners {
         this.manufacturerService = manufacturerService;
     }
 
-    /**
-     * Checking for default picture and manufacture in db.
-     */
+    //Checking for default picture and manufacture in db.
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
         System.out.println("Checking default picture...");

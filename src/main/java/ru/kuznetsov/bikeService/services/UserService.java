@@ -35,10 +35,9 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * Create user with ROLE_ADMIN
      *
      * @param userModel prepared user record
-     * @return false if user already exists.
      */
-    public boolean createAdmin(UserModel userModel) {
-        return this.constructRecordAndSave(userModel, ROLE_ADMIN);
+    public void createAdmin(UserModel userModel) {
+        this.constructRecordAndSave(userModel, ROLE_ADMIN);
     }
 
     private boolean constructRecordAndSave(UserModel userModel, UserRole role) {

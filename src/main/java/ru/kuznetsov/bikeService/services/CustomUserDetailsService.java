@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * Creates built in admin user and send it to DB.
+     * Creates built-in admin user and send it to DB.
      * Deletes admin credentials.
      */
     private void adminSave() {

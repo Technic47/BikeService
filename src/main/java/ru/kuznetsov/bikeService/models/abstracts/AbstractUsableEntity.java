@@ -53,16 +53,4 @@ public abstract class AbstractUsableEntity extends AbstractShowableEntity implem
     public int hashCode() {
         return Objects.hash(super.hashCode(), manufacturer, model);
     }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                "model='" + model + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                ", value='" + value + '\'' +
-                ", valueName='" + valueName + '\'' +
-                '}';
-    }
 }

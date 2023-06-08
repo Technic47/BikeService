@@ -15,22 +15,7 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
         super(id, name, description, picture, link, value, creator, manufacturer, model);
     }
 
-    public Set<PartEntity> getLinkedItems() {
-        return null;
-    }
+    abstract public Set<PartEntity> getLinkedItems();
 
-    public void setLinkedItems(Set<PartEntity> linkedItems) {
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                ", model='" + model + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", link='" + link + '\'' +
-                ", value='" + value + '\'' +
-                ", valueName='" + valueName + '\'' +
-                '}';
-    }
+    abstract public void setLinkedItems(Set<PartEntity> linkedItems);
 }
