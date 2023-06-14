@@ -10,15 +10,9 @@
 </head>
 <body>
 <script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
-<header class="header">
-    <h1>
-        <div sec:authentication="principal.username"></div>
-    </h1>
-    <nav>
-        <a th:href="@{/title}">На главную</a>
-        <a th:href="@{/logout}">Log out</a>
-    </nav>
-</header>
+
+<div th:insert="~{/header :: header}"></div>
+
 <div class="main">
     <div class="container">
         <form enctype="multipart/form-data"

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:fragment="header">
+    <h1>
+        <div sec:authentication="principal.username"></div>
+    </h1>
+    <nav>
+        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/pictures}">Изображения</a>
+        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users}">Пользователи</a>
+        <a th:href="@{/title}">На главную</a>
+        <a th:href="@{/logout}">Log out</a>
+    </nav>
+</header>
+
+</body>
+</html>

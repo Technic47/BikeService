@@ -80,5 +80,7 @@ public class SpringConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + UPLOAD_PATH + "/");
         registry.addResourceHandler("/preview/**")
                 .addResourceLocations("file:" + UPLOAD_PATH + "/preview/");
+        registry.addResourceHandler("/templates/**")
+                .addResourceLocations("classpath:/templates/**");
     }
 }
