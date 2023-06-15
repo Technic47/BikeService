@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru"
+<html lang="ru" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -26,8 +26,8 @@
                         <li th:text="'IsActive - ' + ${user.isActive()}"></li>
                         <li th:text="'Status - ' + ${user.getStatus().toString()}"></li>
                     </ul>
-                    <button th:name="admin" th:type="submit" th:value="1">Добавить роль администратора</button>
-                    <button th:name="admin" th:type="submit" th:value="0">Удалить роль администратора</button>
+                    <button sec:authorize="hasRole('ROLE_ADMIN')" th:name="admin" th:type="submit" th:value="1">Добавить роль администратора</button>
+                    <button sec:authorize="hasRole('ROLE_ADMIN')" th:name="admin" th:type="submit" th:value="0">Удалить роль администратора</button>
                 </form>
             </div>
             <details>
@@ -81,9 +81,9 @@
                 </summary>
                 <table class="table-no-border">
                     <tbody>
-                    <tr th:each="item : ${comsumables}">
+                    <tr th:each="item : ${consumables}">
                         <td>
-                            <a th:href="@{/comsumables/{id}(id=${item.getId()})}"
+                            <a th:href="@{/consumables/{id}(id=${item.getId()})}"
                                th:text="${item.getCredentials()}"></a>
                         </td>
                     </tr>

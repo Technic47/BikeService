@@ -17,7 +17,6 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.PictureWork;
-import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.File;
@@ -43,7 +42,7 @@ public class BasicController<T extends AbstractShowableEntity,
     protected Map<T, String> itemMap;
     protected String currentObjectName;
     protected String category;
-    protected UserModel user;
+
 
 
     public BasicController(S service) {
@@ -84,8 +83,8 @@ public class BasicController<T extends AbstractShowableEntity,
             }
         }
         model.addAttribute("objects", this.itemMap);
-        model.addAttribute("category", category);
         model.addAttribute("sharedCheck", false);
+        this.addItemAttributesIndex(model);
         return "index";
     }
 
@@ -97,12 +96,12 @@ public class BasicController<T extends AbstractShowableEntity,
         this.currentObject = service.show(id);
         model.addAttribute("picture", pictureService.show(currentObject.getPicture()).getName());
         this.addItemAttributesShow(model, currentObject);
-        model.addAttribute("access", checkAccess(currentObject));
+        model.addAttribute("access", checkAccessToItem(currentObject));
         logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
         return "show";
     }
 
-    private boolean checkAccess(T item) {
+    private boolean checkAccessToItem(T item) {
         if (this.user.getStatus().contains(ROLE_ADMIN)) {
             return true;
         } else {
@@ -110,21 +109,24 @@ public class BasicController<T extends AbstractShowableEntity,
         }
     }
 
-
     @GetMapping(value = "/new")
     public String newItem(Model model) {
         this.addItemAttributesNew(model, thisClassNewObject);
         return "new";
     }
 
-    private void addItemAttributesShow(Model model, T item) {
+    private void addItemAttributesIndex(Model model) {
         model.addAttribute("category", category);
+    }
+
+    private void addItemAttributesShow(Model model, T item) {
         model.addAttribute("object", item);
         switch (category) {
             case "parts", "bikes" -> model.addAttribute("type", "Serviceable");
             case "tools", "consumables" -> model.addAttribute("type", "Usable");
             case "documents", "fasteners", "manufacturers" -> model.addAttribute("type", "Showable");
         }
+        this.addItemAttributesIndex(model);
     }
 
     protected void addItemAttributesNew(Model model, T item) {
@@ -166,7 +168,7 @@ public class BasicController<T extends AbstractShowableEntity,
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
         this.currentObject = service.show(id);
-        if (checkAccess(this.currentObject)) {
+        if (checkAccessToItem(this.currentObject)) {
             this.addItemAttributesEdit(model, currentObject);
 
             if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
@@ -206,7 +208,7 @@ public class BasicController<T extends AbstractShowableEntity,
     public String delete(@PathVariable("id") Long id,
                          Principal principal) {
         this.checkUser(principal);
-        if (checkAccess(this.currentObject)) {
+        if (checkAccessToItem(this.currentObject)) {
             userService.delCreatedItem(user,
                     new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
             service.delete(id);
@@ -297,15 +299,5 @@ public class BasicController<T extends AbstractShowableEntity,
 
         logger.info(user.getUsername() + " was searching " + value + " in " + category);
         return "index";
-    }
-
-    private void checkUser(Principal principal) {
-        if (this.user == null) {
-            this.user = userService.findByName(principal.getName());
-        } else {
-            if (!Objects.equals(this.user.getUsername(), principal.getName())) {
-                this.user = userService.findByName(principal.getName());
-            }
-        }
     }
 }

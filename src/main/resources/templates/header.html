@@ -13,6 +13,7 @@
     <nav>
         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/pictures}">Изображения</a>
         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users}">Пользователи</a>
+        <a th:href="@{/users/show}">Профиль</a>
         <a th:href="@{/title}">На главную</a>
         <a th:href="@{/logout}">Log out</a>
     </nav>

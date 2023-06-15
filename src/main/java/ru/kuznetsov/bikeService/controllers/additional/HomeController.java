@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.controllers.additional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,18 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.UserService;
 
 import java.security.Principal;
 
 @Controller
 @RequestMapping("/")
 public class HomeController extends AbstractController {
-    @Autowired
-    public HomeController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping("/home")
     public String home() {
         return "home";
