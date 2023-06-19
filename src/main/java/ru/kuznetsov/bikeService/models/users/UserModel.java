@@ -1,6 +1,8 @@
 package ru.kuznetsov.bikeService.models.users;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
@@ -15,6 +17,8 @@ public class UserModel implements UserDetails {
     @Column(name = "id")
     private Long id;
     @Column(name = "username", unique = true)
+    @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 255)
     private String username;
     @Column(name = "active")
     private boolean active;

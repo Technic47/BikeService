@@ -86,7 +86,7 @@ public class UserController extends AbstractController {
             return "namePassChange";
         }
         this.userService.update(this.user, userModel);
-        return "/users_show";
+        return "redirect:/logout";
     }
 
     @PostMapping("/delete/{id}")

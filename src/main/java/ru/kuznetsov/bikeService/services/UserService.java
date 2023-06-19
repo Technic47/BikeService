@@ -106,13 +106,14 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
     public void update(UserModel oldItem, UserModel updateItem) {
-        UserBuilder builder = new UserBuilder(updateItem)
-                .setActive(oldItem.isActive())
-                .setRole(oldItem.getStatus())
-                .setCreatedItems(oldItem.getCreatedItems());
+        String newName = updateItem.getUsername();
+        if (!newName.isEmpty()) {
+            oldItem.setUsername(newName);
+        }
         if (!updateItem.getPassword().isEmpty()) {
-            builder.encodePassword(this.passwordEncoder);
-        } else builder.setPassword(oldItem.getPassword());
-        super.update(updateItem.getId(), builder.build());
+            String newPass = updateItem.getPassword();
+            oldItem.setPassword(this.passwordEncoder.encode(newPass));
+        }
+        this.save(oldItem);
     }
 }
