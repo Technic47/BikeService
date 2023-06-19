@@ -104,4 +104,15 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         user.getStatus().remove(UserRole.ROLE_ADMIN);
         repository.save(user);
     }
+
+    public void update(UserModel oldItem, UserModel updateItem) {
+        UserBuilder builder = new UserBuilder(updateItem)
+                .setActive(oldItem.isActive())
+                .setRole(oldItem.getStatus())
+                .setCreatedItems(oldItem.getCreatedItems());
+        if (!updateItem.getPassword().isEmpty()) {
+            builder.encodePassword(this.passwordEncoder);
+        } else builder.setPassword(oldItem.getPassword());
+        super.update(updateItem.getId(), builder.build());
+    }
 }

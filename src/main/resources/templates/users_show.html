@@ -29,6 +29,9 @@
                     <button sec:authorize="hasRole('ROLE_ADMIN')" th:name="admin" th:type="submit" th:value="1">Добавить роль администратора</button>
                     <button sec:authorize="hasRole('ROLE_ADMIN')" th:name="admin" th:type="submit" th:value="0">Удалить роль администратора</button>
                 </form>
+                <form th:action="@{/users/update}" th:method="GET">
+                    <button type="submit">Сменить имя или пароль</button>
+                </form>
             </div>
             <details>
                 <summary>

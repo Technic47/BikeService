@@ -1,17 +1,19 @@
 package ru.kuznetsov.bikeService.controllers.additional;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.*;
 
 import java.security.Principal;
 
 @Controller
-//@Secured("ROLE_ADMIN")
 @RequestMapping("/users")
 public class UserController extends AbstractController {
     private DocumentService documentService;
@@ -32,15 +34,17 @@ public class UserController extends AbstractController {
 
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String showToAdmin(@PathVariable("id") Long id, Model model) {
         this.addAllCreatedItems(model, id);
+        model.addAttribute("owner", false);
         return "users_show";
     }
 
     @GetMapping("/show")
-    public String showUser(Principal principal, Model model) {
+    public String showToOwner(Principal principal, Model model) {
         this.checkUser(principal);
         this.addAllCreatedItems(model, this.user.getId());
+        model.addAttribute("owner", true);
         return "users_show";
     }
 
@@ -64,6 +68,25 @@ public class UserController extends AbstractController {
             case 0 -> userService.adminToUser(id);
         }
         return "redirect:/users/{id}";
+    }
+
+    @GetMapping("/update")
+    public String updateNameOrPass(Principal principal, Model model) {
+        this.checkUser(principal);
+        model.addAttribute("user", this.user);
+        return "namePassChange";
+    }
+
+    @PostMapping("/update/namePass")
+    public String uploadNewCredentials(@Valid @ModelAttribute("user") UserModel userModel,
+                                       BindingResult bindingResult,
+                                       Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", this.user);
+            return "namePassChange";
+        }
+        this.userService.update(this.user, userModel);
+        return "/users_show";
     }
 
     @PostMapping("/delete/{id}")

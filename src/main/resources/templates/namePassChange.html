@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit credentials</title>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div th:insert="~{/header :: header}"></div>
+
+<div class="main">
+    <div class="container">
+        <form th:action="@{/users/update/namePass}"
+              th:method="POST"
+              th:object="${user}">
+            <label for="name">Введите новый Login</label>
+            <br/>
+            <input id="name" th:field="*{username}" type="text"/>
+            <span style="color:red" th:errors="*{username}"
+                  th:if="${#fields.hasErrors('username')}"></span>
+            <br/>
+            <label for="pass">Введите новый Login</label>
+            <br/>
+            <input id="pass" th:field="*{password}" type="password"/>
+            <span style="color:red" th:errors="*{password}"
+                  th:if="${#fields.hasErrors('password')}"></span>
+            <br/>
+            <button type="submit" value="Обновить">Обновить</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

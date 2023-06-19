@@ -1,6 +1,10 @@
 package ru.kuznetsov.bikeService.models.users;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.kuznetsov.bikeService.models.lists.UserEntity;
+
+import java.util.List;
+import java.util.Set;
 
 public class UserBuilder {
     private final UserModel user = new UserModel();
@@ -33,8 +37,18 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder setRole(Set<UserRole> roles){
+        this.user.setStatus(roles);
+        return this;
+    }
+
     public UserBuilder setActive(boolean state){
         this.user.setActive(state);
+        return this;
+    }
+
+    public UserBuilder setCreatedItems(List<UserEntity> newList){
+        this.user.setCreatedItems(newList);
         return this;
     }
 
