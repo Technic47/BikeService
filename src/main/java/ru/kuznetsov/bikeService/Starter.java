@@ -18,7 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- user editor
 - change position of 'create new' button
 - info/contacts
 - different variants of PDF document
