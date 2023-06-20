@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
-import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.PDF_DOC_PATH;
 
 
 @Component
@@ -35,9 +34,12 @@ public class PDFService {
     private String imagePath;
     private Manufacturer manufacturer;
     private ServiceList serviceList;
+    public static String PDF_DOC_PATH;
     private String fontPath;
     private Font commonFont;
     private Font bigFont;
+    public static String PDF_DOC_NAME;
+    private String userName;
 
     public PDFService() {
     }
@@ -80,6 +82,11 @@ public class PDFService {
         return this;
     }
 
+    public PDFService addUserName(String name) {
+        this.userName = name;
+        return this;
+    }
+
     /**
      * Construct PDF document. Construction is based on T item class.
      * Usable adds Manufacture info.
@@ -90,7 +97,8 @@ public class PDFService {
      */
     public <T extends AbstractShowableEntity> void build(T item) {
         try {
-            PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_PATH));
+            PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
+            PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));
             document.open();
             insertHeaderTable(item);
 
@@ -98,8 +106,8 @@ public class PDFService {
                 case "Tool", "Consumable" -> this.buildUsable((AbstractUsableEntity) item);
                 case "Bike", "Part" -> this.buildServiceable((AbstractServiceableEntity) item);
             }
-
             document.close();
+//            this.clean(PDF_DOC_NAME);
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
@@ -232,6 +240,11 @@ public class PDFService {
     @Autowired
     public void setFontPath(@Value("${font.path}") String fontPath) {
         this.fontPath = fontPath;
+    }
+
+    @Autowired
+    public void setPDFSavePath(@Value("${pdf.path}") String pdfDocPath) {
+        PDF_DOC_PATH = pdfDocPath;
     }
 
     public Font getCommonFont() {

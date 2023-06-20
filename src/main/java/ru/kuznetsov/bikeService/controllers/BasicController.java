@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
+import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
 
 @Component
 @Scope("prototype")
@@ -42,7 +43,6 @@ public class BasicController<T extends AbstractShowableEntity,
     protected Map<T, String> itemMap;
     protected String currentObjectName;
     protected String category;
-
 
 
     public BasicController(S service) {
@@ -228,12 +228,12 @@ public class BasicController<T extends AbstractShowableEntity,
 
     protected ResponseEntity<Resource> createResponce(T item) throws IOException {
         this.preparePDF(item);
-        File file = new File(PDF_DOC_PATH);
+        File file = new File(PDF_DOC_NAME);
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource
                 (Files.readAllBytes(path));
 
-        return ResponseEntity.ok().headers(this.headers(item.getName()))
+        return ResponseEntity.ok().headers(this.headers(item.getClass().getSimpleName() + "_" + item.getId()))
                 .contentLength(file.length())
                 .contentType(MediaType.parseMediaType
                         ("application/octet-stream")).body(resource);
@@ -252,6 +252,7 @@ public class BasicController<T extends AbstractShowableEntity,
 
     protected void preparePDF(T item) {
         this.pdfService.newPDFDocument()
+                .addUserName(this.user.getUsername())
                 .addImage(this.pictureService.show(item.getPicture()).getName())
                 .build(item);
     }

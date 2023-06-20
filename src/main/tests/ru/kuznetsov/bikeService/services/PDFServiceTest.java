@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.kuznetsov.bikeService.TestCredentials.*;
-import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.PDF_DOC_PATH;
+import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
@@ -72,12 +72,13 @@ class PDFServiceTest {
     @Order(8)
     void buildShowable() throws IOException {
         service.newPDFDocument()
+                .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
                 .build(TEST_FASTENER);
 
-        File formedFile = new File(PDF_DOC_PATH);
+        File formedFile = new File(PDF_DOC_NAME);
 
-        PdfReader reader = new PdfReader(PDF_DOC_PATH);
+        PdfReader reader = new PdfReader(PDF_DOC_NAME);
         int pages = reader.getNumberOfPages();
         StringBuilder text = new StringBuilder();
         for (int i = 1; i <= pages; i++) {
@@ -88,19 +89,22 @@ class PDFServiceTest {
         assertTrue(formedFile.exists());
         assertTrue(text.toString().contains(TEST_NAME));
         assertTrue(text.toString().contains(TEST_DESCRIPTION));
+
+        this.service.clean(PDF_DOC_NAME);
     }
 
     @Test
     @Order(7)
     void buildUsable() throws IOException {
         service.newPDFDocument()
+                .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
                 .addManufactorer(TEST_MANUFACTURER)
                 .build(TEST_TOOL);
 
-        File formedFile = new File(PDF_DOC_PATH);
+        File formedFile = new File(PDF_DOC_NAME);
 
-        PdfReader reader = new PdfReader(PDF_DOC_PATH);
+        PdfReader reader = new PdfReader(PDF_DOC_NAME);
         int pages = reader.getNumberOfPages();
         StringBuilder text = new StringBuilder();
         for (int i = 1; i <= pages; i++) {
@@ -113,6 +117,8 @@ class PDFServiceTest {
         assertTrue(text.toString().contains(TEST_DESCRIPTION));
         assertTrue(text.toString().contains(TEST_MANUFACTURER.getName()));
         assertTrue(text.toString().contains(TEST_MODEL));
+
+        this.service.clean(PDF_DOC_NAME);
     }
 
     @Test
@@ -126,14 +132,15 @@ class PDFServiceTest {
         list.addToFastenerMap(fastener, 123);
 
         service.newPDFDocument()
+                .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
                 .addManufactorer(TEST_MANUFACTURER)
                 .addServiceList(list)
                 .build(TEST_PART);
 
-        File formedFile = new File(PDF_DOC_PATH);
+        File formedFile = new File(PDF_DOC_NAME);
 
-        PdfReader reader = new PdfReader(PDF_DOC_PATH);
+        PdfReader reader = new PdfReader(PDF_DOC_NAME);
         int pages = reader.getNumberOfPages();
         StringBuilder text = new StringBuilder();
         for (int i = 1; i <= pages; i++) {
@@ -149,6 +156,8 @@ class PDFServiceTest {
         assertTrue(text.toString().contains(TEST_VALUE));
         assertTrue(text.toString().contains("qwerty"));
         assertTrue(text.toString().contains("123"));
+
+        this.service.clean(PDF_DOC_NAME);
     }
 
 
@@ -156,9 +165,9 @@ class PDFServiceTest {
     @Order(9)
     void cleanTest() throws IOException {
         this.buildShowable();
-        assertTrue(new File(PDF_DOC_PATH).exists());
+        assertTrue(new File(PDF_DOC_NAME).exists());
 
-        assertFalse(service.clean(PDF_DOC_PATH));
+        assertFalse(service.clean(PDF_DOC_NAME));
     }
 
     @Test

@@ -3,7 +3,6 @@ package ru.kuznetsov.bikeService.controllers.abstracts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
@@ -19,7 +18,7 @@ public abstract class AbstractController {
     protected UserService userService;
     protected PictureService pictureService;
     protected PDFService pdfService;
-    public static String PDF_DOC_PATH;
+//    public static String PDF_DOC_PATH;
     protected UserModel user;
 
     protected void checkUser(Principal principal) {
@@ -32,10 +31,10 @@ public abstract class AbstractController {
         }
     }
 
-    @Autowired
-    public void setFontPath(@Value("${pdf.path}") String pdfDocPath) {
-        PDF_DOC_PATH = pdfDocPath;
-    }
+//    @Autowired
+//    public void setFontPath(@Value("${pdf.path}") String pdfDocPath) {
+//        PDF_DOC_PATH = pdfDocPath;
+//    }
 
     @Autowired
     public void setUserService(UserService userService) {
