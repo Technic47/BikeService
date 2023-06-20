@@ -8,29 +8,35 @@
     <link href="/static/css/table-no-border.css" rel="stylesheet"/>
     <link href="/static/css/border-block.css" rel="stylesheet"/>
     <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
 </head>
 <body>
 
 <div th:insert="~{header :: header}"></div>
 
 <div class="main">
-    <div class="center">
+    <div class="container">
         <h3>
             Созданные вами позиции:
         </h3>
-        <form method="get" th:action="@{/{link}/search(link=${category})}">
-            <input for="" th:name="value" th:type="text"/>
-            <button th:type="submit">Найти</button>
-            <br/>
-            <label for="isShared">Включить общие позиции:</label>
-            <input id="isShared" th:checked="${sharedCheck}" th:name="shared" type="checkbox"/>
-        </form>
-        <br/>
-        <form method="get" th:action="@{/{link}(link=${category})}">
-            <button th:type="submit">Сбросить</button>
-        </form>
+        <div class="col-1-2-no-boarder">
+            <form method="get" th:action="@{/{link}/search(link=${category})}">
+                <input for="" th:name="value" th:type="text"/>
+                <button style="width: 75px" th:type="submit">Найти</button>
+                <br/>
+                <label for="isShared">Включить общие позиции:</label>
+                <input id="isShared" th:checked="${sharedCheck}" th:name="shared" type="checkbox"/>
+            </form>
+            <form method="get" th:action="@{/{link}(link=${category})}">
+                <button style="width: 75px" th:type="submit">Сбросить</button>
+            </form>
+        </div>
+        <div class="col-1-2-no-boarder">
+            <form method="get" th:action="@{/{link}/new(link=${category})}">
+                <input type="submit" value="Создать новую позицию"/>
+            </form>
+        </div>
     </div>
-    <p></p>
     <div class="border-block">
         <table class="table-no-border">
             <tbody>
@@ -45,11 +51,6 @@
         </table>
     </div>
     <br/>
-    <div class="center">
-        <form method="get" th:action="@{/{link}/new(link=${category})}">
-            <input type="submit" value="Создать новую позицию"/>
-        </form>
-    </div>
 </div>
 </body>
 </html>
