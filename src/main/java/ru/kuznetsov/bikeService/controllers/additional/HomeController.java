@@ -49,4 +49,9 @@ public class HomeController extends AbstractController {
         logger.debug(user.getUsername() + " " + user.getStatus() + " registered");
         return "redirect:/login";
     }
+
+    @GetMapping("/info")
+    public String info() {
+        return "info";
+    }
 }

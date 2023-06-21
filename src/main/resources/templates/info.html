@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Info</title>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+</head>
+<body>
+
+<header th:insert="~{header :: header}"></header>
+
+<div class="main">
+    <div class="container">
+        <div class="center">
+            <h3>Информация о сервисе</h3>
+            <p>Создатель: Павел Кузнецов</p>
+            <p>VK: <a href="https://vk.com/id2307841" target="_blank">id2307841</a></p>
+            <p>Email: technic47@gmail.com</p>
+            <p>Telegram: Technic47</p>
+            <br/>
+            <br/>
+            <p>Данный сервис создавался как дипломный проект.</p>
+            <p>Цель - реализовать упрощённый аналог сервиса по обслуживанию сложной техники</p>
+            <p>При желании оставить пожелания или предложения </p>
+            <p>пишите по вышеуказанным координатам </p>
+            <p>или воспользуйтесь формой</p>
+            <a th:href="@{/reply}">обратной связи</a>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{header :: footer}"></div>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -17,6 +18,7 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.PictureWork;
+import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.File;
@@ -43,6 +45,7 @@ public class BasicController<T extends AbstractShowableEntity,
     protected Map<T, String> itemMap;
     protected String currentObjectName;
     protected String category;
+    protected PDFService pdfService;
 
 
     public BasicController(S service) {
@@ -300,5 +303,10 @@ public class BasicController<T extends AbstractShowableEntity,
 
         logger.info(user.getUsername() + " was searching " + value + " in " + category);
         return "index";
+    }
+
+    @Autowired
+    public void setPdfService(PDFService pdfService) {
+        this.pdfService = pdfService;
     }
 }

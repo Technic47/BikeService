@@ -18,7 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- PDF named by user
 - different variants of PDF document
 - info/contacts
 - add notes menu
