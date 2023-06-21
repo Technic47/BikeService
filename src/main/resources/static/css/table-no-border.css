@@ -1,7 +1,6 @@
 .table-no-border {
     table-layout: fixed;
     width: 100%;
-    /*border-collapse: collapse;*/
 }
 
 thead th:nth-child(1) {
@@ -23,4 +22,5 @@ thead th:nth-child(4) {
 th, td {
     padding: 10px;
     border: 1px solid lightgray;
+    word-wrap:break-word
 }

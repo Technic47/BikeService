@@ -2,13 +2,11 @@ package ru.kuznetsov.bikeService.controllers.additional;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.ReplyMessage;
 import ru.kuznetsov.bikeService.services.ReplyMessageService;
@@ -18,8 +16,19 @@ import ru.kuznetsov.bikeService.services.ReplyMessageService;
 public class ReplyController extends AbstractController {
     private ReplyMessageService service;
 
+    @GetMapping()
+    @Secured("ROLE_ADMIN")
+    public String index(Model model){
+        this.addMessagesToModel(model);
+        return "reply_index";
+    }
+
+    private void addMessagesToModel(Model model){
+        model.addAttribute("replyMessages", this.service.index());
+    }
+
     @GetMapping("/new")
-    public String reply(Model model) {
+    public String newReply(Model model) {
         model.addAttribute("replyMessage", new ReplyMessage());
         return "reply";
     }
@@ -34,6 +43,14 @@ public class ReplyController extends AbstractController {
         }
         this.service.save(message);
         return "title";
+    }
+
+    @PostMapping("/{id}")
+    @Secured("ROLE_ADMIN")
+    public String delete(@PathVariable("id") Long id, Model model){
+        this.service.delete(id);
+        this.addMessagesToModel(model);
+        return "reply_index";
     }
 
     @Autowired
