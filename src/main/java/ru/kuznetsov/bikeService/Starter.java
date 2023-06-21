@@ -19,7 +19,5 @@ public class Starter extends SpringBootServletInitializer {
 
 /*TODO
 - different variants of PDF document
-- info/contacts
-- add notes menu
 - index page with 2 columns
  */
