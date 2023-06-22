@@ -29,4 +29,9 @@ public class Document extends AbstractShowableEntity {
         this.link = value;
         this.value = value;
     }
+
+    @Override
+    public String getCredentials() {
+        return name;
+    }
 }

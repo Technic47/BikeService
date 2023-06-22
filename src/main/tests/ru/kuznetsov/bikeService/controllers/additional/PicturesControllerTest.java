@@ -21,7 +21,7 @@ import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
 @WithUserDetails("test")
 @TestPropertySource("/application-test.properties")
 @Sql(value = {"/SQL_scripts/create-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = {"/SQL_scripts/create-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(value = {"/SQL_scripts/clean-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class PicturesControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -35,9 +35,9 @@ class PicturesControllerTest {
                 .andExpect(model().size(1))
                 .andExpect(model().attribute("allPictures", hasSize(3)))
                 .andExpect(view().name("picture_index"))
-                .andExpect(xpath("//div/form/img[@src='/preview/test']").exists())
-                .andExpect(xpath("//div/form/img[@src='/preview/test2']").exists())
-                .andExpect(xpath("//div/form/img[@src='/preview/test3']").exists());
+                .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/test']").exists())
+                .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/test2']").exists())
+                .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/test3']").exists());
     }
 
     @Test
@@ -58,7 +58,7 @@ class PicturesControllerTest {
         this.mockMvc.perform(get("/pictures"))
                 .andDo(print())
                 .andExpect(model().attribute("allPictures", hasSize(4)))
-                .andExpect(xpath("//div/form/img[@src='/preview/testImage.jpg']").exists());
+                .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/testImage.jpg']").exists());
     }
 
     @Test

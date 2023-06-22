@@ -119,7 +119,7 @@ public class ModelTests {
         String valueName = "Ссылка";
         TEST_DOCUMENT.setValue(TEST_VALUE);
         assertEquals(valueName, TEST_DOCUMENT.getValueName());
-        assertEquals(credentialsBuilder(valueName), TEST_DOCUMENT.getCredentials());
+        assertEquals(TEST_NAME, TEST_DOCUMENT.getCredentials());
     }
 
     @Test
