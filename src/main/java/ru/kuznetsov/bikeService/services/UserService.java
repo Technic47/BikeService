@@ -15,6 +15,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 @Service
 public class UserService extends AbstractService<UserModel, UserRepository> {
     private final PasswordEncoder passwordEncoder;
+    private UserModel userModel;
 
     public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
@@ -41,13 +42,13 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
     private boolean constructRecordAndSave(UserModel userModel, UserRole role) {
-        if (repository.findByUsername(userModel.getUsername()) != null) {
+        if (this.findByName(userModel.getUsername()) != null) {
             return false;
         }
-        UserModel newUser = new UserBuilder(userModel)
+        this.userModel = new UserBuilder(userModel)
                 .encodePassword(this.passwordEncoder).setActive(true)
                 .setRole(role).build();
-        repository.save(newUser);
+        repository.save(this.userModel);
         return true;
     }
 
@@ -89,9 +90,9 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param id id of user.
      */
     public void userToAdmin(Long id) {
-        UserModel user = repository.getReferenceById(id);
-        user.getStatus().add(UserRole.ROLE_ADMIN);
-        repository.save(user);
+        this.userModel = repository.getReferenceById(id);
+        this.userModel.getStatus().add(UserRole.ROLE_ADMIN);
+        repository.save(this.userModel);
     }
 
     /**
@@ -100,11 +101,16 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param id id of user.
      */
     public void adminToUser(Long id) {
-        UserModel user = repository.getReferenceById(id);
-        user.getStatus().remove(UserRole.ROLE_ADMIN);
-        repository.save(user);
+        this.userModel = repository.getReferenceById(id);
+        this.userModel.getStatus().remove(UserRole.ROLE_ADMIN);
+        repository.save(this.userModel);
     }
 
+    /**
+     * Update userName or password in user record.
+     * @param oldItem userRecord for changing
+     * @param updateItem object with new credentials
+     */
     public void update(UserModel oldItem, UserModel updateItem) {
         String newName = updateItem.getUsername();
         if (!newName.isEmpty()) {
@@ -114,6 +120,14 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
             String newPass = updateItem.getPassword();
             oldItem.setPassword(this.passwordEncoder.encode(newPass));
         }
-        this.save(oldItem);
+        repository.save(oldItem);
+    }
+
+    public void cleanUser(){
+        this.userModel = null;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
     }
 }

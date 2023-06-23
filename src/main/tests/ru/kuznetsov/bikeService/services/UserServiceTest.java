@@ -1,7 +1,6 @@
 package ru.kuznetsov.bikeService.services;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,6 +25,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserServiceTest {
     private UserService userService;
     @MockBean
@@ -47,14 +47,31 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(1)
     void createUser() {
         assertTrue(userService.createUser(userModel));
-
-        verify(repository, times(1)).findByUsername(TEST_NAME);
-        verify(repository, times(1)).save(any(UserModel.class));
+        assertTrue(userService.getUserModel().isActive());
+        assertNotEquals(TEST_PASS, userService.getUserModel().getPassword());
+        assertTrue(userService.getUserModel().getStatus().contains(ROLE_USER));
+        assertFalse(userService.getUserModel().getStatus().contains(ROLE_ADMIN));
+        verify(repository, atLeast(1)).findByUsername(TEST_NAME);
+        verify(repository, atLeast(1)).save(any(UserModel.class));
     }
 
     @Test
+    @Order(2)
+    void createAdmin() {
+        userService.createAdmin(userModel);
+        assertTrue(userService.getUserModel().isActive());
+        assertNotEquals(TEST_PASS, userService.getUserModel().getPassword());
+        assertTrue(userService.getUserModel().getStatus().contains(ROLE_ADMIN));
+        assertFalse(userService.getUserModel().getStatus().contains(ROLE_USER));
+        verify(repository, atLeast(1)).findByUsername(TEST_NAME);
+        verify(repository, atLeast(1)).save(any(UserModel.class));
+    }
+
+    @Test
+    @Order(3)
     void createUserFalse() {
         doReturn(new UserModel())
                 .when(repository)
@@ -66,6 +83,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(4)
     void addCreatedItem() {
         UserEntity entity = new UserEntity(TEST_NAME, TEST_ID);
         userService.addCreatedItem(this.userModel, entity);
@@ -76,6 +94,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(5)
     void delCreatedItem() {
         UserEntity entity = new UserEntity(TEST_NAME, TEST_ID);
         userService.delCreatedItem(this.userModel, entity);
@@ -86,6 +105,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(6)
     void findByName() {
         doReturn(new UserModel())
                 .when(repository)
@@ -97,6 +117,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(7)
     void findByNameNull() {
         doReturn(null)
                 .when(repository)
@@ -108,6 +129,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(8)
     void userToAdmin(){
         UserModel user = new UserModel();
         Set<UserRole> roles = new HashSet<>();
@@ -125,6 +147,7 @@ class UserServiceTest {
     }
 
     @Test
+    @Order(9)
     void adminToUser(){
         UserModel user = new UserModel();
         Set<UserRole> roles = new HashSet<>();
@@ -140,5 +163,16 @@ class UserServiceTest {
 
         assertThat(user.getStatus()).hasSize(1).doesNotContain(ROLE_ADMIN);
         verify(repository, times(1)).save(user);
+    }
+
+    @Test
+    @Order(10)
+    void update(){
+        UserModel newModel = new UserModel("NewName", "NewPass");
+        userService.update(this.userModel, newModel);
+
+        assertEquals("NewName", this.userModel.getUsername());
+        assertNotEquals(TEST_PASS, this.userModel.getPassword());
+        verify(repository).save(any(UserModel.class));
     }
 }
