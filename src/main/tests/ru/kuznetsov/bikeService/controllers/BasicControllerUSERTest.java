@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -78,20 +79,31 @@ class BasicControllerUSERTest {
     }
 
     @Test
-    void show() throws Exception {
+    void showOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1"))
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
                 .andExpect(view().name("show"))
+                .andExpect(model().attribute("access", true))
                 .andExpect(model().attribute("category", "documents"))
                 .andExpect(model().attribute("object", this.testDocFromDb))
                 .andExpect(model().attribute("type", "Showable"))
-                .andExpect(xpath("//div/div/div/div/img[@src='/IMG/test']").exists())
+                .andExpect(xpath("//div/div/div/div/img[@src='/IMG/testImage']").exists())
                 .andExpect(xpath("//div/div/div/div/h1").string("testDoc1"))
                 .andExpect(xpath("//div/div/div/div/a").string("testLink"))
                 .andExpect(xpath("//div/div/div/div/a[@href='testLink']").exists())
                 .andExpect(xpath("//div/div/div/ul").doesNotExist());
+    }
+
+    @Test
+    void showWrong() throws Exception {
+        this.mockMvc.perform(get("/documents/3"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().isOk())
+                .andExpect(view().name("show"))
+                .andExpect(model().attribute("access", false));
     }
 
     @Test
@@ -138,7 +150,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
-    void edit() throws Exception {
+    void editOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1/edit"))
                 .andDo(print())
                 .andExpect(authenticated())
@@ -150,7 +162,19 @@ class BasicControllerUSERTest {
     }
 
     @Test
-    void updateWithErrors() throws Exception {
+    void editWrong() throws Exception {
+        this.mockMvc.perform(get("/documents/3"));
+        this.mockMvc.perform(get("/documents/3/edit"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/documents/3"));
+    }
+
+    @Test
+    void updateWithErrorsOwn() throws Exception {
+        this.mockMvc.perform(get("/documents/1"));
+
         this.testDocFromDb.setName("");
 
         this.mockMvc.perform(multipart("/documents/1/edit")
@@ -164,7 +188,9 @@ class BasicControllerUSERTest {
     }
 
     @Test
-    void updateNoErrors() throws Exception {
+    void updateNoErrorsOwn() throws Exception {
+        this.mockMvc.perform(get("/documents/1"));
+
         this.testDocFromDb.setName("123654");
 
         this.mockMvc.perform(multipart("/documents/1/edit")
@@ -184,7 +210,19 @@ class BasicControllerUSERTest {
     }
 
     @Test
-    void delete() throws Exception {
+    void updateNoErrorsWrong() throws Exception {
+        this.mockMvc.perform(get("/documents/3"));
+        this.mockMvc.perform(multipart("/documents/3/edit")
+                        .file(getMultipartFile())
+                        .flashAttr("object", this.testDocFromDb))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/documents/3"));
+    }
+
+    @Test
+    void deleteOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1"));
 
         this.mockMvc.perform(post("/documents/1"));
@@ -200,9 +238,20 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    void deleteWrong() throws Exception {
+        this.mockMvc.perform(get("/documents/3"));
+
+        this.mockMvc.perform(post("/documents/3"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/documents/3"));
+    }
+
+    @Test
     void searchTest() throws Exception {
         this.mockMvc.perform(get("/documents/search")
-                .param("value", "doc2"))
+                        .param("value", "doc2"))
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
@@ -212,5 +261,17 @@ class BasicControllerUSERTest {
         this.mockMvc.perform(get("/documents/search")
                         .param("value", "tde"))
                 .andExpect(model().attribute("objects", aMapWithSize(1)));
+    }
+
+    @Test
+    void pdfTest() throws Exception {
+        this.mockMvc.perform(get("/parts/1"));
+        this.mockMvc.perform(get("/parts/pdf")
+                .param("id", "1"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
+
     }
 }

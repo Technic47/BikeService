@@ -54,11 +54,11 @@ public class ServiceableController<T extends AbstractServiceableEntity,
 
     @Override
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable Long id) {
+    public String edit(Model model, @PathVariable Long id, Principal principal) {
         this.updateCacheList(service.show(id).getLinkedItems());
         this.addAllItemsToModel(model);
         this.addLinkedItemsToModel(model);
-        return super.edit(model, id);
+        return super.edit(model, id, principal);
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
@@ -113,7 +113,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                 break;
         }
         service.update(id, item);
-        return edit(model, id);
+        return edit(model, id, principal);
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {

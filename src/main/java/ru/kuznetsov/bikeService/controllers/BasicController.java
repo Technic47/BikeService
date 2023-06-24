@@ -95,16 +95,17 @@ public class BasicController<T extends AbstractShowableEntity,
     public String show(@PathVariable("id") Long id,
                        Principal principal,
                        Model model) {
-        this.checkUser(principal);
         this.currentObject = service.show(id);
+        boolean access = checkAccessToItem(currentObject, principal);
         model.addAttribute("picture", pictureService.show(currentObject.getPicture()).getName());
         this.addItemAttributesShow(model, currentObject);
-        model.addAttribute("access", checkAccessToItem(currentObject));
+        model.addAttribute("access", access);
         logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
         return "show";
     }
 
-    private boolean checkAccessToItem(T item) {
+    private boolean checkAccessToItem(T item, Principal principal) {
+        this.checkUser(principal);
         if (this.user.getStatus().contains(ROLE_ADMIN)) {
             return true;
         } else {
@@ -169,9 +170,9 @@ public class BasicController<T extends AbstractShowableEntity,
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id) {
+    public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
         this.currentObject = service.show(id);
-        if (checkAccessToItem(this.currentObject)) {
+        if (checkAccessToItem(this.currentObject, principal)) {
             this.addItemAttributesEdit(model, currentObject);
 
             if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
@@ -188,30 +189,30 @@ public class BasicController<T extends AbstractShowableEntity,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model) {
-        if (bindingResult.hasErrors()) {
-            this.addItemAttributesEdit(model, item);
-            if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
-                return "editPart";
+        if (checkAccessToItem(this.currentObject, principal)) {
+            if (bindingResult.hasErrors()) {
+                this.addItemAttributesEdit(model, item);
+                if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
+                    return "editPart";
+                }
+                return "edit";
             }
-            return "edit";
-        }
-        this.checkUser(principal);
-        if (!file.isEmpty()) {
-            PictureWork picWorker = new PictureWork();
-            picWorker.managePicture(file);
-            item.setPicture(pictureService.save(picWorker.getPicture()).getId());
-        }
-        service.update(id, item);
-        logger.info(item.getClass()
-                .getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
-        return "redirect:/" + category;
+            if (!file.isEmpty()) {
+                PictureWork picWorker = new PictureWork();
+                picWorker.managePicture(file);
+                item.setPicture(pictureService.save(picWorker.getPicture()).getId());
+            }
+            service.update(id, item);
+            logger.info(item.getClass()
+                    .getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
+            return "redirect:/" + category;
+        } else return "redirect:/" + category + "/" + id;
     }
 
     @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id,
                          Principal principal) {
-        this.checkUser(principal);
-        if (checkAccessToItem(this.currentObject)) {
+        if (checkAccessToItem(this.currentObject, principal)) {
             userService.delCreatedItem(user,
                     new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
             service.delete(id);

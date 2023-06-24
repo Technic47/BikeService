@@ -20,4 +20,5 @@ public class Starter extends SpringBootServletInitializer {
 /*TODO
 - different variants of PDF document???
 - index page with 2 columns???
+- google and other auuthorization
  */

@@ -57,7 +57,7 @@ public class BasicControllerADMINTest {
     }
 
     @Test
-    void show() throws Exception {
+    void showNotOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1"))
                 .andDo(print())
                 .andExpect(authenticated())
@@ -74,6 +74,7 @@ public class BasicControllerADMINTest {
                 .andExpect(content().string(containsString("Creator`s ID - ")))
                 .andExpect(content().string(containsString("Picture`s ID - ")));
     }
+
 
     @Test
     void createNoErrors() throws Exception {

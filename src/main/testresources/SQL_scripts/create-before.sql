@@ -22,7 +22,7 @@ TRUNCATE
     bikeservicetest.public.user_item RESTART IDENTITY CASCADE;
 
 INSERT INTO bikeservicetest.public.pictures(id, name)
-VALUES (DEFAULT, 'test'),
+VALUES (DEFAULT, 'testImage.jpg'),
        (DEFAULT, 'test2'),
        (DEFAULT, 'test3');
 
