@@ -55,6 +55,7 @@ public class UserModel implements UserDetails, OAuth2User {
 
     public UserModel(OAuth2User oauth2User) {
         this.oauth2User = oauth2User;
+        this.setUsername(oauth2User.getAttribute("email"));
     }
 
     public Long getId() {
@@ -145,7 +146,7 @@ public class UserModel implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return oauth2User.getAttribute("name");
+        return this.username;
     }
 
     public String getEmail() {

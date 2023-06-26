@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.additional;
 
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,23 +25,27 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/login")
-    public String login(Principal principal) {
-//        logger.info(principal.getName() + " logged in");
+    public String login(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
+        logger.info(principal.getName() + " logged in");
         return "title";
     }
 
     @PostMapping("/login")
-    public String postLogin(){
+    public String postLogin() {
         return "title";
     }
 
     @GetMapping("/successLogin")
-    public String confirmLogin(Model model, Principal principal){
+    public String confirmLogin(Model model, OAuth2AuthenticationToken authentication) {
+        this.addUserToModel(model, authentication);
+        logger.info(authentication.getPrincipal().getAttribute("email") + " logged in");
         return "title";
     }
 
     @GetMapping("/title")
-    public String index() {
+    public String index(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         return "title";
     }
 
@@ -64,9 +69,4 @@ public class HomeController extends AbstractController {
     public String info() {
         return "info";
     }
-//
-//    @GetMapping("/googleAuth")
-//    public String googleSecured(){
-//        return "title";
-//    }
 }

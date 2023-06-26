@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html lang="ru"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -139,7 +139,7 @@
             </div>
         </div>
     </div>
-    <div class="container" sec:authorize="hasRole('ROLE_ADMIN')">
+    <div class="container" th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
         <div class="col-1-1-no-boarder">
             <ul>
                 <li th:text="'ID - ' + ${object.getId()}"></li>

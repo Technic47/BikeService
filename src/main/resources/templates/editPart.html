@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -93,13 +93,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-5-2-no-boarders" sec:authorize="hasRole('ROLE_USER')">
+                <div class="col-5-2-no-boarders" th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_USER)}">
                     <span hidden="hidden">
                     <label for="creator">Enter creator:</label>
                     <input id="creator" th:field="*{creator}" type="text"/>
                     </span>
                 </div>
-                <div class="col-5-2-no-boarders" sec:authorize="hasRole('ROLE_ADMIN')">
+                <div class="col-5-2-no-boarders" th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
                     <label for="creatorAdmin">Id создателя:</label>
                     <br/>
                     <input id="creatorAdmin" th:field="*{creator}" type="text"/>

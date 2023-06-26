@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html lang="ru"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -8,15 +8,18 @@
 <body>
 <header th:fragment="header">
     <h1>
-        <div sec:authentication="principal.username"></div>
+        <div th:text="${user.getUsername()}"></div>
     </h1>
     <nav>
-        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/pictures}">Изображения</a>
-        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users}">Пользователи</a>
-        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/reply}">Отзывы</a>
+        <a th:href="@{/pictures}"
+           th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Изображения</a>
+        <a th:href="@{/users}"
+           th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Пользователи</a>
+        <a th:href="@{/reply}"
+           th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Отзывы</a>
         <a th:href="@{/users/show}">Профиль</a>
         <a th:href="@{/title}">На главную</a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a>
+        <a th:href="@{/logout}">Log out</a>
     </nav>
 </header>
 <footer th:fragment="footer">

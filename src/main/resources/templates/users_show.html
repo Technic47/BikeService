@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html lang="ru"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -17,17 +17,21 @@
 <div class="main">
     <div class="container">
         <div class="col-1-1">
-            <h1 th:text="${user.getUsername()}">
+            <h1 th:text="${userAccount.getUsername()}">
             </h1>
             <div class="col-1-1-no-boarder">
-                <form th:action="@{/users/update/{id}(id = ${user.getId()})}" th:method="POST">
+                <form th:action="@{/users/update/{id}(id = ${userAccount.getId()})}" th:method="POST">
                     <ul>
-                        <li th:text="'ID - ' + ${user.getId()}"></li>
-                        <li th:text="'IsActive - ' + ${user.isActive()}"></li>
-                        <li th:text="'Status - ' + ${user.getStatus().toString()}"></li>
+                        <li th:text="'ID - ' + ${userAccount.getId()}"></li>
+                        <li th:text="'IsActive - ' + ${userAccount.isActive()}"></li>
+                        <li th:text="'Status - ' + ${userAccount.getStatus().toString()}"></li>
                     </ul>
-                    <button sec:authorize="hasRole('ROLE_ADMIN')" th:name="admin" th:type="submit" th:value="1">Добавить роль администратора</button>
-                    <button sec:authorize="hasRole('ROLE_ADMIN')" th:name="admin" th:type="submit" th:value="0">Удалить роль администратора</button>
+                    <button th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
+                            th:name="admin" th:type="submit" th:value="1">Добавить роль администратора
+                    </button>
+                    <button th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
+                            th:name="admin" th:type="submit" th:value="0">Удалить роль администратора
+                    </button>
                 </form>
                 <form th:action="@{/users/update}" th:method="GET">
                     <button type="submit">Сменить имя или пароль</button>

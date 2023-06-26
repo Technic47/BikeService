@@ -68,7 +68,7 @@ public class BasicController<T extends AbstractShowableEntity,
     @GetMapping()
     public String index(Principal principal,
                         Model model) {
-        this.checkUser(principal);
+        this.updateUser(principal);
         Iterable<T> objects = null;
         if (user.getStatus().contains(ROLE_USER)) {
             objects = service.findByCreatorOrShared(user.getId());
@@ -105,7 +105,7 @@ public class BasicController<T extends AbstractShowableEntity,
     }
 
     private boolean checkAccessToItem(T item, Principal principal) {
-        this.checkUser(principal);
+        this.updateUser(principal);
         if (this.user.getStatus().contains(ROLE_ADMIN)) {
             return true;
         } else {
@@ -121,6 +121,7 @@ public class BasicController<T extends AbstractShowableEntity,
 
     private void addItemAttributesIndex(Model model) {
         model.addAttribute("category", category);
+        model.addAttribute("user", this.user);
     }
 
     private void addItemAttributesShow(Model model, T item) {
@@ -155,7 +156,7 @@ public class BasicController<T extends AbstractShowableEntity,
             return "new";
         }
 
-        this.checkUser(principal);
+        this.updateUser(principal);
 
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork();
@@ -277,7 +278,7 @@ public class BasicController<T extends AbstractShowableEntity,
                          @RequestParam(value = "shared", required = false) boolean shared,
                          Model model,
                          Principal principal) {
-        this.checkUser(principal);
+        this.updateUser(principal);
         this.itemMap.clear();
 
         Set<T> resultSet = new HashSet<>();

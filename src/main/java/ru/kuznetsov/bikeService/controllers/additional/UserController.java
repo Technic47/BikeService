@@ -26,7 +26,8 @@ public class UserController extends AbstractController {
 
     @GetMapping()
     @Secured("ROLE_ADMIN")
-    public String index(Model model) {
+    public String index(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         model.addAttribute("users", userService.index());
         return "users_index";
     }
@@ -34,7 +35,10 @@ public class UserController extends AbstractController {
 
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
-    public String showToAdmin(@PathVariable("id") Long id, Model model) {
+    public String showToAdmin(@PathVariable("id") Long id,
+                              Model model,
+                              Principal principal) {
+        this.addUserToModel(model, principal);
         this.addAllCreatedItems(model, id);
         model.addAttribute("owner", false);
         return "users_show";
@@ -42,14 +46,14 @@ public class UserController extends AbstractController {
 
     @GetMapping("/show")
     public String showToOwner(Principal principal, Model model) {
-        this.checkUser(principal);
+        this.addUserToModel(model, principal);
         this.addAllCreatedItems(model, this.user.getId());
         model.addAttribute("owner", true);
         return "users_show";
     }
 
     private void addAllCreatedItems(Model model, Long id) {
-        model.addAttribute("user", userService.show(id));
+        model.addAttribute("userAccount", userService.show(id));
         model.addAttribute("documents", documentService.findByCreator(id));
         model.addAttribute("fasteners", fastenerService.findByCreator(id));
         model.addAttribute("manufacturers", manufacturerService.findByCreator(id));
@@ -71,8 +75,8 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/update")
-    public String updateNameOrPass(Principal principal, Model model) {
-        this.checkUser(principal);
+    public String updateNameOrPassword(Principal principal, Model model) {
+        this.updateUser(principal);
         model.addAttribute("user", this.user);
         return "namePassChange";
     }

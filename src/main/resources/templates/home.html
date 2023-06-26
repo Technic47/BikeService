@@ -20,12 +20,11 @@
                 <input type="submit" value="На главную">
             </form>
 
-            <div sec:authorize="!isAuthenticated()">
-                <form th:action="@{/login}" th:method="GET">
-                    <input type="submit" value="LogIn">
-                </form>
-                <h4><a th:href="@{/oauth2/authorization/google}">Login with Google</a></h4>
-            </div>
+
+            <form sec:authorize="!isAuthenticated()" th:action="@{/login}" th:method="GET">
+                <input type="submit" value="LogIn">
+            </form>
+
 
             <p>Если вы новенький, то создайте аккаунт:</p>
 

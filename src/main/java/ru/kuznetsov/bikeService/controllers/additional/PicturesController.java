@@ -1,16 +1,21 @@
 package ru.kuznetsov.bikeService.controllers.additional;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/pictures")
 public class PicturesController extends AbstractController {
     @GetMapping
-    public String index(Model model) {
+    @Secured("ROLE_ADMIN")
+    public String index(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         model.addAttribute("allPictures", pictureService.index());
         return "picture_index";
     }

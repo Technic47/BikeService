@@ -11,6 +11,8 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.ReplyMessage;
 import ru.kuznetsov.bikeService.services.ReplyMessageService;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/reply")
 public class ReplyController extends AbstractController {
@@ -18,8 +20,9 @@ public class ReplyController extends AbstractController {
 
     @GetMapping()
     @Secured("ROLE_ADMIN")
-    public String index(Model model){
+    public String index(Model model, Principal principal){
         this.addMessagesToModel(model);
+        this.addUserToModel(model, principal);
         return "reply_index";
     }
 
@@ -28,17 +31,20 @@ public class ReplyController extends AbstractController {
     }
 
     @GetMapping("/new")
-    public String newReply(Model model) {
+    public String newReply(Model model, Principal principal) {
         model.addAttribute("replyMessage", new ReplyMessage());
+        this.addUserToModel(model, principal);
         return "reply";
     }
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("replyMessage") ReplyMessage message,
                        BindingResult bindingResult,
-                       Model model) {
+                       Model model,
+                       Principal principal) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("replyMessage", message);
+            this.addUserToModel(model, principal);
             return "reply";
         }
         this.service.save(message);
@@ -47,9 +53,12 @@ public class ReplyController extends AbstractController {
 
     @PostMapping("/{id}")
     @Secured("ROLE_ADMIN")
-    public String delete(@PathVariable("id") Long id, Model model){
+    public String delete(@PathVariable("id") Long id,
+                         Model model,
+                         Principal principal){
         this.service.delete(id);
         this.addMessagesToModel(model);
+        this.addUserToModel(model, principal);
         return "reply_index";
     }
 
