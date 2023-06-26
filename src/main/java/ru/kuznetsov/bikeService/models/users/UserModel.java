@@ -38,6 +38,9 @@ public class UserModel implements UserDetails {
     @Column(name = "password", length = 1000)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
 
     public UserModel() {
     }
@@ -93,6 +96,14 @@ public class UserModel implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 
     @Override

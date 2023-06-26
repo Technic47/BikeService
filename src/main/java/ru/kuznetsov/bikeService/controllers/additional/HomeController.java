@@ -1,5 +1,7 @@
 package ru.kuznetsov.bikeService.controllers.additional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,9 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/")
 public class HomeController extends AbstractController {
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
+
     @GetMapping("/home")
     public String home() {
         return "home";
@@ -54,4 +59,9 @@ public class HomeController extends AbstractController {
     public String info() {
         return "info";
     }
+//
+//    @GetMapping("/googleAuth")
+//    public String googleSecured(){
+//        return "title";
+//    }
 }

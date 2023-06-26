@@ -39,6 +39,10 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder setProvider(Provider provider){
+        this.user.setProvider(provider);
+        return this;
+    }
 
     public UserModel build(){
         return this.user;

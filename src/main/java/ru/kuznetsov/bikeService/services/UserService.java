@@ -9,6 +9,7 @@ import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
+import static ru.kuznetsov.bikeService.models.users.Provider.LOCAL;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
@@ -47,7 +48,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         }
         this.userModel = new UserBuilder(userModel)
                 .encodePassword(this.passwordEncoder).setActive(true)
-                .setRole(role).build();
+                .setRole(role)
+                .setProvider(LOCAL).build();
         repository.save(this.userModel);
         return true;
     }
@@ -130,4 +132,6 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     public UserModel getUserModel() {
         return userModel;
     }
+
+
 }
