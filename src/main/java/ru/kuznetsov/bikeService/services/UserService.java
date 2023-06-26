@@ -48,7 +48,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         }
         this.userModel = new UserBuilder(userModel)
                 .encodePassword(this.passwordEncoder).setActive(true)
-                .setRole(role)
+                .addRole(role)
                 .setProvider(LOCAL).build();
         repository.save(this.userModel);
         return true;

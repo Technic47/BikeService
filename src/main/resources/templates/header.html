@@ -16,7 +16,7 @@
         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/reply}">Отзывы</a>
         <a th:href="@{/users/show}">Профиль</a>
         <a th:href="@{/title}">На главную</a>
-        <a th:href="@{/logout}">Log out</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a>
     </nav>
 </header>
 <footer th:fragment="footer">

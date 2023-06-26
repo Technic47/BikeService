@@ -5,13 +5,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 
 import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class UserModel implements UserDetails {
+public class UserModel implements UserDetails, OAuth2User {
+    @Transient
+    private OAuth2User oauth2User;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -48,6 +51,10 @@ public class UserModel implements UserDetails {
     public UserModel(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public UserModel(OAuth2User oauth2User) {
+        this.oauth2User = oauth2User;
     }
 
     public Long getId() {
@@ -107,6 +114,11 @@ public class UserModel implements UserDetails {
     }
 
     @Override
+    public Map<String, Object> getAttributes() {
+        return this.oauth2User.getAttributes();
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return status;
     }
@@ -129,6 +141,15 @@ public class UserModel implements UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
+    }
+
+    @Override
+    public String getName() {
+        return oauth2User.getAttribute("name");
+    }
+
+    public String getEmail() {
+        return oauth2User.getAttribute("email");
     }
 
     @Override

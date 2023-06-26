@@ -28,7 +28,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setRole(UserRole role){
+    public UserBuilder addRole(UserRole role){
         this.user.getStatus().add(role);
         return this;
     }

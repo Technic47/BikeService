@@ -40,7 +40,7 @@ class UserBuilderTest {
 
     @Test
     void setRole() {
-        builder.setRole(ROLE_USER);
+        builder.addRole(ROLE_USER);
 
         assertTrue(builder.build().getStatus().contains(ROLE_USER));
     }
