@@ -42,7 +42,7 @@ class UserBuilderTest {
     void setRole() {
         builder.addRole(ROLE_USER);
 
-        assertTrue(builder.build().getStatus().contains(ROLE_USER));
+        assertTrue(builder.build().getAuthorities().contains(ROLE_USER));
     }
 
     @Test

@@ -139,7 +139,7 @@
             </div>
         </div>
     </div>
-    <div class="container" th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
+    <div class="container" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
         <div class="col-1-1-no-boarder">
             <ul>
                 <li th:text="'ID - ' + ${object.getId()}"></li>

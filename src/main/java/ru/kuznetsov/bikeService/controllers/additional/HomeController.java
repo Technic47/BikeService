@@ -61,12 +61,13 @@ public class HomeController extends AbstractController {
             return "/registration";
         }
         userService.createUser(user);
-        logger.debug(user.getUsername() + " " + user.getStatus() + " registered");
+        logger.debug(user.getUsername() + " " + user.getAuthorities() + " registered");
         return "redirect:/login";
     }
 
     @GetMapping("/info")
-    public String info() {
+    public String info(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         return "info";
     }
 }

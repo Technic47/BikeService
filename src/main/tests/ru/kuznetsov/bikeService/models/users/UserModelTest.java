@@ -29,7 +29,7 @@ class UserModelTest {
     void userModelTest() {
         Set<UserRole> status = new HashSet<>();
         status.add(UserRole.ROLE_USER);
-        this.userModel.setStatus(status);
+        this.userModel.setAuthorities(status);
 
         List<UserEntity> createdItems = new ArrayList<>();
         createdItems.add(new UserEntity("Document", 1L));
@@ -41,8 +41,8 @@ class UserModelTest {
         assertEquals(TEST_NAME, this.userModel.getUsername());
         assertTrue(this.userModel.isActive());
         assertEquals(TEST_PASS, this.userModel.getPassword());
-        assertThat(this.userModel.getStatus()).size().isEqualTo(1);
-        assertEquals(status, userModel.getStatus());
+        assertThat(this.userModel.getAuthorities()).size().isEqualTo(1);
+        assertEquals(status, userModel.getAuthorities());
     }
 
     @Test

@@ -29,7 +29,7 @@ public class UserBuilder {
     }
 
     public UserBuilder addRole(UserRole role){
-        this.user.getStatus().add(role);
+        this.user.getAuthorities().add(role);
         return this;
     }
 

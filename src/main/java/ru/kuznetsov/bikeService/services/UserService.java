@@ -48,8 +48,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         }
         this.userModel = new UserBuilder(userModel)
                 .encodePassword(this.passwordEncoder).setActive(true)
-                .addRole(role)
-                .setProvider(LOCAL).build();
+                .addRole(role).setProvider(LOCAL).build();
         repository.save(this.userModel);
         return true;
     }
@@ -93,7 +92,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      */
     public void userToAdmin(Long id) {
         this.userModel = repository.getReferenceById(id);
-        this.userModel.getStatus().add(UserRole.ROLE_ADMIN);
+        this.userModel.getAuthorities().add(UserRole.ROLE_ADMIN);
         repository.save(this.userModel);
     }
 
@@ -104,7 +103,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      */
     public void adminToUser(Long id) {
         this.userModel = repository.getReferenceById(id);
-        this.userModel.getStatus().remove(UserRole.ROLE_ADMIN);
+        this.userModel.getAuthorities().remove(UserRole.ROLE_ADMIN);
         repository.save(this.userModel);
     }
 
@@ -132,6 +131,4 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     public UserModel getUserModel() {
         return userModel;
     }
-
-
 }

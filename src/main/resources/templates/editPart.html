@@ -93,13 +93,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-5-2-no-boarders" th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_USER)}">
+                <div class="col-5-2-no-boarders" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_USER)}">
                     <span hidden="hidden">
                     <label for="creator">Enter creator:</label>
                     <input id="creator" th:field="*{creator}" type="text"/>
                     </span>
                 </div>
-                <div class="col-5-2-no-boarders" th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
+                <div class="col-5-2-no-boarders" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
                     <label for="creatorAdmin">Id создателя:</label>
                     <br/>
                     <input id="creatorAdmin" th:field="*{creator}" type="text"/>

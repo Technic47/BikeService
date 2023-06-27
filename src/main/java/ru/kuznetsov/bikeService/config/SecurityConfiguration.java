@@ -21,14 +21,15 @@ import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
 public class SecurityConfiguration {
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomOAuth2UserService oauthUserService;
 
     @Autowired
-    private CustomOAuth2UserService oauthUserService;
-
-    @Autowired
-    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder) {
+    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService,
+                                 PasswordEncoder passwordEncoder,
+                                 CustomOAuth2UserService oauthUserService) {
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.oauthUserService = oauthUserService;
     }
 
     @Bean

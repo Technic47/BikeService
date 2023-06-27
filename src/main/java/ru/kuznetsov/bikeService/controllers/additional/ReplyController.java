@@ -42,9 +42,9 @@ public class ReplyController extends AbstractController {
                        BindingResult bindingResult,
                        Model model,
                        Principal principal) {
+        this.addUserToModel(model, principal);
         if (bindingResult.hasErrors()) {
             model.addAttribute("replyMessage", message);
-            this.addUserToModel(model, principal);
             return "reply";
         }
         this.service.save(message);

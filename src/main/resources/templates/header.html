@@ -12,11 +12,11 @@
     </h1>
     <nav>
         <a th:href="@{/pictures}"
-           th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Изображения</a>
+           th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Изображения</a>
         <a th:href="@{/users}"
-           th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Пользователи</a>
+           th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Пользователи</a>
         <a th:href="@{/reply}"
-           th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Отзывы</a>
+           th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Отзывы</a>
         <a th:href="@{/users/show}">Профиль</a>
         <a th:href="@{/title}">На главную</a>
         <a th:href="@{/logout}">Log out</a>

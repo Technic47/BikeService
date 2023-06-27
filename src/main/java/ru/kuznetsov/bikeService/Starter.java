@@ -18,7 +18,8 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
+- search in users admin view
+- refactor user dependency
 - different variants of PDF document???
 - index page with 2 columns???
-- google and other auuthorization
  */

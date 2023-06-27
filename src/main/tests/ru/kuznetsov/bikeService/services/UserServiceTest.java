@@ -52,8 +52,8 @@ class UserServiceTest {
         assertTrue(userService.createUser(userModel));
         assertTrue(userService.getUserModel().isActive());
         assertNotEquals(TEST_PASS, userService.getUserModel().getPassword());
-        assertTrue(userService.getUserModel().getStatus().contains(ROLE_USER));
-        assertFalse(userService.getUserModel().getStatus().contains(ROLE_ADMIN));
+        assertTrue(userService.getUserModel().getAuthorities().contains(ROLE_USER));
+        assertFalse(userService.getUserModel().getAuthorities().contains(ROLE_ADMIN));
         verify(repository, atLeast(1)).findByUsername(TEST_NAME);
         verify(repository, atLeast(1)).save(any(UserModel.class));
     }
@@ -64,8 +64,8 @@ class UserServiceTest {
         userService.createAdmin(userModel);
         assertTrue(userService.getUserModel().isActive());
         assertNotEquals(TEST_PASS, userService.getUserModel().getPassword());
-        assertTrue(userService.getUserModel().getStatus().contains(ROLE_ADMIN));
-        assertFalse(userService.getUserModel().getStatus().contains(ROLE_USER));
+        assertTrue(userService.getUserModel().getAuthorities().contains(ROLE_ADMIN));
+        assertFalse(userService.getUserModel().getAuthorities().contains(ROLE_USER));
         verify(repository, atLeast(1)).findByUsername(TEST_NAME);
         verify(repository, atLeast(1)).save(any(UserModel.class));
     }
@@ -134,7 +134,7 @@ class UserServiceTest {
         UserModel user = new UserModel();
         Set<UserRole> roles = new HashSet<>();
         roles.add(ROLE_USER);
-        user.setStatus(roles);
+        user.setAuthorities(roles);
         user.setId(TEST_ID);
         doReturn(user)
                 .when(repository)
@@ -142,7 +142,7 @@ class UserServiceTest {
 
         userService.userToAdmin(TEST_ID);
 
-        assertThat(user.getStatus()).hasSize(2).contains(ROLE_ADMIN);
+        assertThat(user.getAuthorities()).hasSize(2).contains(ROLE_ADMIN);
         verify(repository, times(1)).save(user);
     }
 
@@ -153,7 +153,7 @@ class UserServiceTest {
         Set<UserRole> roles = new HashSet<>();
         roles.add(ROLE_ADMIN);
         roles.add(ROLE_USER);
-        user.setStatus(roles);
+        user.setAuthorities(roles);
         user.setId(TEST_ID);
         doReturn(user)
                 .when(repository)
@@ -161,7 +161,7 @@ class UserServiceTest {
 
         userService.adminToUser(TEST_ID);
 
-        assertThat(user.getStatus()).hasSize(1).doesNotContain(ROLE_ADMIN);
+        assertThat(user.getAuthorities()).hasSize(1).doesNotContain(ROLE_ADMIN);
         verify(repository, times(1)).save(user);
     }
 

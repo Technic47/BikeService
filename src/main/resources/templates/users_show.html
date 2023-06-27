@@ -24,16 +24,17 @@
                     <ul>
                         <li th:text="'ID - ' + ${userAccount.getId()}"></li>
                         <li th:text="'IsActive - ' + ${userAccount.isActive()}"></li>
-                        <li th:text="'Status - ' + ${userAccount.getStatus().toString()}"></li>
+                        <li th:text="'Authorities - ' + ${userAccount.getAuthorities().toString()}"></li>
+                        <li th:text="'Provider - ' + ${userAccount.getProvider().toString()}"></li>
                     </ul>
-                    <button th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
+                    <button th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
                             th:name="admin" th:type="submit" th:value="1">Добавить роль администратора
                     </button>
-                    <button th:if="${user.getStatus().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
+                    <button th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
                             th:name="admin" th:type="submit" th:value="0">Удалить роль администратора
                     </button>
                 </form>
-                <form th:action="@{/users/update}" th:method="GET">
+                <form th:action="@{/users/update}" th:if="${userAccount.getProvider() == T(ru.kuznetsov.bikeService.models.users.Provider).LOCAL}" th:method="GET">
                     <button type="submit">Сменить имя или пароль</button>
                 </form>
             </div>

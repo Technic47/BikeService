@@ -70,11 +70,11 @@ public class BasicController<T extends AbstractShowableEntity,
                         Model model) {
         this.updateUser(principal);
         Iterable<T> objects = null;
-        if (user.getStatus().contains(ROLE_USER)) {
+        if (user.getAuthorities().contains(ROLE_USER)) {
             objects = service.findByCreatorOrShared(user.getId());
             logger.info("personal " + category + " are shown to '" + user.getUsername() + "'");
         }
-        if (user.getStatus().contains(ROLE_ADMIN)) {
+        if (user.getAuthorities().contains(ROLE_ADMIN)) {
             objects = service.index();
             logger.info(category + " are shown to " + user.getUsername());
         }
@@ -106,7 +106,7 @@ public class BasicController<T extends AbstractShowableEntity,
 
     private boolean checkAccessToItem(T item, Principal principal) {
         this.updateUser(principal);
-        if (this.user.getStatus().contains(ROLE_ADMIN)) {
+        if (this.user.getAuthorities().contains(ROLE_ADMIN)) {
             return true;
         } else {
             return item.getCreator().equals(this.user.getId());
@@ -285,7 +285,7 @@ public class BasicController<T extends AbstractShowableEntity,
         resultSet.addAll(this.service.findByNameContainingIgnoreCase(value));
         resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
 
-        if (!this.user.getStatus().contains(ROLE_ADMIN)) {
+        if (!this.user.getAuthorities().contains(ROLE_ADMIN)) {
             if (shared) {
                 resultSet = resultSet.stream()
                         .filter(item -> item.getCreator().equals(this.user.getId())

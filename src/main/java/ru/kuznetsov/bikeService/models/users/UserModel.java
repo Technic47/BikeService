@@ -3,7 +3,6 @@ package ru.kuznetsov.bikeService.models.users;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
@@ -13,8 +12,6 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 public class UserModel implements UserDetails, OAuth2User {
-    @Transient
-    private OAuth2User oauth2User;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -26,12 +23,8 @@ public class UserModel implements UserDetails, OAuth2User {
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "status")
-    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<UserRole> status = new HashSet<>();
+    @Transient
+    private final Map<String, Object> attributes;
 
     @ElementCollection(targetClass = UserEntity.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_item",
@@ -43,19 +36,27 @@ public class UserModel implements UserDetails, OAuth2User {
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
+    @Column(name = "status")
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> authorities = new HashSet<>();
 
 
     public UserModel() {
+        this.attributes = new HashMap<>();
     }
 
     public UserModel(String username, String password) {
+        this();
         this.username = username;
         this.password = password;
     }
 
     public UserModel(OAuth2User oauth2User) {
-        this.oauth2User = oauth2User;
-        this.setUsername(oauth2User.getAttribute("email"));
+        this.attributes = oauth2User.getAttributes();
+        this.setUsername(this.attributes.get("email").toString());
     }
 
     public Long getId() {
@@ -82,12 +83,13 @@ public class UserModel implements UserDetails, OAuth2User {
         this.active = active;
     }
 
-    public Set<UserRole> getStatus() {
-        return status;
+    @Override
+    public Set<UserRole> getAuthorities() {
+        return this.authorities;
     }
 
-    public void setStatus(Set<UserRole> status) {
-        this.status = status;
+    public void setAuthorities(Set<UserRole> authorities) {
+        this.authorities = authorities;
     }
 
     public List<UserEntity> getCreatedItems() {
@@ -116,12 +118,7 @@ public class UserModel implements UserDetails, OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return this.oauth2User.getAttributes();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return status;
+        return this.attributes;
     }
 
     @Override
@@ -150,7 +147,7 @@ public class UserModel implements UserDetails, OAuth2User {
     }
 
     public String getEmail() {
-        return oauth2User.getAttribute("email");
+        return this.attributes.get("email").toString();
     }
 
     @Override
@@ -163,7 +160,7 @@ public class UserModel implements UserDetails, OAuth2User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, active, status, createdItems, password);
+        return Objects.hash(id, username, active, authorities, createdItems, password);
     }
 
     @Override
