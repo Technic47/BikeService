@@ -135,9 +135,7 @@ public class PDFService {
         this.document.add(part);
     }
 
-    /*
-    Table former for header of document
-     */
+    //Table former for header of document
     private <T extends AbstractShowableEntity> void insertHeaderTable(T item) {
         try {
             PdfPTable table = new PdfPTable(2);
@@ -163,9 +161,7 @@ public class PDFService {
         }
     }
 
-    /*
-    Table former for serviceList
-     */
+    //Table former for serviceList
     private void insertServiceTable() {
         try {
             PdfPTable table = new PdfPTable(2);
