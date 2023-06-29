@@ -26,10 +26,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
@@ -66,17 +66,15 @@ public class BasicController<T extends AbstractShowableEntity,
 
 
     @GetMapping()
-    public String index(Principal principal,
-                        Model model) {
-        this.updateUser(principal);
+    public String index(Model model) {
         Iterable<T> objects = null;
-        if (user.getAuthorities().contains(ROLE_USER)) {
-            objects = service.findByCreatorOrShared(user.getId());
-            logger.info("personal " + category + " are shown to '" + user.getUsername() + "'");
+        if (USERMODEL.getAuthorities().contains(ROLE_USER)) {
+            objects = service.findByCreatorOrShared(USERMODEL.getId());
+            logger.info("personal " + category + " are shown to '" + USERMODEL.getUsername() + "'");
         }
-        if (user.getAuthorities().contains(ROLE_ADMIN)) {
+        if (USERMODEL.getAuthorities().contains(ROLE_ADMIN)) {
             objects = service.index();
-            logger.info(category + " are shown to " + user.getUsername());
+            logger.info(category + " are shown to " + USERMODEL.getUsername());
         }
 
         if (objects != null) {
@@ -93,23 +91,33 @@ public class BasicController<T extends AbstractShowableEntity,
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
-                       Principal principal,
                        Model model) {
-        this.currentObject = service.show(id);
-        boolean access = checkAccessToItem(currentObject, principal);
+        if (this.checkCurrentObject(id)) {
+            return "redirect:/" + category;
+        }
+        boolean access = checkAccessToItem(currentObject);
         model.addAttribute("picture", pictureService.show(currentObject.getPicture()).getName());
         this.addItemAttributesShow(model, currentObject);
         model.addAttribute("access", access);
-        logger.info(category + " " + id + " was shown to '" + user.getUsername() + "'");
+        logger.info(category + " " + id + " was shown to '" + USERMODEL.getUsername() + "'");
         return "show";
     }
 
-    private boolean checkAccessToItem(T item, Principal principal) {
-        this.updateUser(principal);
-        if (this.user.getAuthorities().contains(ROLE_ADMIN)) {
+    protected boolean checkCurrentObject(Long id){
+        if (!(this.currentObject == null)) {
+            if (this.currentObject.getId().equals(id)) {
+                return false;
+            }
+        }
+        this.currentObject = service.show(id);
+        return this.currentObject == null;
+    }
+
+    private boolean checkAccessToItem(T item) {
+        if (USERMODEL.getAuthorities().contains(ROLE_ADMIN)) {
             return true;
         } else {
-            return item.getCreator().equals(this.user.getId());
+            return item.getCreator().equals(USERMODEL.getId());
         }
     }
 
@@ -121,7 +129,7 @@ public class BasicController<T extends AbstractShowableEntity,
 
     private void addItemAttributesIndex(Model model) {
         model.addAttribute("category", category);
-        model.addAttribute("user", this.user);
+        model.addAttribute("user", USERMODEL);
     }
 
     private void addItemAttributesShow(Model model, T item) {
@@ -147,7 +155,6 @@ public class BasicController<T extends AbstractShowableEntity,
     @PostMapping()
     public String create(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,
-                         Principal principal,
                          @RequestPart("newImage") MultipartFile file,
                          Model model
     ) {
@@ -155,25 +162,24 @@ public class BasicController<T extends AbstractShowableEntity,
             this.addItemAttributesNew(model, item);
             return "new";
         }
-
-        this.updateUser(principal);
-
         if (!file.isEmpty()) {
             PictureWork picWorker = new PictureWork();
             picWorker.managePicture(file);
             item.setPicture(pictureService.save(picWorker.getPicture()).getId());
         }
-        item.setCreator(user.getId());
-        userService.addCreatedItem(user,
+        item.setCreator(USERMODEL.getId());
+        userService.addCreatedItem(USERMODEL,
                 new UserEntity(thisClassNewObject.getClass().getSimpleName(), service.save(item).getId()));
-        logger.info(item + " was created by '" + user.toString());
+        logger.info(item + " was created by '" + USERMODEL.getUsername());
         return "redirect:/" + category;
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
-        this.currentObject = service.show(id);
-        if (checkAccessToItem(this.currentObject, principal)) {
+    public String edit(Model model, @PathVariable("id") Long id) {
+        if (this.checkCurrentObject(id)) {
+            return "redirect:/" + category;
+        }
+        if (checkAccessToItem(this.currentObject)) {
             this.addItemAttributesEdit(model, currentObject);
 
             if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
@@ -186,11 +192,10 @@ public class BasicController<T extends AbstractShowableEntity,
     @PostMapping("/{id}/edit")
     public String update(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,
-                         Principal principal,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model) {
-        if (checkAccessToItem(this.currentObject, principal)) {
+        if (checkAccessToItem(this.currentObject)) {
             if (bindingResult.hasErrors()) {
                 this.addItemAttributesEdit(model, item);
                 if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
@@ -205,20 +210,19 @@ public class BasicController<T extends AbstractShowableEntity,
             }
             service.update(id, item);
             logger.info(item.getClass()
-                    .getSimpleName() + " id:" + id + " was edited by '" + user.getUsername() + "'");
+                    .getSimpleName() + " id:" + id + " was edited by '" + USERMODEL.getUsername() + "'");
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
     }
 
     @PostMapping(value = "/{id}")
-    public String delete(@PathVariable("id") Long id,
-                         Principal principal) {
-        if (checkAccessToItem(this.currentObject, principal)) {
-            userService.delCreatedItem(user,
+    public String delete(@PathVariable("id") Long id) {
+        if (checkAccessToItem(this.currentObject)) {
+            userService.delCreatedItem(USERMODEL,
                     new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
             service.delete(id);
             logger.info(thisClassNewObject.getClass().getSimpleName() +
-                    " id:" + id + " was deleted by '" + user.getUsername() + "'");
+                    " id:" + id + " was deleted by '" + USERMODEL.getUsername() + "'");
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
     }
@@ -228,10 +232,10 @@ public class BasicController<T extends AbstractShowableEntity,
     public ResponseEntity<Resource> createPdf(@Param("id") Long id) throws IOException {
         T item = this.service.show(id);
 
-        return this.createResponce(item);
+        return this.createResponse(item);
     }
 
-    protected ResponseEntity<Resource> createResponce(T item) throws IOException {
+    protected ResponseEntity<Resource> createResponse(T item) throws IOException {
         this.preparePDF(item);
         File file = new File(PDF_DOC_NAME);
         Path path = Paths.get(file.getAbsolutePath());
@@ -257,7 +261,7 @@ public class BasicController<T extends AbstractShowableEntity,
 
     protected void preparePDF(T item) {
         this.pdfService.newPDFDocument()
-                .addUserName(this.user.getUsername())
+                .addUserName(USERMODEL.getUsername())
                 .addImage(this.pictureService.show(item.getPicture()).getName())
                 .build(item);
     }
@@ -267,43 +271,41 @@ public class BasicController<T extends AbstractShowableEntity,
      * If user is ADMIN -> no filtering.
      * Else -> filtering remains shared and ID-filtered items, or just ID-filtered items.
      *
-     * @param value     string to search.
-     * @param shared    flag for including shared items to resultSet.
+     * @param value  string to search.
+     * @param shared flag for including shared items to resultSet.
      * @param model
-     * @param principal
      * @return "index" page with search results.
      */
     @GetMapping(value = "/search")
     public String search(@RequestParam(value = "value") String value,
                          @RequestParam(value = "shared", required = false) boolean shared,
-                         Model model,
-                         Principal principal) {
-        this.updateUser(principal);
+                         Model model) {
         this.itemMap.clear();
 
         Set<T> resultSet = new HashSet<>();
         resultSet.addAll(this.service.findByNameContainingIgnoreCase(value));
         resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
 
-        if (!this.user.getAuthorities().contains(ROLE_ADMIN)) {
+        if (!USERMODEL.getAuthorities().contains(ROLE_ADMIN)) {
             if (shared) {
                 resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(this.user.getId())
+                        .filter(item -> item.getCreator().equals(USERMODEL.getId())
                                 || item.getIsShared())
                         .collect(Collectors.toSet());
             } else {
                 resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(this.user.getId()))
+                        .filter(item -> item.getCreator().equals(USERMODEL.getId()))
                         .collect(Collectors.toSet());
             }
         }
         resultSet.forEach(item -> this.itemMap.put(item,
                 pictureService.show(item.getPicture()).getName()));
 
+        model.addAttribute("user", USERMODEL);
         model.addAttribute("objects", this.itemMap);
         model.addAttribute("category", category);
 
-        logger.info(user.getUsername() + " was searching " + value + " in " + category);
+        logger.info(USERMODEL.getUsername() + " was searching " + value + " in " + category);
         return "index";
     }
 

@@ -22,6 +22,7 @@ public class SecurityConfiguration {
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final CustomOAuth2UserService oauthUserService;
+    public static UserModel USERMODEL;
 
     @Autowired
     public SecurityConfiguration(CustomUserDetailsService customUserDetailsService,
@@ -53,7 +54,7 @@ public class SecurityConfiguration {
                 .and()
                 .successHandler((request, response, authentication) -> {
                     UserModel oauthUser = new UserModel((OAuth2User) authentication.getPrincipal());
-                    oauthUserService.processOAuthPostLogin(oauthUser.getEmail());
+                    oauthUserService.processOAuthPostLogin(oauthUser);
                     response.sendRedirect("/successLogin");
                 });
         return http.build();

@@ -46,7 +46,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         if (this.findByName(userModel.getUsername()) != null) {
             return false;
         }
-        this.userModel = new UserBuilder(userModel)
+        this.userModel = new UserBuilder(userModel.getName(), userModel.getPassword())
                 .encodePassword(this.passwordEncoder).setActive(true)
                 .addRole(role).setProvider(LOCAL).build();
         repository.save(this.userModel);

@@ -23,7 +23,6 @@ import ru.kuznetsov.bikeService.services.*;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Set;
 
 @Component
@@ -45,27 +44,31 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
-                       Principal principal,
                        Model model) {
+        if (this.checkCurrentObject(id)) {
+            return "redirect:/" + category;
+        }
         this.updateCacheList(service.show(id).getLinkedItems());
         this.addLinkedItemsToModel(model);
-        return super.show(id, principal, model);
+        return super.show(id, model);
     }
 
     @Override
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable Long id, Principal principal) {
+    public String edit(Model model, @PathVariable Long id) {
+        if (this.checkCurrentObject(id)) {
+            return "redirect:/" + category;
+        }
         this.updateCacheList(service.show(id).getLinkedItems());
         this.addAllItemsToModel(model);
         this.addLinkedItemsToModel(model);
-        return super.edit(model, id, principal);
+        return super.edit(model, id);
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public String updateServiceList(
             @Valid @ModelAttribute("object") T item,
             BindingResult bindingResult,
-            Principal principal,
             @PathVariable("id") Long id,
             @RequestParam(value = "action") String action,
             @RequestParam(value = "documentId", required = false) Long documentId,
@@ -80,7 +83,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         item.setLinkedItems(this.currentObject.getLinkedItems());
         switch (action) {
             case "finish":
-                return this.update(item, bindingResult, principal, file, id, model);
+                return this.update(item, bindingResult, file, id, model);
             case "addDocument":
                 this.itemsManipulation(item, 1, Document.class, documentId, 1);
                 break;
@@ -113,7 +116,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                 break;
         }
         service.update(id, item);
-        return edit(model, id, principal);
+        return edit(model, id);
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
@@ -143,7 +146,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         });
         this.cacheList = generalList;
 
-        return this.createResponce(item);
+        return this.createResponse(item);
     }
 
     private void updateCacheList(Set<PartEntity> entityList) {

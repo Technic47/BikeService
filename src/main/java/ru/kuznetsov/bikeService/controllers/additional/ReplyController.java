@@ -11,7 +11,7 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.ReplyMessage;
 import ru.kuznetsov.bikeService.services.ReplyMessageService;
 
-import java.security.Principal;
+import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 
 @Controller
 @RequestMapping("/reply")
@@ -20,9 +20,9 @@ public class ReplyController extends AbstractController {
 
     @GetMapping()
     @Secured("ROLE_ADMIN")
-    public String index(Model model, Principal principal){
+    public String index(Model model){
         this.addMessagesToModel(model);
-        this.addUserToModel(model, principal);
+        model.addAttribute("user", USERMODEL);
         return "reply_index";
     }
 
@@ -31,18 +31,17 @@ public class ReplyController extends AbstractController {
     }
 
     @GetMapping("/new")
-    public String newReply(Model model, Principal principal) {
+    public String newReply(Model model) {
         model.addAttribute("replyMessage", new ReplyMessage());
-        this.addUserToModel(model, principal);
+        model.addAttribute("user", USERMODEL);
         return "reply";
     }
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("replyMessage") ReplyMessage message,
                        BindingResult bindingResult,
-                       Model model,
-                       Principal principal) {
-        this.addUserToModel(model, principal);
+                       Model model) {
+        model.addAttribute("user", USERMODEL);
         if (bindingResult.hasErrors()) {
             model.addAttribute("replyMessage", message);
             return "reply";
@@ -54,11 +53,10 @@ public class ReplyController extends AbstractController {
     @PostMapping("/{id}")
     @Secured("ROLE_ADMIN")
     public String delete(@PathVariable("id") Long id,
-                         Model model,
-                         Principal principal){
+                         Model model){
         this.service.delete(id);
         this.addMessagesToModel(model);
-        this.addUserToModel(model, principal);
+        model.addAttribute("user", USERMODEL);
         return "reply_index";
     }
 

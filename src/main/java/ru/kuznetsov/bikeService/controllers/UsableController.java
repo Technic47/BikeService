@@ -10,8 +10,6 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.services.ManufacturerService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
-import java.security.Principal;
-
 @Component
 @Scope("prototype")
 public class UsableController<T extends AbstractUsableEntity, S extends CommonAbstractEntityService<T>>
@@ -26,11 +24,13 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
-                       Principal principal,
                        Model model) {
+        if (this.checkCurrentObject(id)) {
+            return "redirect:/" + category;
+        }
         Long manufactureIndex = service.show(id).getManufacturer();
         model.addAttribute("manufacture", manufacturerService.show(manufactureIndex).getName());
-        return super.show(id, principal, model);
+        return super.show(id, model);
     }
 
 

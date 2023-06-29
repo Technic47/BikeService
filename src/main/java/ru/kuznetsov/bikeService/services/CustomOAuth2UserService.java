@@ -11,6 +11,7 @@ import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 
+import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 import static ru.kuznetsov.bikeService.models.users.Provider.GOOGLE;
 
 @Service
@@ -23,16 +24,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return new UserModel(user);
     }
 
-    public void processOAuthPostLogin(String username) {
+    public void processOAuthPostLogin(UserModel oAuth2User) {
+        String username = oAuth2User.getEmail();
         UserModel existUser = userRepository.findByUsername(username);
 
         if (existUser == null) {
-            UserBuilder builder = new UserBuilder();
+            UserBuilder builder = new UserBuilder(oAuth2User);
             builder.setName(username).addRole(UserRole.ROLE_USER)
                     .setProvider(GOOGLE).setActive(true);
 
-            userRepository.save(builder.build());
+            existUser = userRepository.save(builder.build());
         }
+        USERMODEL = existUser;
     }
 
     @Autowired

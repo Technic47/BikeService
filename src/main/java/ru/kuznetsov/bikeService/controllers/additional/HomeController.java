@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.controllers.additional;
 
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
-import java.security.Principal;
+import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 
 @Controller
 @RequestMapping("/")
@@ -25,9 +24,9 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/login")
-    public String login(Model model, Principal principal) {
-        this.addUserToModel(model, principal);
-        logger.info(principal.getName() + " logged in");
+    public String login(Model model) {
+        model.addAttribute("user", USERMODEL);
+        logger.info(USERMODEL.getName() + " logged in");
         return "title";
     }
 
@@ -37,15 +36,15 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/successLogin")
-    public String confirmLogin(Model model, OAuth2AuthenticationToken authentication) {
-        this.addUserToModel(model, authentication);
-        logger.info(authentication.getPrincipal().getAttribute("email") + " logged in");
+    public String confirmLogin(Model model) {
+        model.addAttribute("user", USERMODEL);
+        logger.info(USERMODEL.getAttribute("email") + " logged in");
         return "title";
     }
 
     @GetMapping("/title")
-    public String index(Model model, Principal principal) {
-        this.addUserToModel(model, principal);
+    public String index(Model model) {
+        model.addAttribute("user", USERMODEL);
         return "title";
     }
 
@@ -66,8 +65,8 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/info")
-    public String info(Model model, Principal principal) {
-        this.addUserToModel(model, principal);
+    public String info(Model model) {
+        model.addAttribute("user", USERMODEL);
         return "info";
     }
 }

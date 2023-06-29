@@ -13,6 +13,8 @@ import ru.kuznetsov.bikeService.services.*;
 
 import java.security.Principal;
 
+import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
+
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {
@@ -27,7 +29,7 @@ public class UserController extends AbstractController {
     @GetMapping()
     @Secured("ROLE_ADMIN")
     public String index(Model model, Principal principal) {
-        this.addUserToModel(model, principal);
+        model.addAttribute("user", USERMODEL);
         model.addAttribute("users", userService.index());
         return "users_index";
     }
@@ -36,18 +38,17 @@ public class UserController extends AbstractController {
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
     public String showToAdmin(@PathVariable("id") Long id,
-                              Model model,
-                              Principal principal) {
-        this.addUserToModel(model, principal);
+                              Model model) {
+        model.addAttribute("user", USERMODEL);
         this.addAllCreatedItems(model, id);
         model.addAttribute("owner", false);
         return "users_show";
     }
 
     @GetMapping("/show")
-    public String showToOwner(Principal principal, Model model) {
-        this.addUserToModel(model, principal);
-        this.addAllCreatedItems(model, this.user.getId());
+    public String showToOwner(Model model) {
+        model.addAttribute("user", USERMODEL);
+        this.addAllCreatedItems(model, USERMODEL.getId());
         model.addAttribute("owner", true);
         return "users_show";
     }
@@ -75,9 +76,9 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/update")
-    public String updateNameOrPassword(Principal principal, Model model) {
-        this.updateUser(principal);
-        model.addAttribute("user", this.user);
+    public String updateNameOrPassword(Model model) {
+//        this.updateUser(principal);
+        model.addAttribute("user", USERMODEL);
         return "namePassChange";
     }
 
@@ -86,10 +87,10 @@ public class UserController extends AbstractController {
                                        BindingResult bindingResult,
                                        Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", this.user);
+            model.addAttribute("user", USERMODEL);
             return "namePassChange";
         }
-        this.userService.update(this.user, userModel);
+        this.userService.update(USERMODEL, userModel);
         return "redirect:/logout";
     }
 

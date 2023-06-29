@@ -1,17 +1,23 @@
 package ru.kuznetsov.bikeService.models.users;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class UserBuilder {
-    private final UserModel user = new UserModel();
+    private final UserModel user;
 
     public UserBuilder() {
+        this.user = new UserModel();
     }
 
-    public UserBuilder(UserModel user) {
-        this.setName(user.getUsername());
-        this.setPassword(user.getPassword());
+    public UserBuilder(String unserName, String password) {
+        this.user = new UserModel(unserName, password);
     }
+
+    public UserBuilder(OAuth2User oAuth2User) {
+        this.user = new UserModel(oAuth2User);
+    }
+
 
     public UserBuilder setName(String name){
         this.user.setUsername(name);
