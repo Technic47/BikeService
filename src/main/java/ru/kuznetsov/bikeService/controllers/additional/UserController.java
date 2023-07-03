@@ -11,7 +11,8 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.*;
 
-import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
 
 import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 
@@ -28,7 +29,7 @@ public class UserController extends AbstractController {
 
     @GetMapping()
     @Secured("ROLE_ADMIN")
-    public String index(Model model, Principal principal) {
+    public String index(Model model) {
         model.addAttribute("user", USERMODEL);
         model.addAttribute("users", userService.index());
         return "users_index";
@@ -77,7 +78,6 @@ public class UserController extends AbstractController {
 
     @GetMapping("/update")
     public String updateNameOrPassword(Model model) {
-//        this.updateUser(principal);
         model.addAttribute("user", USERMODEL);
         return "namePassChange";
     }
@@ -99,6 +99,17 @@ public class UserController extends AbstractController {
     public String delete(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect:/users_index";
+    }
+
+    @GetMapping("/search")
+    @Secured("ROLE_ADMIN")
+    public String search(@RequestParam(value = "value") String value,
+                         Model model){
+
+        Set<UserModel> resultSet = new HashSet<>(this.userService.findByUsernameContainingIgnoreCase(value));
+        model.addAttribute("user", USERMODEL);
+        model.addAttribute("users", resultSet);
+        return "users_index";
     }
 
     @Autowired

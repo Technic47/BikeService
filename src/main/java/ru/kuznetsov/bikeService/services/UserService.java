@@ -9,6 +9,8 @@ import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
+import java.util.List;
+
 import static ru.kuznetsov.bikeService.models.users.Provider.LOCAL;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
@@ -76,13 +78,23 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
     /**
-     * Finds user record with specified name.
+     * Finds user record with specified username.
      *
-     * @param name name for search.
+     * @param username name for search.
      * @return UserModel wth record from DB.
      */
-    public UserModel findByName(String name) {
-        return repository.findByUsername(name);
+    public UserModel findByName(String username) {
+        return repository.findByUsername(username);
+    }
+
+    /**
+     * Find user records containing argument username in username field.
+     *
+     * @param username search value
+     * @return list of matching records.
+     */
+    public List<UserModel> findByUsernameContainingIgnoreCase(String username) {
+        return repository.findByUsernameContainingIgnoreCase(username);
     }
 
     /**
@@ -109,7 +121,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
 
     /**
      * Update userName or password in user record.
-     * @param oldItem userRecord for changing
+     *
+     * @param oldItem    userRecord for changing
      * @param updateItem object with new credentials
      */
     public void update(UserModel oldItem, UserModel updateItem) {
@@ -124,7 +137,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         repository.save(oldItem);
     }
 
-    public void cleanUser(){
+    public void cleanUser() {
         this.userModel = null;
     }
 

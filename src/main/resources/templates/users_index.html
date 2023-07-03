@@ -8,6 +8,7 @@
     <link href="/static/css/table-no-border.css" rel="stylesheet"/>
     <link href="/static/css/border-block.css" rel="stylesheet"/>
     <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -19,6 +20,17 @@
             Пользователи, зарегистрированные в системе:
         </h3>
     </div>
+    <div class="container">
+        <form method="get" th:action="@{/users/search}">
+            <input th:name="value" th:type="text"/>
+            <button th:type="submit">Найти</button>
+            <br/>
+        </form>
+        <form method="get" th:action="@{/users}">
+            <button th:type="submit">Сбросить</button>
+        </form>
+    </div>
+    <br/>
     <div class="border-block">
         <table class="table-no-border">
             <tbody>
