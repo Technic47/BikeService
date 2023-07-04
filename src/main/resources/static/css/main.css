@@ -1,28 +1,23 @@
-/*.main {*/
-/*    font-size: 5vw;*/
-/*}*/
-/*h1.main {*/
-/*    font-size: 5vw;*/
-/*}*/
-/*h3.main {*/
-/*    font-size: 3vw;*/
-/*}*/
-/*div.main {*/
-/*    font-size: 1vw;*/
-/*}*/
+.main {
 
-header {
+}
+
+a {
+    padding: 5px;
+}
+
+header, footer {
     text-align: justify;
     letter-spacing: 1px;
     height: 4em;
-    padding: 2em 5%;
-    /*background: #2c3e50;*/
-    /*color: #fff;*/
+    padding: 1em 5%;
 }
+
 header h1,
 header nav {
     display: inline-block;
 }
+
 header::after {
     content: '';
     display: inline-block;

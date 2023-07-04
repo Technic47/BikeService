@@ -4,29 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Header</title>
+    <link href="/static/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-<header th:fragment="header">
-    <h1>
-        <div th:text="${user.getUsername()}"></div>
-    </h1>
-    <nav>
-        <a th:href="@{/pictures}"
-           th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Изображения</a>
-        <a th:href="@{/users}"
-           th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Пользователи</a>
-        <a th:href="@{/reply}"
-           th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Отзывы</a>
-        <a th:href="@{/users/show}">Профиль</a>
-        <a th:href="@{/title}">На главную</a>
-        <a th:href="@{/logout}">Log out</a>
-    </nav>
-</header>
-<footer th:fragment="footer">
-    <nav>
-        <a th:href="@{/info}">Инфо</a>
-        <a th:href="@{/reply/new}">Форма обратной связи</a>
-    </nav>
-</footer>
+<div class="main">
+    <header th:fragment="header">
+        <h1>
+            <div th:text="${user.getUsername()}"></div>
+        </h1>
+        <nav>
+            <a th:href="@{/pictures}"
+               th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Изображения</a>
+            <a th:href="@{/users}"
+               th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Пользователи</a>
+            <a th:href="@{/reply}"
+               th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Отзывы</a>
+            <a th:href="@{/users/show}">Профиль</a>
+            <a th:href="@{/title}">На главную</a>
+            <a th:href="@{/logout}">Log out</a>
+        </nav>
+    </header>
+    <footer th:fragment="footer">
+        <nav>
+            <a th:href="@{/info}">Инфо</a>
+            <a th:href="@{/reply/new}">Форма обратной связи</a>
+        </nav>
+    </footer>
+</div>
 </body>
 </html>

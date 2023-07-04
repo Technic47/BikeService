@@ -1,17 +1,18 @@
 .border-block {
     border: 3px solid black;
-    width: 60%;
-    max-width: 1200px;
-    height: 600px;
+    border-radius: 10px;
+    width: 80%;
+    /*max-width: 1200px;*/
+    height: 60%;
     overflow: auto;
     margin: auto;
     text-align: center;
 }
 .border-block-left {
     border: 3px solid black;
-    width: 60%;
-    max-width: 1200px;
-    height: 600px;
+    width: 80%;
+    /*max-width: 1200px;*/
+    height: 60%;
     overflow: auto;
     margin: auto;
     text-align: left;
