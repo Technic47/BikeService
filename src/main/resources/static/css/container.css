@@ -43,7 +43,14 @@
 
 .col-5-2-no-boarders {
     width: 20%;
-    align-content: center !important;
+}
+
+.col-5-2-no-boarders button {
+    width: 75px;
+}
+
+.col-5-2-no-boarders select{
+    width: 175px
 }
 
 .col-3-1-no-boarder {

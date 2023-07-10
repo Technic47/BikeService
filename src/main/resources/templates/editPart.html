@@ -115,7 +115,7 @@
                     <br/>
                     <label for="allParts">Выберите запчасть:</label>
                     <div th:object="${allParts}">
-                        <select id="allParts" style="width: 175px" th:name="partId">
+                        <select id="allParts" th:name="partId">
                             <option th:each="item : ${allParts}"
                                     th:if="!${item.getId() == object.getId() and category == 'parts'}"
                                     th:text="${item.getName()}"
@@ -132,7 +132,7 @@
                     <br/>
                     <label for="documents">Выберите документ:</label>
                     <div th:object="${allDocuments}">
-                        <select id="documents" style="width: 175px" th:name="documentId">
+                        <select id="documents" th:name="documentId">
                             <option th:each="item : ${allDocuments}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -148,7 +148,7 @@
                     <br/>
                     <label for="tools">Выберите инструмент:</label>
                     <div th:object="${allTools}">
-                        <select id="tools" style="width: 175px" th:name="toolId">
+                        <select id="tools" th:name="toolId">
                             <option th:each="item : ${allTools}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -164,7 +164,7 @@
                     <br/>
                     <label for="fasteners">Выберите крепёж:</label>
                     <div th:object="${allFasteners}">
-                        <select id="fasteners" style="width: 175px" th:name="fastenerId">
+                        <select id="fasteners" th:name="fastenerId">
                             <option th:each="item : ${allFasteners}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">
@@ -183,7 +183,7 @@
                     <br/>
                     <label for="consumables">Выберите расходник:</label>
                     <div th:object="${allConsumables}">
-                        <select id="consumables" style="width: 175px" th:name="consumableId">
+                        <select id="consumables" th:name="consumableId">
                             <option th:each="item : ${allConsumables}"
                                     th:text="${item.getName()}"
                                     th:value="${item.getId()}">

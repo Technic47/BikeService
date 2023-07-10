@@ -2,16 +2,15 @@
     border: 3px solid black;
     border-radius: 10px;
     width: 80%;
-    /*max-width: 1200px;*/
-    height: 60%;
-    overflow: auto;
+    height: 600px;
+    /*overflow: auto;*/
+    overflow-x: auto;
     margin: auto;
     text-align: center;
 }
 .border-block-left {
     border: 3px solid black;
     width: 80%;
-    /*max-width: 1200px;*/
     height: 60%;
     overflow: auto;
     margin: auto;
