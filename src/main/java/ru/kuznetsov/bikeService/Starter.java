@@ -18,6 +18,7 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
+- server do not make session user!!!!!!
 - different variants of PDF document???
 - index page with 2 columns???
  */
