@@ -13,6 +13,8 @@ FROM eclipse-temurin:19-jre-alpine
 WORKDIR /app
 
 COPY --from=builder /app/target/bikeService.jar /app/app.jar
+COPY --from=builder /app/src/main/resources/static/ssl /app/ssl_sertificates/
 
 EXPOSE 8080
+EXPOSE 8443
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
