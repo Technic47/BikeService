@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="ru"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>Edit item</title>
     <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
     <link href="/static/css/table-no-border.css" rel="stylesheet"/>
     <link href="/static/css/main.css" rel="stylesheet"/>
 </head>
@@ -14,49 +15,34 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main">
-    <div class="container">
-        <form enctype="multipart/form-data"
-              th:action="@{/{link}/{id}/update(link=${category}, id=${object.getId()})}"
-              th:method="POST"
-              th:object="${object}">
-            <div class="col-1-1">
-                <div class="col-5-2-no-boarders">
-                    <label for="name">Название:</label>
-                    <br/>
-                    <input id="name" th:field="*{name}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{name}"
-                          th:if="${#fields.hasErrors('name')}"></span>
-                    <br/>
-                    <label for="description">Описание:</label>
-                    <br/>
-                    <input id="description" th:field="*{description}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{description}"
-                          th:if="${#fields.hasErrors('description')}"></span>
-                    <br/>
-                    <label for="isShared">Показать всем:</label>
-                    <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
-                </div>
-                <div class="col-5-2-no-boarders">
-                    <label for="link">Ссылка:</label>
-                    <br/>
-                    <input id="link" th:field="*{link}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
-                    <br/>
-                    <label for="value" th:text="${object.getValueName()}">:</label>
-                    <br/>
-                    <input id="value" th:field="*{value}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
-                    <br/>
-                </div>
-                <div class="col-5-2-no-boarders" th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
-                    <span th:object="${manufacturers}">
+    <div class="container-base">
+        <div class="container">
+            <form class="container-form" enctype="multipart/form-data"
+                  th:action="@{/{link}/{id}/update(link=${category}, id=${object.getId()})}"
+                  th:method="POST"
+                  th:object="${object}">
+                <div class="col-1-1-no-boarder">
+                    <div class="col-5-2-no-boarders">
+                        <label for="name">Название:</label>
+                        <input id="name" th:field="*{name}" type="text"/>
+                        <span style="color:red" th:errors="*{name}"
+                              th:if="${#fields.hasErrors('name')}"></span>
+                        <label for="description">Описание:</label>
+                        <input id="description" th:field="*{description}" type="text"/>
+                        <span style="color:red" th:errors="*{description}"
+                              th:if="${#fields.hasErrors('description')}"></span>
+                    </div>
+                    <div class="col-5-2-no-boarders">
+                        <label for="link">Ссылка:</label>
+                        <input id="link" th:field="*{link}" type="text"/>
+                        <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
+                        <label for="value" th:text="${object.getValueName()}">:</label>
+                        <input id="value" th:field="*{value}" type="text"/>
+                        <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
+                    </div>
+                    <div class="col-5-2-no-boarders" th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
                         <label for="manufacturers">Выберите производителя:</label>
-                        <br/>
-                        <select id="manufacturers" name="manufacturer">
+                        <select id="manufacturers" name="manufacturer" th:object="${manufacturers}">
                             <option selected="selected" th:text="${manufacture.getName()}"
                                     th:value="${manufacture.getId()}"></option>
                             <option th:each="item : ${manufacturers}"
@@ -64,26 +50,15 @@
                                     th:value="${item.getId()}">
                             </option>
                         </select>
-                    </span>
-                    <br/>
-                    <br/>
-                    <label for="model">Модель:</label>
-                    <br/>
-                    <input id="model" th:field="*{model}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
-                    <br/>
-                    <br/>
-                </div>
-                <div class="col-5-2-no-boarders">
-                    <label for="picture">Загрузить новое изображение:</label>
-                    <br/>
-                    <input accept="image/*" id="picture" name="newImage" type="file"/>
-                    <br/>
-                    <br/>
-                    <div th:object="${allPictures}">
+                        <label for="model">Модель:</label>
+                        <input id="model" th:field="*{model}" type="text"/>
+                        <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
+                    </div>
+                    <div class="col-5-2-no-boarders">
+                        <label for="picture">Загрузить новое изображение:</label>
+                        <input accept="image/*" id="picture" name="newImage" type="file"/>
                         <label for="pictures">Выберите из уже загруженных:</label>
-                        <select id="pictures" name="picture" style="width: 150px">
+                        <select id="pictures" name="picture" style="width: 150px" th:object="${allPictures}">
                             <option selected="selected" th:text="${picture.getName()}"
                                     th:value="${picture.getId()}"></option>
                             <option th:each="item : ${allPictures}"
@@ -92,120 +67,105 @@
                             </option>
                         </select>
                     </div>
-                </div>
-                <div class="col-5-2-no-boarders" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_USER)}">
+                    <div class="col-5-2-no-boarders"
+                         th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_USER)}">
                     <span hidden="hidden">
                     <label for="creator">Enter creator:</label>
                     <input id="creator" th:field="*{creator}" type="text"/>
                     </span>
-                </div>
-                <div class="col-5-2-no-boarders" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
-                    <label for="creatorAdmin">Id создателя:</label>
-                    <br/>
-                    <input id="creatorAdmin" th:field="*{creator}" type="text"/>
-                    <br/>
-                    <br/>
-                </div>
-            </div>
-            <button th:name="action" th:type="submit" th:value="finish">Обновить</button>
-            <br/>
-            <br/>
-            <div class="col-1-1" th:if="${type == 'Serviceable'}">
-                <div class="col-5-2-no-boarders">
-                    <br/>
-                    <label for="allParts">Выберите запчасть:</label>
-                    <div th:object="${allParts}">
-                        <select id="allParts" th:name="partId">
-                            <option th:each="item : ${allParts}"
-                                    th:if="!${item.getId() == object.getId() and category == 'parts'}"
-                                    th:text="${item.getName()}"
-                                    th:value="${item.getId()}">
-                            </option>
-                        </select>
-                        <br/>
-                        <button th:name="action" th:type="submit" th:value="addPart">Добавить</button>
-                        <button th:name="action" th:type="submit" th:value="delPart">Убрать</button>
                     </div>
-                    <br/>
-                </div>
-                <div class="col-5-2-no-boarders">
-                    <br/>
-                    <label for="documents">Выберите документ:</label>
-                    <div th:object="${allDocuments}">
-                        <select id="documents" th:name="documentId">
-                            <option th:each="item : ${allDocuments}"
-                                    th:text="${item.getName()}"
-                                    th:value="${item.getId()}">
-                            </option>
-                        </select>
-                        <br/>
-                        <button th:name="action" th:type="submit" th:value="addDocument">Добавить</button>
-                        <button th:name="action" th:type="submit" th:value="delDocument">Убрать</button>
+                    <div class="col-5-2-no-boarders">
+                        <label for="creatorAdmin" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Id создателя:</label>
+                        <input id="creatorAdmin" th:field="*{creator}" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}" type="text"/>
+                        <label for="isShared">Показать всем:</label>
+                        <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
                     </div>
-                    <br/>
                 </div>
-                <div class="col-5-2-no-boarders">
-                    <br/>
-                    <label for="tools">Выберите инструмент:</label>
-                    <div th:object="${allTools}">
-                        <select id="tools" th:name="toolId">
-                            <option th:each="item : ${allTools}"
-                                    th:text="${item.getName()}"
-                                    th:value="${item.getId()}">
-                            </option>
-                        </select>
-                        <br/>
-                        <button th:name="action" th:type="submit" th:value="addTool">Добавить</button>
-                        <button th:name="action" th:type="submit" th:value="delTool">Убрать</button>
-                    </div>
-                    <br/>
-                </div>
-                <div class="col-5-2-no-boarders">
-                    <br/>
-                    <label for="fasteners">Выберите крепёж:</label>
-                    <div th:object="${allFasteners}">
-                        <select id="fasteners" th:name="fastenerId">
-                            <option th:each="item : ${allFasteners}"
-                                    th:text="${item.getName()}"
-                                    th:value="${item.getId()}">
-                            </option>
-                        </select>
-                        <br/>
-                        <label for="fastenerQuantity">Выберите количество:</label>
-                        <input id="fastenerQuantity" th:name="fastenerQuantity" th:value="1" type="number"/>
-                        <br/>
-                        <button th:name="action" th:type="submit" th:value="addFastener">Добавить</button>
-                        <button th:name="action" th:type="submit" th:value="delFastener">Убрать</button>
-                    </div>
-                    <br/>
-                </div>
-                <div class="col-5-2-no-boarders">
-                    <br/>
-                    <label for="consumables">Выберите расходник:</label>
-                    <div th:object="${allConsumables}">
-                        <select id="consumables" th:name="consumableId">
-                            <option th:each="item : ${allConsumables}"
-                                    th:text="${item.getName()}"
-                                    th:value="${item.getId()}">
-                            </option>
-                        </select>
-                        <br/>
-                        <label for="consumableQuantity">Выберите количество:</label>
-                        <input id="consumableQuantity" th:name="consumableQuantity" th:value="1" type="number"/>
-                        <br/>
-                        <button th:name="action" th:type="submit" th:value="addConsumable">Добавить</button>
-                        <button th:name="action" th:type="submit" th:value="delConsumable">Убрать</button>
-                    </div>
-                    <br/>
-                </div>
+                <button th:name="action" th:type="submit" th:value="finish">Обновить</button>
                 <br/>
                 <br/>
-            </div>
-        </form>
-    </div>
-    <div class="container">
-        <br/>
-        <div class="col-1-1" th:if="${type == 'Serviceable'}">
+                <div class="col-1-1-no-boarder" th:if="${type == 'Serviceable'}">
+                    <div class="col-5-2-no-boarders">
+                        <label for="allParts">Выберите запчасть:</label>
+                        <div th:object="${allParts}">
+                            <select id="allParts" th:name="partId" th:object="${allParts}">
+                                <option th:each="item : ${allParts}"
+                                        th:if="!${item.getId() == object.getId() and category == 'parts'}"
+                                        th:text="${item.getName()}"
+                                        th:value="${item.getId()}">
+                                </option>
+                            </select>
+                            <br/>
+                            <button th:name="action" th:type="submit" th:value="addPart">Добавить</button>
+                            <button th:name="action" th:type="submit" th:value="delPart">Убрать</button>
+                        </div>
+                    </div>
+                    <div class="col-5-2-no-boarders">
+                        <label for="documents">Выберите документ:</label>
+                        <div th:object="${allDocuments}">
+                            <select id="documents" th:name="documentId">
+                                <option th:each="item : ${allDocuments}"
+                                        th:text="${item.getName()}"
+                                        th:value="${item.getId()}">
+                                </option>
+                            </select>
+                            <br/>
+                            <button th:name="action" th:type="submit" th:value="addDocument">Добавить</button>
+                            <button th:name="action" th:type="submit" th:value="delDocument">Убрать</button>
+                        </div>
+                    </div>
+                    <div class="col-5-2-no-boarders">
+                        <label for="tools">Выберите инструмент:</label>
+                        <div th:object="${allTools}">
+                            <select id="tools" th:name="toolId">
+                                <option th:each="item : ${allTools}"
+                                        th:text="${item.getName()}"
+                                        th:value="${item.getId()}">
+                                </option>
+                            </select>
+                            <br/>
+                            <button th:name="action" th:type="submit" th:value="addTool">Добавить</button>
+                            <button th:name="action" th:type="submit" th:value="delTool">Убрать</button>
+                        </div>
+                    </div>
+                    <div class="col-5-2-no-boarders">
+                        <label for="fasteners">Выберите крепёж:</label>
+                        <div th:object="${allFasteners}">
+                            <select id="fasteners" th:name="fastenerId">
+                                <option th:each="item : ${allFasteners}"
+                                        th:text="${item.getName()}"
+                                        th:value="${item.getId()}">
+                                </option>
+                            </select>
+                            <br/>
+                            <label for="fastenerQuantity">Выберите количество:</label>
+                            <input id="fastenerQuantity" th:name="fastenerQuantity" th:value="1" type="number"/>
+                            <br/>
+                            <button th:name="action" th:type="submit" th:value="addFastener">Добавить</button>
+                            <button th:name="action" th:type="submit" th:value="delFastener">Убрать</button>
+                        </div>
+                    </div>
+                    <div class="col-5-2-no-boarders">
+                        <label for="consumables">Выберите расходник:</label>
+                        <div th:object="${allConsumables}">
+                            <select id="consumables" th:name="consumableId">
+                                <option th:each="item : ${allConsumables}"
+                                        th:text="${item.getName()}"
+                                        th:value="${item.getId()}">
+                                </option>
+                            </select>
+                            <br/>
+                            <label for="consumableQuantity">Выберите количество:</label>
+                            <input id="consumableQuantity" th:name="consumableQuantity" th:value="1" type="number"/>
+                            <br/>
+                            <button th:name="action" th:type="submit" th:value="addConsumable">Добавить</button>
+                            <button th:name="action" th:type="submit" th:value="delConsumable">Убрать</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="border-block-45" th:if="${type == 'Serviceable'}">
             <div class="col-5-2-no-boarders">
                 <table class="table-no-border">
                     <thead>

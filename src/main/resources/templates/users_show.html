@@ -15,134 +15,154 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main">
-    <div class="container">
-        <div class="col-1-1">
-            <h1 th:text="${userAccount.getUsername()}">
-            </h1>
-            <div class="col-1-1-no-boarder">
-                <form th:action="@{/users/update/{id}(id = ${userAccount.getId()})}" th:method="POST">
-                    <ul>
-                        <li th:text="'ID - ' + ${userAccount.getId()}"></li>
-                        <li th:text="'IsActive - ' + ${userAccount.isActive()}"></li>
-                        <li th:text="'Authorities - ' + ${userAccount.getAuthorities().toString()}"></li>
-                        <li th:text="'Provider - ' + ${userAccount.getProvider().toString()}"></li>
-                    </ul>
-                    <button th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
-                            th:name="admin" th:type="submit" th:value="1">Добавить роль администратора
-                    </button>
-                    <button th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
-                            th:name="admin" th:type="submit" th:value="0">Удалить роль администратора
-                    </button>
-                </form>
-                <form th:action="@{/users/update}" th:if="${userAccount.getProvider() == T(ru.kuznetsov.bikeService.models.users.Provider).LOCAL}" th:method="GET">
-                    <button type="submit">Сменить имя или пароль</button>
-                </form>
+    <div class="container-base">
+        <div class="container">
+            <div class="col-1-1">
+                <h1 th:text="${userAccount.getUsername()}">
+                </h1>
+                <div class="col-1-1-no-boarder">
+                    <form th:action="@{/users/update/{id}(id = ${userAccount.getId()})}" th:method="POST">
+                        <ul>
+                            <li th:text="'ID - ' + ${userAccount.getId()}"></li>
+                            <li th:text="'IsActive - ' + ${userAccount.isActive()}"></li>
+                            <li th:text="'Authorities - ' + ${userAccount.getAuthorities().toString()}"></li>
+                            <li th:text="'Provider - ' + ${userAccount.getProvider().toString()}"></li>
+                        </ul>
+                        <button th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
+                                th:name="admin" th:type="submit" th:value="1">Добавить роль администратора
+                        </button>
+                        <button th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
+                                th:name="admin" th:type="submit" th:value="0">Удалить роль администратора
+                        </button>
+                    </form>
+                    <form th:action="@{/users/update}"
+                          th:if="${userAccount.getProvider() == T(ru.kuznetsov.bikeService.models.users.Provider).LOCAL}"
+                          th:method="GET">
+                        <button type="submit">Сменить имя или пароль</button>
+                    </form>
+                </div>
             </div>
-            <details>
-                <summary>
-                    Созданные документы
-                </summary>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="item : ${documents}">
-                        <td>
-                            <a th:href="@{/documents/{id}(id=${item.getId()})}"
-                               th:text="${item.getCredentials()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </details>
-            <details>
-                <summary>
-                    Созданный крепёж
-                </summary>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="item : ${fasteners}">
-                        <td>
-                            <a th:href="@{/fasteners/{id}(id=${item.getId()})}"
-                               th:text="${item.getCredentials()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </details>
-            <details>
-                <summary>
-                    Созданные производители
-                </summary>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="item : ${manufacturers}">
-                        <td>
-                            <a th:href="@{/manufacturers/{id}(id=${item.getId()})}"
-                               th:text="${item.getCredentials()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </details>
-            <details>
-                <summary>
-                    Созданные расходные материалы
-                </summary>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="item : ${consumables}">
-                        <td>
-                            <a th:href="@{/consumables/{id}(id=${item.getId()})}"
-                               th:text="${item.getCredentials()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </details>
-            <details>
-                <summary>
-                    Созданный инструмент
-                </summary>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="item : ${tools}">
-                        <td>
-                            <a th:href="@{/tools/{id}(id=${item.getId()})}"
-                               th:text="${item.getCredentials()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </details>
-            <details>
-                <summary>
-                    Созданные запчасти
-                </summary>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="item : ${parts}">
-                        <td>
-                            <a th:href="@{/parts/{id}(id=${item.getId()})}"
-                               th:text="${item.getCredentials()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </details>
-            <details>
-                <summary>
-                    Созданные велосипеды
-                </summary>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="item : ${bikes}">
-                        <td>
-                            <a th:href="@{/bikes/{id}(id=${item.getId()})}"
-                               th:text="${item.getCredentials()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </details>
+        </div>
+        <div class="border-block-55">
+            <div class="col-7-1-no-boarders">
+                <details>
+                    <summary>
+                        Созданные документы
+                    </summary>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="item : ${documents}">
+                            <td>
+                                <a th:href="@{/documents/{id}(id=${item.getId()})}"
+                                   th:text="${item.getCredentials()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div class="col-7-1-no-boarders">
+                <details>
+                    <summary>
+                        Созданный крепёж
+                    </summary>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="item : ${fasteners}">
+                            <td>
+                                <a th:href="@{/fasteners/{id}(id=${item.getId()})}"
+                                   th:text="${item.getCredentials()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div class="col-7-1-no-boarders">
+                <details>
+                    <summary>
+                        Созданные производители
+                    </summary>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="item : ${manufacturers}">
+                            <td>
+                                <a th:href="@{/manufacturers/{id}(id=${item.getId()})}"
+                                   th:text="${item.getCredentials()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div class="col-7-1-no-boarders">
+                <details>
+                    <summary>
+                        Созданные расходные материалы
+                    </summary>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="item : ${consumables}">
+                            <td>
+                                <a th:href="@{/consumables/{id}(id=${item.getId()})}"
+                                   th:text="${item.getCredentials()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div class="col-7-1-no-boarders">
+                <details>
+                    <summary>
+                        Созданный инструмент
+                    </summary>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="item : ${tools}">
+                            <td>
+                                <a th:href="@{/tools/{id}(id=${item.getId()})}"
+                                   th:text="${item.getCredentials()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div class="col-7-1-no-boarders">
+                <details>
+                    <summary>
+                        Созданные запчасти
+                    </summary>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="item : ${parts}">
+                            <td>
+                                <a th:href="@{/parts/{id}(id=${item.getId()})}"
+                                   th:text="${item.getCredentials()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+            <div class="col-7-1-no-boarders">
+                <details>
+                    <summary>
+                        Созданные велосипеды
+                    </summary>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="item : ${bikes}">
+                            <td>
+                                <a th:href="@{/bikes/{id}(id=${item.getId()})}"
+                                   th:text="${item.getCredentials()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </div>
         </div>
     </div>
 </div>

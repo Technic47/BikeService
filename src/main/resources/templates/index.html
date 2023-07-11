@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8"/>
     <title>List of items</title>
-    <link href="/static/css/center.css" rel="stylesheet"/>
     <link href="/static/css/table-no-border.css" rel="stylesheet"/>
     <link href="/static/css/border-block.css" rel="stylesheet"/>
     <link href="/static/css/main.css" rel="stylesheet"/>
@@ -14,42 +13,45 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main">
-    <div class="container">
-        <h3>
-            Созданные вами позиции:
-        </h3>
-        <div class="col-1-2-no-boarder">
-            <form method="get" th:action="@{/{link}/search(link=${category})}">
-                <input for="" th:name="value" th:type="text"/>
-                <button style="width: 75px" th:type="submit">Найти</button>
-                <br/>
-                <label for="isShared">Включить общие позиции:</label>
-                <input id="isShared" th:checked="${sharedCheck}" th:name="shared" type="checkbox"/>
-            </form>
-            <form method="get" th:action="@{/{link}(link=${category})}">
-                <button style="width: 75px" th:type="submit">Сбросить</button>
-            </form>
+    <div class="container-base">
+        <div class="container">
+            <div class="col-1-1-no-boarder">
+                <h3>
+                    Созданные вами позиции:
+                </h3>
+            </div>
+            <div class="col-1-2-no-boarder">
+                <form method="get" th:action="@{/{link}/search(link=${category})}">
+                    <input for="" th:name="value" th:type="text"/>
+                    <button style="width: 75px" th:type="submit">Найти</button>
+                    <br/>
+                    <label for="isShared">Включить общие позиции:</label>
+                    <input id="isShared" th:checked="${sharedCheck}" th:name="shared" type="checkbox"/>
+                </form>
+                <form method="get" th:action="@{/{link}(link=${category})}">
+                    <button style="width: 75px" th:type="submit">Сбросить</button>
+                </form>
+            </div>
+            <div class="col-1-2-no-boarder">
+                <form method="get" th:action="@{/{link}/new(link=${category})}">
+                    <input type="submit" value="Создать новую позицию"/>
+                </form>
+            </div>
         </div>
-        <div class="col-1-2-no-boarder">
-            <form method="get" th:action="@{/{link}/new(link=${category})}">
-                <input type="submit" value="Создать новую позицию"/>
-            </form>
+        <div class="border-block-65">
+            <table class="table-no-border">
+                <tbody>
+                <tr th:each="object : ${objects}">
+                    <td>
+                        <img alt="Picture of item" th:src="@{/preview/{filename}(filename=${object.getValue()})}"/>
+                        <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
+                           th:text="${object.getKey().getCredentials()}">item</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="border-block">
-        <table class="table-no-border">
-            <tbody>
-            <tr th:each="object : ${objects}">
-                <td>
-                    <img alt="Picture of item" th:src="@{/preview/{filename}(filename=${object.getValue()})}"/>
-                    <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
-                       th:text="${object.getKey().getCredentials()}">item</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <br/>
 </div>
 
 <div th:insert="~{header :: footer}"></div>

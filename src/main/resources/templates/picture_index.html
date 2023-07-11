@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>All pictures</title>
-    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
     <link href="/static/css/table-no-border.css" rel="stylesheet"/>
     <link href="/static/css/border-block.css" rel="stylesheet"/>
     <link href="/static/css/main.css" rel="stylesheet"/>
@@ -15,27 +15,29 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main">
-    <div class="center">
-        <form method="get" th:action="@{/pictures/new}">
-            <input type="submit" value="Загрузить новое изображение"/>
-        </form>
-    </div>
-    <div class="center">
-        <h3>
-            Все изображения:
-        </h3>
-    </div>
-    <div class="border-block">
-        <ul class="multi-columns">
-            <li th:each="object : ${allPictures}">
-                <form method="POST" th:action="@{/pictures/{id}(id=${object.getId()})}">
-                    <img alt="img preview" th:src="@{/preview/{fileName}(fileName=${object.getName()})}"/>
-                    <button class="btn btn-success" type="submit">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+    <div class="container-base">
+        <div class="container">
+            <div class="col-1-1-no-boarder">
+                <form class="container-form" method="get" th:action="@{/pictures/new}">
+                    <input type="submit" value="Загрузить новое изображение"/>
                 </form>
-            </li>
-        </ul>
+                <h3>
+                    Все изображения:
+                </h3>
+            </div>
+        </div>
+        <div class="border-block-75">
+            <ul>
+                <li th:each="object : ${allPictures}">
+                    <form method="POST" th:action="@{/pictures/{id}(id=${object.getId()})}">
+                        <img alt="img preview" th:src="@{/preview/{fileName}(fileName=${object.getName()})}"/>
+                        <button class="btn btn-success" type="submit">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 

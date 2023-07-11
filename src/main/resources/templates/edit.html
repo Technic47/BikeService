@@ -13,51 +13,34 @@
 <div th:insert="~{header :: header}"></div>
 
 <div class="main">
-    <div class="container">
-        <form enctype="multipart/form-data"
-              th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}"
-              th:method="POST"
-              th:object="${object}">
-            <div class="col-1-1">
-                <div class="col-5-2-no-boarders">
-                    <label for="name">Название:</label>
-                    <br/>
-                    <input id="name" th:field="*{name}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{name}"
-                          th:if="${#fields.hasErrors('name')}"></span>
-                    <br/>
-                    <label for="description">Описание:</label>
-                    <br/>
-                    <input id="description" th:field="*{description}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{description}"
-                          th:if="${#fields.hasErrors('description')}"></span>
-                    <br/>
-                    <label for="isShared">Показать всем:</label>
-                    <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
-                </div>
-                <div class="col-5-2-no-boarders">
-                    <div th:if="${category != 'documents'}">
-                        <label for="link">Ссылка:</label>
-                        <br/>
-                        <input id="link" th:field="*{link}" type="text"/>
-                        <br/>
-                        <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
-                        <br/>
+    <div class="container-base">
+        <div class="container">
+            <form class="container-form" enctype="multipart/form-data"
+                  th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}"
+                  th:method="POST"
+                  th:object="${object}">
+                <div class="col-1-1-no-boarder">
+                    <div class="col-5-2-no-boarders">
+                        <label for="name">Название:</label>
+                        <input id="name" th:field="*{name}" type="text"/>
+                        <span style="color:red" th:errors="*{name}"
+                              th:if="${#fields.hasErrors('name')}"></span>
+                        <label for="description">Описание:</label>
+                        <input id="description" th:field="*{description}" type="text"/>
+                        <span style="color:red" th:errors="*{description}"
+                              th:if="${#fields.hasErrors('description')}"></span>
                     </div>
-                    <label for="value" th:text="${object.getValueName()}">:</label>
-                    <br/>
-                    <input id="value" th:field="*{value}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
-                    <br/>
-                </div>
-                <div class="col-5-2-no-boarders" th:if="${type == 'Usable'}">
-                    <span th:object="${manufacturers}">
+                    <div class="col-5-2-no-boarders">
+                        <label for="link" th:if="${category != 'documents'}">Ссылка:</label>
+                        <input id="link" th:field="*{link}" th:if="${category != 'documents'}" type="text"/>
+                        <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
+                        <label for="value" th:text="${object.getValueName()}">:</label>
+                        <input id="value" th:field="*{value}" type="text"/>
+                        <span style="color:red" th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span>
+                    </div>
+                    <div class="col-5-2-no-boarders" th:if="${type == 'Usable'}">
                         <label for="manufacturers">Выберите производителя:</label>
-                        <br/>
-                        <select id="manufacturers" name="manufacturer">
+                        <select id="manufacturers" name="manufacturer" th:object="${manufacturers}">
                             <option selected="selected" th:text="${manufacture.getName()}"
                                     th:value="${manufacture.getId()}">
                             </option>
@@ -66,51 +49,44 @@
                                     th:value="${item.getId()}">
                             </option>
                         </select>
-                    </span>
-                    <br/>
-                    <br/>
-                    <label for="model">Модель:</label>
-                    <br/>
-                    <input id="model" th:field="*{model}" type="text"/>
-                    <br/>
-                    <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
-                    <br/>
-                    <br/>
-                </div>
-                <div class="col-5-2-no-boarders">
-                    <label for="picture">Загрузить новое изображение:</label>
-                    <br/>
-                    <input accept="image/*" id="picture" name="newImage" type="file"/>
-                    <br/>
-                    <br/>
-                    <div th:object="${allPictures}">
-                        <label for="pictures">Выберите из уже загруженных:</label>
-                        <select id="pictures" name="picture" style="width: 150px">
-                            <option selected="selected" th:text="${picture.getName()}"
-                                    th:value="${picture.getId()}"></option>
-                            <option th:each="item : ${allPictures}"
-                                    th:text="${item.getName()}"
-                                    th:value="${item.getId()}">
-                            </option>
-                        </select>
+                        <label for="model">Модель:</label>
+                        <input id="model" th:field="*{model}" type="text"/>
+                        <span style="color:red" th:errors="*{model}" th:if="${#fields.hasErrors('model')}"></span>
                     </div>
-                </div>
-                <div class="col-5-2-no-boarders" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_USER)}">
+                    <div class="col-5-2-no-boarders">
+                        <label for="picture">Загрузить новое изображение:</label>
+                        <input accept="image/*" id="picture" name="newImage" type="file"/>
+                        <div th:object="${allPictures}">
+                            <label for="pictures">Выберите из уже загруженных:</label>
+                            <select id="pictures" name="picture" style="width: 150px">
+                                <option selected="selected" th:text="${picture.getName()}"
+                                        th:value="${picture.getId()}"></option>
+                                <option th:each="item : ${allPictures}"
+                                        th:text="${item.getName()}"
+                                        th:value="${item.getId()}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-5-2-no-boarders"
+                         th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_USER)}">
                     <span hidden="hidden">
                     <label for="creator">Enter creator:</label>
                     <input id="creator" th:field="*{creator}" type="text"/>
                     </span>
+                    </div>
+                    <div class="col-5-2-no-boarders">
+                        <label for="creatorAdmin"
+                               th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Id создателя:</label>
+                        <input id="creatorAdmin"
+                               th:field="*{creator}" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}" type="text"/>
+                        <label for="isShared">Показать всем:</label>
+                        <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
+                    </div>
                 </div>
-                <div class="col-5-2-no-boarders" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
-                    <label for="creatorAdmin">Id создателя:</label>
-                    <br/>
-                    <input id="creatorAdmin" th:field="*{creator}" type="text"/>
-                    <br/>
-                    <br/>
-                </div>
-            </div>
-            <button type="submit" value="Обновить">Обновить</button>
-        </form>
+                <button type="submit" value="Обновить">Обновить</button>
+            </form>
+        </div>
     </div>
 </div>
 
