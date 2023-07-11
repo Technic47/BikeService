@@ -11,7 +11,6 @@ import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 
-import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 import static ru.kuznetsov.bikeService.models.users.Provider.GOOGLE;
 
 @Service
@@ -35,7 +34,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             existUser = userRepository.save(builder.build());
         }
-        USERMODEL = existUser;
+//        USERMODEL = existUser;
     }
 
     @Autowired

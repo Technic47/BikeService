@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
-import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 import static ru.kuznetsov.bikeService.config.SpringConfig.ADMIN_NAME;
 import static ru.kuznetsov.bikeService.config.SpringConfig.ADMIN_PASS;
 
@@ -35,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (model == null) {
             throw new UsernameNotFoundException(username);
         }
-        USERMODEL = model;
+//        USERMODEL = model;
         return model;
     }
 

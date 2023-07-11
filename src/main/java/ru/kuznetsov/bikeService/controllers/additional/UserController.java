@@ -11,10 +11,10 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.*;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 
 @Controller
 @RequestMapping("/users")
@@ -29,8 +29,8 @@ public class UserController extends AbstractController {
 
     @GetMapping()
     @Secured("ROLE_ADMIN")
-    public String index(Model model) {
-        model.addAttribute("user", USERMODEL);
+    public String index(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         model.addAttribute("users", userService.index());
         return "users_index";
     }
@@ -39,17 +39,19 @@ public class UserController extends AbstractController {
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
     public String showToAdmin(@PathVariable("id") Long id,
-                              Model model) {
-        model.addAttribute("user", USERMODEL);
+                              Model model,
+                              Principal principal) {
+        this.addUserToModel(model, principal);
         this.addAllCreatedItems(model, id);
         model.addAttribute("owner", false);
         return "users_show";
     }
 
     @GetMapping("/show")
-    public String showToOwner(Model model) {
-        model.addAttribute("user", USERMODEL);
-        this.addAllCreatedItems(model, USERMODEL.getId());
+    public String showToOwner(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+        this.addAllCreatedItems(model, userModel.getId());
         model.addAttribute("owner", true);
         return "users_show";
     }
@@ -77,20 +79,22 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/update")
-    public String updateNameOrPassword(Model model) {
-        model.addAttribute("user", USERMODEL);
+    public String updateNameOrPassword(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         return "namePassChange";
     }
 
     @PostMapping("/update/namePass")
-    public String uploadNewCredentials(@Valid @ModelAttribute("user") UserModel userModel,
+    public String uploadNewCredentials(@Valid @ModelAttribute("user") UserModel userModelNew,
                                        BindingResult bindingResult,
-                                       Model model) {
+                                       Model model,
+                                       Principal principal) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", USERMODEL);
+            this.addUserToModel(model, principal);
             return "namePassChange";
         }
-        this.userService.update(USERMODEL, userModel);
+        UserModel userModelExist = this.getUserModelFromPrincipal(principal);
+        this.userService.update(userModelExist, userModelNew);
         return "redirect:/logout";
     }
 
@@ -104,10 +108,10 @@ public class UserController extends AbstractController {
     @GetMapping("/search")
     @Secured("ROLE_ADMIN")
     public String search(@RequestParam(value = "value") String value,
-                         Model model){
-
+                         Model model,
+                         Principal principal){
         Set<UserModel> resultSet = new HashSet<>(this.userService.findByUsernameContainingIgnoreCase(value));
-        model.addAttribute("user", USERMODEL);
+        this.addUserToModel(model, principal);
         model.addAttribute("users", resultSet);
         return "users_index";
     }

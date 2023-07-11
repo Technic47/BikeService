@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
-import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
+import java.security.Principal;
+
 
 @Controller
 @RequestMapping("/")
@@ -24,9 +25,10 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("user", USERMODEL);
-        logger.info(USERMODEL.getName() + " logged in");
+    public String login(Model model, Principal principal) {
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+        this.addUserToModel(model, principal);
+        logger.info(userModel.getName() + " logged in");
         return "title";
     }
 
@@ -36,15 +38,16 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/successLogin")
-    public String confirmLogin(Model model) {
-        model.addAttribute("user", USERMODEL);
-        logger.info(USERMODEL.getAttribute("email") + " logged in");
+    public String confirmLogin(Model model, Principal principal) {
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+        this.addUserToModel(model, principal);
+        logger.info(userModel.getAttribute("email") + " logged in");
         return "title";
     }
 
     @GetMapping("/title")
-    public String index(Model model) {
-        model.addAttribute("user", USERMODEL);
+    public String index(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         return "title";
     }
 
@@ -65,8 +68,8 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/info")
-    public String info(Model model) {
-        model.addAttribute("user", USERMODEL);
+    public String info(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
         return "info";
     }
 }

@@ -10,6 +10,8 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.services.ManufacturerService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
+import java.security.Principal;
+
 @Component
 @Scope("prototype")
 public class UsableController<T extends AbstractUsableEntity, S extends CommonAbstractEntityService<T>>
@@ -24,33 +26,34 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
-                       Model model) {
+                       Model model,
+                       Principal principal) {
         if (this.checkCurrentObject(id)) {
             return "redirect:/" + category;
         }
         Long manufactureIndex = service.show(id).getManufacturer();
         model.addAttribute("manufacture", manufacturerService.show(manufactureIndex).getName());
-        return super.show(id, model);
+        return super.show(id, model, principal);
     }
 
 
     @Override
-    protected void addItemAttributesNew(Model model, T item) {
+    protected void addItemAttributesNew(Model model, T item, Principal principal) {
         model.addAttribute("manufacturers", manufacturerService.index());
-        super.addItemAttributesNew(model, item);
+        super.addItemAttributesNew(model, item, principal);
     }
 
     @Override
-    protected void addItemAttributesEdit(Model model, T item) {
+    protected void addItemAttributesEdit(Model model, T item, Principal principal) {
         model.addAttribute("manufacture", manufacturerService.show(item.getManufacturer()));
-        super.addItemAttributesEdit(model, item);
+        super.addItemAttributesEdit(model, item, principal);
     }
 
 
     @Override
-    protected void preparePDF(T item) {
+    protected void preparePDF(T item, Principal principal) {
         this.pdfService.addManufactorer(this.manufacturerService.show(item.getManufacturer()));
-        super.preparePDF(item);
+        super.preparePDF(item, principal);
     }
 
     @Autowired

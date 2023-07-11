@@ -9,7 +9,6 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.config.SecurityConfiguration.USERMODEL;
 
 @Controller
 @RequestMapping("/pictures")
@@ -17,7 +16,7 @@ public class PicturesController extends AbstractController {
     @GetMapping
     @Secured("ROLE_ADMIN")
     public String index(Model model, Principal principal) {
-        model.addAttribute("user", USERMODEL);
+        this.addUserToModel(model, principal);
         model.addAttribute("allPictures", pictureService.index());
         return "picture_index";
     }
@@ -35,6 +34,7 @@ public class PicturesController extends AbstractController {
     }
 
     @PostMapping(value = "/{id}")
+    @Secured("ROLE_ADMIN")
     public String delete(@PathVariable("id") Long id) {
         pictureService.delete(id);
         return "redirect:/pictures";

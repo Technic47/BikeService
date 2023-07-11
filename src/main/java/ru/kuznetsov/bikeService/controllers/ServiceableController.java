@@ -23,6 +23,7 @@ import ru.kuznetsov.bikeService.services.*;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Set;
 
 @Component
@@ -44,25 +45,26 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
-                       Model model) {
+                       Model model,
+                       Principal principal) {
         if (this.checkCurrentObject(id)) {
             return "redirect:/" + category;
         }
         this.updateCacheList(service.show(id).getLinkedItems());
         this.addLinkedItemsToModel(model);
-        return super.show(id, model);
+        return super.show(id, model, principal);
     }
 
     @Override
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable Long id) {
+    public String edit(Model model, @PathVariable Long id, Principal principal) {
         if (this.checkCurrentObject(id)) {
             return "redirect:/" + category;
         }
         this.updateCacheList(service.show(id).getLinkedItems());
         this.addAllItemsToModel(model);
         this.addLinkedItemsToModel(model);
-        return super.edit(model, id);
+        return super.edit(model, id, principal);
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
@@ -79,11 +81,11 @@ public class ServiceableController<T extends AbstractServiceableEntity,
             @RequestParam(value = "consumableQuantity", required = false) Integer consumableQuantity,
             @RequestParam(value = "partId", required = false) Long partId,
             @RequestPart(value = "newImage", required = false) MultipartFile file,
-            Model model) {
+            Model model, Principal principal) {
         item.setLinkedItems(this.currentObject.getLinkedItems());
         switch (action) {
             case "finish":
-                return this.update(item, bindingResult, file, id, model);
+                return this.update(item, bindingResult, file, id, model, principal);
             case "addDocument":
                 this.itemsManipulation(item, 1, Document.class, documentId, 1);
                 break;
@@ -116,7 +118,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                 break;
         }
         service.update(id, item);
-        return edit(model, id);
+        return edit(model, id, principal);
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
@@ -129,14 +131,14 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     @Override
-    protected void preparePDF(T item) {
+    protected void preparePDF(T item, Principal principal) {
         this.pdfService.addServiceList(this.cacheList);
-        super.preparePDF(item);
+        super.preparePDF(item, principal);
     }
 
     @GetMapping(value = "/pdfAll")
     @ResponseBody
-    public ResponseEntity<Resource> createPdfAll(@Param("id") Long id) throws IOException {
+    public ResponseEntity<Resource> createPdfAll(@Param("id") Long id, Principal principal) throws IOException {
         T item = this.service.show(id);
         ServiceList generalList = new ServiceList();
         generalList.addAllToList(this.cacheList);
@@ -146,7 +148,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         });
         this.cacheList = generalList;
 
-        return this.createResponse(item);
+        return this.createResponse(item, principal);
     }
 
     private void updateCacheList(Set<PartEntity> entityList) {
@@ -184,8 +186,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     @Override
-    protected void addItemAttributesNew(Model model, T item) {
-        super.addItemAttributesNew(model, item);
+    protected void addItemAttributesNew(Model model, T item, Principal principal) {
+        super.addItemAttributesNew(model, item, principal);
     }
 
     @Autowired
