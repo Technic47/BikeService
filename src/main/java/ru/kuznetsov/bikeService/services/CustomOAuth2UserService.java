@@ -32,9 +32,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             builder.setName(username).addRole(UserRole.ROLE_USER)
                     .setProvider(GOOGLE).setActive(true);
 
-            existUser = userRepository.save(builder.build());
+            userRepository.save(builder.build());
         }
-//        USERMODEL = existUser;
     }
 
     @Autowired

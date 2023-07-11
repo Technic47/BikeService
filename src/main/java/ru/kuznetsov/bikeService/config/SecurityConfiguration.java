@@ -22,7 +22,6 @@ public class SecurityConfiguration {
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final CustomOAuth2UserService oauthUserService;
-//    public static UserModel USERMODEL;
 
     @Autowired
     public SecurityConfiguration(CustomUserDetailsService customUserDetailsService,
