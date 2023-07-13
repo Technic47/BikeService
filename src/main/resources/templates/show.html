@@ -39,20 +39,14 @@
                               th:if="${access == true}" th:method="POST">
                             <button th:type="submit">Удалить</button>
                         </form>
-<!--                        <form th:action="@{|/${category}/pdf?id=${object.getId()}|}">-->
-<!--                            <button th:type="submit">Скачать PDF</button>-->
-<!--                        </form>-->
-<!--                        <form th:action="@{|/${category}/pdfAll?id=${object.getId()}|}"-->
-<!--                              th:if="${type == 'Serviceable'}">-->
-<!--                            <button th:type="submit">Скачать общий PDF</button>-->
-<!--                        </form>-->
-                        <!--                        <a th:href="@{|/${category}/pdf?id=${object.getId()}|}">-->
-                        <!--                            <button th:type="submit">Скачать PDF</button>-->
-                        <!--                        </a>-->
-                        <!--                        <a th:href="@{|/${category}/pdfAll?id=${object.getId()}|}"-->
-                        <!--                           th:if="${type == 'Serviceable'}">-->
-                        <!--                            <button th:type="submit">Скачать общий PDF</button>-->
-                        <!--                        </a>-->
+                        <form th:action="@{/{link}/pdf(link=${category})}">
+                            <button th:name="id" th:type="submit" th:value="${object.getId()}">Скачать PDF</button>
+                        </form>
+                        <form th:action="@{/{link}/pdfAll(link=${category})}"
+                              th:if="${type == 'Serviceable'}">
+                            <button th:name="id" th:type="submit" th:value="${object.getId()}">Скачать общий PDF
+                            </button>
+                        </form>
                     </div>
                 </div>
                 <div class="col-1-3-no-border"

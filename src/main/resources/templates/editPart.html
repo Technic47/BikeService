@@ -75,8 +75,12 @@
                     </span>
                     </div>
                     <div class="col-5-2-no-boarders">
-                        <label for="creatorAdmin" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Id создателя:</label>
-                        <input id="creatorAdmin" th:field="*{creator}" th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}" type="text"/>
+                        <label for="creatorAdmin"
+                               th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">Id
+                            создателя:</label>
+                        <input id="creatorAdmin" th:field="*{creator}"
+                               th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}"
+                               type="text"/>
                         <label for="isShared">Показать всем:</label>
                         <input id="isShared" th:field="*{isShared}" th:value="true" type="checkbox"/>
                     </div>
