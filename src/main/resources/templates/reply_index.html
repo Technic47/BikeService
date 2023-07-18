@@ -11,17 +11,16 @@
 </head>
 <body>
 <script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
-
-<div th:insert="~{header :: header}"></div>
-
 <div class="main">
+    <div th:replace="~{header :: header}"></div>
+
     <div class="container-base">
         <div class="col-1-1-no-boarder">
             <h3>
                 Отзывы, зарегистрированные в системе:
             </h3>
         </div>
-        <div class="border-block-80">
+        <div class="border-block-90">
             <table class="table-no-border">
                 <tbody>
                 <tr th:each="message : ${replyMessages}">
@@ -38,9 +37,8 @@
             </table>
         </div>
     </div>
+
+    <div th:replace="~{header :: footer}"></div>
 </div>
-
-<div th:insert="~{header :: footer}"></div>
-
 </body>
 </html>

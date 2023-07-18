@@ -11,10 +11,9 @@
     <link href="/static/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-
-<div th:insert="~{header :: header}"></div>
-
 <div class="main">
+    <div th:replace="~{header :: header}"></div>
+
     <div class="container-base">
         <div class="container">
             <div class="col-1-1">
@@ -43,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="border-block-55">
+        <div class="border-block-63">
             <div class="col-7-1-no-boarders">
                 <details>
                     <summary>
@@ -165,9 +164,8 @@
             </div>
         </div>
     </div>
+
+    <div th:replace="~{header :: footer}"></div>
 </div>
-
-<div th:insert="~{header :: footer}"></div>
-
 </body>
 </html>

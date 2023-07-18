@@ -9,6 +9,8 @@
 </head>
 <body>
 <div class="main">
+    <div th:replace="~{header :: header}"></div>
+
     <div class="container-base">
         <div class="container">
             <div class="col-1-1">
@@ -27,6 +29,8 @@
             </div>
         </div>
     </div>
+
+    <div th:replace="~{header :: footer}"></div>
 </div>
 </body>
 </html>

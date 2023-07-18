@@ -11,10 +11,9 @@
 </head>
 <body>
 <script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
-
-<div th:insert="~{header :: header}"></div>
-
 <div class="main">
+    <div th:replace="~{header :: header}"></div>
+
     <div class="container-base">
         <div class="container">
             <form class="container-form" enctype="multipart/form-data"
@@ -169,7 +168,7 @@
                 </div>
             </form>
         </div>
-        <div class="border-block-45" th:if="${type == 'Serviceable'}">
+        <div class="border-block-50" th:if="${type == 'Serviceable'}">
             <div class="col-5-2-no-boarders">
                 <table class="table-no-border">
                     <thead>
@@ -257,9 +256,8 @@
             </div>
         </div>
     </div>
+
+    <div th:replace="~{header :: footer}"></div>
 </div>
-
-<div th:insert="~{header :: footer}"></div>
-
 </body>
 </html>

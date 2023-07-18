@@ -8,10 +8,9 @@
     <link href="/static/css/container.css" rel="stylesheet"/>
 </head>
 <body>
-
-<header th:insert="~{header :: header}"></header>
-
 <div class="main">
+    <div th:replace="~{header :: header}"></div>
+
     <div class="container-base">
         <div class="container">
             <div class="center">
@@ -32,9 +31,8 @@
             </div>
         </div>
     </div>
+
+    <div th:replace="~{header :: footer}"></div>
 </div>
-
-<div th:insert="~{header :: footer}"></div>
-
 </body>
 </html>

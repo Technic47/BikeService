@@ -11,10 +11,9 @@
 </head>
 <body>
 <script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
-
-<div th:insert="~{header :: header}"></div>
-
 <div class="main">
+    <div th:replace="~{header :: header}"></div>
+
     <div class="container-base">
         <div class="container">
             <div class="col-1-1-no-boarder">
@@ -26,7 +25,7 @@
                 </h3>
             </div>
         </div>
-        <div class="border-block-75">
+        <div class="border-block-85">
             <ul>
                 <li th:each="object : ${allPictures}">
                     <form method="POST" th:action="@{/pictures/{id}(id=${object.getId()})}">
@@ -39,9 +38,9 @@
             </ul>
         </div>
     </div>
+
+
+    <div th:replace="~{header :: footer}"></div>
 </div>
-
-<div th:insert="~{header :: footer}"></div>
-
 </body>
 </html>

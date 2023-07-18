@@ -11,10 +11,9 @@
     <link href="/static/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-
-<div th:insert="~{header :: header}"></div>
-
 <div class="main">
+    <div th:replace="~{header :: header}"></div>
+
     <div class="container-base">
         <div class="container">
             <div class="col-1-1-no-boarder">
@@ -69,7 +68,7 @@
                 </div>
             </div>
         </div>
-        <div class="border-block-55" th:if="${type == 'Serviceable'}">
+        <div class="border-block-42" th:if="${type == 'Serviceable'}">
             <div class="col-5-2-no-boarders">
                 <table class="table-no-border">
                     <thead>
@@ -157,9 +156,8 @@
             </div>
         </div>
     </div>
+
+    <div th:replace="~{header :: footer}"></div>
 </div>
-
-<div th:insert="~{header :: footer}"></div>
-
 </body>
 </html>
