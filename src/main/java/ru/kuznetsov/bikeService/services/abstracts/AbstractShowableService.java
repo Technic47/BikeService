@@ -32,6 +32,10 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         this.showableToRepo(toRepo, newItem);
     }
 
+    public void update(E item, E newItem){
+        this.showableToRepo(item, newItem);
+    }
+
     void showableToRepo(E toRepo, E newItem) {
         toRepo.setName(newItem.getName());
         toRepo.setDescription(newItem.getDescription());

@@ -45,22 +45,17 @@ public class BasicController<T extends AbstractShowableEntity,
         extends AbstractController {
     protected final S service;
     protected T thisClassNewObject;
-    protected T currentObject;
-    protected Map<T, String> itemMap;
-    protected String currentObjectName;
     protected String category;
     protected PDFService pdfService;
 
 
     public BasicController(S service) {
         this.service = service;
-        this.itemMap = new HashMap<>();
     }
 
 
     public void setCurrentClass(Class<T> currentClass) {
-        this.currentObjectName = currentClass.getSimpleName().toLowerCase();
-        this.category = currentObjectName + "s";
+        this.category = currentClass.getSimpleName().toLowerCase() + "s";
         try {
             this.thisClassNewObject = currentClass.getConstructor().newInstance();
         } catch (Exception e) {
@@ -96,25 +91,20 @@ public class BasicController<T extends AbstractShowableEntity,
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
                        Model model, Principal principal) {
-        if (this.checkCurrentObject(id)) {
+        T item = service.show(id);
+        if (item == null) {
             return "redirect:/" + category;
-        }
-        boolean access = checkAccessToItem(currentObject, principal);
-        model.addAttribute("picture", pictureService.show(currentObject.getPicture()).getName());
-        this.addItemAttributesShow(model, currentObject, principal);
-        model.addAttribute("access", access);
-        logger.info(category + " " + id + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
-        return "show";
+        } else
+            return this.show(item, model, principal);
     }
 
-    protected boolean checkCurrentObject(Long id){
-        if (!(this.currentObject == null)) {
-            if (this.currentObject.getId().equals(id)) {
-                return false;
-            }
-        }
-        this.currentObject = service.show(id);
-        return this.currentObject == null;
+    protected String show(T item, Model model, Principal principal) {
+        boolean access = checkAccessToItem(item, principal);
+        model.addAttribute("picture", pictureService.show(item.getPicture()).getName());
+        this.addItemAttributesShow(model, item, principal);
+        model.addAttribute("access", access);
+        logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
+        return "show";
     }
 
     private boolean checkAccessToItem(T item, Principal principal) {
@@ -182,28 +172,38 @@ public class BasicController<T extends AbstractShowableEntity,
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
-        if (this.checkCurrentObject(id)) {
+        T item = service.show(id);
+        if (item == null) {
             return "redirect:/" + category;
-        }
-        if (checkAccessToItem(this.currentObject, principal)) {
-            this.addItemAttributesEdit(model, currentObject, principal);
+        } else
+            return this.edit(model, item, principal);
+    }
+
+    protected String edit(Model model, T item, Principal principal) {
+        if (checkAccessToItem(item, principal)) {
+            this.addItemAttributesEdit(model, item, principal);
 
             if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
                 return "editPart";
             }
             return "edit";
-        } else return "redirect:/" + category + "/" + id;
+        } else return "redirect:/" + category + "/" + item.getId();
     }
 
     @PostMapping("/{id}/edit")
-    public String update(@Valid @ModelAttribute("object") T item,
+    public String update(@Valid @ModelAttribute("object") T newItem,
                          BindingResult bindingResult,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model, Principal principal) {
-        if (checkAccessToItem(this.currentObject, principal)) {
+        T item = service.show(id);
+        return this.update(newItem, bindingResult, file, item, model, principal);
+    }
+
+    public String update(T newItem, BindingResult bindingResult, MultipartFile file, T oldItem, Model model, Principal principal) {
+        if (checkAccessToItem(oldItem, principal)) {
             if (bindingResult.hasErrors()) {
-                this.addItemAttributesEdit(model, item, principal);
+                this.addItemAttributesEdit(model, newItem, principal);
                 if (Objects.equals(category, "parts") || Objects.equals(category, "bikes")) {
                     return "editPart";
                 }
@@ -212,25 +212,26 @@ public class BasicController<T extends AbstractShowableEntity,
             if (!file.isEmpty()) {
                 PictureWork picWorker = new PictureWork();
                 picWorker.managePicture(file);
-                item.setPicture(pictureService.save(picWorker.getPicture()).getId());
+                newItem.setPicture(pictureService.save(picWorker.getPicture()).getId());
             }
-            service.update(id, item);
+            service.update(oldItem, newItem);
             UserModel userModel = this.getUserModelFromPrincipal(principal);
-            logger.info(item.getClass()
-                    .getSimpleName() + " id:" + id + " was edited by '" + userModel.getUsername() + "'");
+            logger.info(newItem.getClass()
+                    .getSimpleName() + " id:" + oldItem.getId() + " was edited by '" + userModel.getUsername() + "'");
             return "redirect:/" + category;
-        } else return "redirect:/" + category + "/" + id;
+        } else return "redirect:/" + category + "/" + oldItem.getId();
     }
 
     @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id, Principal principal) {
-        if (checkAccessToItem(this.currentObject, principal)) {
+        T item = service.show(id);
+        if (checkAccessToItem(item, principal)) {
             UserModel userModel = this.getUserModelFromPrincipal(principal);
             userService.delCreatedItem(userModel,
                     new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
             service.delete(id);
 
-            String partType = this.currentObject.getClass().getSimpleName();
+            String partType = item.getClass().getSimpleName();
             PartEntity entityPart = new PartEntity("Part", partType, id, 1);
             List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
             listOfParts.forEach(part -> partService.delFromLinkedItems(part, entityPart));
@@ -239,7 +240,7 @@ public class BasicController<T extends AbstractShowableEntity,
             List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
             listOfBikes.forEach(bike -> bikeService.delFromLinkedItems(bike, entityBike));
 
-            logger.info(thisClassNewObject.getClass().getSimpleName() +
+            logger.info(partType +
                     " id:" + id + " was deleted by '" + userModel.getUsername() + "'");
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
@@ -250,11 +251,15 @@ public class BasicController<T extends AbstractShowableEntity,
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
         T item = this.service.show(id);
 
-        return this.createResponse(item, principal);
+        return this.prepareResponse(item, principal);
     }
 
-    protected ResponseEntity<Resource> createResponse(T item, Principal principal) throws IOException {
+    protected ResponseEntity<Resource> prepareResponse(T item, Principal principal) throws IOException {
         this.preparePDF(item, principal);
+        return this.createResponse(item);
+    }
+
+    protected ResponseEntity<Resource> createResponse(T item) throws IOException {
         File file = new File(PDF_DOC_NAME);
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource
@@ -300,7 +305,7 @@ public class BasicController<T extends AbstractShowableEntity,
                          @RequestParam(value = "shared", required = false) boolean shared,
                          Model model,
                          Principal principal) {
-        this.itemMap.clear();
+        Map<T, String> indexMap = new HashMap<>();
 
         Set<T> resultSet = new HashSet<>();
         resultSet.addAll(this.service.findByNameContainingIgnoreCase(value));
@@ -319,11 +324,11 @@ public class BasicController<T extends AbstractShowableEntity,
                         .collect(Collectors.toSet());
             }
         }
-        resultSet.forEach(item -> this.itemMap.put(item,
+        resultSet.forEach(item -> indexMap.put(item,
                 pictureService.show(item.getPicture()).getName()));
 
         model.addAttribute("user", userModel);
-        model.addAttribute("objects", this.itemMap);
+        model.addAttribute("objects", indexMap);
         model.addAttribute("category", category);
 
         logger.info(userModel.getUsername() + " was searching " + value + " in " + category);

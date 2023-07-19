@@ -21,6 +21,10 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         this.serviceableToRepo(toRepo, newItem);
     }
 
+    public void update(E oldItem, E newItem){
+        this.serviceableToRepo(oldItem, newItem);
+    }
+
     void serviceableToRepo(E toRepo, E newItem) {
         this.usableToRepo(toRepo, newItem);
     }

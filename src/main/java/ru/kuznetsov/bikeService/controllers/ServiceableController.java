@@ -36,7 +36,6 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     protected ConsumableService consumableDAO;
     protected ToolService toolDAO;
     private PartService partDAO;
-    protected ServiceList cacheList;
 
     public ServiceableController(S service) {
         super(service);
@@ -47,24 +46,34 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        if (this.checkCurrentObject(id)) {
+        T item = service.show(id);
+        if (item == null) {
             return "redirect:/" + category;
         }
-        this.updateCacheList(service.show(id).getLinkedItems());
-        this.addLinkedItemsToModel(model);
-        return super.show(id, model, principal);
+        ServiceList serviceList = this.getServiceList(item.getLinkedItems());
+        this.addLinkedItemsToModel(model, serviceList);
+        return super.show(item, model, principal);
     }
 
     @Override
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable Long id, Principal principal) {
-        if (this.checkCurrentObject(id)) {
+        T item = service.show(id);
+        if (item == null) {
             return "redirect:/" + category;
         }
-        this.updateCacheList(service.show(id).getLinkedItems());
+        return this.editWithItem(model, item, principal);
+//        ServiceList serviceList = this.getServiceList(item.getLinkedItems());
+//        this.addAllItemsToModel(model);
+//        this.addLinkedItemsToModel(model, serviceList);
+//        return super.edit(model, item, principal);
+    }
+
+    private String editWithItem(Model model, T item, Principal principal) {
+        ServiceList serviceList = this.getServiceList(item.getLinkedItems());
         this.addAllItemsToModel(model);
-        this.addLinkedItemsToModel(model);
-        return super.edit(model, id, principal);
+        this.addLinkedItemsToModel(model, serviceList);
+        return super.edit(model, item, principal);
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
@@ -82,10 +91,11 @@ public class ServiceableController<T extends AbstractServiceableEntity,
             @RequestParam(value = "partId", required = false) Long partId,
             @RequestPart(value = "newImage", required = false) MultipartFile file,
             Model model, Principal principal) {
-        item.setLinkedItems(this.currentObject.getLinkedItems());
+        T oldItem = service.show(id);
+        item.setLinkedItems(oldItem.getLinkedItems());
         switch (action) {
             case "finish":
-                return this.update(item, bindingResult, file, id, model, principal);
+                return this.update(item, bindingResult, file, oldItem, model, principal);
             case "addDocument":
                 this.itemsManipulation(item, 1, Document.class, documentId, 1);
                 break;
@@ -117,8 +127,8 @@ public class ServiceableController<T extends AbstractServiceableEntity,
                 this.itemsManipulation(item, 0, Part.class, partId, 1);
                 break;
         }
-        service.update(id, item);
-        return edit(model, id, principal);
+        service.update(oldItem, item);
+        return editWithItem(model, oldItem, principal);
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
@@ -132,7 +142,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
 
     @Override
     protected void preparePDF(T item, Principal principal) {
-        this.pdfService.addServiceList(this.cacheList);
+        this.pdfService.addServiceList(this.getServiceList(item.getLinkedItems()));
         super.preparePDF(item, principal);
     }
 
@@ -141,40 +151,43 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     public ResponseEntity<Resource> createPdfAll(@Param("id") Long id, Principal principal) throws IOException {
         T item = this.service.show(id);
         ServiceList generalList = new ServiceList();
-        generalList.addAllToList(this.cacheList);
-        this.cacheList.getPartMap().keySet().forEach(part -> {
-            this.updateCacheList(part.getLinkedItems());
-            generalList.addAllToList(this.cacheList);
-        });
-        this.cacheList = generalList;
+        ServiceList itemServiceList = this.getServiceList(item.getLinkedItems());
+        generalList.addAllToList(itemServiceList);
 
-        return this.createResponse(item, principal);
+        itemServiceList.getPartMap().keySet().forEach(part -> {
+            ServiceList partServiceList = this.getServiceList(part.getLinkedItems());
+            generalList.addAllToList(partServiceList);
+        });
+
+        this.pdfService.addServiceList(generalList);
+        super.preparePDF(item, principal);
+        return this.createResponse(item);
     }
 
-    private void updateCacheList(Set<PartEntity> entityList) {
-        ServiceList newCacheList = new ServiceList();
+    private ServiceList getServiceList(Set<PartEntity> entityList) {
+        ServiceList serviceList = new ServiceList();
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
-                case "Tool" -> newCacheList.addToToolMap(this.toolDAO.show(entity.getItemId()), entity.getAmount());
+                case "Tool" -> serviceList.addToToolMap(this.toolDAO.show(entity.getItemId()), entity.getAmount());
                 case "Fastener" ->
-                        newCacheList.addToFastenerMap(this.fastenerDAO.show(entity.getItemId()), entity.getAmount());
+                        serviceList.addToFastenerMap(this.fastenerDAO.show(entity.getItemId()), entity.getAmount());
                 case "Consumable" ->
-                        newCacheList.addToConsumableMap(this.consumableDAO.show(entity.getItemId()), entity.getAmount());
+                        serviceList.addToConsumableMap(this.consumableDAO.show(entity.getItemId()), entity.getAmount());
                 case "Document" ->
-                        newCacheList.addToDocumentMap(this.documentDAO.show(entity.getItemId()), entity.getAmount());
-                case "Part" -> newCacheList.addToPartMap(this.partDAO.show(entity.getItemId()), entity.getAmount());
+                        serviceList.addToDocumentMap(this.documentDAO.show(entity.getItemId()), entity.getAmount());
+                case "Part" -> serviceList.addToPartMap(this.partDAO.show(entity.getItemId()), entity.getAmount());
             }
         }
-        this.cacheList = newCacheList;
+        return serviceList;
     }
 
 
-    private void addLinkedItemsToModel(Model model) {
-        model.addAttribute("documents", this.cacheList.getDocsMap());
-        model.addAttribute("fasteners", this.cacheList.getFastenerMap());
-        model.addAttribute("tools", this.cacheList.getToolMap());
-        model.addAttribute("consumables", this.cacheList.getConsumableMap());
-        model.addAttribute("parts", this.cacheList.getPartMap());
+    private void addLinkedItemsToModel(Model model, ServiceList serviceList) {
+        model.addAttribute("documents", serviceList.getDocsMap());
+        model.addAttribute("fasteners", serviceList.getFastenerMap());
+        model.addAttribute("tools", serviceList.getToolMap());
+        model.addAttribute("consumables", serviceList.getConsumableMap());
+        model.addAttribute("parts", serviceList.getPartMap());
     }
 
     private void addAllItemsToModel(Model model) {

@@ -9,6 +9,8 @@ public interface CommonService<E> {
 
     void update(Long id, E updateItem);
 
+    void update(E item, E updateItem);
+
     List<E> index();
 
     void delete(Long id);

@@ -28,12 +28,13 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        if (this.checkCurrentObject(id)) {
+        T item = service.show(id);
+        if (item == null) {
             return "redirect:/" + category;
         }
-        Long manufactureIndex = service.show(id).getManufacturer();
+        Long manufactureIndex = item.getManufacturer();
         model.addAttribute("manufacture", manufacturerService.show(manufactureIndex).getName());
-        return super.show(id, model, principal);
+        return super.show(item, model, principal);
     }
 
 
