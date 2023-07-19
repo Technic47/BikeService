@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.PictureWork;
+import ru.kuznetsov.bikeService.models.servicable.Bike;
+import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -78,14 +81,13 @@ public class BasicController<T extends AbstractShowableEntity,
             objects = service.index();
             logger.info(category + " are shown to " + userModel.getUsername());
         }
-
+        Map<T, String> indexMap = new HashMap<>();
         if (objects != null) {
-            this.itemMap.clear();
             for (T object : objects) {
-                this.itemMap.put(object, pictureService.show(object.getPicture()).getName());
+                indexMap.put(object, pictureService.show(object.getPicture()).getName());
             }
         }
-        model.addAttribute("objects", this.itemMap);
+        model.addAttribute("objects", indexMap);
         model.addAttribute("sharedCheck", false);
         this.addItemAttributesIndex(model, principal);
         return "index";
@@ -227,6 +229,16 @@ public class BasicController<T extends AbstractShowableEntity,
             userService.delCreatedItem(userModel,
                     new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
             service.delete(id);
+
+            String partType = this.currentObject.getClass().getSimpleName();
+            PartEntity entityPart = new PartEntity("Part", partType, id, 1);
+            List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
+            listOfParts.forEach(part -> partService.delFromLinkedItems(part, entityPart));
+
+            PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
+            List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
+            listOfBikes.forEach(bike -> bikeService.delFromLinkedItems(bike, entityBike));
+
             logger.info(thisClassNewObject.getClass().getSimpleName() +
                     " id:" + id + " was deleted by '" + userModel.getUsername() + "'");
             return "redirect:/" + category;

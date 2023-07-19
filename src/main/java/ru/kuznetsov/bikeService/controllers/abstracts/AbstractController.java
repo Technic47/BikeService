@@ -8,6 +8,8 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.BikeService;
+import ru.kuznetsov.bikeService.services.PartService;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
 
@@ -18,6 +20,8 @@ public abstract class AbstractController {
     public final static Logger logger = LoggerFactory.getLogger("BikeServiceLogger");
     protected UserService userService;
     protected PictureService pictureService;
+    protected PartService partService;
+    protected BikeService bikeService;
 
     protected UserModel getUserModelFromPrincipal(Principal principal) {
         String userName;
@@ -42,5 +46,15 @@ public abstract class AbstractController {
     @Autowired
     public void setPictureService(PictureService pictureService) {
         this.pictureService = pictureService;
+    }
+
+    @Autowired
+    public void setPartService(PartService partService) {
+        this.partService = partService;
+    }
+
+    @Autowired
+    public void setBikeService(BikeService bikeService) {
+        this.bikeService = bikeService;
     }
 }

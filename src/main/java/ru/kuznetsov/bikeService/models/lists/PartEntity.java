@@ -11,15 +11,15 @@ public class PartEntity {
     private String part_type;
     @Column(name = "type")
     private String type;
-    @Column(name = "item_id")
-    private Long item_id;
+    @Column(name = "itemId")
+    private Long itemId;
     @Column(name = "amount")
     private int amount;
 
-    public PartEntity(String part_type, String type, Long item_id, int amount) {
+    public PartEntity(String part_type, String type, Long itemId, int amount) {
         this.part_type = part_type;
         this.type = type;
-        this.item_id = item_id;
+        this.itemId = itemId;
         this.amount = amount;
     }
 
@@ -42,12 +42,12 @@ public class PartEntity {
         this.type = type;
     }
 
-    public Long getItem_id() {
-        return item_id;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setItem_id(Long item_id) {
-        this.item_id = item_id;
+    public void setItemId(Long item_id) {
+        this.itemId = item_id;
     }
 
     public int getAmount() {
@@ -65,13 +65,12 @@ public class PartEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PartEntity)) return false;
-        PartEntity that = (PartEntity) o;
-        return Objects.equals(type, that.type) && Objects.equals(item_id, that.item_id);
+        if (!(o instanceof PartEntity that)) return false;
+        return Objects.equals(type, that.type) && Objects.equals(itemId, that.itemId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, item_id);
+        return Objects.hash(type, itemId);
     }
 }

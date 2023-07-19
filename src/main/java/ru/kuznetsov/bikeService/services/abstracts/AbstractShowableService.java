@@ -5,7 +5,12 @@ import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRep
 
 import java.util.List;
 
-
+/**
+ * Abstract service for main categories of project.
+ * Showable, Usable and Serviceable.
+ * @param <E>
+ * @param <R>
+ */
 public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R>
         implements CommonAbstractEntityService<E> {

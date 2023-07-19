@@ -44,6 +44,9 @@ public abstract class AbstractShowableEntity
 
     @Column(name = "isShared")
     protected boolean isShared = false;
+//
+//    @ManyToMany
+//    private Set<Part> linkedParts = new HashSet<>();
 
     public AbstractShowableEntity() {
     }
@@ -125,6 +128,14 @@ public abstract class AbstractShowableEntity
     public void setIsShared(boolean shared) {
         isShared = shared;
     }
+
+//    public Set<Part> getLinkedParts() {
+//        return linkedParts;
+//    }
+//
+//    public void setLinkedParts(Set<Part> linkedParts) {
+//        this.linkedParts = linkedParts;
+//    }
 
     @Override
     public boolean equals(Object o) {

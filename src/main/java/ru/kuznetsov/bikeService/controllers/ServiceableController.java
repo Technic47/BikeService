@@ -155,14 +155,14 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         ServiceList newCacheList = new ServiceList();
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
-                case "Tool" -> newCacheList.addToToolMap(this.toolDAO.show(entity.getItem_id()), entity.getAmount());
+                case "Tool" -> newCacheList.addToToolMap(this.toolDAO.show(entity.getItemId()), entity.getAmount());
                 case "Fastener" ->
-                        newCacheList.addToFastenerMap(this.fastenerDAO.show(entity.getItem_id()), entity.getAmount());
+                        newCacheList.addToFastenerMap(this.fastenerDAO.show(entity.getItemId()), entity.getAmount());
                 case "Consumable" ->
-                        newCacheList.addToConsumableMap(this.consumableDAO.show(entity.getItem_id()), entity.getAmount());
+                        newCacheList.addToConsumableMap(this.consumableDAO.show(entity.getItemId()), entity.getAmount());
                 case "Document" ->
-                        newCacheList.addToDocumentMap(this.documentDAO.show(entity.getItem_id()), entity.getAmount());
-                case "Part" -> newCacheList.addToPartMap(this.partDAO.show(entity.getItem_id()), entity.getAmount());
+                        newCacheList.addToDocumentMap(this.documentDAO.show(entity.getItemId()), entity.getAmount());
+                case "Part" -> newCacheList.addToPartMap(this.partDAO.show(entity.getItemId()), entity.getAmount());
             }
         }
         this.cacheList = newCacheList;

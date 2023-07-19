@@ -24,8 +24,7 @@ public class UserController extends AbstractController {
     private ManufacturerService manufacturerService;
     private ConsumableService consumableService;
     private ToolService toolService;
-    private PartService partService;
-    private BikeService bikeService;
+
 
     @GetMapping()
     @Secured("ROLE_ADMIN")
@@ -109,7 +108,7 @@ public class UserController extends AbstractController {
     @Secured("ROLE_ADMIN")
     public String search(@RequestParam(value = "value") String value,
                          Model model,
-                         Principal principal){
+                         Principal principal) {
         Set<UserModel> resultSet = new HashSet<>(this.userService.findByUsernameContainingIgnoreCase(value));
         this.addUserToModel(model, principal);
         model.addAttribute("users", resultSet);
@@ -139,15 +138,5 @@ public class UserController extends AbstractController {
     @Autowired
     private void setToolService(ToolService toolService) {
         this.toolService = toolService;
-    }
-
-    @Autowired
-    private void setPartService(PartService partService) {
-        this.partService = partService;
-    }
-
-    @Autowired
-    private void setBikeService(BikeService bikeService) {
-        this.bikeService = bikeService;
     }
 }

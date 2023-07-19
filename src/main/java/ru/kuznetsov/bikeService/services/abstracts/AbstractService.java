@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Abstract service for all Entities in project.
+ * @param <E>
+ * @param <R>
+ */
 public abstract class AbstractService<E, R extends CommonRepository<E>>
         implements CommonService<E> {
 
@@ -22,7 +27,7 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
 
     @Override
     public E show(Long id) {
-        Optional<E> entity= repository.findById(id);
+        Optional<E> entity = repository.findById(id);
         return entity.orElse(null);
     }
 

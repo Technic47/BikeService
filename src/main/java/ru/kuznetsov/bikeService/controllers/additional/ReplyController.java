@@ -49,7 +49,7 @@ public class ReplyController extends AbstractController {
             return "reply";
         }
         this.service.save(message);
-        return "title";
+        return "redirect:/title";
     }
 
     @PostMapping("/{id}")
