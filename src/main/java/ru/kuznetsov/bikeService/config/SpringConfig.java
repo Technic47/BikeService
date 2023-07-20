@@ -16,6 +16,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Configuration
 @ComponentScan("ru.kuznetsov.bikeService")
@@ -82,5 +84,11 @@ public class SpringConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + UPLOAD_PATH + "/preview/");
         registry.addResourceHandler("/templates/**")
                 .addResourceLocations("classpath:/templates/**");
+    }
+
+    @Bean
+    public ExecutorService getExecutorService() {
+        int coreCount = Runtime.getRuntime().availableProcessors();
+        return Executors.newFixedThreadPool(coreCount);
     }
 }
