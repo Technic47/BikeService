@@ -34,7 +34,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (model == null) {
             throw new UsernameNotFoundException(username);
         }
-//        USERMODEL = model;
         return model;
     }
 

@@ -8,10 +8,10 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.BikeService;
-import ru.kuznetsov.bikeService.services.PartService;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
+import ru.kuznetsov.bikeService.services.modelServices.BikeService;
+import ru.kuznetsov.bikeService.services.modelServices.PartService;
 
 import java.security.Principal;
 

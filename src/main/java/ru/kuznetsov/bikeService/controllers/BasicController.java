@@ -230,20 +230,22 @@ public class BasicController<T extends AbstractShowableEntity,
             userService.delCreatedItem(userModel,
                     new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
             service.delete(id);
-
-            String partType = item.getClass().getSimpleName();
-            PartEntity entityPart = new PartEntity("Part", partType, id, 1);
-            List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
-            listOfParts.forEach(part -> partService.delFromLinkedItems(part, entityPart));
-
-            PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
-            List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
-            listOfBikes.forEach(bike -> bikeService.delFromLinkedItems(bike, entityBike));
-
-            logger.info(partType +
+            this.cleanUpAfterDelete(item, id);
+            logger.info(category +
                     " id:" + id + " was deleted by '" + userModel.getUsername() + "'");
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
+    }
+
+    private void cleanUpAfterDelete(T item, Long id){
+        String partType = item.getClass().getSimpleName();
+        PartEntity entityPart = new PartEntity("Part", partType, id, 1);
+        List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
+        listOfParts.forEach(part -> partService.delFromLinkedItems(part, entityPart));
+
+        PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
+        List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
+        listOfBikes.forEach(bike -> bikeService.delFromLinkedItems(bike, entityBike));
     }
 
     @GetMapping(value = "/pdf")
@@ -305,8 +307,6 @@ public class BasicController<T extends AbstractShowableEntity,
                          @RequestParam(value = "shared", required = false) boolean shared,
                          Model model,
                          Principal principal) {
-        Map<T, String> indexMap = new HashMap<>();
-
         Set<T> resultSet = new HashSet<>();
         resultSet.addAll(this.service.findByNameContainingIgnoreCase(value));
         resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
@@ -324,11 +324,13 @@ public class BasicController<T extends AbstractShowableEntity,
                         .collect(Collectors.toSet());
             }
         }
-        resultSet.forEach(item -> indexMap.put(item,
+
+        Map<T, String> resultMap = new HashMap<>();
+        resultSet.forEach(item -> resultMap.put(item,
                 pictureService.show(item.getPicture()).getName()));
 
         model.addAttribute("user", userModel);
-        model.addAttribute("objects", indexMap);
+        model.addAttribute("objects", resultMap);
         model.addAttribute("category", category);
 
         logger.info(userModel.getUsername() + " was searching " + value + " in " + category);

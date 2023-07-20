@@ -19,8 +19,8 @@ import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
-import ru.kuznetsov.bikeService.services.*;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
+import ru.kuznetsov.bikeService.services.modelServices.*;
 
 import java.io.IOException;
 import java.security.Principal;

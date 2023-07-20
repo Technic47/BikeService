@@ -7,8 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import ru.kuznetsov.bikeService.models.usable.Tool;
-import ru.kuznetsov.bikeService.repositories.ToolRepository;
-import ru.kuznetsov.bikeService.services.ToolService;
+import ru.kuznetsov.bikeService.repositories.modelRepositories.ToolRepository;
+import ru.kuznetsov.bikeService.services.modelServices.ToolService;
 
 import java.util.Optional;
 

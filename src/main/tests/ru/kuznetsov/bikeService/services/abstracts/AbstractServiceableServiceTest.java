@@ -8,8 +8,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.servicable.Part;
-import ru.kuznetsov.bikeService.repositories.PartRepository;
-import ru.kuznetsov.bikeService.services.PartService;
+import ru.kuznetsov.bikeService.repositories.modelRepositories.PartRepository;
+import ru.kuznetsov.bikeService.services.modelServices.PartService;
 
 import java.util.Optional;
 

@@ -108,6 +108,7 @@ public class PDFService {
             }
             document.close();
 //            this.clean(PDF_DOC_NAME);
+            this.cleanFields();
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
@@ -209,8 +210,15 @@ public class PDFService {
         table.addCell(fastenerCell);
     }
 
-    public boolean clean(String path) {
+    public boolean cleanFile(String path) {
         return new File(path).delete();
+    }
+
+    private void cleanFields(){
+        this.userName = "";
+        this.manufacturer = null;
+        this.imagePath = "";
+        this.serviceList = null;
     }
 
     public String getFontPath() {

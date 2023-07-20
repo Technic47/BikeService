@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kuznetsov.bikeService.controllers.UsableController;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
-import ru.kuznetsov.bikeService.services.ConsumableService;
+import ru.kuznetsov.bikeService.services.modelServices.ConsumableService;
 
 @Controller
 @RequestMapping("/consumables")

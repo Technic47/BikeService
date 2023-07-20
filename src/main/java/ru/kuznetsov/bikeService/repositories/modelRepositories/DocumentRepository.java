@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.repositories;
+package ru.kuznetsov.bikeService.repositories.modelRepositories;
 
 import org.springframework.stereotype.Repository;
 import ru.kuznetsov.bikeService.models.showable.Document;

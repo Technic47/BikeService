@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
-import ru.kuznetsov.bikeService.services.ManufacturerService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
+import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
 import java.security.Principal;
 

@@ -90,7 +90,7 @@ class PDFServiceTest {
         assertTrue(text.toString().contains(TEST_NAME));
         assertTrue(text.toString().contains(TEST_DESCRIPTION));
 
-        this.service.clean(PDF_DOC_NAME);
+        this.service.cleanFile(PDF_DOC_NAME);
     }
 
     @Test
@@ -118,7 +118,7 @@ class PDFServiceTest {
         assertTrue(text.toString().contains(TEST_MANUFACTURER.getName()));
         assertTrue(text.toString().contains(TEST_MODEL));
 
-        this.service.clean(PDF_DOC_NAME);
+        this.service.cleanFile(PDF_DOC_NAME);
     }
 
     @Test
@@ -157,7 +157,7 @@ class PDFServiceTest {
         assertTrue(text.toString().contains("qwerty"));
         assertTrue(text.toString().contains("123"));
 
-        this.service.clean(PDF_DOC_NAME);
+        this.service.cleanFile(PDF_DOC_NAME);
     }
 
 
@@ -167,7 +167,7 @@ class PDFServiceTest {
         this.buildShowable();
         assertTrue(new File(PDF_DOC_NAME).exists());
 
-        assertFalse(service.clean(PDF_DOC_NAME));
+        assertFalse(service.cleanFile(PDF_DOC_NAME));
     }
 
     @Test

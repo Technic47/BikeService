@@ -10,8 +10,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.servicable.Part;
-import ru.kuznetsov.bikeService.services.ManufacturerService;
-import ru.kuznetsov.bikeService.services.PartService;
+import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
+import ru.kuznetsov.bikeService.services.modelServices.PartService;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;

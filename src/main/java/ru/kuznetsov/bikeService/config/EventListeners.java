@@ -6,8 +6,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.services.ManufacturerService;
 import ru.kuznetsov.bikeService.services.PictureService;
+import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
 @Component
 public class EventListeners {
