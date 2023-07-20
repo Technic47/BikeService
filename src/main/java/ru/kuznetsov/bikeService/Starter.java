@@ -18,7 +18,9 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
+- Multithreading
 - make front better
+- oauth2 from VK
 - different variants of PDF document???
 - index page with 2 columns???
  */
