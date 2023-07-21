@@ -71,7 +71,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
      */
     public void delFromLinkedItems(E item, PartEntity entity) {
         Set<PartEntity> entitySet = item.getLinkedItems();
-        Optional<PartEntity> searchItem = entitySet.stream()
+        Optional<PartEntity> searchItem = entitySet.parallelStream()
                 .filter(part -> part.equals(entity))
                 .findFirst();
 

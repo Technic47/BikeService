@@ -86,9 +86,14 @@ public class SpringConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/templates/**");
     }
 
-    @Bean
-    public ExecutorService getExecutorService() {
+    @Bean(name = "MainExecutor")
+    public ExecutorService getMainService() {
         int coreCount = Runtime.getRuntime().availableProcessors();
         return Executors.newFixedThreadPool(coreCount);
+    }
+
+    @Bean(name = "AdditionExecutor")
+    public ExecutorService getAdditionService() {
+        return Executors.newFixedThreadPool(4);
     }
 }

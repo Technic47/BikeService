@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
@@ -39,7 +39,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
 
 @Component
-@Scope("prototype")
+@SessionScope
 public class BasicController<T extends AbstractShowableEntity,
         S extends CommonAbstractEntityService<T>>
         extends AbstractController {
@@ -66,7 +66,7 @@ public class BasicController<T extends AbstractShowableEntity,
 
     @GetMapping()
     public String index(Model model, Principal principal) {
-        Iterable<T> objects = null;
+        List<T> objects = null;
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         if (userModel.getAuthorities().contains(ROLE_USER)) {
             objects = service.findByCreatorOrShared(userModel.getId());
@@ -78,9 +78,7 @@ public class BasicController<T extends AbstractShowableEntity,
         }
         Map<T, String> indexMap = new HashMap<>();
         if (objects != null) {
-            for (T object : objects) {
-                indexMap.put(object, pictureService.show(object.getPicture()).getName());
-            }
+            objects.forEach(object -> indexMap.put(object, pictureService.show(object.getPicture()).getName()));
         }
         model.addAttribute("objects", indexMap);
         model.addAttribute("sharedCheck", false);
@@ -147,6 +145,7 @@ public class BasicController<T extends AbstractShowableEntity,
         this.addItemAttributesNew(model, item, principal);
     }
 
+    //TODO try to do multithreading
     @PostMapping()
     public String create(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,
@@ -200,6 +199,7 @@ public class BasicController<T extends AbstractShowableEntity,
         return this.update(newItem, bindingResult, file, item, model, principal);
     }
 
+    //TODO try to do multithreading
     public String update(T newItem, BindingResult bindingResult, MultipartFile file, T oldItem, Model model, Principal principal) {
         if (checkAccessToItem(oldItem, principal)) {
             if (bindingResult.hasErrors()) {
@@ -227,25 +227,31 @@ public class BasicController<T extends AbstractShowableEntity,
         T item = service.show(id);
         if (checkAccessToItem(item, principal)) {
             UserModel userModel = this.getUserModelFromPrincipal(principal);
-            userService.delCreatedItem(userModel,
-                    new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
             service.delete(id);
-            this.cleanUpAfterDelete(item, id);
+            this.cleanUpAfterDelete(item, id, userModel);
             logger.info(category +
                     " id:" + id + " was deleted by '" + userModel.getUsername() + "'");
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
     }
 
-    private void cleanUpAfterDelete(T item, Long id){
+    private void cleanUpAfterDelete(T item, Long id, UserModel userModel) {
         String partType = item.getClass().getSimpleName();
-        PartEntity entityPart = new PartEntity("Part", partType, id, 1);
-        List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
-        listOfParts.forEach(part -> partService.delFromLinkedItems(part, entityPart));
-
-        PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
-        List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
-        listOfBikes.forEach(bike -> bikeService.delFromLinkedItems(bike, entityBike));
+        Runnable clearUser = () -> userService
+                .delCreatedItem(userModel, new UserEntity(thisClassNewObject.getClass().getSimpleName(), id));
+        Runnable clearParts = () -> {
+            PartEntity entityPart = new PartEntity("Part", partType, id, 1);
+            List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
+            listOfParts.parallelStream().forEach(part -> partService.delFromLinkedItems(part, entityPart));
+        };
+        Runnable clearBikes = () -> {
+            PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
+            List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
+            listOfBikes.parallelStream().forEach(part -> bikeService.delFromLinkedItems(part, entityBike));
+        };
+        mainExecutor.submit(clearUser);
+        mainExecutor.submit(clearParts);
+        mainExecutor.submit(clearBikes);
     }
 
     @GetMapping(value = "/pdf")
