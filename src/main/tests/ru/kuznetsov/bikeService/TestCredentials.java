@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ru.kuznetsov.bikeService.controllers.additional.PictureWorkTest.PATH_WIDE_FILE;
+import static ru.kuznetsov.bikeService.services.PictureServiceTest.PATH_WIDE_FILE;
 
 public final class TestCredentials {
     public static final Long TEST_ID = 666L;
@@ -53,7 +53,7 @@ public final class TestCredentials {
         return newItemsSet;
     }
 
-    public static MockMultipartFile getMultipartFile() {
+    public static MockMultipartFile getDefaultMultipartFile() {
         MockMultipartFile multipartFile = null;
         try {
             File initialFile = new File(PATH_WIDE_FILE);

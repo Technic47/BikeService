@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.getDefaultMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -99,7 +99,7 @@ class ServiceableControllerTest {
         this.mockMvc.perform(get("/parts/1/edit"));
 
         this.mockMvc.perform(multipart("/parts/1/update")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .param("action", "addDocument")
                         .param("documentId", "2")
                         .flashAttr("object", partTest))
@@ -108,14 +108,14 @@ class ServiceableControllerTest {
         assertTrue(partTest.getLinkedItems().contains(entity));
 
         this.mockMvc.perform(multipart("/parts/1/update")
-                .file(getMultipartFile())
+                .file(getDefaultMultipartFile())
                 .param("action", "delDocument")
                 .param("documentId", "2")
                 .flashAttr("object", partTest));
         assertFalse(partTest.getLinkedItems().contains(entity));
 
         this.mockMvc.perform(multipart("/parts/1/update")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .param("action", "finish")
                         .flashAttr("object", partTest))
                 .andDo(print())

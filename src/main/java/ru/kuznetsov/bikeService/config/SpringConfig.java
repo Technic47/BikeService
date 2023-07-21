@@ -94,6 +94,6 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Bean(name = "AdditionExecutor")
     public ExecutorService getAdditionService() {
-        return Executors.newFixedThreadPool(4);
+        return Executors.newFixedThreadPool(2);
     }
 }

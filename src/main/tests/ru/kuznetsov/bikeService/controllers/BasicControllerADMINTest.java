@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.kuznetsov.bikeService.TestCredentials.TEST_DOCUMENT;
-import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.getDefaultMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -79,7 +79,7 @@ public class BasicControllerADMINTest {
     @Test
     void createNoErrors() throws Exception {
         this.mockMvc.perform(multipart("/documents")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .flashAttr("object", TEST_DOCUMENT))
                 .andDo(print())
                 .andExpect(authenticated())

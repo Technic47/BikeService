@@ -18,7 +18,7 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
-import ru.kuznetsov.bikeService.models.pictures.PictureWork;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -157,9 +157,8 @@ public class BasicController<T extends AbstractShowableEntity,
             return "new";
         }
         if (!file.isEmpty()) {
-            PictureWork picWorker = new PictureWork();
-            picWorker.managePicture(file);
-            item.setPicture(pictureService.save(picWorker.getPicture()).getId());
+            Picture picture = pictureService.save(file);
+            item.setPicture(picture.getId());
         }
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         item.setCreator(userModel.getId());
@@ -199,7 +198,6 @@ public class BasicController<T extends AbstractShowableEntity,
         return this.update(newItem, bindingResult, file, item, model, principal);
     }
 
-    //TODO try to do multithreading
     public String update(T newItem, BindingResult bindingResult, MultipartFile file, T oldItem, Model model, Principal principal) {
         if (checkAccessToItem(oldItem, principal)) {
             if (bindingResult.hasErrors()) {
@@ -210,9 +208,8 @@ public class BasicController<T extends AbstractShowableEntity,
                 return "edit";
             }
             if (!file.isEmpty()) {
-                PictureWork picWorker = new PictureWork();
-                picWorker.managePicture(file);
-                newItem.setPicture(pictureService.save(picWorker.getPicture()).getId());
+                Picture picture = pictureService.save(file);
+                newItem.setPicture(picture.getId());
             }
             service.update(oldItem, newItem);
             UserModel userModel = this.getUserModelFromPrincipal(principal);

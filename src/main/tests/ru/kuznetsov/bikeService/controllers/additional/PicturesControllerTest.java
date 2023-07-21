@@ -14,7 +14,7 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.getDefaultMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -51,7 +51,7 @@ class PicturesControllerTest {
     @Test
     void uploadImage() throws Exception {
         this.mockMvc.perform(multipart("/pictures/upload")
-                        .file(getMultipartFile()))
+                        .file(getDefaultMultipartFile()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/pictures"));

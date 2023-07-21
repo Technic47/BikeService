@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.kuznetsov.bikeService.TestCredentials.TEST_DOCUMENT;
-import static ru.kuznetsov.bikeService.TestCredentials.getMultipartFile;
+import static ru.kuznetsov.bikeService.TestCredentials.getDefaultMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -124,7 +124,7 @@ class BasicControllerUSERTest {
         this.emptyDocument.setName("");
 
         this.mockMvc.perform(multipart("/documents")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .flashAttr("object", this.emptyDocument))
                 .andDo(print())
                 .andExpect(authenticated())
@@ -136,7 +136,7 @@ class BasicControllerUSERTest {
     @Test
     void createNoErrors() throws Exception {
         this.mockMvc.perform(multipart("/documents")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .flashAttr("object", TEST_DOCUMENT))
                 .andDo(print())
                 .andExpect(authenticated())
@@ -178,7 +178,7 @@ class BasicControllerUSERTest {
         this.testDocFromDb.setName("");
 
         this.mockMvc.perform(multipart("/documents/1/edit")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .flashAttr("object", this.testDocFromDb))
                 .andDo(print())
                 .andExpect(authenticated())
@@ -194,7 +194,7 @@ class BasicControllerUSERTest {
         this.testDocFromDb.setName("123654");
 
         this.mockMvc.perform(multipart("/documents/1/edit")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .flashAttr("object", this.testDocFromDb))
                 .andDo(print())
                 .andExpect(authenticated())
@@ -213,7 +213,7 @@ class BasicControllerUSERTest {
     void updateNoErrorsWrong() throws Exception {
         this.mockMvc.perform(get("/documents/3"));
         this.mockMvc.perform(multipart("/documents/3/edit")
-                        .file(getMultipartFile())
+                        .file(getDefaultMultipartFile())
                         .flashAttr("object", this.testDocFromDb))
                 .andDo(print())
                 .andExpect(authenticated())
