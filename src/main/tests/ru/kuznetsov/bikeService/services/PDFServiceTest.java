@@ -55,7 +55,7 @@ class PDFServiceTest {
     @Test
     @Order(4)
     void addManufactorer() {
-        service.addManufactorer(TEST_MANUFACTURER);
+        service.addManufacturer(TEST_MANUFACTURER);
 
         assertEquals(TEST_MANUFACTURER, service.getManufacturer());
     }
@@ -99,7 +99,7 @@ class PDFServiceTest {
         service.newPDFDocument()
                 .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
-                .addManufactorer(TEST_MANUFACTURER)
+                .addManufacturer(TEST_MANUFACTURER)
                 .build(TEST_TOOL);
 
         File formedFile = new File(PDF_DOC_NAME);
@@ -134,7 +134,7 @@ class PDFServiceTest {
         service.newPDFDocument()
                 .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
-                .addManufactorer(TEST_MANUFACTURER)
+                .addManufacturer(TEST_MANUFACTURER)
                 .addServiceList(list)
                 .build(TEST_PART);
 

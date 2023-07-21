@@ -63,10 +63,6 @@ public class ServiceableController<T extends AbstractServiceableEntity,
             return "redirect:/" + category;
         }
         return this.editWithItem(model, item, principal);
-//        ServiceList serviceList = this.getServiceList(item.getLinkedItems());
-//        this.addAllItemsToModel(model);
-//        this.addLinkedItemsToModel(model, serviceList);
-//        return super.edit(model, item, principal);
     }
 
     private String editWithItem(Model model, T item, Principal principal) {
@@ -181,7 +177,6 @@ public class ServiceableController<T extends AbstractServiceableEntity,
         return serviceList;
     }
 
-
     private void addLinkedItemsToModel(Model model, ServiceList serviceList) {
         model.addAttribute("documents", serviceList.getDocsMap());
         model.addAttribute("fasteners", serviceList.getFastenerMap());
@@ -191,6 +186,21 @@ public class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     private void addAllItemsToModel(Model model) {
+//        Future<List<Document>> allDocuments = mainExecutor.submit(() -> documentDAO.index());
+//        Future<List<Fastener>> allFasteners = mainExecutor.submit(() -> fastenerDAO.index());
+//        Future<List<Tool>> allTools = mainExecutor.submit(() -> toolDAO.index());
+//        Future<List<Consumable>> allConsumables = mainExecutor.submit(() -> consumableDAO.index());
+//        Future<List<Part>> allParts = mainExecutor.submit(() -> partDAO.index());
+//        try {
+//            model.addAttribute("allDocuments", allDocuments.get());
+//            model.addAttribute("allFasteners", allFasteners.get());
+//            model.addAttribute("allTools", allTools.get());
+//            model.addAttribute("allConsumables", allConsumables.get());
+//            model.addAttribute("allParts", allParts.get());
+//        } catch (InterruptedException | ExecutionException e) {
+//            throw new RuntimeException(e);
+//        }
+
         model.addAttribute("allDocuments", documentDAO.index());
         model.addAttribute("allFasteners", fastenerDAO.index());
         model.addAttribute("allTools", toolDAO.index());

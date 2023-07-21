@@ -145,7 +145,6 @@ public class BasicController<T extends AbstractShowableEntity,
         this.addItemAttributesNew(model, item, principal);
     }
 
-    //TODO try to do multithreading
     @PostMapping()
     public String create(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,

@@ -53,7 +53,7 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
 
     @Override
     protected void preparePDF(T item, Principal principal) {
-        this.pdfService.addManufactorer(this.manufacturerService.show(item.getManufacturer()));
+        this.pdfService.addManufacturer(this.manufacturerService.show(item.getManufacturer()));
         super.preparePDF(item, principal);
     }
 

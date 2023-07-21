@@ -72,7 +72,7 @@ public class PDFService {
         return this;
     }
 
-    public PDFService addManufactorer(Manufacturer manufacturer) {
+    public PDFService addManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
         return this;
     }
