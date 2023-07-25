@@ -7,6 +7,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
@@ -21,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
@@ -40,6 +43,7 @@ public class PDFService {
     private Font bigFont;
     public static String PDF_DOC_NAME;
     private String userName;
+    private ExecutorService mainExecutor;
 
     public PDFService() {
     }
@@ -95,17 +99,12 @@ public class PDFService {
      * @param item item for list forming.
      * @param <T>  class from .model package.
      */
-    public <T extends AbstractShowableEntity> void build(T item) {
+    public <T extends AbstractShowableEntity> void buildShowable(T item) {
         try {
             PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
             PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));
             document.open();
-            insertHeaderTable(item);
-
-            switch (item.getClass().getSimpleName()) {
-                case "Tool", "Consumable" -> this.buildUsable((AbstractUsableEntity) item);
-                case "Bike", "Part" -> this.buildServiceable((AbstractServiceableEntity) item);
-            }
+            document.add(insertHeaderTable(item));
             document.close();
 //            this.clean(PDF_DOC_NAME);
             this.cleanFields();
@@ -115,32 +114,64 @@ public class PDFService {
         }
     }
 
-    private void buildUsable(AbstractUsableEntity newEntity) throws DocumentException {
+    public <T extends AbstractUsableEntity> void buildUsable(T item) {
+        try {
+            PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
+            PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));
+            document.open();
+            Future<Element> headerTable = mainExecutor.submit(() -> insertHeaderTable(item));
+            Future<Element> manufacture = mainExecutor.submit(() -> insertManufacture(item));
+            document.add(headerTable.get());
+            document.add(manufacture.get());
+            document.close();
+//            this.clean(PDF_DOC_NAME);
+            this.cleanFields();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AbstractController.logger.warn(e.getMessage());
+        }
+    }
+
+    public <T extends AbstractServiceableEntity> void buildServiceable(T item) {
+        try {
+            PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
+            PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));
+            document.open();
+
+            Future<Element> headerTable = mainExecutor.submit(() -> insertHeaderTable(item));
+            Future<Element> manufacture = mainExecutor.submit(() -> insertManufacture(item));
+            Future<Element> serviceTable = mainExecutor.submit(this::insertServiceTable);
+
+            document.add(headerTable.get());
+            document.add(manufacture.get());
+            document.add(serviceTable.get());
+
+            document.close();
+//            this.clean(PDF_DOC_NAME);
+            this.cleanFields();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AbstractController.logger.warn(e.getMessage());
+        }
+    }
+
+    private Element insertManufacture(AbstractUsableEntity newEntity) {
         if (this.manufacturer != null) {
             String modelInfo = this.manufacturer.getName() + " - " + newEntity.getModel();
-            insertParagraph(modelInfo, commonFont);
-        }
+            return insertParagraph(modelInfo, commonFont);
+        } else return new Paragraph();
     }
 
-    private void buildServiceable(AbstractServiceableEntity newEntity) throws DocumentException {
-        this.buildUsable(newEntity);
-        insertParagraph("\n", commonFont);
-        if (this.serviceList != null) {
-            insertServiceTable();
-        }
-    }
-
-    private void insertParagraph(String string, Font font) throws DocumentException {
-        Paragraph part = new Paragraph(string, font);
-        part.setAlignment(Element.ALIGN_CENTER);
-        this.document.add(part);
+    private Paragraph insertParagraph(String string, Font font) {
+        Paragraph paragraph = new Paragraph(string, font);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        return paragraph;
     }
 
     //Table former for header of document
-    private <T extends AbstractShowableEntity> void insertHeaderTable(T item) {
+    private <T extends AbstractShowableEntity> PdfPTable insertHeaderTable(T item) {
+        PdfPTable table = new PdfPTable(2);
         try {
-            PdfPTable table = new PdfPTable(2);
-
             Path path = Paths.get(this.imagePath);
             PdfPCell imageCell = new PdfPCell(Image.getInstance(path.toAbsolutePath().toString()));
             imageCell.setBorder(Rectangle.NO_BORDER);
@@ -155,24 +186,20 @@ public class PDFService {
 
             table.addCell(imageCell);
             table.addCell(content);
-            document.add(table);
+            return table;
         } catch (Exception e) {
             e.printStackTrace();
             AbstractController.logger.warn(e.getMessage());
         }
+        return table;
     }
 
     //Table former for serviceList
-    private void insertServiceTable() {
-        try {
-            PdfPTable table = new PdfPTable(2);
-            addTableHeader(table);
-            addSelfRows(table);
-            document.add(table);
-        } catch (Exception e) {
-            e.printStackTrace();
-            AbstractController.logger.warn(e.getMessage());
-        }
+    private PdfPTable insertServiceTable() {
+        PdfPTable table = new PdfPTable(2);
+        addTableHeader(table);
+        addSelfRows(table);
+        return table;
     }
 
     private void addTableHeader(PdfPTable table) {
@@ -188,9 +215,7 @@ public class PDFService {
     private void addSelfRows(PdfPTable table) {
         table.addCell(new Phrase("Инструменты", commonFont));
         PdfPCell toolCell = new PdfPCell();
-        this.serviceList.getToolMap().forEach((key, value) -> {
-            toolCell.addElement(new Phrase(key.getCredentials(), commonFont));
-        });
+        this.serviceList.getToolMap().forEach((key, value) -> toolCell.addElement(new Phrase(key.getCredentials(), commonFont)));
         table.addCell(toolCell);
 
         table.addCell(new Phrase("Расходные материалы", commonFont));
@@ -214,7 +239,7 @@ public class PDFService {
         return new File(path).delete();
     }
 
-    private void cleanFields(){
+    private void cleanFields() {
         this.userName = "";
         this.manufacturer = null;
         this.imagePath = "";
@@ -257,5 +282,11 @@ public class PDFService {
 
     public Font getBigFont() {
         return bigFont;
+    }
+
+    @Autowired
+    @Qualifier("MainExecutor")
+    public void setMainExecutor(ExecutorService mainExecutor) {
+        this.mainExecutor = mainExecutor;
     }
 }

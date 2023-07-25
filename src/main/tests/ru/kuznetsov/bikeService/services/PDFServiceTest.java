@@ -74,7 +74,7 @@ class PDFServiceTest {
         service.newPDFDocument()
                 .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
-                .build(TEST_FASTENER);
+                .buildShowable(TEST_FASTENER);
 
         File formedFile = new File(PDF_DOC_NAME);
 
@@ -100,7 +100,7 @@ class PDFServiceTest {
                 .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
                 .addManufacturer(TEST_MANUFACTURER)
-                .build(TEST_TOOL);
+                .buildShowable(TEST_TOOL);
 
         File formedFile = new File(PDF_DOC_NAME);
 
@@ -136,7 +136,7 @@ class PDFServiceTest {
                 .addImage("testImage.jpg")
                 .addManufacturer(TEST_MANUFACTURER)
                 .addServiceList(list)
-                .build(TEST_PART);
+                .buildShowable(TEST_PART);
 
         File formedFile = new File(PDF_DOC_NAME);
 

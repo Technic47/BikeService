@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
@@ -54,7 +55,11 @@ public class UsableController<T extends AbstractUsableEntity, S extends CommonAb
     @Override
     protected void preparePDF(T item, Principal principal) {
         this.pdfService.addManufacturer(this.manufacturerService.show(item.getManufacturer()));
-        super.preparePDF(item, principal);
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+        this.pdfService.newPDFDocument()
+                .addUserName(userModel.getUsername())
+                .addImage(this.pictureService.show(item.getPicture()).getName())
+                .buildUsable(item);
     }
 
     @Autowired

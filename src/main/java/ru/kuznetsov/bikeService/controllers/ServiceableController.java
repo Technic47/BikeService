@@ -19,6 +19,7 @@ import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 import ru.kuznetsov.bikeService.services.modelServices.*;
 
@@ -138,8 +139,21 @@ public class ServiceableController<T extends AbstractServiceableEntity,
 
     @Override
     protected void preparePDF(T item, Principal principal) {
-        this.pdfService.addServiceList(this.getServiceList(item.getLinkedItems()));
-        super.preparePDF(item, principal);
+        this.buildPDF(item, principal, this.getServiceList(item.getLinkedItems()));
+    }
+
+    protected void preparePDF(T item, Principal principal, ServiceList serviceList) {
+        this.buildPDF(item, principal, serviceList);
+    }
+
+    private void buildPDF(T item, Principal principal, ServiceList serviceList) {
+        this.pdfService.addManufacturer(this.manufacturerService.show(item.getManufacturer()));
+        this.pdfService.addServiceList(serviceList);
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+        this.pdfService.newPDFDocument()
+                .addUserName(userModel.getUsername())
+                .addImage(this.pictureService.show(item.getPicture()).getName())
+                .buildServiceable(item);
     }
 
     @GetMapping(value = "/pdfAll")
@@ -155,8 +169,7 @@ public class ServiceableController<T extends AbstractServiceableEntity,
             generalList.addAllToList(partServiceList);
         });
 
-        this.pdfService.addServiceList(generalList);
-        super.preparePDF(item, principal);
+        this.preparePDF(item, principal, generalList);
         return this.createResponse(item);
     }
 

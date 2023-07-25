@@ -291,7 +291,7 @@ public class BasicController<T extends AbstractShowableEntity,
         this.pdfService.newPDFDocument()
                 .addUserName(userModel.getUsername())
                 .addImage(this.pictureService.show(item.getPicture()).getName())
-                .build(item);
+                .buildShowable(item);
     }
 
     /**
