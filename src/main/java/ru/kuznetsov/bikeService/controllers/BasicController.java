@@ -69,6 +69,7 @@ public class BasicController<T extends AbstractShowableEntity,
         List<T> objects = null;
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
+
         if (userModel.getAuthorities().contains(ROLE_USER)) {
             objects = service.findByCreatorOrShared(userId);
             logger.info("personal " + category + " are shown to '" + userModel.getUsername() + "'");
@@ -77,6 +78,7 @@ public class BasicController<T extends AbstractShowableEntity,
             objects = service.index();
             logger.info(category + " are shown to " + userModel.getUsername());
         }
+
         Map<T, String> indexMap = new HashMap<>();
         Map<T, String> sharedIndexMap = new HashMap<>();
         if (objects != null) {
@@ -321,25 +323,32 @@ public class BasicController<T extends AbstractShowableEntity,
         resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
 
         UserModel userModel = this.getUserModelFromPrincipal(principal);
+        Long userId = userModel.getId();
+
         if (!userModel.getAuthorities().contains(ROLE_ADMIN)) {
             if (shared) {
                 resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(userModel.getId())
+                        .filter(item -> item.getCreator().equals(userId)
                                 || item.getIsShared())
                         .collect(Collectors.toSet());
             } else {
                 resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(userModel.getId()))
+                        .filter(item -> item.getCreator().equals(userId))
                         .collect(Collectors.toSet());
             }
         }
 
         Map<T, String> resultMap = new HashMap<>();
-        resultSet.forEach(item -> resultMap.put(item,
-                pictureService.show(item.getPicture()).getName()));
+        Map<T, String> sharedIndexMap = new HashMap<>();
+        resultSet.forEach(object -> {
+            if (object.getCreator().equals(userId)) {
+                resultMap.put(object, pictureService.show(object.getPicture()).getName());
+            } else sharedIndexMap.put(object, pictureService.show(object.getPicture()).getName());
+        });
 
         model.addAttribute("user", userModel);
         model.addAttribute("objects", resultMap);
+        model.addAttribute("sharedObjects", sharedIndexMap);
         model.addAttribute("category", category);
 
         logger.info(userModel.getUsername() + " was searching " + value + " in " + category);

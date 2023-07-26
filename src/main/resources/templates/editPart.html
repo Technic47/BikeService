@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-5-2-no-boarders" th:if="${type == 'Usable'} or ${type == 'Serviceable'}">
                         <label for="manufacturers">Выберите производителя:</label>
-                        <select id="manufacturers" name="manufacturer" th:object="${manufacturers}">
+                        <select class="col-5-2-no-boarders-select" id="manufacturers" name="manufacturer" th:object="${manufacturers}">
                             <option selected="selected" th:text="${manufacture.getName()}"
                                     th:value="${manufacture.getId()}"></option>
                             <option th:each="item : ${manufacturers}"
@@ -57,7 +57,7 @@
                         <label for="picture">Загрузить новое изображение:</label>
                         <input accept="image/*" id="picture" name="newImage" type="file"/>
                         <label for="pictures">Выберите из уже загруженных:</label>
-                        <select id="pictures" name="picture" style="width: 150px" th:object="${allPictures}">
+                        <select class="col-5-2-no-boarders-select" id="pictures" name="picture" style="width: 150px" th:object="${allPictures}">
                             <option selected="selected" th:text="${picture.getName()}"
                                     th:value="${picture.getId()}"></option>
                             <option th:each="item : ${allPictures}"
@@ -91,7 +91,7 @@
                     <div class="col-5-2-no-boarders">
                         <label for="allParts">Выберите запчасть:</label>
                         <div th:object="${allParts}">
-                            <select id="allParts" th:name="partId" th:object="${allParts}">
+                            <select class="col-5-2-no-boarders-select" id="allParts" th:name="partId" th:object="${allParts}">
                                 <option th:each="item : ${allParts}"
                                         th:if="!${item.getId() == object.getId() and category == 'parts'}"
                                         th:text="${item.getName()}"
@@ -106,7 +106,7 @@
                     <div class="col-5-2-no-boarders">
                         <label for="documents">Выберите документ:</label>
                         <div th:object="${allDocuments}">
-                            <select id="documents" th:name="documentId">
+                            <select class="col-5-2-no-boarders-select" id="documents" th:name="documentId">
                                 <option th:each="item : ${allDocuments}"
                                         th:text="${item.getName()}"
                                         th:value="${item.getId()}">
@@ -120,7 +120,7 @@
                     <div class="col-5-2-no-boarders">
                         <label for="tools">Выберите инструмент:</label>
                         <div th:object="${allTools}">
-                            <select id="tools" th:name="toolId">
+                            <select class="col-5-2-no-boarders-select" id="tools" th:name="toolId">
                                 <option th:each="item : ${allTools}"
                                         th:text="${item.getName()}"
                                         th:value="${item.getId()}">
@@ -134,7 +134,7 @@
                     <div class="col-5-2-no-boarders">
                         <label for="fasteners">Выберите крепёж:</label>
                         <div th:object="${allFasteners}">
-                            <select id="fasteners" th:name="fastenerId">
+                            <select class="col-5-2-no-boarders-select" id="fasteners" th:name="fastenerId">
                                 <option th:each="item : ${allFasteners}"
                                         th:text="${item.getName()}"
                                         th:value="${item.getId()}">
@@ -151,7 +151,7 @@
                     <div class="col-5-2-no-boarders">
                         <label for="consumables">Выберите расходник:</label>
                         <div th:object="${allConsumables}">
-                            <select id="consumables" th:name="consumableId">
+                            <select class="col-5-2-no-boarders-select" id="consumables" th:name="consumableId">
                                 <option th:each="item : ${allConsumables}"
                                         th:text="${item.getName()}"
                                         th:value="${item.getId()}">
@@ -170,89 +170,79 @@
         </div>
         <div class="border-block-50" th:if="${type == 'Serviceable'}">
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Запчасти</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="part : ${parts}">
-                        <td>
-                            <a th:href="@{/parts/{id}(id=${part.getKey().getId()})}"
-                               th:text="${part.getKey().getName()} + ' ' + ${part.getKey().getModel()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Запчасти</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="part : ${parts}">
+                            <td>
+                                <a th:href="@{/parts/{id}(id=${part.getKey().getId()})}"
+                                   th:text="${part.getKey().getName()} + ' ' + ${part.getKey().getModel()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Документы</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="document : ${documents}">
-                        <td>
-                            <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
-                               th:text="${document.getKey().getName()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Документы</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="document : ${documents}">
+                            <td>
+                                <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
+                                   th:text="${document.getKey().getName()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Инструмент</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="tool : ${tools}">
-                        <td>
-                            <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
-                               th:text="${tool.getKey().getName()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Инструмент</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="tool : ${tools}">
+                            <td>
+                                <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
+                                   th:text="${tool.getKey().getName()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Крепёж</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="fastener : ${fasteners}">
-                        <td>
-                            <a th:href="@{/fasteners/{id}(id=${fastener.getKey().getId()})}"
-                               th:text="${fastener.getKey().getName()} + ' ' + ${fastener.getValue()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Крепёж</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="fastener : ${fasteners}">
+                            <td>
+                                <a th:href="@{/fasteners/{id}(id=${fastener.getKey().getId()})}"
+                                   th:text="${fastener.getKey().getName()} + ' ' + ${fastener.getValue()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Расходники</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="consumable : ${consumables}">
-                        <td>
-                            <a th:href="@{/consumables/{id}(id=${consumable.getKey().getId()})}"
-                               th:text="${consumable.getKey().getName()} + ' ' + ${consumable.getValue()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Расходники</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="consumable : ${consumables}">
+                            <td>
+                                <a th:href="@{/consumables/{id}(id=${consumable.getKey().getId()})}"
+                                   th:text="${consumable.getKey().getName()} + ' ' + ${consumable.getValue()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

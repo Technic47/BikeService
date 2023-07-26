@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-5-2-no-boarders" th:if="${type == 'Usable'}">
                         <label for="manufacturers">Выберите производителя:</label>
-                        <select id="manufacturers" name="manufacturer" th:object="${manufacturers}">
+                        <select class="col-5-2-no-boarders-select" id="manufacturers" name="manufacturer" th:object="${manufacturers}">
                             <option selected="selected" th:text="${manufacture.getName()}"
                                     th:value="${manufacture.getId()}">
                             </option>
@@ -57,7 +57,7 @@
                         <input accept="image/*" id="picture" name="newImage" type="file"/>
                         <div th:object="${allPictures}">
                             <label for="pictures">Выберите из уже загруженных:</label>
-                            <select id="pictures" name="picture" style="width: 150px">
+                            <select class="col-5-2-no-boarders-select" id="pictures" name="picture" style="width: 150px">
                                 <option selected="selected" th:text="${picture.getName()}"
                                         th:value="${picture.getId()}"></option>
                                 <option th:each="item : ${allPictures}"
