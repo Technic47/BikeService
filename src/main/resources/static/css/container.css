@@ -1,4 +1,4 @@
-.container-base{
+.container-base {
     width: 80%;
     height: 85%;
     /*position: static;*/
@@ -33,14 +33,26 @@
     /*width: 50%;*/
     outline: 1px solid #000;
     border-radius: 10px;
+    transition: 0.5s;
+}
+
+.container-title div:hover {
+    transform: scale(1.1);
 }
 
 .container-title a {
-    display: block;
-    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     width: 100%;
     height: 100%;
-    text-align: center;
+    font-size: 28px;
+    color: black;
+}
+
+.container-title a:hover {
+    background-image: linear-gradient(to top, rgba(100, 100, 100, 0.70), rgba(100, 100, 100, 0.70));
+    color: white;
 }
 
 .container-form {
@@ -62,13 +74,19 @@ h1, h2, h3 {
     width: 50%;
     outline: 1px solid #000;
     border-radius: 10px;
-    /*margin-right: 1%;*/
-    /*margin-left: 1%;*/
 }
 
 .col-1-2-1 {
     width: 50%;
     background-image: url("/static/siteIMG/bicycle set.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.col-1-2-2 {
+    width: 50%;
+    background-image: url("/static/siteIMG/bicycle parts.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -109,6 +127,56 @@ h1, h2, h3 {
     border-radius: 10px;
 }
 
+.col-5-2-1 {
+    width: 20%;
+    outline: 1px solid #000;
+    border-radius: 10px;
+    background-image: url("/static/siteIMG/documents.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.col-5-2-2 {
+    width: 20%;
+    outline: 1px solid #000;
+    border-radius: 10px;
+    background-image: url("/static/siteIMG/fasteners.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.col-5-2-3 {
+    width: 20%;
+    outline: 1px solid #000;
+    border-radius: 10px;
+    background-image: url("/static/siteIMG/tools.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.col-5-2-4 {
+    width: 20%;
+    outline: 1px solid #000;
+    border-radius: 10px;
+    background-image: url("/static/siteIMG/manufacturers.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.col-5-2-5 {
+    width: 20%;
+    outline: 1px solid #000;
+    border-radius: 10px;
+    background-image: url("/static/siteIMG/consumables.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .col-5-2-no-boarders {
     display: flex;
     justify-content: flex-start;
@@ -139,7 +207,7 @@ h1, h2, h3 {
     width: 75px;
 }
 
-.col-5-2-no-boarders select{
+.col-5-2-no-boarders select {
     width: 175px
 }
 
