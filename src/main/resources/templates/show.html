@@ -18,7 +18,7 @@
         <div class="container">
             <div class="col-1-1-no-boarder">
                 <div class="col-1-3-no-border">
-                    <img alt="Item picture" th:src="@{/IMG/{fileName}(fileName=${picture})}"/>
+                    <img alt="Item picture" class="col-1-3-no-border-img" th:src="@{/IMG/{fileName}(fileName=${picture})}"/>
                 </div>
                 <div class="col-1-3-no-border">
                     <h1 th:text="${object.getName()}"></h1>
@@ -70,89 +70,79 @@
         </div>
         <div class="border-block-42" th:if="${type == 'Serviceable'}">
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Запчасти</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="part : ${parts}">
-                        <td>
-                            <a th:href="@{/parts/{id}(id=${part.getKey().getId()})}"
-                               th:text="${part.getKey().getName()} + ' ' + ${part.getKey().getModel()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Запчасти</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="part : ${parts}">
+                            <td>
+                                <a th:href="@{/parts/{id}(id=${part.getKey().getId()})}"
+                                   th:text="${part.getKey().getName()} + ' ' + ${part.getKey().getModel()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Документы</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="document : ${documents}">
-                        <td>
-                            <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
-                               th:text="${document.getKey().getName()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Документы</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="document : ${documents}">
+                            <td>
+                                <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
+                                   th:text="${document.getKey().getName()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Инструмент</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="tool : ${tools}">
-                        <td>
-                            <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
-                               th:text="${tool.getKey().getName()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Инструмент</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="tool : ${tools}">
+                            <td>
+                                <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
+                                   th:text="${tool.getKey().getName()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Крепёж</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="fastener : ${fasteners}">
-                        <td>
-                            <a th:href="@{/fasteners/{id}(id=${fastener.getKey().getId()})}"
-                               th:text="${fastener.getKey().getName()} + ' ' + ${fastener.getValue()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Крепёж</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="fastener : ${fasteners}">
+                            <td>
+                                <a th:href="@{/fasteners/{id}(id=${fastener.getKey().getId()})}"
+                                   th:text="${fastener.getKey().getName()} + ' ' + ${fastener.getValue()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-5-2-no-boarders">
-                <table class="table-no-border">
-                    <thead>
-                    <tr>
-                        <th>Расходники</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="consumable : ${consumables}">
-                        <td>
-                            <a th:href="@{/consumables/{id}(id=${consumable.getKey().getId()})}"
-                               th:text="${consumable.getKey().getName()} + ' ' + ${consumable.getValue()}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Расходники</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="consumable : ${consumables}">
+                            <td>
+                                <a th:href="@{/consumables/{id}(id=${consumable.getKey().getId()})}"
+                                   th:text="${consumable.getKey().getName()} + ' ' + ${consumable.getValue()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -40,31 +40,37 @@
         <div class="border-block-65">
             <div class="col-1-2-no-boarder">
                 <h3>Ваши позиции</h3>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="object : ${objects}">
-                        <td>
-                            <img alt="Picture of item" th:src="@{/preview/{filename}(filename=${object.getValue()})}"/>
-                            <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
-                               th:text="${object.getKey().getCredentials()}">item</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="object : ${objects}">
+                            <td>
+                                <img alt="Picture of item"
+                                     th:src="@{/preview/{filename}(filename=${object.getValue()})}"/>
+                                <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
+                                   th:text="${object.getKey().getCredentials()}">item</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-1-2-no-boarder">
                 <h3>Общие позиции</h3>
-                <table class="table-no-border">
-                    <tbody>
-                    <tr th:each="object : ${sharedObjects}">
-                        <td>
-                            <img alt="Picture of item" th:src="@{/preview/{filename}(filename=${object.getValue()})}"/>
-                            <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
-                               th:text="${object.getKey().getCredentials()}">item</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="object : ${sharedObjects}">
+                            <td>
+                                <img alt="Picture of item"
+                                     th:src="@{/preview/{filename}(filename=${object.getValue()})}"/>
+                                <a th:href="@{/{category}/{id}(category=${category}, id=${object.getKey().getId()})}"
+                                   th:text="${object.getKey().getCredentials()}">item</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

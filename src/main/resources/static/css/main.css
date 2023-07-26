@@ -11,6 +11,7 @@ header, footer {
     justify-content: space-between;
     align-items: center;
     letter-spacing: 1px;
+    min-width: 800px;
     height: 5%;
     margin: 1% 10% 1%;
     background-image: linear-gradient(to top, rgba(100, 100, 100, 0.70), rgba(100, 100, 100, 0.70));
@@ -33,6 +34,11 @@ header a:hover,
 footer a:hover {
     color: blue;
 }
+
+/*header a:visited,*/
+/*footer a:visited {*/
+/*    color: white;*/
+/*}*/
 
 header a:focus,
 footer a:focus{
