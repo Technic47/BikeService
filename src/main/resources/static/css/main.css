@@ -13,10 +13,28 @@ header, footer {
     letter-spacing: 1px;
     height: 5%;
     margin: 1% 10% 1%;
+    background-image: linear-gradient(to top, rgba(100, 100, 100, 0.70), rgba(100, 100, 100, 0.70));
+    color: white;
+    font-size: 20px;
 }
 
 header nav,
 footer nav {
     display: flex;
     gap: 20px;
+}
+
+header a,
+footer a {
+    transition: 0.3s;
+}
+
+header a:hover,
+footer a:hover {
+    color: blue;
+}
+
+header a:focus,
+footer a:focus{
+    color: red;
 }

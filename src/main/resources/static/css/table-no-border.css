@@ -1,6 +1,7 @@
 .table-no-border {
     table-layout: fixed;
     width: 100%;
+    height: 100%;
 }
 
 thead th:nth-child(1) {

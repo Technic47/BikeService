@@ -2,8 +2,11 @@
     display: flex;
     justify-content: center;
     height: 75%;
-    overflow-x: auto;
     text-align: center;
+}
+
+.border-block-65 div{
+    overflow-x: auto;
 }
 
 .border-block-42 {

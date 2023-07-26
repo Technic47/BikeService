@@ -1,12 +1,11 @@
 .container-base {
     width: 80%;
     height: 85%;
-    /*position: static;*/
     outline: 2px solid #000;
     border-radius: 10px;
     margin-left: 10%;
     margin-right: 10%;
-    min-width: 1024px;
+    min-width: 800px;
 }
 
 .container {
@@ -14,33 +13,35 @@
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
-    /*margin-left: 10%;*/
-    /*margin-right: 10%;*/
-    /*min-width: 1024px;*/
     text-align: center;
 }
 
-.container-title {
+.container-title-1 {
     display: flex;
     justify-content: space-between;
+    gap: 1%;
     flex-wrap: wrap;
     width: 100%;
-    height: 50%;
+    height: 49%;
     text-align: center;
+    margin-bottom: 1%;
 }
 
-.container-title div {
-    /*width: 50%;*/
+.container-title-1 div {
     outline: 1px solid #000;
     border-radius: 10px;
+    width: 49%;
     transition: 0.5s;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.container-title div:hover {
+.container-title-1 div:hover {
     transform: scale(1.1);
 }
 
-.container-title a {
+.container-title-1 a {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -48,9 +49,51 @@
     height: 100%;
     font-size: 28px;
     color: black;
+    border-radius: 10px;
 }
 
-.container-title a:hover {
+.container-title-1 a:hover {
+    background-image: linear-gradient(to top, rgba(100, 100, 100, 0.70), rgba(100, 100, 100, 0.70));
+    color: white;
+}
+
+.container-title-2 {
+    display: flex;
+    justify-content: space-between;
+    gap: 1%;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 49%;
+    text-align: center;
+    margin-top: 1%;
+}
+
+.container-title-2 div {
+    outline: 1px solid #000;
+    border-radius: 10px;
+    width: 19%;
+    transition: 0.5s;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.container-title-2 div:hover {
+    transform: scale(1.1);
+}
+
+.container-title-2 a {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    font-size: 28px;
+    color: black;
+    border-radius: 10px;
+}
+
+.container-title-2 a:hover {
     background-image: linear-gradient(to top, rgba(100, 100, 100, 0.70), rgba(100, 100, 100, 0.70));
     color: white;
 }
@@ -77,19 +120,37 @@ h1, h2, h3 {
 }
 
 .col-1-2-1 {
-    width: 50%;
     background-image: url("/static/siteIMG/bicycle set.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 .col-1-2-2 {
-    width: 50%;
     background-image: url("/static/siteIMG/bicycle parts.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+}
+
+.col-5-2 {
+    width: 20%;
+    outline: 1px solid #000;
+    border-radius: 10px;
+}
+
+.col-5-2-1 {
+    background-image: url("/static/siteIMG/documents.jpg");
+}
+
+.col-5-2-2 {
+    background-image: url("/static/siteIMG/fasteners.jpg");
+}
+
+.col-5-2-3 {
+    background-image: url("/static/siteIMG/tools.jpg");
+}
+
+.col-5-2-4 {
+    background-image: url("/static/siteIMG/manufacturers.jpg");
+}
+
+.col-5-2-5 {
+    background-image: url("/static/siteIMG/consumables.jpg");
 }
 
 .col-1-2-no-boarder {
@@ -119,62 +180,6 @@ h1, h2, h3 {
 .col-1-1-no-boarder {
     width: 100%;
     text-align: left;
-}
-
-.col-5-2 {
-    width: 20%;
-    outline: 1px solid #000;
-    border-radius: 10px;
-}
-
-.col-5-2-1 {
-    width: 20%;
-    outline: 1px solid #000;
-    border-radius: 10px;
-    background-image: url("/static/siteIMG/documents.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.col-5-2-2 {
-    width: 20%;
-    outline: 1px solid #000;
-    border-radius: 10px;
-    background-image: url("/static/siteIMG/fasteners.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.col-5-2-3 {
-    width: 20%;
-    outline: 1px solid #000;
-    border-radius: 10px;
-    background-image: url("/static/siteIMG/tools.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.col-5-2-4 {
-    width: 20%;
-    outline: 1px solid #000;
-    border-radius: 10px;
-    background-image: url("/static/siteIMG/manufacturers.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.col-5-2-5 {
-    width: 20%;
-    outline: 1px solid #000;
-    border-radius: 10px;
-    background-image: url("/static/siteIMG/consumables.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 .col-5-2-no-boarders {

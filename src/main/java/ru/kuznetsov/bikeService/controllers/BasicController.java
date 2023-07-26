@@ -68,8 +68,9 @@ public class BasicController<T extends AbstractShowableEntity,
     public String index(Model model, Principal principal) {
         List<T> objects = null;
         UserModel userModel = this.getUserModelFromPrincipal(principal);
+        Long userId = userModel.getId();
         if (userModel.getAuthorities().contains(ROLE_USER)) {
-            objects = service.findByCreatorOrShared(userModel.getId());
+            objects = service.findByCreatorOrShared(userId);
             logger.info("personal " + category + " are shown to '" + userModel.getUsername() + "'");
         }
         if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
@@ -77,10 +78,16 @@ public class BasicController<T extends AbstractShowableEntity,
             logger.info(category + " are shown to " + userModel.getUsername());
         }
         Map<T, String> indexMap = new HashMap<>();
+        Map<T, String> sharedIndexMap = new HashMap<>();
         if (objects != null) {
-            objects.forEach(object -> indexMap.put(object, pictureService.show(object.getPicture()).getName()));
+            objects.forEach(object -> {
+                if (object.getCreator().equals(userId)) {
+                    indexMap.put(object, pictureService.show(object.getPicture()).getName());
+                } else sharedIndexMap.put(object, pictureService.show(object.getPicture()).getName());
+            });
         }
         model.addAttribute("objects", indexMap);
+        model.addAttribute("sharedObjects", sharedIndexMap);
         model.addAttribute("sharedCheck", false);
         this.addItemAttributesIndex(model, principal);
         return "index";
