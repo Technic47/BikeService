@@ -27,6 +27,7 @@ footer nav {
 
 header a,
 footer a {
+    color: white;
     transition: 0.3s;
     text-decoration: none;
 }
