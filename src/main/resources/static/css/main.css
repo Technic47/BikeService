@@ -28,6 +28,7 @@ footer nav {
 header a,
 footer a {
     transition: 0.3s;
+    text-decoration: none;
 }
 
 header a:hover,
@@ -41,6 +42,7 @@ footer a:hover {
 /*}*/
 
 header a:focus,
-footer a:focus{
+footer a:focus {
     color: red;
 }
+
