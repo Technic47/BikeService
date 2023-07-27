@@ -25,8 +25,8 @@
                         <input id="description" th:field="*{description}" type="text"/>
                         <span style="color:red" th:errors="*{description}"
                               th:if="${#fields.hasErrors('description')}"></span>
-                        <label for="link">Ссылка:</label>
-                        <input id="link" th:field="*{link}" type="text"/>
+                        <label for="link" th:if="${category != 'documents'}">Ссылка:</label>
+                        <input id="link" th:field="*{link}" th:if="${category != 'documents'}" type="text"/>
                         <span style="color:red" th:errors="*{link}" th:if="${#fields.hasErrors('link')}"></span>
                         <label for="value" th:text="${object.getValueName()}">:</label>
                         <input id="value" th:field="*{value}" type="text"/>

@@ -18,11 +18,13 @@
         <div class="container">
             <div class="col-1-1-no-boarder">
                 <div class="col-1-3-no-border">
-                    <img alt="Item picture" class="col-1-3-no-border-img" th:src="@{/IMG/{fileName}(fileName=${picture})}"/>
+                    <img alt="Item picture" class="col-1-3-no-border-img"
+                         th:src="@{/IMG/{fileName}(fileName=${picture})}"/>
                 </div>
                 <div class="col-1-3-no-border">
                     <h1 th:text="${object.getName()}"></h1>
                     <a th:href="@{${object.getLink()}}"
+                       target="_blank"
                        th:text="${object.getLink()}"></a>
                     <p th:if="${type == 'Usable'} or ${type == 'Serviceable'}"
                        th:text="${manufacture} + ' ' + ${object.getModel()}"></p>

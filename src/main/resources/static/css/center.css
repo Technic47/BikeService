@@ -4,3 +4,7 @@
     margin: auto; /* Выравниваем по центру */
     text-align: center;
 }
+
+.center textarea {
+    max-width: 60%;
+}
