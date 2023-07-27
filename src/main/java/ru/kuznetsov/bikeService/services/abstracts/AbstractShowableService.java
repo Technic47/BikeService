@@ -43,6 +43,7 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         toRepo.setLink(newItem.getLink());
         toRepo.setValue(newItem.getValue());
         toRepo.setIsShared(newItem.getIsShared());
+        toRepo.setCreator(newItem.getCreator());
         this.save(toRepo);
     }
 
