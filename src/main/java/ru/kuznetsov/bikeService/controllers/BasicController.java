@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
@@ -39,8 +38,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
 
 @Component
-@SessionScope
-public class BasicController<T extends AbstractShowableEntity,
+public abstract class BasicController<T extends AbstractShowableEntity,
         S extends CommonAbstractEntityService<T>>
         extends AbstractController {
     protected final S service;

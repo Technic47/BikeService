@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,7 @@ import java.security.Principal;
 import java.util.Set;
 
 @Component
-@Scope("prototype")
-public class ServiceableController<T extends AbstractServiceableEntity,
+public abstract class ServiceableController<T extends AbstractServiceableEntity,
         S extends CommonServiceableEntityService<T>>
         extends UsableController<T, S> {
     protected DocumentService documentDAO;
