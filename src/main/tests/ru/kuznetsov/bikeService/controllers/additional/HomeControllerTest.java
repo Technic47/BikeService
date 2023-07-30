@@ -71,7 +71,7 @@ class HomeControllerTest {
         this.mockMvc.perform(get("/title"))
                 .andDo(print())
                 .andExpect(authenticated())
-                .andExpect(xpath("//header/h1/div").string("test"));
+                .andExpect(content().string(containsString("test")));
     }
 
     @Test

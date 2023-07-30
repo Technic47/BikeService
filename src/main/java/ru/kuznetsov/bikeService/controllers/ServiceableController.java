@@ -50,6 +50,8 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
             return "redirect:/" + category;
         }
         ServiceList serviceList = this.getServiceList(item.getLinkedItems());
+        Long manufactureIndex = item.getManufacturer();
+        model.addAttribute("manufacture", manufacturerService.show(manufactureIndex).getName());
         this.addLinkedItemsToModel(model, serviceList);
         return super.show(item, model, principal);
     }

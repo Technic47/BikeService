@@ -100,7 +100,7 @@ class PDFServiceTest {
                 .addUserName(TEST_NAME)
                 .addImage("testImage.jpg")
                 .addManufacturer(TEST_MANUFACTURER)
-                .buildShowable(TEST_TOOL);
+                .buildUsable(TEST_TOOL);
 
         File formedFile = new File(PDF_DOC_NAME);
 
@@ -136,7 +136,7 @@ class PDFServiceTest {
                 .addImage("testImage.jpg")
                 .addManufacturer(TEST_MANUFACTURER)
                 .addServiceList(list)
-                .buildShowable(TEST_PART);
+                .buildServiceable(TEST_PART);
 
         File formedFile = new File(PDF_DOC_NAME);
 

@@ -1,8 +1,6 @@
 package ru.kuznetsov.bikeService.services;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,8 +29,8 @@ import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
-public
-class PictureServiceTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class PictureServiceTest {
     private PictureService pictureService;
     @MockBean
     private PictureRepository repository;
@@ -42,6 +40,9 @@ class PictureServiceTest {
     @Autowired
     @Qualifier("AdditionExecutor")
     private ExecutorService additionalExecutor;
+    @Autowired
+    @Qualifier("MainExecutor")
+    private ExecutorService mainExecutor;
     private MultipartFile multipartFile;
 
     @AfterAll
@@ -61,6 +62,7 @@ class PictureServiceTest {
     @BeforeEach
     void setUp() {
         this.pictureService = new PictureService(repository, additionalExecutor);
+        this.pictureService.setMainExecutor(this.mainExecutor);
         this.defaultPicture = new Picture(TEST_ID, "testImage.jpg");
     }
 
@@ -77,12 +79,14 @@ class PictureServiceTest {
     }
 
     @Test
-    void managePictureWide() throws IOException {
+    @Order(1)
+    void managePictureWide() throws IOException, InterruptedException {
         this.multipartFile = this.getMultipartFile(PATH_WIDE_FILE);
         this.pictureService.save(multipartFile);
 
         File convertedImage = new File(UPLOAD_PATH + "/testImage.jpg");
         File previewImage = new File(UPLOAD_PATH + "/preview/testImage.jpg");
+        Thread.sleep(500);
         BufferedImage buffConvertedImage = ImageIO.read(convertedImage);
         BufferedImage buffPreview = ImageIO.read(previewImage);
 
@@ -94,13 +98,14 @@ class PictureServiceTest {
     }
 
     @Test
-    void managePictureTall() throws IOException {
+    @Order(2)
+    void managePictureTall() throws IOException, InterruptedException {
         this.multipartFile = this.getMultipartFile(PATH_TALL_FILE);
         this.pictureService.save(multipartFile);
 
         File convertedImage = new File(UPLOAD_PATH + "/testImage2.jpg");
         File previewImage = new File(UPLOAD_PATH + "/preview/testImage2.jpg");
-
+        Thread.sleep(500);
         assertTrue(new File(UPLOAD_PATH + "/testImage2.jpg").exists());
         assertTrue(new File(UPLOAD_PATH + "/preview/testImage2.jpg").exists());
 
@@ -113,6 +118,7 @@ class PictureServiceTest {
     }
 
     @Test
+    @Order(3)
     void update() {
         Picture newPicture = new Picture(defaultPicture.getId(), "test2");
         doReturn(Optional.of(defaultPicture))
@@ -126,25 +132,39 @@ class PictureServiceTest {
     }
 
     @Test
+    @Order(4)
     void delete() {
         doReturn(Optional.of(defaultPicture))
                 .when(repository)
                 .findById(TEST_ID);
 
         pictureService.save(getDefaultMultipartFile());
-        File file = new File(UPLOAD_PATH + "/testImage.jpg");
 
-        assertTrue(file.exists());
+//        this.pictureService.save(this.getMultipartFile(PATH_WIDE_FILE));
+//        this.pictureService.save(this.getMultipartFile(PATH_TALL_FILE));
+
+        File fileWide = new File(UPLOAD_PATH + "/testImage.jpg");
+//        File fileTall = new File(UPLOAD_PATH + "/testImage2.jpg");
+        File filePreviewWide = new File(UPLOAD_PATH + "/preview/testImage.jpg");
+//        File filePreviewTall = new File(UPLOAD_PATH + "/preview/testImage2.jpg");
+
+        assertTrue(fileWide.exists());
+//        assertTrue(fileTall.exists());
+        assertTrue(filePreviewWide.exists());
+//        assertTrue(filePreviewTall.exists());
 
         pictureService.delete(TEST_ID);
-        File filePreview = new File(UPLOAD_PATH + "/preview/testImage.jpg");
+//        pictureService.delete(5L);
 
-        assertFalse(file.exists());
-        assertFalse(filePreview.exists());
+        assertFalse(fileWide.exists());
+        assertFalse(filePreviewWide.exists());
+//        assertFalse(fileTall.exists());
+//        assertFalse(filePreviewTall.exists());
         verify(repository).deleteById(TEST_ID);
     }
 
     @Test
+    @Order(5)
     void deleteFail() {
         doReturn(Optional.empty())
                 .when(repository)

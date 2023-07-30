@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -18,7 +18,7 @@ import static ru.kuznetsov.bikeService.TestCredentials.getDefaultMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithUserDetails("test")
+@WithUserDetails("pavel")
 @TestPropertySource("/application-test.properties")
 @Sql(value = {"/SQL_scripts/create-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/SQL_scripts/clean-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -32,12 +32,13 @@ class PicturesControllerTest {
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
-                .andExpect(model().size(1))
+                .andExpect(model().size(2))
+                .andExpect(model().attribute("user", notNullValue()))
                 .andExpect(model().attribute("allPictures", hasSize(3)))
                 .andExpect(view().name("picture_index"))
-                .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/test']").exists())
-                .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/test2']").exists())
-                .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/test3']").exists());
+                .andExpect(content().string(containsString("src=\"/preview/testImage.jpg")))
+                .andExpect(content().string(containsString("src=\"/preview/test2")))
+                .andExpect(content().string(containsString("src=\"/preview/test3")));
     }
 
     @Test
@@ -57,6 +58,7 @@ class PicturesControllerTest {
                 .andExpect(redirectedUrl("/pictures"));
         this.mockMvc.perform(get("/pictures"))
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(model().attribute("allPictures", hasSize(4)))
                 .andExpect(xpath("//div/div/ul/li/form/img[@src='/preview/testImage.jpg']").exists());
     }

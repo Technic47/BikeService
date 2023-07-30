@@ -54,7 +54,7 @@ class UserBuilderTest {
 
     @Test
     void build() {
-        builder = new UserBuilder(TEST_USER);
+        builder = new UserBuilder(TEST_USER.getName(), TEST_USER.getPassword());
         UserModel user = builder.build();
 
         assertEquals(user.getUsername(), TEST_NAME);

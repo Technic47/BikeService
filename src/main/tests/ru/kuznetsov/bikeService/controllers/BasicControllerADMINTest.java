@@ -47,7 +47,8 @@ public class BasicControllerADMINTest {
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
-                .andExpect(model().attribute("objects", aMapWithSize(5)))
+                .andExpect(model().attribute("objects", aMapWithSize(3)))
+                .andExpect(model().attribute("sharedObjects", aMapWithSize(2)))
                 .andExpect(xpath("//div/div/table/tbody/tr").nodeCount(5))
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/1']").exists())
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/2']").exists())
@@ -88,7 +89,7 @@ public class BasicControllerADMINTest {
 
         this.mockMvc.perform(get("/documents"))
                 .andDo(print())
-                .andExpect(model().attribute("objects", aMapWithSize(6)))
+                .andExpect(model().attribute("objects", aMapWithSize(4)))
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/6']").exists());
     }
 }

@@ -10,8 +10,8 @@ public class UserBuilder {
         this.user = new UserModel();
     }
 
-    public UserBuilder(String unserName, String password) {
-        this.user = new UserModel(unserName, password);
+    public UserBuilder(String userName, String password) {
+        this.user = new UserModel(userName, password);
     }
 
     public UserBuilder(OAuth2User oAuth2User) {

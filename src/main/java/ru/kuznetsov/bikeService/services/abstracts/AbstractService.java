@@ -56,7 +56,7 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
 
     @Autowired
     @Qualifier("MainExecutor")
-    private void setMainExecutor(ExecutorService mainExecutor) {
+    public void setMainExecutor(ExecutorService mainExecutor) {
         this.mainExecutor = mainExecutor;
     }
 }

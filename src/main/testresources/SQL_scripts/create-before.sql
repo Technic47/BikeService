@@ -59,9 +59,9 @@ VALUES (1, 1, 1, 'Part', 'Document'),
        (1, 1, 1, 'Part', 'Tool'),
        (1, 1, 1, 'Part', 'Part');
 
-INSERT INTO bikeservicetest.public.users(id, password, active, username)
-VALUES (DEFAULT, '$2a$10$I/0KJRXs78nl5Z.Whzs9L.1uBwf9E/gJwqkZtgIZfrwarrOmJ.mBK', true, 'test'),
-       (DEFAULT, '$2a$10$NJqlcPwFazO1CF4oWQcJuerCYhpYnSehN8HdgRWyq1mLx/5814cdy', true, 'pavel');
+INSERT INTO bikeservicetest.public.users(id, password, active, username, provider)
+VALUES (DEFAULT, '$2a$10$I/0KJRXs78nl5Z.Whzs9L.1uBwf9E/gJwqkZtgIZfrwarrOmJ.mBK', true, 'test', 'LOCAL'),
+       (DEFAULT, '$2a$10$NJqlcPwFazO1CF4oWQcJuerCYhpYnSehN8HdgRWyq1mLx/5814cdy', true, 'pavel', 'LOCAL');
 
 INSERT INTO bikeservicetest.public.user_role(user_id, status)
 VALUES (1, 'ROLE_USER'),
