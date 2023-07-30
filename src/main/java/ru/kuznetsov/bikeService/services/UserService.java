@@ -18,7 +18,6 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 @Service
 public class UserService extends AbstractService<UserModel, UserRepository> {
     private final PasswordEncoder passwordEncoder;
-    private UserModel userModel;
 
     public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
@@ -103,8 +102,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param id id of user.
      */
     public void userToAdmin(Long id) {
-        UserModel model = repository.getReferenceById(id);
-        model.getAuthorities().add(UserRole.ROLE_ADMIN);
+        UserModel model = repository.findById(id).get();
+        model.getAuthorities().add(ROLE_ADMIN);
         repository.save(model);
     }
 
@@ -114,8 +113,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param id id of user.
      */
     public void adminToUser(Long id) {
-        UserModel model = repository.getReferenceById(id);
-        model.getAuthorities().remove(UserRole.ROLE_ADMIN);
+        UserModel model = repository.findById(id).get();
+        model.getAuthorities().remove(ROLE_ADMIN);
         repository.save(model);
     }
 
@@ -135,13 +134,5 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
             oldItem.setPassword(this.passwordEncoder.encode(newPass));
         }
         repository.save(oldItem);
-    }
-
-    public void cleanUser() {
-        this.userModel = null;
-    }
-
-    public UserModel getUserModel() {
-        return userModel;
     }
 }
