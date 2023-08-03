@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>bikeService Maven Webapp</name>
-    <url>http://yourbikeservice.ru</url>
+    <url>https://yourbikeservice.ru</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
