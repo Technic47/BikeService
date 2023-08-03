@@ -30,7 +30,7 @@
                 <li th:each="object : ${allPictures}">
                     <form method="POST" th:action="@{/pictures/{id}(id=${object.getId()})}">
                         <img alt="img preview" th:src="@{/preview/{fileName}(fileName=${object.getName()})}"/>
-                        <button class="btn btn-success" type="submit">
+                        <button class="btn btn-success" onclick="return confirm('Вы уверены в удалении?')" type="submit">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </form>

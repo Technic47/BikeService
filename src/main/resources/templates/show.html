@@ -38,7 +38,7 @@
                         </form>
                         <form th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}"
                               th:if="${access == true}" th:method="POST">
-                            <button th:type="submit">Удалить</button>
+                            <button onclick="return confirm('Вы уверены в удалении?')" th:type="submit">Удалить</button>
                         </form>
                         <form th:action="@{/{link}/pdf(link=${category})}">
                             <button th:name="id" th:type="submit" th:value="${object.getId()}">Скачать PDF</button>
