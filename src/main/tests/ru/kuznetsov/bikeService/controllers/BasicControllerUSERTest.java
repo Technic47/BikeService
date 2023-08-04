@@ -51,15 +51,15 @@ class BasicControllerUSERTest {
     @BeforeEach
     void setUp() {
         this.testDocFromDb = this.documentService.show(1L);
-        userService.addCreatedItem(userService.findByName("test"),
+        userService.addCreatedItem(userService.findByUsername("test"),
                 new UserEntity("Document", 1L));
-        userService.addCreatedItem(userService.findByName("test"),
+        userService.addCreatedItem(userService.findByUsername("test"),
                 new UserEntity("Document", 2L));
-        userService.addCreatedItem(userService.findByName("pavel"),
+        userService.addCreatedItem(userService.findByUsername("pavel"),
                 new UserEntity("Document", 3L));
-        userService.addCreatedItem(userService.findByName("pavel"),
+        userService.addCreatedItem(userService.findByUsername("pavel"),
                 new UserEntity("Document", 4L));
-        userService.addCreatedItem(userService.findByName("pavel"),
+        userService.addCreatedItem(userService.findByUsername("pavel"),
                 new UserEntity("Document", 5L));
     }
 
@@ -231,7 +231,7 @@ class BasicControllerUSERTest {
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/1']").doesNotExist());
 
         UserEntity entity = new UserEntity("Document", 1L);
-        List<UserEntity> entityList = this.userService.findByName("test").getCreatedItems();
+        List<UserEntity> entityList = this.userService.findByUsername("test").getCreatedItems();
         assertEquals(1, entityList.size());
         assertThat(entityList).doesNotContain(entity);
     }

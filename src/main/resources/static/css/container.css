@@ -226,6 +226,11 @@ h1, h2, h3 {
 .col-1-1-no-boarder {
     width: 100%;
     text-align: left;
+}
+
+.col-1-1-no-boarder-user{
+    width: 100%;
+    text-align: left;
     padding-left: 5%;
     padding-right: 5%;
 }

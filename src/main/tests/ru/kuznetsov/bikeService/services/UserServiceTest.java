@@ -48,7 +48,7 @@ class UserServiceTest {
     void createUser() {
         assertTrue(userService.createUser(userModel));
 
-        UserModel checkUser = userService.findByName(TEST_NAME);
+        UserModel checkUser = userService.findByUsername(TEST_NAME);
 
         assertThat(checkUser).isNotNull();
         assertTrue(checkUser.isActive());
@@ -62,7 +62,7 @@ class UserServiceTest {
     void createAdmin() {
         userService.createAdmin(userModel);
 
-        UserModel checkUser = userService.findByName(TEST_NAME);
+        UserModel checkUser = userService.findByUsername(TEST_NAME);
 
         assertThat(checkUser).isNotNull();
         assertTrue(checkUser.isActive());
@@ -83,9 +83,9 @@ class UserServiceTest {
     void addCreatedItem() {
         userService.createUser(userModel);
         UserEntity entity = new UserEntity(TEST_NAME, TEST_ID);
-        UserModel checkUser = userService.findByName(TEST_NAME);
+        UserModel checkUser = userService.findByUsername(TEST_NAME);
         userService.addCreatedItem(checkUser, entity);
-        checkUser = userService.findByName(TEST_NAME);
+        checkUser = userService.findByUsername(TEST_NAME);
 
         assertEquals(1, checkUser.getCreatedItems().size());
         assertTrue(checkUser.getCreatedItems().contains(entity));
@@ -96,7 +96,7 @@ class UserServiceTest {
     void delCreatedItem() {
         userService.createUser(userModel);
         UserEntity entity = new UserEntity(TEST_NAME, TEST_ID);
-        UserModel checkUser = userService.findByName(TEST_NAME);
+        UserModel checkUser = userService.findByUsername(TEST_NAME);
         userService.addCreatedItem(checkUser, entity);
         userService.delCreatedItem(checkUser, entity);
 
@@ -107,7 +107,7 @@ class UserServiceTest {
     @Order(6)
     void findByName() {
         userService.createUser(TEST_USER);
-        UserModel result = userService.findByName(TEST_NAME);
+        UserModel result = userService.findByUsername(TEST_NAME);
 
         assertEquals(TEST_USER.getName(), result.getName());
         assertNotNull(result.getId());
@@ -117,17 +117,17 @@ class UserServiceTest {
     @Test
     @Order(7)
     void findByNameNull() {
-        assertNull(userService.findByName(TEST_NAME));
+        assertNull(userService.findByUsername(TEST_NAME));
     }
 
     @Test
     @Order(8)
     void userToAdmin(){
         userService.createUser(TEST_USER);
-        UserModel user = userService.findByName(TEST_NAME);
+        UserModel user = userService.findByUsername(TEST_NAME);
         userService.userToAdmin(user.getId());
 
-        user = userService.findByName(TEST_NAME);
+        user = userService.findByUsername(TEST_NAME);
         assertThat(user.getAuthorities()).hasSize(2).contains(ROLE_ADMIN);
     }
 
@@ -135,10 +135,10 @@ class UserServiceTest {
     @Order(9)
     void adminToUser(){
         userService.createAdmin(TEST_USER);
-        UserModel user = userService.findByName(TEST_NAME);
+        UserModel user = userService.findByUsername(TEST_NAME);
         userService.adminToUser(user.getId());
 
-        user = userService.findByName(TEST_NAME);
+        user = userService.findByUsername(TEST_NAME);
         assertThat(user.getAuthorities()).hasSize(0).doesNotContain(ROLE_ADMIN);
     }
 
@@ -147,10 +147,10 @@ class UserServiceTest {
     void update(){
         userService.createUser(TEST_USER);
         UserModel newModel = new UserModel("NewName", "NewPass");
-        UserModel user = userService.findByName(TEST_NAME);
+        UserModel user = userService.findByUsername(TEST_NAME);
         userService.update(user, newModel);
 
-        user = userService.findByName("NewName");
+        user = userService.findByUsername("NewName");
 
         assertEquals("NewName", user.getUsername());
         assertNotEquals(TEST_PASS, user.getPassword());

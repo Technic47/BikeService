@@ -11,7 +11,16 @@ public class UserBuilder {
     }
 
     public UserBuilder(String userName, String password) {
-        this.user = new UserModel(userName, password);
+        this();
+        this.user.setUsername(userName);
+        this.user.setPassword(password);
+    }
+
+    public UserBuilder(String userName, String email, String password){
+        this();
+        this.user.setUsername(userName);
+        this.user.setEmail(email);
+        this.user.setPassword(password);
     }
 
     public UserBuilder(OAuth2User oAuth2User) {
@@ -26,6 +35,11 @@ public class UserBuilder {
 
     public UserBuilder setPassword(String password){
         this.user.setPassword(password);
+        return this;
+    }
+
+    public UserBuilder setEmail(String email){
+        this.user.setEmail(email);
         return this;
     }
 

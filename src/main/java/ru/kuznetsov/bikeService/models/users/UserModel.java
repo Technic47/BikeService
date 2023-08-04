@@ -20,8 +20,16 @@ public class UserModel implements UserDetails, OAuth2User {
     @NotBlank(message = "Поле не должно быть пустым!")
     @Size(min = 1, max = 255)
     private String username;
+
+    @Column(name = "email", unique = true)
+    @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 255)
+    private String email;
     @Column(name = "active")
     private boolean active;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @Transient
     private final Map<String, Object> attributes;
@@ -46,6 +54,7 @@ public class UserModel implements UserDetails, OAuth2User {
 
     public UserModel() {
         this.attributes = new HashMap<>();
+        this.enabled=false;
     }
 
     public UserModel(String username, String password) {
@@ -57,6 +66,7 @@ public class UserModel implements UserDetails, OAuth2User {
     public UserModel(OAuth2User oauth2User) {
         this.attributes = oauth2User.getAttributes();
         this.setUsername(this.attributes.get("email").toString());
+        this.setEmail(this.attributes.get("email").toString());
     }
 
     public Long getId() {
@@ -73,6 +83,14 @@ public class UserModel implements UserDetails, OAuth2User {
 
     public void setUsername(String name) {
         this.username = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public boolean isActive() {

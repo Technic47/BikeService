@@ -1,12 +1,15 @@
 package ru.kuznetsov.bikeService.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
+import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserBuilder;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
+import ru.kuznetsov.bikeService.repositories.VerificationTokenRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
 import java.util.List;
@@ -18,6 +21,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 @Service
 public class UserService extends AbstractService<UserModel, UserRepository> {
     private final PasswordEncoder passwordEncoder;
+    private VerificationTokenRepository tokenRepository;
 
     public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
@@ -31,7 +35,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @return false if user already exists.
      */
     public boolean createUser(UserModel userModel) {
-        return this.constructRecordAndSave(userModel, ROLE_USER);
+        return this.constructRecordAndSave(userModel, ROLE_USER) != null;
     }
 
     /**
@@ -43,15 +47,14 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         this.constructRecordAndSave(userModel, ROLE_ADMIN);
     }
 
-    private boolean constructRecordAndSave(UserModel userModel, UserRole role) {
-        if (this.findByName(userModel.getUsername()) != null) {
-            return false;
+    private UserModel constructRecordAndSave(UserModel userModel, UserRole role) {
+        if (this.findByUsername(userModel.getUsername()) != null) {
+            return null;
         }
-        UserModel model =  new UserBuilder(userModel.getName(), userModel.getPassword())
+        UserModel newUser = new UserBuilder(userModel.getName(), userModel.getEmail(), userModel.getPassword())
                 .encodePassword(this.passwordEncoder).setActive(true)
                 .addRole(role).setProvider(LOCAL).build();
-        repository.save(model);
-        return true;
+        return repository.save(newUser);
     }
 
     /**
@@ -82,8 +85,12 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param username name for search.
      * @return UserModel wth record from DB.
      */
-    public UserModel findByName(String username) {
+    public UserModel findByUsername(String username) {
         return repository.findByUsername(username);
+    }
+
+    public UserModel findByEmail(String email) {
+        return this.repository.findByEmail(email);
     }
 
     /**
@@ -134,5 +141,41 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
             oldItem.setPassword(this.passwordEncoder.encode(newPass));
         }
         repository.save(oldItem);
+    }
+
+
+    public UserModel registerNewUserAccount(UserModel userDto) throws RuntimeException {
+        if (emailExist(userDto.getEmail())) {
+            throw new RuntimeException(
+                    "There is an account with that email address: "
+                            + userDto.getEmail());
+        }
+        return this.constructRecordAndSave(userDto, ROLE_USER);
+    }
+
+    private boolean emailExist(String email) {
+        return repository.findByEmail(email) != null;
+    }
+
+    public UserModel getUser(String verificationToken) {
+        return tokenRepository.findByToken(verificationToken).getUser();
+    }
+
+    public VerificationToken getVerificationToken(String VerificationToken) {
+        return tokenRepository.findByToken(VerificationToken);
+    }
+
+    public void saveRegisteredUser(UserModel user) {
+        repository.save(user);
+    }
+
+    public void createVerificationToken(UserModel user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        tokenRepository.save(myToken);
+    }
+
+    @Autowired
+    public void setTokenRepository(VerificationTokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
     }
 }

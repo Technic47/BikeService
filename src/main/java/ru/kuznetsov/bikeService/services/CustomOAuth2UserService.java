@@ -29,7 +29,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if (existUser == null) {
             UserBuilder builder = new UserBuilder(oAuth2User);
-            builder.setName(username).addRole(UserRole.ROLE_USER)
+            builder.setName(username).setEmail(username).addRole(UserRole.ROLE_USER)
                     .setProvider(GOOGLE).setActive(true);
 
             userRepository.save(builder.build());

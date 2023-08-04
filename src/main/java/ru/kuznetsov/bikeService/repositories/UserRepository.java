@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CommonRepository<UserModel> {
     UserModel findByUsername(String userName);
+    UserModel findByEmail(String email);
     List<UserModel> findByUsernameContainingIgnoreCase(String name);
 }

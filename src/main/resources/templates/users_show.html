@@ -19,7 +19,7 @@
             <div class="col-1-1">
                 <h1 th:text="${userAccount.getUsername()}">
                 </h1>
-                <div class="col-1-1-no-boarder">
+                <div class="col-1-1-no-boarder-user">
                     <form th:action="@{/users/update/{id}(id = ${userAccount.getId()})}" th:method="POST">
                         <ul>
                             <li th:text="'ID - ' + ${userAccount.getId()}"></li>

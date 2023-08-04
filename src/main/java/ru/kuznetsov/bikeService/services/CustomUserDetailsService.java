@@ -24,18 +24,42 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * Find user by userName and return if it is present.
      *
-     * @param username search parameter
+     * @param userEmail search parameter
      * @return UserDetails object
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel model = userService.findByName(username);
-        if (model == null) {
-            throw new UsernameNotFoundException(username);
+    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
+        boolean enabled = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
+        try {
+            UserModel user = userService.findByEmail(userEmail);
+            if (user == null) {
+                throw new UsernameNotFoundException(
+                        "No user found with username: " + userEmail);
+            }
+
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    user.getPassword().toLowerCase(),
+                    user.isEnabled(),
+                    accountNonExpired,
+                    credentialsNonExpired,
+                    accountNonLocked,
+                    user.getAuthorities());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return model;
+//        UserModel model = userService.findByName(username);
+//        if (model == null) {
+//            throw new UsernameNotFoundException(username);
+//        }
+//        return model;
     }
+
+
 
     /**
      * Creates built-in admin user and send it to DB.
