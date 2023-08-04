@@ -24,6 +24,7 @@
                         <ul>
                             <li th:text="'ID - ' + ${userAccount.getId()}"></li>
                             <li th:text="'IsActive - ' + ${userAccount.isActive()}"></li>
+                            <li th:text="'IsEnabled - ' + ${userAccount.isEnabled().toString()}"></li>
                             <li th:text="'Authorities - ' + ${userAccount.getAuthorities().toString()}"></li>
                             <li th:text="'Provider - ' + ${userAccount.getProvider().toString()}"></li>
                         </ul>

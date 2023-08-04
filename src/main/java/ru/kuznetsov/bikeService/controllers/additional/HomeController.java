@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
@@ -64,30 +67,23 @@ public class HomeController extends AbstractController {
         return "registration";
     }
 
+//    @PostMapping("/registration")
+//    public String createUser(UserModel user, Model model) {
+//        if (!userService.createUser(user)) {
+//            model.addAttribute("message", "Имя '" + user.getUsername() + "' уже занято!");
+//            return "/registration";
+//        }
+//        userService.createUser(user);
+//        logger.debug(user.getUsername() + " " + user.getAuthorities() + " registered");
+//        return "redirect:/login";
+//    }
+
     @PostMapping("/registration")
-    public String createUser(UserModel user, Model model) {
-        if (!userService.createUser(user)) {
-            model.addAttribute("message", "Имя '" + user.getUsername() + "' уже занято!");
-            return "/registration";
-        }
-        userService.createUser(user);
-        logger.debug(user.getUsername() + " " + user.getAuthorities() + " registered");
-        return "redirect:/login";
-    }
-
-    @GetMapping("/info")
-    public String info(Model model, Principal principal) {
-        this.addUserToModel(model, principal);
-        return "info";
-    }
-
-    @PostMapping("/user/registration")
-    public String registerUserAccount(
-            @ModelAttribute("user") @Valid UserModel userDto,
+    public String registerUserAccount(@Valid UserModel userModel,
             HttpServletRequest request) {
 
         try {
-            UserModel registered = userService.registerNewUserAccount(userDto);
+            UserModel registered = userService.registerNewUserAccount(userModel);
 
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
@@ -97,7 +93,13 @@ public class HomeController extends AbstractController {
             ex.printStackTrace();
         }
 
-        return "SuccessRegister";
+        return "redirect:/title";
+    }
+
+    @GetMapping("/info")
+    public String info(Model model, Principal principal) {
+        this.addUserToModel(model, principal);
+        return "info";
     }
 
     @GetMapping("/registrationConfirm")

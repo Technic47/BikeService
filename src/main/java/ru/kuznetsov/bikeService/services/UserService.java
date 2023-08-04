@@ -144,13 +144,13 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
 
-    public UserModel registerNewUserAccount(UserModel userDto) throws RuntimeException {
-        if (emailExist(userDto.getEmail())) {
+    public UserModel registerNewUserAccount(UserModel userModel) throws RuntimeException {
+        if (emailExist(userModel.getEmail())) {
             throw new RuntimeException(
                     "There is an account with that email address: "
-                            + userDto.getEmail());
+                            + userModel.getEmail());
         }
-        return this.constructRecordAndSave(userDto, ROLE_USER);
+        return this.constructRecordAndSave(userModel, ROLE_USER);
     }
 
     private boolean emailExist(String email) {

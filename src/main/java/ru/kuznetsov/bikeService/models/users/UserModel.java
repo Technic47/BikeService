@@ -126,12 +126,12 @@ public class UserModel implements UserDetails, OAuth2User {
         this.password = password;
     }
 
-    public Provider getProvider() {
-        return provider;
-    }
-
     public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    public Provider getProvider() {
+        return provider;
     }
 
     @Override
@@ -156,7 +156,7 @@ public class UserModel implements UserDetails, OAuth2User {
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return enabled;
     }
 
     @Override
@@ -165,14 +165,13 @@ public class UserModel implements UserDetails, OAuth2User {
     }
 
     public String getEmail() {
-        return this.attributes.get("email").toString();
+        return this.email;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserModel)) return false;
-        UserModel userModel = (UserModel) o;
+        if (!(o instanceof UserModel userModel)) return false;
         return active == userModel.active && Objects.equals(id, userModel.id) && Objects.equals(username, userModel.username);
     }
 

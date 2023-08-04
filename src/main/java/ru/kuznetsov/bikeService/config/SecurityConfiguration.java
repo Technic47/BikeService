@@ -42,7 +42,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/oauth/**").permitAll();
+                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/oauth/**", "/registrationConfirm").permitAll();
                     auth.requestMatchers("/**").authenticated();
                 })
                 .formLogin()

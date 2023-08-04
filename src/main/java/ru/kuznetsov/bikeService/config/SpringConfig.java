@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -138,20 +137,19 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public JavaMailSender getJavaMailSender() {
+    public JavaMailSenderImpl getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-
-        mailSender.setUsername("yourbikeservice.verification@yandex.com");
-        mailSender.setPassword("5*!zGa7f");
+        mailSender.setHost("smtp.yandex.ru");
+        mailSender.setPort(465);
+        mailSender.setUsername("yourbikeservice.verification");
+        mailSender.setPassword("vfujjjtknaxkpwbp");
 
         Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.smtp.ssl.enable", "true");
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
-
         return mailSender;
     }
 }

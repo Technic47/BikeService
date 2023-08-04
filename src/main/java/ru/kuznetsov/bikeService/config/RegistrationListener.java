@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -16,13 +15,11 @@ import java.util.UUID;
 public class RegistrationListener implements
         ApplicationListener<OnRegistrationCompleteEvent> {
     private final UserService service;
-    private final MessageSource messages;
     private final JavaMailSender mailSender;
 
     @Autowired
-    public RegistrationListener(UserService service, MessageSource messages, JavaMailSender mailSender) {
+    public RegistrationListener(UserService service, JavaMailSender mailSender) {
         this.service = service;
-        this.messages = messages;
         this.mailSender = mailSender;
     }
 
@@ -32,34 +29,14 @@ public class RegistrationListener implements
         String token = UUID.randomUUID().toString();
         service.createVerificationToken(user, token);
 
-        String recipientAddress = user.getEmail();
-        String subject = "Registration Confirmation";
-        String confirmationUrl
-                = event.getAppUrl() + "/registrationConfirm?token=" + token;
-        String message = messages.getMessage("message.regSuccess", null, event.getLocale());
+        String confirmationUrl = event.getAppUrl() + "/registrationConfirm?token=" + token;
+        String message = "Для окончания регистрации пройдите по следующей ссылке:";
 
         SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(recipientAddress);
-        email.setSubject(subject);
-        email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
+        email.setTo(user.getEmail());
+        email.setFrom("yourbikeservice.verification@yandex.ru");
+        email.setSubject("Подтверждение регистрации на yourbikeservice.");
+        email.setText(message + "\r\n" + "http://localhost:8888" + confirmationUrl);
         mailSender.send(email);
     }
-
-//    private void confirmRegistration(OnRegistrationCompleteEvent event) {
-//        UserModel user = event.getUser();
-//        String token = UUID.randomUUID().toString();
-//        service.createVerificationToken(user, token);
-//
-//        String recipientAddress = user.getEmail();
-//        String subject = "Registration Confirmation";
-//        String confirmationUrl
-//                = event.getAppUrl() + "/registrationConfirm?token=" + token;
-//        String message = messages.getMessage("message.regSuccess", null, event.getLocale());
-//
-//        SimpleMailMessage email = new SimpleMailMessage();
-//        email.setTo(recipientAddress);
-//        email.setSubject(subject);
-//        email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
-//        mailSender.send(email);
-//    }
 }

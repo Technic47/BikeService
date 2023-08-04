@@ -30,33 +30,33 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
+//        boolean enabled = true;
+//        boolean accountNonExpired = true;
+//        boolean credentialsNonExpired = true;
+//        boolean accountNonLocked = true;
         try {
             UserModel user = userService.findByEmail(userEmail);
             if (user == null) {
                 throw new UsernameNotFoundException(
                         "No user found with username: " + userEmail);
             }
+            boolean enabled = user.isEnabled();
+            if (!enabled) {
+                throw new RuntimeException("User is not activated: " + userEmail);
+            }
+            return user;
 
-            return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(),
-                    user.getPassword().toLowerCase(),
-                    user.isEnabled(),
-                    accountNonExpired,
-                    credentialsNonExpired,
-                    accountNonLocked,
-                    user.getAuthorities());
+//            return new org.springframework.security.core.userdetails.User(
+//                    user.getEmail(),
+//                    user.getPassword().toLowerCase(),
+//                    user.isEnabled(),
+//                    accountNonExpired,
+//                    credentialsNonExpired,
+//                    accountNonLocked,
+//                    user.getAuthorities());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        UserModel model = userService.findByName(username);
-//        if (model == null) {
-//            throw new UsernameNotFoundException(username);
-//        }
-//        return model;
     }
 
 
