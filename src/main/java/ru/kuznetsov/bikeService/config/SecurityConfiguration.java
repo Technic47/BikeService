@@ -42,20 +42,29 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/oauth/**", "/registrationConfirm").permitAll();
+                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**", "/registrationConfirm").permitAll();
                     auth.requestMatchers("/**").authenticated();
+                    auth.requestMatchers("/login").anonymous();
                 })
                 .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/title")
+                .failureUrl("/login?error")
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(oauthUserService)
                 .and()
+                .loginPage("/login")
                 .successHandler((request, response, authentication) -> {
                     UserModel oauthUser = new UserModel((OAuth2User) authentication.getPrincipal());
                     oauthUserService.processOAuthPostLogin(oauthUser);
                     response.sendRedirect("/successLogin");
-                });
+                })
+                .and()
+                .logout()
+                .deleteCookies("JSESSIONID");
         return http.build();
     }
 

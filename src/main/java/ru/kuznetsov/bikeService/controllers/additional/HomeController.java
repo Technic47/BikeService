@@ -36,18 +36,31 @@ public class HomeController extends AbstractController {
         return "home";
     }
 
+//    @GetMapping("/login")
+//    public String login(Model model, Principal principal) {
+//        UserModel userModel = this.getUserModelFromPrincipal(principal);
+//        this.addUserToModel(model, principal);
+//        logger.info(userModel.getName() + " logged in");
+//        return "title";
+//    }
+
     @GetMapping("/login")
-    public String login(Model model, Principal principal) {
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
-        this.addUserToModel(model, principal);
-        logger.info(userModel.getName() + " logged in");
-        return "title";
+    public String login() {
+        return "login";
     }
 
-    @PostMapping("/login")
-    public String postLogin() {
-        return "title";
-    }
+//    @PostMapping("/login")
+//    public String postLogin(@RequestParam(value = "login") String login,
+//                            @RequestParam(value = "password") String password) {
+//
+//
+//        return "title";
+//    }
+//
+//    @GetMapping("/performLogin")
+//    public String performLogin(){
+//        return "title";
+//    }
 
     @GetMapping("/successLogin")
     public String confirmLogin(Model model, Principal principal) {
@@ -82,7 +95,6 @@ public class HomeController extends AbstractController {
     @PostMapping("/registration")
     public String registerUserAccount(@Valid UserModel userModel,
                                       HttpServletRequest request) {
-
         try {
             UserModel registered = userService.registerNewUserAccount(userModel);
 
