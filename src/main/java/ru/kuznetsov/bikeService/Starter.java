@@ -18,8 +18,9 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
+- Resend verification link implementation
+- Custom logIn form!!!
 - Multithreading
 - make front better
 - oauth2 from VK
-- different variants of PDF document???
  */

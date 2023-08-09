@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.models.security.GenericResponse;
 import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -80,7 +81,7 @@ public class HomeController extends AbstractController {
 
     @PostMapping("/registration")
     public String registerUserAccount(@Valid UserModel userModel,
-            HttpServletRequest request) {
+                                      HttpServletRequest request) {
 
         try {
             UserModel registered = userService.registerNewUserAccount(userModel);
@@ -117,6 +118,8 @@ public class HomeController extends AbstractController {
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             String messageValue = "token expired";
+            model.addAttribute("expired", true);
+            model.addAttribute("token", token);
             model.addAttribute("message", messageValue);
             return "redirect:/regError";
         }
@@ -124,6 +127,21 @@ public class HomeController extends AbstractController {
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
         return "redirect:/login";
+    }
+
+    @GetMapping("/resendRegistrationToken")
+    public GenericResponse resendRegistrationToken(HttpServletRequest request,
+                                                   @RequestParam("token") String existingToken) {
+        VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
+
+        UserModel user = userService.findByToken(newToken.getToken());
+        String appUrl =
+                "http://" + request.getServerName() +
+                        ":" + request.getServerPort() +
+                        request.getContextPath();
+        userService.constructResendVerificationTokenEmail(user, newToken, appUrl);
+
+        return new GenericResponse("message.resendToken");
     }
 
     @Autowired

@@ -1,6 +1,8 @@
 package ru.kuznetsov.bikeService.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
@@ -13,6 +15,7 @@ import ru.kuznetsov.bikeService.repositories.VerificationTokenRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
 import java.util.List;
+import java.util.UUID;
 
 import static ru.kuznetsov.bikeService.models.users.Provider.LOCAL;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
@@ -22,10 +25,12 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 public class UserService extends AbstractService<UserModel, UserRepository> {
     private final PasswordEncoder passwordEncoder;
     private VerificationTokenRepository tokenRepository;
+    private final JavaMailSender mailSender;
 
-    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
         super(repository);
         this.passwordEncoder = passwordEncoder;
+        this.mailSender = mailSender;
     }
 
     /**
@@ -143,7 +148,6 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         repository.save(oldItem);
     }
 
-
     public UserModel registerNewUserAccount(UserModel userModel) throws RuntimeException {
         if (emailExist(userModel.getEmail())) {
             throw new RuntimeException(
@@ -157,7 +161,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         return repository.findByEmail(email) != null;
     }
 
-    public UserModel getUser(String verificationToken) {
+    public UserModel findByToken(String verificationToken) {
         return tokenRepository.findByToken(verificationToken).getUser();
     }
 
@@ -172,6 +176,41 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     public void createVerificationToken(UserModel user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
+    }
+
+    public VerificationToken generateNewVerificationToken(String existingToken){
+        VerificationToken token = tokenRepository.findByToken(existingToken);
+        token.updateToken();
+        tokenRepository.save(token);
+        return token;
+    }
+
+    public void constructSendVerificationEmail(UserModel user, String contextPath){
+        String token = UUID.randomUUID().toString();
+        this.createVerificationToken(user, token);
+
+        String confirmationUrl = "/registrationConfirm?token=" + token;
+        String message = "Для окончания регистрации пройдите по следующей ссылке:";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setFrom("yourbikeservice.verification@yandex.ru");
+        email.setSubject("Подтверждение регистрации на yourbikeservice.");
+        email.setText(message + "\r\n" + contextPath + confirmationUrl);
+        mailSender.send(email);
+    }
+
+    public void constructResendVerificationTokenEmail
+            (UserModel user, VerificationToken newToken, String contextPath) {
+        String confirmationUrl ="/registrationConfirm?token=" + newToken.getToken();
+        String message = "Для регистрации пройдите по следующей ссылке:";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setFrom("yourbikeservice.verification@yandex.ru");
+        email.setSubject("Resend Registration Token");
+        email.setText(message + "\r\n" + contextPath + confirmationUrl);
+        mailSender.send(email);
     }
 
     @Autowired

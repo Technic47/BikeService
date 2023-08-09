@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ import static ru.kuznetsov.bikeService.TestCredentials.TEST_NAME;
 class CustomUserDetailsServiceTest {
     private CustomUserDetailsService detailsService;
     private UserService userService;
+    private JavaMailSender mailSender;
     @MockBean
     private PasswordEncoder passwordEncoder;
     @MockBean
@@ -28,7 +30,7 @@ class CustomUserDetailsServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.userService = new UserService(userRepository, passwordEncoder);
+        this.userService = new UserService(userRepository, passwordEncoder, mailSender);
         this.detailsService = new CustomUserDetailsService(userService);
     }
 

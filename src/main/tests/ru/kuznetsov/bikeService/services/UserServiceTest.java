@@ -3,6 +3,7 @@ package ru.kuznetsov.bikeService.services;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -29,11 +30,12 @@ class UserServiceTest {
     private UserRepository repository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private JavaMailSender mailSender;
     private UserModel userModel;
 
     @BeforeEach
     void setUp() {
-        this.userService = new UserService(repository, passwordEncoder);
+        this.userService = new UserService(repository, passwordEncoder, mailSender);
         userModel = TEST_USER;
         List<UserEntity> itemList = new ArrayList<>();
         itemList.add(new UserEntity("Test1", 1L));

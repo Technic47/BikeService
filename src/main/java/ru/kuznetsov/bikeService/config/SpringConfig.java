@@ -4,12 +4,10 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -34,10 +32,11 @@ import java.util.concurrent.Executors;
 @EnableMethodSecurity(securedEnabled = true)
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
-    private final ApplicationContext applicationContext;
+//    private final ApplicationContext applicationContext;
     public static String UPLOAD_PATH;
     public static String ADMIN_NAME;
     public static String ADMIN_PASS;
+    public static String BACK_LINK;
     @Value("${upload.path}")
     private String path;
     @Value("${admin.name}")
@@ -56,18 +55,21 @@ public class SpringConfig implements WebMvcConfigurer {
     private int httpPort;
     @Value("${server.port}")
     private int httpsPort;
+    @Value("${return.link}")
+    private String backLink;
 
     @Value("${upload.path}")
     private void setUploadPath() {
         UPLOAD_PATH = this.path;
         ADMIN_NAME = adminName;
         ADMIN_PASS = adminPass;
+        BACK_LINK = backLink;
     }
 
-    @Autowired
-    public SpringConfig(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+//    @Autowired
+//    public SpringConfig(ApplicationContext applicationContext) {
+//        this.applicationContext = applicationContext;
+//    }
 
     @Bean
     public DataSource dataSource() {
@@ -136,6 +138,7 @@ public class SpringConfig implements WebMvcConfigurer {
         return connector;
     }
 
+    //email sender setUp
     @Bean
     public JavaMailSenderImpl getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
