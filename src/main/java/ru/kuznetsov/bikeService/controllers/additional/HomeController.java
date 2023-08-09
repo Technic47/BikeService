@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
-import ru.kuznetsov.bikeService.models.security.GenericResponse;
 import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -36,31 +36,10 @@ public class HomeController extends AbstractController {
         return "home";
     }
 
-//    @GetMapping("/login")
-//    public String login(Model model, Principal principal) {
-//        UserModel userModel = this.getUserModelFromPrincipal(principal);
-//        this.addUserToModel(model, principal);
-//        logger.info(userModel.getName() + " logged in");
-//        return "title";
-//    }
-
     @GetMapping("/login")
     public String login() {
         return "login";
     }
-
-//    @PostMapping("/login")
-//    public String postLogin(@RequestParam(value = "login") String login,
-//                            @RequestParam(value = "password") String password) {
-//
-//
-//        return "title";
-//    }
-//
-//    @GetMapping("/performLogin")
-//    public String performLogin(){
-//        return "title";
-//    }
 
     @GetMapping("/successLogin")
     public String confirmLogin(Model model, Principal principal) {
@@ -77,24 +56,21 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(Model model) {
+        model.addAttribute("user", new UserModel());
         return "registration";
     }
 
-//    @PostMapping("/registration")
-//    public String createUser(UserModel user, Model model) {
-//        if (!userService.createUser(user)) {
-//            model.addAttribute("message", "Имя '" + user.getUsername() + "' уже занято!");
-//            return "/registration";
-//        }
-//        userService.createUser(user);
-//        logger.debug(user.getUsername() + " " + user.getAuthorities() + " registered");
-//        return "redirect:/login";
-//    }
 
     @PostMapping("/registration")
     public String registerUserAccount(@Valid UserModel userModel,
-                                      HttpServletRequest request) {
+                                      BindingResult bindingResult,
+                                      HttpServletRequest request,
+                                      Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(userModel);
+            return "registration";
+        }
         try {
             UserModel registered = userService.registerNewUserAccount(userModel);
 
@@ -102,11 +78,16 @@ public class HomeController extends AbstractController {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
                     request.getLocale(), appUrl));
         } catch (RuntimeException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+            model.addAttribute("user", userModel);
+            model.addAttribute("message", ex.getMessage());
+            return "registration";
         }
 
-        return "redirect:/title";
+        String message = "На почту " + userModel.getEmail() + " отправлено сообщение с кодом активации.";
+        model.addAttribute("user", userModel);
+        model.addAttribute("regMessage", message);
+        model.addAttribute("regStart", true);
+        return "registration";
     }
 
     @GetMapping("/info")
@@ -142,9 +123,10 @@ public class HomeController extends AbstractController {
     }
 
     @GetMapping("/resendRegistrationToken")
-    public GenericResponse resendRegistrationToken(HttpServletRequest request,
-                                                   @RequestParam("token") String existingToken) {
-        VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
+    public String resendRegistrationToken(HttpServletRequest request,
+                                          UserModel userModel,
+                                          Model model) {
+        VerificationToken newToken = userService.generateNewVerificationToken(userModel);
 
         UserModel user = userService.findByToken(newToken.getToken());
         String appUrl =
@@ -152,8 +134,8 @@ public class HomeController extends AbstractController {
                         ":" + request.getServerPort() +
                         request.getContextPath();
         userService.constructResendVerificationTokenEmail(user, newToken, appUrl);
-
-        return new GenericResponse("message.resendToken");
+        model.addAttribute("user", user);
+        return "registration";
     }
 
     @Autowired

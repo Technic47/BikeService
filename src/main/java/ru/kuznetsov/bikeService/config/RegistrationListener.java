@@ -14,30 +14,15 @@ import static ru.kuznetsov.bikeService.config.SpringConfig.BACK_LINK;
 public class RegistrationListener implements
         ApplicationListener<OnRegistrationCompleteEvent> {
     private final UserService service;
-//    private final JavaMailSender mailSender;
 
     @Autowired
     public RegistrationListener(UserService service, JavaMailSender mailSender) {
         this.service = service;
-//        this.mailSender = mailSender;
     }
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         UserModel user = event.getUser();
-//        String token = UUID.randomUUID().toString();
-//        service.createVerificationToken(user, token);
-//
-//        String confirmationUrl = event.getAppUrl() + "/registrationConfirm?token=" + token;
-//        String message = "Для окончания регистрации пройдите по следующей ссылке:";
-//
-//        SimpleMailMessage email = new SimpleMailMessage();
-//        email.setTo(user.getEmail());
-//        email.setFrom("yourbikeservice.verification@yandex.ru");
-//        email.setSubject("Подтверждение регистрации на yourbikeservice.");
-//        email.setText(message + "\r\n" + BACK_LINK + confirmationUrl);
-//        mailSender.send(email);
-
         service.constructSendVerificationEmail(user, BACK_LINK);
     }
 }

@@ -23,8 +23,8 @@
                 <div class="col-1-1">
                     <form class="container-form" method="post"
                           th:action="@{/login}">
-                    <span style="color: red" th:if="${param.error != null}"
-                          th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</span>
+                        <span style="color: red" th:if="${param.error != null}"
+                              th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</span>
                         <br/>
                         <label for="name">Введите почту</label>
                         <br/>

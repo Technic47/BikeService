@@ -13,30 +13,61 @@
     </nav>
 </header>
 <div class="main">
-    <div class="container">
-        <div class="col-1-1">
-            <p th:if="${message}"
-                 th:text="${message}">
-            </p>
-            <form method="post" th:action="@{/registration}">
-                <h3>
-                    Логин :
-                </h3>
-                <label> <input name="username" type="text"/> </label>
-                <h3>
-                    Email :
-                </h3>
-                <label> <input name="email" type="text"/> </label>
-                <h3>
-                    Пароль:
-                </h3>
-                <label> <input name="password" type="password"/> </label>
-                <br/>
-                <br/>
-                <input type="submit" value="Sign In"/>
-                <br/>
-                <br/>
-            </form>
+    <div class="main-home">
+        <div class="container-base">
+            <div class="container-home">
+                <div class="col-1-1">
+                    <p style="color: red" th:if="${message}"
+                       th:text="${message}">
+                    </p>
+                </div>
+                <div class="col-1-1">
+                    <form class="container-form" th:action="@{/registration}" th:method="post" th:object="${user}">
+                        <label for="username">Логин:</label>
+                        <br/>
+                        <input id="username" required th:field="*{username}" type="text"/>
+                        <span style="color:red" th:errors="*{username}"
+                              th:if="${#fields.hasErrors('username')}"></span>
+                        <br/>
+                        <label for="email">Почта:</label>
+                        <br/>
+                        <input id="email" required th:field="*{email}" type="text"/>
+                        <span style="color:red" th:errors="*{email}"
+                              th:if="${#fields.hasErrors('email')}"></span>
+                        <br/>
+                        <label for="password">Пароль:</label>
+                        <br/>
+                        <input id="password" required th:field="*{password}" type="password"/>
+                        <span style="color:red" th:errors="*{password}"
+                              th:if="${#fields.hasErrors('password')}"></span>
+                        <br/>
+                        <br/>
+                        <button type="submit">Отправить данные</button>
+                        <br/>
+                        <br/>
+                    </form>
+                </div>
+                <div class="col-1-1">
+                    <script>
+                        const btn = document.getElementById("send-btn")
+
+                        function myFunction() {
+                            btn.disabled = true;
+                            setTimeout(() => {
+                                btn.disabled = false;
+                                console.log('Button Activated')
+                            }, 5000)
+                        }
+                    </script>
+
+                    <form class="container-form" th:action="@{/resendRegistrationToken}" th:if="${regStart}"
+                          th:method="get" th:object="${user}">
+                        <span th:text="${regMessage}"></span>
+                        <br/>
+                        <button class="send-btn" onclick="myFunction()" type="submit">Отправить письмо ещё раз.</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

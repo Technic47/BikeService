@@ -151,7 +151,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     public UserModel registerNewUserAccount(UserModel userModel) throws RuntimeException {
         if (emailExist(userModel.getEmail())) {
             throw new RuntimeException(
-                    "There is an account with that email address: "
+                    "В системе уже существует аккаунт с почтой: "
                             + userModel.getEmail());
         }
         return this.constructRecordAndSave(userModel, ROLE_USER);
@@ -178,8 +178,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         tokenRepository.save(myToken);
     }
 
-    public VerificationToken generateNewVerificationToken(String existingToken){
-        VerificationToken token = tokenRepository.findByToken(existingToken);
+    public VerificationToken generateNewVerificationToken(UserModel userModel){
+        VerificationToken token = tokenRepository.findByUser(userModel);
         token.updateToken();
         tokenRepository.save(token);
         return token;

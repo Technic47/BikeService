@@ -44,7 +44,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**", "/registrationConfirm").permitAll();
+                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**", "/registrationConfirm", "/resendRegistrationToken").permitAll();
                     auth.requestMatchers("/**").authenticated();
                     auth.requestMatchers("/login").anonymous();
                 })
