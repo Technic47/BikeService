@@ -35,11 +35,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             UserModel user = userService.findByEmail(userEmail);
             if (user == null) {
                 throw new UsernameNotFoundException(
-                        "Не найден пользователь: " + userEmail);
+                        "User not found: " + userEmail);
             }
             boolean enabled = user.isEnabled();
             if (!enabled) {
-                throw new RuntimeException("Не выполнена активация пользователя: " + userEmail);
+                throw new RuntimeException("User is disabled: " + userEmail);
             }
             return user;
         } catch (Exception e) {

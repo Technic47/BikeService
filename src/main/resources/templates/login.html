@@ -8,38 +8,37 @@
 </head>
 <body>
 <div class="main">
-    <div class="container-base">
-        <div class="container">
-            <div class="col-1-1">
-                <h2>Пожалуйста, войдите в систему</h2>
-                <br/>
-            </div>
-            <div class="col-1-1">
-                <h4><a th:href="@{/oauth2/authorization/google}">Используя Google</a></h4>
-                <br/>
-                <h5>Или</h5>
-            </div>
-            <div class="col-1-1">
-                <form class="container-form" method="post"
-                      th:action="@{/login}">
-                    <div th:if="${message}" th:text="${message}">
-                    </div>
-                    <label class="alert alert-error" th:if="${param.error}">
-                        Неправильные имя и пароль.
-                    </label>
+    <div class="main-home">
+        <div class="container-base">
+            <div class="container-home">
+                <div class="col-1-1">
+                    <h2>Пожалуйста, войдите в систему</h2>
                     <br/>
-                    <label for="name">Введите почту</label>
+                </div>
+                <div class="col-1-1">
+                    <h4><a th:href="@{/oauth2/authorization/google}">используя Google</a></h4>
                     <br/>
-                    <input id="name" placeholder="Name" required th:name="username" type="text"/>
-                    <br/>
-                    <br/>
-                    <label for="pass">Введите Пароль</label>
-                    <br/>
-                    <input id="pass" placeholder="Password" required th:name="password" type="password"/>
-                    <br/>
-                    <br/>
-                    <button class="btn btn-primary" type="submit" value="Login">Войти</button>
-                </form>
+                    <h5>или</h5>
+                </div>
+                <div class="col-1-1">
+                    <form class="container-form" method="post"
+                          th:action="@{/login}">
+                    <span style="color: red" th:if="${param.error != null}"
+                          th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</span>
+                        <br/>
+                        <label for="name">Введите почту</label>
+                        <br/>
+                        <input id="name" placeholder="Name" required th:name="username" type="text"/>
+                        <br/>
+                        <br/>
+                        <label for="pass">Введите Пароль</label>
+                        <br/>
+                        <input id="pass" placeholder="Password" required th:name="password" type="password"/>
+                        <br/>
+                        <br/>
+                        <button class="btn btn-primary" type="submit" value="Login">Войти</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

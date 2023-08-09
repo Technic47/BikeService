@@ -9,20 +9,20 @@
 </head>
 <body>
 <div class="main">
-    <div class="container-base">
-        <div class="container">
-            <div class="col-1-1">
+    <div class="main-home">
+        <div class="container-base">
+            <div class="container-home">
                 <h2>Добро пожаловать!</h2>
                 <p>Если у вас уже есть аккаунт:</p>
                 <form sec:authorize="isAuthenticated()" th:action="@{/title}" th:method="GET">
-                    <input type="submit" value="На главную">
+                    <button type="submit">На главную</button>
                 </form>
                 <form sec:authorize="!isAuthenticated()" th:action="@{/login}" th:method="GET">
-                    <input type="submit" value="LogIn">
+                    <button type="submit">LogIn</button>
                 </form>
                 <p>Если вы новенький, то создайте аккаунт:</p>
                 <form th:action="@{/registration}" th:method="GET">
-                    <input type="submit" value="Create account">
+                    <button type="submit">Создать аккаунт</button>
                 </form>
             </div>
         </div>

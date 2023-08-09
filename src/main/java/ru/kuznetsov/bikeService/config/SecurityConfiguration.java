@@ -10,7 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import ru.kuznetsov.bikeService.exceptionHandlers.CustomAuthenticationFailureHandler;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.CustomOAuth2UserService;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
@@ -51,6 +53,7 @@ public class SecurityConfiguration {
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/title")
                 .failureUrl("/login?error")
+                .failureHandler(authenticationFailureHandler())
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
@@ -73,5 +76,10 @@ public class SecurityConfiguration {
             throws Exception {
         auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 }
