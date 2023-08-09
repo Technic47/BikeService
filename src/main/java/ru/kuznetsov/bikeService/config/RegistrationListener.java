@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -16,7 +15,7 @@ public class RegistrationListener implements
     private final UserService service;
 
     @Autowired
-    public RegistrationListener(UserService service, JavaMailSender mailSender) {
+    public RegistrationListener(UserService service) {
         this.service = service;
     }
 

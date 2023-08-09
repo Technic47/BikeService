@@ -19,6 +19,8 @@ import ru.kuznetsov.bikeService.models.users.UserModel;
 import java.security.Principal;
 import java.util.Calendar;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.BACK_LINK;
+
 
 @Controller
 @RequestMapping("/")
@@ -98,7 +100,7 @@ public class HomeController extends AbstractController {
 
     @GetMapping("/registrationConfirm")
     public String confirmRegistration
-            (Model model, @RequestParam("token") String token) {
+            (Model model, @RequestParam(value = "token") String token) {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
@@ -124,16 +126,16 @@ public class HomeController extends AbstractController {
 
     @GetMapping("/resendRegistrationToken")
     public String resendRegistrationToken(HttpServletRequest request,
-                                          UserModel userModel,
+                                          @RequestParam(value = "email") String email,
                                           Model model) {
-        VerificationToken newToken = userService.generateNewVerificationToken(userModel);
+        VerificationToken newToken = userService.generateNewVerificationToken(email);
 
         UserModel user = userService.findByToken(newToken.getToken());
-        String appUrl =
-                "http://" + request.getServerName() +
-                        ":" + request.getServerPort() +
-                        request.getContextPath();
-        userService.constructResendVerificationTokenEmail(user, newToken, appUrl);
+//        String appUrl =
+//                "http://" + request.getServerName() +
+//                        ":" + request.getServerPort() +
+//                        request.getContextPath();
+        userService.constructResendVerificationTokenEmail(user, newToken, BACK_LINK);
         model.addAttribute("user", user);
         return "registration";
     }

@@ -178,11 +178,11 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         tokenRepository.save(myToken);
     }
 
-    public VerificationToken generateNewVerificationToken(UserModel userModel){
-        VerificationToken token = tokenRepository.findByUser(userModel);
+    public VerificationToken generateNewVerificationToken(String email){
+        UserModel model = this.findByEmail(email);
+        VerificationToken token = tokenRepository.findByUser(model);
         token.updateToken();
-        tokenRepository.save(token);
-        return token;
+        return tokenRepository.save(token);
     }
 
     public void constructSendVerificationEmail(UserModel user, String contextPath){
@@ -214,7 +214,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
     @Autowired
-    public void setTokenRepository(VerificationTokenRepository tokenRepository) {
+    private void setTokenRepository(VerificationTokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
     }
 }

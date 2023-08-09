@@ -31,7 +31,7 @@
                         <br/>
                         <label for="email">Почта:</label>
                         <br/>
-                        <input id="email" required th:field="*{email}" type="text"/>
+                        <input id="email" required th:field="*{email}" type="email"/>
                         <span style="color:red" th:errors="*{email}"
                               th:if="${#fields.hasErrors('email')}"></span>
                         <br/>
@@ -59,13 +59,20 @@
                             }, 5000)
                         }
                     </script>
-
-                    <form class="container-form" th:action="@{/resendRegistrationToken}" th:if="${regStart}"
-                          th:method="get" th:object="${user}">
-                        <span th:text="${regMessage}"></span>
-                        <br/>
-                        <button class="send-btn" onclick="myFunction()" type="submit">Отправить письмо ещё раз.</button>
-                    </form>
+                    <div class="form-popup" id="myForm">
+                        <form class="container-form" th:action="@{/resendRegistrationToken}" th:if="${regStart}"
+                              th:method="get" th:object="${user}">
+                            <span th:text="${regMessage}"></span>
+                            <br/>
+                            <label for="resentEmail">Почта:</label>
+                            <br/>
+                            <input id="resentEmail" required th:name="email" type="email"/>
+                            <br/>
+                            <br/>
+                            <button class="send-btn" onclick="myFunction()" type="submit">Отправить письмо ещё раз.
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

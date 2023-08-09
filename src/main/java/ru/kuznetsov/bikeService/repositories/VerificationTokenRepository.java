@@ -8,6 +8,5 @@ import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 @Repository
 public interface VerificationTokenRepository extends CommonRepository<VerificationToken> {
     VerificationToken findByToken(String token);
-
     VerificationToken findByUser(UserModel user);
 }
