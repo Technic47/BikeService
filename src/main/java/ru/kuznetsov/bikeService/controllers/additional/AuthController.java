@@ -109,12 +109,12 @@ public class AuthController extends AbstractController {
         if (userModel == null) {
             String message = "Не найден пользователь с логином: " + login;
             model.addAttribute("regMessage", message);
-            return "/login";
+            return "login";
         } else {
             if (userModel.getEmail() != null) {
                 String message = "У пользователя с логином " + login + " уже задана почта!";
                 model.addAttribute("regMessage", message);
-                return "/login";
+                return "login";
             }
             userModel.setEmail(email);
             userService.save(userModel);
@@ -123,7 +123,7 @@ public class AuthController extends AbstractController {
             String message = "Письмо отправлено на адрес: " + email;
             model.addAttribute("regMessage", message);
         }
-        return "/login";
+        return "login";
     }
 
     @GetMapping("/registrationConfirm")
