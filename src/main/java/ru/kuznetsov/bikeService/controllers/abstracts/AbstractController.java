@@ -31,10 +31,11 @@ public abstract class AbstractController {
         String userName;
         if (principal instanceof UsernamePasswordAuthenticationToken) {
             userName = principal.getName();
+            return this.userService.findByUsernameOrNull(userName);
         } else if (principal instanceof OAuth2AuthenticationToken) {
             userName = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
-        } else userName = null;
-        return this.userService.findByUsernameOrNull(userName);
+            return this.userService.findByEmailOrNull(userName);
+        } else return null;
     }
 
     protected void addUserToModel(Model model, Principal principal) {

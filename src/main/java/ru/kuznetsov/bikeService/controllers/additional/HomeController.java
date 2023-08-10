@@ -16,10 +16,9 @@ import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.EmailService;
-import ru.kuznetsov.bikeService.services.modelServices.VerificationTokenService;
+import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
 import java.security.Principal;
-import java.util.Calendar;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.BACK_LINK;
 
@@ -50,7 +49,7 @@ public class HomeController extends AbstractController {
     public String confirmLogin(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         this.addUserToModel(model, principal);
-        logger.info(userModel.getAttribute("email") + " logged in");
+        logger.info(userModel.getEmail() + " logged in");
         return "title";
     }
 
@@ -104,26 +103,11 @@ public class HomeController extends AbstractController {
     @GetMapping("/registrationConfirm")
     public String confirmRegistration
             (Model model, @RequestParam(value = "token") String token) {
-
-        VerificationToken verificationToken = tokenService.findByTokenString(token);
-        if (verificationToken == null) {
-            String message = "invalidToken";
-            model.addAttribute("message", message);
-            return "redirect:/regError";
-        }
-
-        UserModel user = verificationToken.getUser();
-        Calendar cal = Calendar.getInstance();
-        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            String messageValue = "token expired";
-            model.addAttribute("expired", true);
-            model.addAttribute("token", token);
-            model.addAttribute("message", messageValue);
-            return "redirect:/regError";
-        }
-
-        user.setEnabled(true);
-        userService.save(user);
+            VerificationToken verificationToken = tokenService.findAndCheckToken(token);
+            UserModel user = verificationToken.getUser();
+            user.setEnabled(true);
+            userService.save(user);
+            model.addAttribute("user", user);
         return "redirect:/login";
     }
 

@@ -28,6 +28,10 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             errorMessage = "Аккаунт пользователя просрочен.";
         } else if (exception.getMessage().contains("User not found")) {
             errorMessage = "Аккаунт пользователя не найден.";
+        } else if (exception.getMessage().contains("Token not found")) {
+            errorMessage = "Токен не найден.";
+        } else if (exception.getMessage().contains("Token expired")) {
+            errorMessage = "Токен просрочен.";
         }
 
         request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);

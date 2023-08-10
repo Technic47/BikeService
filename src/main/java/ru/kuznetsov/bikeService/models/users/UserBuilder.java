@@ -59,6 +59,11 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder setEnabled(boolean state){
+        this.user.setEnabled(true);
+        return this;
+    }
+
     public UserBuilder setProvider(Provider provider){
         this.user.setProvider(provider);
         return this;

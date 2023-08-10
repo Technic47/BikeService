@@ -1,10 +1,14 @@
-package ru.kuznetsov.bikeService.services.modelServices;
+package ru.kuznetsov.bikeService.services;
 
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.repositories.VerificationTokenRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
+
+import java.util.Calendar;
 
 @Service
 public class VerificationTokenService extends AbstractService<VerificationToken, VerificationTokenRepository> {
@@ -39,5 +43,23 @@ public class VerificationTokenService extends AbstractService<VerificationToken,
         VerificationToken token = repository.findByUser(userModel);
         token.updateToken();
         return repository.save(token);
+    }
+
+    /**
+     * Check existence and validity of the token
+     * @param token token to check
+     * @return valid token
+     * @throws RuntimeException
+     */
+    public VerificationToken findAndCheckToken(String token) throws RuntimeException{
+        VerificationToken verificationToken = this.findByTokenString(token);
+        if (verificationToken == null) {
+            throw new AuthenticationServiceException("Token not found");
+        }
+        Calendar cal = Calendar.getInstance();
+        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            throw new AccountExpiredException("Token expired");
+        }
+        return verificationToken;
     }
 }

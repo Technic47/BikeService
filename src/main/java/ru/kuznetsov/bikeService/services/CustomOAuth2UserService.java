@@ -24,13 +24,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     public void processOAuthPostLogin(UserModel oAuth2User) {
-        String username = oAuth2User.getEmail();
-        UserModel existUser = userRepository.findByUsername(username);
+        String oAuth2UserEmail = oAuth2User.getEmail();
+        UserModel existUser = userRepository.findByEmail(oAuth2UserEmail);
 
         if (existUser == null) {
             UserBuilder builder = new UserBuilder(oAuth2User);
-            builder.setName(username).setEmail(username).addRole(UserRole.ROLE_USER)
-                    .setProvider(GOOGLE).setActive(true);
+            builder.setName(oAuth2UserEmail).setEmail(oAuth2UserEmail).addRole(UserRole.ROLE_USER)
+                    .setProvider(GOOGLE).setActive(true).setEnabled(true);
 
             userRepository.save(builder.build());
         }
