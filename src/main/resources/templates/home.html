@@ -5,28 +5,30 @@
     <meta charset="UTF-8"/>
     <title>Welcome!</title>
     <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/login-main.css" rel="stylesheet"/>
     <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/container-home.css" rel="stylesheet"/>
 </head>
 <body>
-<div class="main">
-    <div class="main-home">
-        <div class="container-base">
-            <div class="container-home">
-                <h2>Добро пожаловать!</h2>
-                <p>Если у вас уже есть аккаунт:</p>
-                <form sec:authorize="isAuthenticated()" th:action="@{/title}" th:method="GET">
-                    <button type="submit">На главную</button>
-                </form>
-                <form sec:authorize="!isAuthenticated()" th:action="@{/login}" th:method="GET">
-                    <button type="submit">LogIn</button>
-                </form>
-                <p>Если вы новенький, то создайте аккаунт:</p>
-                <form th:action="@{/registration}" th:method="GET">
-                    <button type="submit">Создать аккаунт</button>
-                </form>
-            </div>
+
+<div class="login-main">
+    <div class="container-base">
+        <div class="container-home">
+            <h2>Добро пожаловать!</h2>
+            <p>Если у вас уже есть аккаунт:</p>
+            <form sec:authorize="isAuthenticated()" th:action="@{/title}" th:method="GET">
+                <button type="submit">На главную</button>
+            </form>
+            <form sec:authorize="!isAuthenticated()" th:action="@{/login}" th:method="GET">
+                <button type="submit">LogIn</button>
+            </form>
+            <p>Если вы новенький, то создайте аккаунт:</p>
+            <form th:action="@{/registration}" th:method="GET">
+                <button type="submit">Создать аккаунт</button>
+            </form>
         </div>
     </div>
 </div>
+
 </body>
 </html>

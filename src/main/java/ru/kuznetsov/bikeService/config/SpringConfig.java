@@ -32,7 +32,6 @@ import java.util.concurrent.Executors;
 @EnableMethodSecurity(securedEnabled = true)
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
-//    private final ApplicationContext applicationContext;
     public static String UPLOAD_PATH;
     public static String ADMIN_NAME;
     public static String ADMIN_PASS;
@@ -65,11 +64,6 @@ public class SpringConfig implements WebMvcConfigurer {
         ADMIN_PASS = adminPass;
         BACK_LINK = backLink;
     }
-
-//    @Autowired
-//    public SpringConfig(ApplicationContext applicationContext) {
-//        this.applicationContext = applicationContext;
-//    }
 
     @Bean
     public DataSource dataSource() {

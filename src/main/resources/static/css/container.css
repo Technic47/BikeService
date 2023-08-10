@@ -36,16 +36,6 @@
     text-align: center;
 }
 
-.container-home {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1%;
-    width: 100%;
-    height: 75%;
-    text-align: center;
-}
-
 .container-title-a {
     display: flex;
     justify-content: flex-start;
@@ -141,11 +131,6 @@
 
 .container-form {
     width: 100%;
-}
-
-.container-form button {
-    /*width: 80px;*/
-    /*height: 30px;*/
 }
 
 h1, h2, h3 {

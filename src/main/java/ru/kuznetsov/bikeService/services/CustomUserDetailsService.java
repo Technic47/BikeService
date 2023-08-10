@@ -57,6 +57,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         adminUser.setUsername(ADMIN_NAME);
         adminUser.setEmail(ADMIN_NAME);
         adminUser.setPassword(ADMIN_PASS);
+        adminUser.setEnabled(true);
         this.userService.createAdmin(adminUser);
         ADMIN_NAME = "***";
         ADMIN_PASS = "***";

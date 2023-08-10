@@ -18,7 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- Multithreading
-- make front better
+- resend token via login, not email.
 - oauth2 from VK
  */
