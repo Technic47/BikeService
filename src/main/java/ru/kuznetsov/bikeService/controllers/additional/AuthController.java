@@ -25,7 +25,7 @@ import static ru.kuznetsov.bikeService.config.SpringConfig.BACK_LINK;
 
 @Controller
 @RequestMapping("/")
-public class HomeController extends AbstractController {
+public class AuthController extends AbstractController {
     private ApplicationEventPublisher eventPublisher;
     private VerificationTokenService tokenService;
     private EmailService emailService;

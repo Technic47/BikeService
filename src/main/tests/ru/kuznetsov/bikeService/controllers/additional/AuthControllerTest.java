@@ -29,7 +29,7 @@ import static ru.kuznetsov.bikeService.TestCredentials.TEST_PASS;
 @TestPropertySource("/application-test.properties")
 @Sql(value = {"/SQL_scripts/create-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/SQL_scripts/clean-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class HomeControllerTest {
+class AuthControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
@@ -42,7 +42,7 @@ class HomeControllerTest {
 
         assertNotNull(servletContext);
         assertTrue(servletContext instanceof MockServletContext);
-        assertNotNull(webApplicationContext.getBean("homeController"));
+        assertNotNull(webApplicationContext.getBean("authController"));
     }
 
     @Test

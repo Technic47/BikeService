@@ -607,7 +607,7 @@ Caused by: org.postgresql.util.PSQLException: ОШИБКА: повторяюще
 2023-08-10T17:50:54.212+03:00 ERROR 13248 --- [https-jsse-nio-9443-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.users.UserModel.getAttribute(String)" because "userModel" is null] with root cause
 
 java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.users.UserModel.getAttribute(String)" because "userModel" is null
-	at ru.kuznetsov.bikeService.controllers.additional.HomeController.confirmLogin(HomeController.java:53) ~[classes/:na]
+	at ru.kuznetsov.bikeService.controllers.additional.AuthController.confirmLogin(HomeController.java:53) ~[classes/:na]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:578) ~[na:na]
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:207) ~[spring-web-6.0.9.jar:6.0.9]
@@ -696,7 +696,7 @@ java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.u
 2023-08-10T17:51:50.164+03:00 ERROR 13248 --- [https-jsse-nio-9443-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.users.UserModel.getAttribute(String)" because "userModel" is null] with root cause
 
 java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.users.UserModel.getAttribute(String)" because "userModel" is null
-	at ru.kuznetsov.bikeService.controllers.additional.HomeController.confirmLogin(HomeController.java:53) ~[classes/:na]
+	at ru.kuznetsov.bikeService.controllers.additional.AuthController.confirmLogin(HomeController.java:53) ~[classes/:na]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:578) ~[na:na]
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:207) ~[spring-web-6.0.9.jar:6.0.9]
@@ -785,7 +785,7 @@ java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.u
 2023-08-10T17:53:41.997+03:00 ERROR 13248 --- [https-jsse-nio-9443-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.users.UserModel.getAttribute(String)" because "userModel" is null] with root cause
 
 java.lang.NullPointerException: Cannot invoke "ru.kuznetsov.bikeService.models.users.UserModel.getAttribute(String)" because "userModel" is null
-	at ru.kuznetsov.bikeService.controllers.additional.HomeController.confirmLogin(HomeController.java:53) ~[classes/:na]
+	at ru.kuznetsov.bikeService.controllers.additional.AuthController.confirmLogin(HomeController.java:53) ~[classes/:na]
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:578) ~[na:na]
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:207) ~[spring-web-6.0.9.jar:6.0.9]
