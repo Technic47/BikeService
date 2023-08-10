@@ -1,27 +1,27 @@
-package ru.kuznetsov.bikeService.config;
+package ru.kuznetsov.bikeService.eventListeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.UserService;
+import ru.kuznetsov.bikeService.services.EmailService;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.BACK_LINK;
 
 @Component
 public class RegistrationListener implements
         ApplicationListener<OnRegistrationCompleteEvent> {
-    private final UserService service;
+    private final EmailService emailService;
 
     @Autowired
-    public RegistrationListener(UserService service) {
-        this.service = service;
+    public RegistrationListener(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         UserModel user = event.getUser();
-        service.constructSendVerificationEmail(user, BACK_LINK);
+        emailService.constructSendVerificationEmail(user, BACK_LINK);
     }
 }

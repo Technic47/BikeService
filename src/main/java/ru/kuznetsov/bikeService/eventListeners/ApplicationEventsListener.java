@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.config;
+package ru.kuznetsov.bikeService.eventListeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -10,12 +10,12 @@ import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
 @Component
-public class EventListeners {
+public class ApplicationEventsListener {
     private final PictureService pictureService;
     private final ManufacturerService manufacturerService;
 
     @Autowired
-    public EventListeners(PictureService pictureService, ManufacturerService manufacturerService) {
+    public ApplicationEventsListener(PictureService pictureService, ManufacturerService manufacturerService) {
         this.pictureService = pictureService;
         this.manufacturerService = manufacturerService;
     }

@@ -15,6 +15,8 @@ import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.EmailService;
+import ru.kuznetsov.bikeService.services.modelServices.VerificationTokenService;
 
 import java.security.Principal;
 import java.util.Calendar;
@@ -25,8 +27,9 @@ import static ru.kuznetsov.bikeService.config.SpringConfig.BACK_LINK;
 @Controller
 @RequestMapping("/")
 public class HomeController extends AbstractController {
-
     private ApplicationEventPublisher eventPublisher;
+    private VerificationTokenService tokenService;
+    private EmailService emailService;
 
     @GetMapping("/home")
     public String home() {
@@ -102,7 +105,7 @@ public class HomeController extends AbstractController {
     public String confirmRegistration
             (Model model, @RequestParam(value = "token") String token) {
 
-        VerificationToken verificationToken = userService.getVerificationToken(token);
+        VerificationToken verificationToken = tokenService.findByTokenString(token);
         if (verificationToken == null) {
             String message = "invalidToken";
             model.addAttribute("message", message);
@@ -120,28 +123,48 @@ public class HomeController extends AbstractController {
         }
 
         user.setEnabled(true);
-        userService.saveRegisteredUser(user);
+        userService.save(user);
         return "redirect:/login";
     }
 
     @GetMapping("/resendRegistrationToken")
     public String resendRegistrationToken(HttpServletRequest request,
                                           @RequestParam(value = "email") String email,
+                                          @RequestParam(value = "returnLink") String returnLink,
                                           Model model) {
-        VerificationToken newToken = userService.generateNewVerificationToken(email);
+        UserModel userModel = userService.findByEmailOrNull(email);
+        String message = "Повторное письмо отправлено!";
 
-        UserModel user = userService.findByToken(newToken.getToken());
+        if (userModel == null) {
+            message = "Проверьте правильность написания почты.";
+            model.addAttribute("user", new UserModel());
+        } else {
+            VerificationToken newToken = tokenService.updateVerificationToken(userModel);
+            UserModel user = tokenService.findUserByTokenString(newToken.getToken());
 //        String appUrl =
 //                "http://" + request.getServerName() +
 //                        ":" + request.getServerPort() +
 //                        request.getContextPath();
-        userService.constructResendVerificationTokenEmail(user, newToken, BACK_LINK);
-        model.addAttribute("user", user);
-        return "registration";
+            emailService.constructResendVerificationTokenEmail(user, newToken, BACK_LINK);
+            model.addAttribute("user", user);
+        }
+
+        model.addAttribute("regMessage", message);
+        return returnLink;
     }
 
     @Autowired
-    public void setEventPublisher(ApplicationEventPublisher eventPublisher) {
+    private void setEventPublisher(ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
+    }
+
+    @Autowired
+    private void setTokenService(VerificationTokenService tokenService) {
+        this.tokenService = tokenService;
+    }
+
+    @Autowired
+    private void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 }

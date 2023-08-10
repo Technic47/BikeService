@@ -18,8 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- Resend verification link implementation
-- Email sending to multithreading
 - Multithreading
 - make front better
 - oauth2 from VK

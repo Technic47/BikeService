@@ -1,21 +1,15 @@
 package ru.kuznetsov.bikeService.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
-import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserBuilder;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
-import ru.kuznetsov.bikeService.repositories.VerificationTokenRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
 import java.util.List;
-import java.util.UUID;
 
 import static ru.kuznetsov.bikeService.models.users.Provider.LOCAL;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
@@ -24,13 +18,10 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 @Service
 public class UserService extends AbstractService<UserModel, UserRepository> {
     private final PasswordEncoder passwordEncoder;
-    private VerificationTokenRepository tokenRepository;
-    private final JavaMailSender mailSender;
 
-    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
         this.passwordEncoder = passwordEncoder;
-        this.mailSender = mailSender;
     }
 
     /**
@@ -53,7 +44,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     }
 
     private UserModel constructRecordAndSave(UserModel userModel, UserRole role) {
-        if (this.findByUsername(userModel.getUsername()) != null) {
+        if (this.findByUsernameOrNull(userModel.getUsername()) != null) {
             return null;
         }
         UserModel newUser = new UserBuilder(userModel.getName(), userModel.getEmail(), userModel.getPassword())
@@ -90,12 +81,16 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param username name for search.
      * @return UserModel wth record from DB.
      */
-    public UserModel findByUsername(String username) {
+    public UserModel findByUsernameOrNull(String username) {
         return repository.findByUsername(username);
     }
 
-    public UserModel findByEmail(String email) {
+    public UserModel findByEmailOrNull(String email) {
         return this.repository.findByEmail(email);
+    }
+
+    private boolean emailExist(String email) {
+        return repository.findByEmail(email) != null;
     }
 
     /**
@@ -155,66 +150,5 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
                             + userModel.getEmail());
         }
         return this.constructRecordAndSave(userModel, ROLE_USER);
-    }
-
-    private boolean emailExist(String email) {
-        return repository.findByEmail(email) != null;
-    }
-
-    public UserModel findByToken(String verificationToken) {
-        return tokenRepository.findByToken(verificationToken).getUser();
-    }
-
-    public VerificationToken getVerificationToken(String VerificationToken) {
-        return tokenRepository.findByToken(VerificationToken);
-    }
-
-    public void saveRegisteredUser(UserModel user) {
-        repository.save(user);
-    }
-
-    public void createVerificationToken(UserModel user, String token) {
-        VerificationToken myToken = new VerificationToken(token, user);
-        tokenRepository.save(myToken);
-    }
-
-    public VerificationToken generateNewVerificationToken(String email){
-        UserModel model = this.findByEmail(email);
-        VerificationToken token = tokenRepository.findByUser(model);
-        token.updateToken();
-        return tokenRepository.save(token);
-    }
-
-    public void constructSendVerificationEmail(UserModel user, String contextPath){
-        String token = UUID.randomUUID().toString();
-        this.createVerificationToken(user, token);
-
-        String confirmationUrl = "/registrationConfirm?token=" + token;
-        String message = "Для окончания регистрации пройдите по следующей ссылке:";
-
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(user.getEmail());
-        email.setFrom("yourbikeservice.verification@yandex.ru");
-        email.setSubject("Подтверждение регистрации на yourbikeservice.");
-        email.setText(message + "\r\n" + contextPath + confirmationUrl);
-        mailSender.send(email);
-    }
-
-    public void constructResendVerificationTokenEmail
-            (UserModel user, VerificationToken newToken, String contextPath) {
-        String confirmationUrl ="/registrationConfirm?token=" + newToken.getToken();
-        String message = "Для регистрации пройдите по следующей ссылке:";
-
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(user.getEmail());
-        email.setFrom("yourbikeservice.verification@yandex.ru");
-        email.setSubject("Resend Registration Token");
-        email.setText(message + "\r\n" + contextPath + confirmationUrl);
-        mailSender.send(email);
-    }
-
-    @Autowired
-    private void setTokenRepository(VerificationTokenRepository tokenRepository) {
-        this.tokenRepository = tokenRepository;
     }
 }

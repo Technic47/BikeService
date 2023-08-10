@@ -34,7 +34,7 @@ public abstract class AbstractController {
         } else if (principal instanceof OAuth2AuthenticationToken) {
             userName = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
         } else userName = null;
-        return this.userService.findByUsername(userName);
+        return this.userService.findByUsernameOrNull(userName);
     }
 
     protected void addUserToModel(Model model, Principal principal) {

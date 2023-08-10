@@ -48,6 +48,9 @@
                     </form>
                 </div>
                 <div class="col-1-1">
+                    <span th:text="${regMessage}"></span>
+                </div>
+                <div class="col-1-1">
                     <script>
                         const btn = document.getElementById("send-btn")
 
@@ -59,20 +62,26 @@
                             }, 5000)
                         }
                     </script>
-                    <div class="form-popup" id="myForm">
-                        <form class="container-form" th:action="@{/resendRegistrationToken}" th:if="${regStart}"
+                    <details th:if="${regStart}">
+                        <summary>
+                            Не пришло письмо с регистрацией?
+                        </summary>
+                        <form class="container-form" th:action="@{/resendRegistrationToken}"
                               th:method="get" th:object="${user}">
-                            <span th:text="${regMessage}"></span>
+
                             <br/>
                             <label for="resentEmail">Почта:</label>
                             <br/>
                             <input id="resentEmail" required th:name="email" type="email"/>
                             <br/>
                             <br/>
-                            <button class="send-btn" onclick="myFunction()" type="submit">Отправить письмо ещё раз.
+                            <button class="send-btn" onclick="myFunction()" th:name="returnLink"
+                                    th:value="registration"
+                                    type="submit">
+                                Отправить письмо ещё раз.
                             </button>
                         </form>
-                    </div>
+                    </details>
                 </div>
             </div>
         </div>
