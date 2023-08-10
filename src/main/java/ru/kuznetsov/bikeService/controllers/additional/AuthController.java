@@ -79,8 +79,7 @@ public class AuthController extends AbstractController {
             UserModel registered = userService.registerNewUserAccount(userModel);
 
             String appUrl = request.getContextPath();
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
-                    request.getLocale(), appUrl));
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, appUrl));
         } catch (RuntimeException ex) {
             model.addAttribute("user", userModel);
             model.addAttribute("message", ex.getMessage());
@@ -100,14 +99,41 @@ public class AuthController extends AbstractController {
         return "info";
     }
 
+    @PostMapping("/updateEmail")
+    public String updateEmail
+            (@RequestParam(value = "login") String login,
+             @RequestParam(value = "email") String email,
+             HttpServletRequest request,
+             Model model) {
+        UserModel userModel = userService.findByUsernameOrNull(login);
+        if (userModel == null) {
+            String message = "Не найден пользователь с логином: " + login;
+            model.addAttribute("regMessage", message);
+            return "/login";
+        } else {
+            if (userModel.getEmail() != null) {
+                String message = "У пользователя с логином " + login + " уже задана почта!";
+                model.addAttribute("regMessage", message);
+                return "/login";
+            }
+            userModel.setEmail(email);
+            userService.save(userModel);
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(userModel, appUrl));
+            String message = "Письмо отправлено на адрес: " + email;
+            model.addAttribute("regMessage", message);
+        }
+        return "/login";
+    }
+
     @GetMapping("/registrationConfirm")
     public String confirmRegistration
             (Model model, @RequestParam(value = "token") String token) {
-            VerificationToken verificationToken = tokenService.findAndCheckToken(token);
-            UserModel user = verificationToken.getUser();
-            user.setEnabled(true);
-            userService.save(user);
-            model.addAttribute("user", user);
+        VerificationToken verificationToken = tokenService.findAndCheckToken(token);
+        UserModel user = verificationToken.getUser();
+        user.setEnabled(true);
+        userService.save(user);
+        model.addAttribute("user", user);
         return "redirect:/login";
     }
 
