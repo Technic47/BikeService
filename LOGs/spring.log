@@ -316,3 +316,4 @@ jakarta.persistence.NonUniqueResultException: query did not return a unique resu
 2023-08-11T16:59:34.333+03:00  INFO 15076 --- [https-jsse-nio-9443-exec-8] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2023-08-11T16:59:34.334+03:00  INFO 15076 --- [https-jsse-nio-9443-exec-8] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-08-11T16:59:34.335+03:00  INFO 15076 --- [https-jsse-nio-9443-exec-8] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-08-11T17:08:20.735+03:00  INFO 15076 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'

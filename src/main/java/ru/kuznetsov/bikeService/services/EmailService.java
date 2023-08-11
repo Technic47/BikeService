@@ -54,30 +54,23 @@ public class EmailService {
             String confirmationUrl = "/registrationConfirm?token=" + token;
             String message = "Для окончания регистрации пройдите по следующей ссылке:";
 
-//            SimpleMailMessage email = new SimpleMailMessage();
-//            email.setTo(user.getEmail());
-//            email.setFrom("postmaster@sandbox5564fb0492284e5d93da11c3475e5238.mailgun.org");
-//            email.setSubject("Подтверждение регистрации на yourbikeservice.");
-//            email.setText(message + "\r\n" + contextPath + confirmationUrl);
-//            mailSender.send(email);
-            Message messageToSend = new MimeMessage(session);
+            Message email = new MimeMessage(session);
             try {
-                messageToSend.setFrom(new InternetAddress("postmaster@sandbox5564fb0492284e5d93da11c3475e5238.mailgun.org"));
+                email.setFrom(new InternetAddress("postmaster@sandbox5564fb0492284e5d93da11c3475e5238.mailgun.org"));
                 InternetAddress[] addrs = InternetAddress.parse(user.getEmail(), false);
-                messageToSend.setRecipients(Message.RecipientType.TO, addrs);
+                email.setRecipients(Message.RecipientType.TO, addrs);
 
-                messageToSend.setSubject("Подтверждение регистрации на yourbikeservice.");
-                messageToSend.setText(message + "\r\n" + contextPath + confirmationUrl);
-                messageToSend.setSentDate(new Date());
-
+                email.setSubject("Подтверждение регистрации на yourbikeservice.");
+                email.setText(message + "\r\n" + contextPath + confirmationUrl);
+                email.setSentDate(new Date());
                 SMTPTransport t =
                         (SMTPTransport) session.getTransport("smtps");
                 t.connect(smtpHost,
                         smtpUserName,
                         smtpUserPass);
-                t.sendMessage(messageToSend, messageToSend.getAllRecipients());
+                t.sendMessage(email, email.getAllRecipients());
 
-                System.out.println("Response: " + t.getLastServerResponse());
+//                System.out.println("Response: " + t.getLastServerResponse());
 
                 t.close();
             } catch (MessagingException e) {
@@ -98,31 +91,23 @@ public class EmailService {
             String confirmationUrl = "/registrationConfirm?token=" + newToken.getToken();
             String message = "Для регистрации пройдите по следующей ссылке:";
 
-//            SimpleMailMessage email = new SimpleMailMessage();
-//            email.setTo(user.getEmail());
-//            email.setFrom("yourbikeservice.verification@yandex.ru");
-//            email.setSubject("Resend Registration Token");
-//            email.setText(message + "\r\n" + contextPath + confirmationUrl);
-//            mailSender.send(email);
-
-            Message messageToSend = new MimeMessage(session);
+            Message email = new MimeMessage(session);
             try {
-                messageToSend.setFrom(new InternetAddress("postmaster@sandbox5564fb0492284e5d93da11c3475e5238.mailgun.org"));
+                email.setFrom(new InternetAddress("postmaster@sandbox5564fb0492284e5d93da11c3475e5238.mailgun.org"));
                 InternetAddress[] addrs = InternetAddress.parse(user.getEmail(), false);
-                messageToSend.setRecipients(Message.RecipientType.TO, addrs);
-
-                messageToSend.setSubject("Повторная отправка регистрации на yourbikeservice.");
-                messageToSend.setText(message + "\r\n" + contextPath + confirmationUrl);
-                messageToSend.setSentDate(new Date());
+                email.setRecipients(Message.RecipientType.TO, addrs);
+                email.setSubject("Повторная отправка регистрации на yourbikeservice.");
+                email.setText(message + "\r\n" + contextPath + confirmationUrl);
+                email.setSentDate(new Date());
 
                 SMTPTransport t =
                         (SMTPTransport) session.getTransport("smtps");
                 t.connect(smtpHost,
                         smtpUserName,
                         smtpUserPass);
-                t.sendMessage(messageToSend, messageToSend.getAllRecipients());
+                t.sendMessage(email, email.getAllRecipients());
 
-                System.out.println("Response: " + t.getLastServerResponse());
+//                System.out.println("Response: " + t.getLastServerResponse());
 
                 t.close();
             } catch (MessagingException e) {

@@ -43,3 +43,5 @@ src/main/resources/IMG/
 src/main/resources/static/siteIMG/big
 LOGS/
 scripts/
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
