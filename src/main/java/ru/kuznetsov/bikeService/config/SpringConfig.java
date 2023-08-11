@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.config;
 
+import jakarta.mail.Session;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -56,6 +57,15 @@ public class SpringConfig implements WebMvcConfigurer {
     private int httpsPort;
     @Value("${return.link}")
     private String backLink;
+    @Value("${smtp.mail.host}")
+    private String smtpHost;
+    @Value("${smtp.mail.port}")
+    private String smtpPort;
+    @Value("${smtp.mail.username}")
+    private String smtpUserName;
+    @Value("${smtp.mail.password}")
+    private String smtpUserPass;
+
 
     @Value("${upload.path}")
     private void setUploadPath() {
@@ -136,10 +146,10 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public JavaMailSenderImpl getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.yandex.ru");
-        mailSender.setPort(465);
-        mailSender.setUsername("yourbikeservice.verification");
-        mailSender.setPassword("vfujjjtknaxkpwbp");
+        mailSender.setHost(smtpHost);
+        mailSender.setPort(Integer.parseInt(smtpPort));
+        mailSender.setUsername(smtpUserName);
+        mailSender.setPassword(smtpUserPass);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.ssl.enable", "true");
@@ -148,5 +158,11 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
         return mailSender;
+    }
+
+    @Bean
+    public Session getSession(JavaMailSenderImpl mailSender){
+        Properties props = mailSender.getJavaMailProperties();
+        return Session.getInstance(props, null);
     }
 }
