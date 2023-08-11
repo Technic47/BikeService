@@ -151,7 +151,6 @@ public class SpringConfig implements WebMvcConfigurer {
         mailSender.setUsername(smtpUserName);
         mailSender.setPassword(smtpUserPass);
 
-
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.ssl.enable", "true");
         props.put("mail.transport.protocol", "smtp");
