@@ -55,7 +55,7 @@ public class EmailService {
 
             Message email = new MimeMessage(session);
             try {
-                email.setFrom(new InternetAddress("postmaster@sandbox5564fb0492284e5d93da11c3475e5238.mailgun.org"));
+                email.setFrom(new InternetAddress("yourbikeservice.verification@yandex.com"));
                 InternetAddress[] addrs = InternetAddress.parse(user.getEmail(), false);
                 email.setRecipients(Message.RecipientType.TO, addrs);
 
@@ -92,7 +92,7 @@ public class EmailService {
 
             Message email = new MimeMessage(session);
             try {
-                email.setFrom(new InternetAddress("postmaster@sandbox5564fb0492284e5d93da11c3475e5238.mailgun.org"));
+                email.setFrom(new InternetAddress("yourbikeservice.verification@yandex.com"));
                 InternetAddress[] addrs = InternetAddress.parse(user.getEmail(), false);
                 email.setRecipients(Message.RecipientType.TO, addrs);
                 email.setSubject("Повторная отправка регистрации на yourbikeservice.");
