@@ -23,7 +23,6 @@ public class EmailService {
     private final VerificationTokenService tokenService;
     private final ExecutorService mainExecutor;
     private final Session session;
-
     @Value("${smtp.mail.host}")
     private String smtpHost;
     @Value("${smtp.mail.port}")
