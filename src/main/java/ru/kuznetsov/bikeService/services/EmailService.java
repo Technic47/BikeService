@@ -1,42 +1,31 @@
 package ru.kuznetsov.bikeService.services;
 
-import com.sun.mail.smtp.SMTPTransport;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
-import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Service for sending verification emails.
+ */
 @Service
 public class EmailService {
     private final JavaMailSender mailSender;
     private final VerificationTokenService tokenService;
     private final ExecutorService mainExecutor;
-    private final Session session;
-    @Value("${smtp.mail.host}")
-    private String smtpHost;
-    @Value("${smtp.mail.port}")
-    private String smtpPort;
-    @Value("${smtp.mail.username}")
-    private String smtpUserName;
-    @Value("${smtp.mail.password}")
-    private String smtpUserPass;
+    @Value("${smtp.mail.fromWho}")
+    private String smtpFrom;
 
-    public EmailService(JavaMailSender mailSender, VerificationTokenService tokenService, @Qualifier("MainExecutor") ExecutorService mainExecutor, Session session) {
+    public EmailService(JavaMailSender mailSender, VerificationTokenService tokenService, @Qualifier("MainExecutor") ExecutorService mainExecutor) {
         this.mailSender = mailSender;
         this.tokenService = tokenService;
         this.mainExecutor = mainExecutor;
-        this.session = session;
     }
 
     /**
@@ -53,28 +42,12 @@ public class EmailService {
             String confirmationUrl = "/registrationConfirm?token=" + token;
             String message = "Для окончания регистрации пройдите по следующей ссылке:";
 
-            Message email = new MimeMessage(session);
-            try {
-                email.setFrom(new InternetAddress("yourbikeservice.verification@yandex.com"));
-                InternetAddress[] addrs = InternetAddress.parse(user.getEmail(), false);
-                email.setRecipients(Message.RecipientType.TO, addrs);
-
-                email.setSubject("Подтверждение регистрации на yourbikeservice.");
-                email.setText(message + "\r\n" + contextPath + confirmationUrl);
-                email.setSentDate(new Date());
-                SMTPTransport t =
-                        (SMTPTransport) session.getTransport("smtps");
-                t.connect(smtpHost,
-                        smtpUserName,
-                        smtpUserPass);
-                t.sendMessage(email, email.getAllRecipients());
-
-//                System.out.println("Response: " + t.getLastServerResponse());
-
-                t.close();
-            } catch (MessagingException e) {
-                throw new RuntimeException(e);
-            }
+            SimpleMailMessage email = new SimpleMailMessage();
+            email.setTo(user.getEmail());
+            email.setFrom(smtpFrom);
+            email.setSubject("Подтверждение регистрации на yourbikeservice.");
+            email.setText(message + "\r\n" + contextPath + confirmationUrl);
+            mailSender.send(email);
         };
         mainExecutor.submit(emailSend);
     }
@@ -83,6 +56,7 @@ public class EmailService {
      * Construct verification mail with updated token for existing user
      *
      * @param user        userModel for verification
+     * @param newToken    token for link
      * @param contextPath path for return link
      */
     public void constructResendVerificationTokenEmail(UserModel user, VerificationToken newToken, String contextPath) {
@@ -90,28 +64,12 @@ public class EmailService {
             String confirmationUrl = "/registrationConfirm?token=" + newToken.getToken();
             String message = "Для регистрации пройдите по следующей ссылке:";
 
-            Message email = new MimeMessage(session);
-            try {
-                email.setFrom(new InternetAddress("yourbikeservice.verification@yandex.com"));
-                InternetAddress[] addrs = InternetAddress.parse(user.getEmail(), false);
-                email.setRecipients(Message.RecipientType.TO, addrs);
-                email.setSubject("Повторная отправка регистрации на yourbikeservice.");
-                email.setText(message + "\r\n" + contextPath + confirmationUrl);
-                email.setSentDate(new Date());
-
-                SMTPTransport t =
-                        (SMTPTransport) session.getTransport("smtps");
-                t.connect(smtpHost,
-                        smtpUserName,
-                        smtpUserPass);
-                t.sendMessage(email, email.getAllRecipients());
-
-//                System.out.println("Response: " + t.getLastServerResponse());
-
-                t.close();
-            } catch (MessagingException e) {
-                throw new RuntimeException(e);
-            }
+            SimpleMailMessage email = new SimpleMailMessage();
+            email.setTo(user.getEmail());
+            email.setFrom(smtpFrom);
+            email.setSubject("Resend Registration Token");
+            email.setText(message + "\r\n" + contextPath + confirmationUrl);
+            mailSender.send(email);
         };
         mainExecutor.submit(emailSend);
     }

@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.config;
 
-import jakarta.mail.Session;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -14,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -57,13 +57,13 @@ public class SpringConfig implements WebMvcConfigurer {
     private int httpsPort;
     @Value("${return.link}")
     private String backLink;
-    @Value("${smtp.mail.host}")
+    @Value("${spring.mail.host}")
     private String smtpHost;
-    @Value("${smtp.mail.port}")
+    @Value("${spring.mail.port}")
     private String smtpPort;
-    @Value("${smtp.mail.username}")
+    @Value("${spring.mail.username}")
     private String smtpUserName;
-    @Value("${smtp.mail.password}")
+    @Value("${spring.mail.password}")
     private String smtpUserPass;
 
 
@@ -144,7 +144,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
     //email sender setUp
     @Bean
-    public JavaMailSenderImpl getJavaMailSender() {
+    public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(smtpHost);
         mailSender.setPort(Integer.parseInt(smtpPort));
@@ -158,11 +158,5 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
         return mailSender;
-    }
-
-    @Bean
-    public Session getSession(JavaMailSenderImpl mailSender){
-        Properties props = mailSender.getJavaMailProperties();
-        return Session.getInstance(props, null);
     }
 }
