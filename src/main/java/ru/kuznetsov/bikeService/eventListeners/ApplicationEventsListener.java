@@ -5,7 +5,10 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
+import ru.kuznetsov.bikeService.models.security.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
+import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.EmailService;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
@@ -13,11 +16,13 @@ import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 public class ApplicationEventsListener {
     private final PictureService pictureService;
     private final ManufacturerService manufacturerService;
+    private final EmailService emailService;
 
     @Autowired
-    public ApplicationEventsListener(PictureService pictureService, ManufacturerService manufacturerService) {
+    public ApplicationEventsListener(PictureService pictureService, ManufacturerService manufacturerService, EmailService emailService) {
         this.pictureService = pictureService;
         this.manufacturerService = manufacturerService;
+        this.emailService = emailService;
     }
 
     //Checking for default picture and manufacture in db.
@@ -43,6 +48,14 @@ public class ApplicationEventsListener {
             System.out.println("Default manufacture was empty. New one is created in DB");
         }
         System.out.println("Default manufacture is OK.");
+    }
+
+    //Registration of new user.
+    @EventListener(OnRegistrationCompleteEvent.class)
+    public void registration(OnRegistrationCompleteEvent event){
+        UserModel user = event.getUser();
+        String appUrl = event.getAppUrl();
+        emailService.constructSendVerificationEmail(user, appUrl);
     }
 }
 

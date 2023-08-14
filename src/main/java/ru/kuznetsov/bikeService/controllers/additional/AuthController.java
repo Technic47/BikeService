@@ -20,8 +20,6 @@ import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.config.SpringConfig.BACK_LINK;
-
 
 @Controller
 @RequestMapping("/")
@@ -77,8 +75,10 @@ public class AuthController extends AbstractController {
         }
         try {
             UserModel registered = userService.registerNewUserAccount(userModel);
-
-            String appUrl = request.getContextPath();
+            String appUrl =
+                    "https://" + request.getServerName() +
+                            ":" + request.getServerPort() +
+                            request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, appUrl));
         } catch (RuntimeException ex) {
             model.addAttribute("user", userModel);
@@ -151,11 +151,11 @@ public class AuthController extends AbstractController {
         } else {
             VerificationToken newToken = tokenService.updateVerificationToken(userModel);
             UserModel user = tokenService.findUserByTokenString(newToken.getToken());
-//        String appUrl =
-//                "http://" + request.getServerName() +
-//                        ":" + request.getServerPort() +
-//                        request.getContextPath();
-            emailService.constructResendVerificationTokenEmail(user, newToken, BACK_LINK);
+            String appUrl =
+                    "https://" + request.getServerName() +
+                            ":" + request.getServerPort() +
+                            request.getContextPath();
+            emailService.constructResendVerificationTokenEmail(user, newToken, appUrl);
             model.addAttribute("user", user);
         }
 
