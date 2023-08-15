@@ -136,6 +136,10 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         if (!newName.isEmpty()) {
             oldItem.setUsername(newName);
         }
+        String newEmail = updateItem.getEmail();
+        if (!newEmail.isEmpty()) {
+            oldItem.setEmail(newEmail);
+        }
         if (!updateItem.getPassword().isEmpty()) {
             String newPass = updateItem.getPassword();
             oldItem.setPassword(this.passwordEncoder.encode(newPass));

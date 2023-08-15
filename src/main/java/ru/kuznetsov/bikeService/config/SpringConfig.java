@@ -159,4 +159,14 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.debug", "true");
         return mailSender;
     }
+//
+//    @Bean(name = "applicationEventMulticaster")
+//    public ApplicationEventMulticaster simpleApplicationEventMulticaster(
+//            @Qualifier("MainExecutor") ExecutorService executorService) {
+//        SimpleApplicationEventMulticaster eventMulticaster =
+//                new SimpleApplicationEventMulticaster();
+//
+//        eventMulticaster.setTaskExecutor(executorService);
+//        return eventMulticaster;
+//    }
 }

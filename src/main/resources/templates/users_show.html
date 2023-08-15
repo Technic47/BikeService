@@ -23,6 +23,7 @@
                     <form th:action="@{/users/update/{id}(id = ${userAccount.getId()})}" th:method="POST">
                         <ul>
                             <li th:text="'ID - ' + ${userAccount.getId()}"></li>
+                            <li th:text="'Email - ' + ${userAccount.getEmail()}"></li>
                             <li th:text="'IsActive - ' + ${userAccount.isActive()}"></li>
                             <li th:text="'IsEnabled - ' + ${userAccount.isEnabled().toString()}"></li>
                             <li th:text="'Authorities - ' + ${userAccount.getAuthorities().toString()}"></li>
@@ -38,7 +39,7 @@
                     <form th:action="@{/users/update}"
                           th:if="${userAccount.getProvider() == T(ru.kuznetsov.bikeService.models.users.Provider).LOCAL}"
                           th:method="GET">
-                        <button type="submit">Сменить имя или пароль</button>
+                        <button type="submit">Сменить логин или пароль</button>
                     </form>
                 </div>
             </div>

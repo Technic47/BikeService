@@ -83,7 +83,7 @@ public class UserController extends AbstractController {
         return "namePassChange";
     }
 
-    @PostMapping("/update/namePass")
+    @PostMapping("/update/credentialsChange")
     public String uploadNewCredentials(@Valid @ModelAttribute("user") UserModel userModelNew,
                                        BindingResult bindingResult,
                                        Model model,

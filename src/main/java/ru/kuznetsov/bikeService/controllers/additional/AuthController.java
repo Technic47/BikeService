@@ -142,6 +142,41 @@ public class AuthController extends AbstractController {
                                           @RequestParam(value = "email") String email,
                                           @RequestParam(value = "returnLink") String returnLink,
                                           Model model) {
+        return this.resendToken(request, email, returnLink, model);
+//        UserModel userModel = userService.findByEmailOrNull(email);
+//        String message = "Повторное письмо отправлено!";
+//
+//        if (userModel == null) {
+//            message = "Проверьте правильность написания почты.";
+//            model.addAttribute("user", new UserModel());
+//        } else {
+//            VerificationToken newToken = tokenService.updateVerificationToken(userModel);
+//            UserModel user = tokenService.findUserByTokenString(newToken.getToken());
+//            String appUrl =
+//                    "https://" + request.getServerName() +
+//                            ":" + request.getServerPort() +
+//                            request.getContextPath();
+//            emailService.constructResendVerificationTokenEmail(user, newToken, appUrl);
+//            model.addAttribute("user", user);
+//        }
+//
+//        model.addAttribute("regMessage", message);
+//        return returnLink;
+    }
+
+/*TODO
+- realize email change.
+ */
+
+//    @GetMapping("/resendTokenEmailChange")
+//    public String resendTokenEmailChange(HttpServletRequest request,
+//                                         @ModelAttribute(value = "email") String email,
+//                                         @ModelAttribute(value = "returnLink") String returnLink,
+//                                         Model model){
+//
+//    }
+
+    private String resendToken(HttpServletRequest request, String email, String returnLink, Model model) {
         UserModel userModel = userService.findByEmailOrNull(email);
         String message = "Повторное письмо отправлено!";
 

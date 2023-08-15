@@ -184,6 +184,6 @@ public class UserModel implements UserDetails, OAuth2User {
     public String toString() {
         return "Username='" + username +
                 "', id=" + id +
-                ", active=" + active;
+                ", enabled=" + enabled;
     }
 }
