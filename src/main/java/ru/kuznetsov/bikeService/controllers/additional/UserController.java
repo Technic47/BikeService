@@ -74,6 +74,25 @@ public class UserController extends AbstractController {
         model.addAttribute("tools", toolService.findByCreator(id));
         model.addAttribute("parts", partService.findByCreator(id));
         model.addAttribute("bikes", bikeService.findByCreator(id));
+
+//        Callable<List<Document>> getDocuments = () -> documentService.findByCreator(id);
+//        Callable<List<Fastener>> getFasteners = () -> fastenerService.findByCreator(id);
+//        Callable<List<Manufacturer>> getManufacturers = () -> manufacturerService.findByCreator(id);
+//        Callable<List<Consumable>> getConsumables = () -> consumableService.findByCreator(id);
+//        Callable<List<Tool>> getTools = () -> toolService.findByCreator(id);
+//        Callable<List<Part>> getParts = () -> partService.findByCreator(id);
+//        Callable<List<Bike>> getBikes = () -> bikeService.findByCreator(id);
+//        try {
+//            model.addAttribute("documents", mainExecutor.submit(getDocuments).get());
+//            model.addAttribute("fasteners", mainExecutor.submit(getFasteners).get());
+//            model.addAttribute("manufacturers", mainExecutor.submit(getManufacturers).get());
+//            model.addAttribute("consumables", mainExecutor.submit(getConsumables).get());
+//            model.addAttribute("tools", mainExecutor.submit(getTools).get());
+//            model.addAttribute("parts", mainExecutor.submit(getParts).get());
+//            model.addAttribute("bikes", mainExecutor.submit(getBikes).get());
+//        } catch (InterruptedException | ExecutionException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @PostMapping("/update/{id}")

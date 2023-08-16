@@ -18,7 +18,6 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- user_show replace select with table.
 - resend token via login, not email.
 - oauth2 from VK
  */
