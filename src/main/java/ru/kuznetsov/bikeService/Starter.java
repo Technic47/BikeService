@@ -18,6 +18,7 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- resend token via login, not email.
+- sorting results
+- resend token via login, not email
 - oauth2 from VK
  */
