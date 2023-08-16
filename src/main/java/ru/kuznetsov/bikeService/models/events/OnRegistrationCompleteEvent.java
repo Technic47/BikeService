@@ -1,15 +1,15 @@
-package ru.kuznetsov.bikeService.models.security;
+package ru.kuznetsov.bikeService.models.events;
 
 import org.springframework.context.ApplicationEvent;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
     private String appUrl;
-    private UserModel user;
+    private UserModel userModel;
 
     public OnRegistrationCompleteEvent(UserModel user, String appUrl) {
         super(user);
-        this.user = user;
+        this.userModel = user;
         this.appUrl = appUrl;
     }
 
@@ -22,11 +22,11 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
     }
 
 
-    public UserModel getUser() {
-        return user;
+    public UserModel getUserModel() {
+        return userModel;
     }
 
-    public void setUser(UserModel user) {
-        this.user = user;
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
     }
 }

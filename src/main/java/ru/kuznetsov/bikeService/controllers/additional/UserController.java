@@ -1,7 +1,9 @@
 package ru.kuznetsov.bikeService.controllers.additional;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.VerificationTokenService;
 import ru.kuznetsov.bikeService.services.modelServices.*;
 
 import java.security.Principal;
@@ -24,6 +27,13 @@ public class UserController extends AbstractController {
     private ManufacturerService manufacturerService;
     private ConsumableService consumableService;
     private ToolService toolService;
+    private final ApplicationEventPublisher eventPublisher;
+    private final VerificationTokenService tokenService;
+
+    public UserController(ApplicationEventPublisher eventPublisher, VerificationTokenService tokenService) {
+        this.eventPublisher = eventPublisher;
+        this.tokenService = tokenService;
+    }
 
 
     @GetMapping()
@@ -80,20 +90,29 @@ public class UserController extends AbstractController {
     @GetMapping("/update")
     public String updateNameOrPassword(Model model, Principal principal) {
         this.addUserToModel(model, principal);
-        return "namePassChange";
+        return "credentialsChange";
     }
 
     @PostMapping("/update/credentialsChange")
     public String uploadNewCredentials(@Valid @ModelAttribute("user") UserModel userModelNew,
                                        BindingResult bindingResult,
+                                       HttpServletRequest request,
                                        Model model,
                                        Principal principal) {
         if (bindingResult.hasErrors()) {
             this.addUserToModel(model, principal);
-            return "namePassChange";
+            return "credentialsChange";
+        }
+        if (userService.findByEmailOrNull(userModelNew.getEmail()) != null) {
+            model.addAttribute("emailWrong", "Данная почта уже зарегистрирована в системе!");
+            this.addUserToModel(model, principal);
+            return "credentialsChange";
         }
         UserModel userModelExist = this.getUserModelFromPrincipal(principal);
+        userModelExist.setEnabled(false);
         this.userService.update(userModelExist, userModelNew);
+
+        tokenService.createUpdateTokenEvent(request, userModelExist);
         return "redirect:/logout";
     }
 

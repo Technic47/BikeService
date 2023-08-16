@@ -18,14 +18,12 @@ import java.util.concurrent.ExecutorService;
 public class EmailService {
     private final JavaMailSender mailSender;
     private final VerificationTokenService tokenService;
-    private final ExecutorService mainExecutor;
     @Value("${smtp.mail.fromWho}")
     private String smtpFrom;
 
     public EmailService(JavaMailSender mailSender, VerificationTokenService tokenService, @Qualifier("MainExecutor") ExecutorService mainExecutor) {
         this.mailSender = mailSender;
         this.tokenService = tokenService;
-        this.mainExecutor = mainExecutor;
     }
 
     /**
@@ -35,42 +33,36 @@ public class EmailService {
      * @param contextPath path for return link
      */
     public void constructSendVerificationEmail(UserModel user, String contextPath) {
-        Runnable emailSend = () -> {
-            String token = UUID.randomUUID().toString();
-            tokenService.createVerificationToken(user, token);
+        String token = UUID.randomUUID().toString();
+        tokenService.createVerificationToken(user, token);
 
-            String confirmationUrl = "/registrationConfirm?token=" + token;
-            String message = "Для окончания регистрации пройдите по следующей ссылке:";
+        String confirmationUrl = "/registrationConfirm?token=" + token;
+        String message = "Для окончания регистрации пройдите по следующей ссылке:";
 
-            SimpleMailMessage email = new SimpleMailMessage();
-            email.setTo(user.getEmail());
-            email.setFrom(smtpFrom);
-            email.setSubject("Подтверждение регистрации на yourbikeservice.");
-            email.setText(message + "\r\n" + contextPath + confirmationUrl);
-            mailSender.send(email);
-        };
-        mainExecutor.submit(emailSend);
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setFrom(smtpFrom);
+        email.setSubject("Подтверждение регистрации на yourbikeservice.");
+        email.setText(message + "\r\n" + contextPath + confirmationUrl);
+        mailSender.send(email);
     }
 
     /**
      * Construct verification mail with updated token for existing user
      *
-     * @param user        userModel for verification
+     * @param userEmail   email for verification
      * @param newToken    token for link
      * @param contextPath path for return link
      */
-    public void constructResendVerificationTokenEmail(UserModel user, VerificationToken newToken, String contextPath) {
-        Runnable emailSend = () -> {
-            String confirmationUrl = "/registrationConfirm?token=" + newToken.getToken();
-            String message = "Для регистрации пройдите по следующей ссылке:";
+    public void constructResendVerificationTokenEmail(String userEmail, VerificationToken newToken, String contextPath) {
+        String confirmationUrl = "/registrationConfirm?token=" + newToken.getToken();
+        String message = "Для регистрации пройдите по следующей ссылке:";
 
-            SimpleMailMessage email = new SimpleMailMessage();
-            email.setTo(user.getEmail());
-            email.setFrom(smtpFrom);
-            email.setSubject("Resend Registration Token");
-            email.setText(message + "\r\n" + contextPath + confirmationUrl);
-            mailSender.send(email);
-        };
-        mainExecutor.submit(emailSend);
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(userEmail);
+        email.setFrom(smtpFrom);
+        email.setSubject("Resend Registration Token");
+        email.setText(message + "\r\n" + contextPath + confirmationUrl);
+        mailSender.send(email);
     }
 }
