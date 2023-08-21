@@ -3,6 +3,9 @@ package ru.kuznetsov.bikeService.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.util.Date;
 
 @Entity
 public class ReplyMessage {
@@ -13,6 +16,10 @@ public class ReplyMessage {
     @Size(min = 1, max = 1000)
     @Column(name = "message")
     private String message;
+
+    @Column(name = "created")
+    @CreatedDate
+    protected Date created;
 
     public ReplyMessage() {
     }
@@ -31,5 +38,13 @@ public class ReplyMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }

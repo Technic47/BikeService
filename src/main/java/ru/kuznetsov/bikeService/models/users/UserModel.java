@@ -3,6 +3,8 @@ package ru.kuznetsov.bikeService.models.users;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
@@ -44,6 +46,15 @@ public class UserModel implements UserDetails, OAuth2User {
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
+
+    @Column(name = "created")
+    @CreatedDate
+    protected Date created;
+
+    @Column(name = "updated")
+    @LastModifiedDate
+    protected Date updated;
+
     @Column(name = "status")
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
@@ -166,6 +177,22 @@ public class UserModel implements UserDetails, OAuth2User {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 
     @Override

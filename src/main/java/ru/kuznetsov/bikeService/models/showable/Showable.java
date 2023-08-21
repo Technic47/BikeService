@@ -1,5 +1,7 @@
 package ru.kuznetsov.bikeService.models.showable;
 
+import java.util.Date;
+
 public interface Showable {
     Long getId();
     String getName();
@@ -15,4 +17,11 @@ public interface Showable {
     boolean getIsShared();
     void setIsShared(boolean shared);
     String getCredentials();
+    Date getCreated();
+
+    void setCreated(Date created);
+
+    Date getUpdated();
+
+    void setUpdated(Date updated);
 }

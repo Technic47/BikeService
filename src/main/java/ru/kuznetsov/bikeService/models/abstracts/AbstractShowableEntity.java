@@ -3,8 +3,11 @@ package ru.kuznetsov.bikeService.models.abstracts;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 
+import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -44,9 +47,14 @@ public abstract class AbstractShowableEntity
 
     @Column(name = "isShared")
     protected boolean isShared = false;
-//
-//    @ManyToMany
-//    private Set<Part> linkedParts = new HashSet<>();
+
+    @Column(name = "created")
+    @CreatedDate
+    protected Date created;
+
+    @Column(name = "updated")
+    @LastModifiedDate
+    protected Date updated;
 
     public AbstractShowableEntity() {
     }
@@ -129,13 +137,22 @@ public abstract class AbstractShowableEntity
         isShared = shared;
     }
 
-//    public Set<Part> getLinkedParts() {
-//        return linkedParts;
-//    }
-//
-//    public void setLinkedParts(Set<Part> linkedParts) {
-//        this.linkedParts = linkedParts;
-//    }
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
 
     @Override
     public boolean equals(Object o) {

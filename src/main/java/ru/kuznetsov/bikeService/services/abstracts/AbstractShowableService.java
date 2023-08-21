@@ -3,6 +3,7 @@ package ru.kuznetsov.bikeService.services.abstracts;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +45,7 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         toRepo.setValue(newItem.getValue());
         toRepo.setIsShared(newItem.getIsShared());
         toRepo.setCreator(newItem.getCreator());
+        toRepo.setUpdated(new Date());
         this.save(toRepo);
     }
 

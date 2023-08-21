@@ -168,6 +168,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         }
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         item.setCreator(userModel.getId());
+        item.setCreated(new Date());
         userService.addCreatedItem(userModel,
                 new UserEntity(thisClassNewObject.getClass().getSimpleName(), service.save(item).getId()));
         logger.info(item + " was created by '" + userModel.getUsername());
