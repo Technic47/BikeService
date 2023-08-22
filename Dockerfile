@@ -7,6 +7,7 @@ COPY mvnw ./
 COPY pom.xml ./
 COPY src/ src
 
+#mvn -N io.takari:maven:wrapper - update mvnw
 RUN ./mvnw clean package spring-boot:repackage
 
 FROM eclipse-temurin:19-jre-alpine

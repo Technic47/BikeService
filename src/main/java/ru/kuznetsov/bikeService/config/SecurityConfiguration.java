@@ -3,35 +3,38 @@ package ru.kuznetsov.bikeService.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.stereotype.Component;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.kuznetsov.bikeService.exceptionHandlers.CustomAuthenticationFailureHandler;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.CustomOAuth2UserService;
+import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenFilter;
+import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenProvider;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
 
-@Component
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final CustomOAuth2UserService oauthUserService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public SecurityConfiguration(CustomUserDetailsService customUserDetailsService,
                                  PasswordEncoder passwordEncoder,
-                                 CustomOAuth2UserService oauthUserService) {
+                                 JwtTokenProvider jwtTokenProvider) {
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
-        this.oauthUserService = oauthUserService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Bean
@@ -42,34 +45,25 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**",
-                            "/registrationConfirm", "/resendRegistrationToken", "/updateEmail").permitAll();
-                    auth.requestMatchers("/**").authenticated();
-                    auth.requestMatchers("/login").anonymous();
+                    auth.requestMatchers("/api/auth/login/**").permitAll();
+                    auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
+                    auth.anyRequest().authenticated();
                 })
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/title")
-                .failureUrl("/login?error")
-                .failureHandler(authenticationFailureHandler())
-                .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .userService(oauthUserService)
-                .and()
-                .loginPage("/login")
-                .successHandler((request, response, authentication) -> {
-                    UserModel oauthUser = new UserModel((OAuth2User) authentication.getPrincipal());
-                    oauthUserService.processOAuthPostLogin(oauthUser);
-                    response.sendRedirect("/successLogin");
-                })
-                .and()
-                .logout()
-                .deleteCookies("JSESSIONID");
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authManager(UserDetailsService userDetailsService) {
+        var authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(authProvider);
     }
 
     @Autowired

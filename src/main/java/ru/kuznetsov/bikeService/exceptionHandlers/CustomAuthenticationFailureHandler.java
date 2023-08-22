@@ -6,7 +6,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
+import org.springframework.security.web.csrf.InvalidCsrfTokenException;
+import org.springframework.security.web.csrf.MissingCsrfTokenException;
+import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.io.IOException;
 
@@ -35,5 +40,29 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         }
 
         request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
+    }
+
+    @ExceptionHandler({MissingCsrfTokenException.class, InvalidCsrfTokenException.class, SessionAuthenticationException.class})
+    public ErrorInfo handleAuthenticationException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "error.authorization");
+    }
+
+    public class ErrorInfo {
+        private final String url;
+        private final String info;
+
+        ErrorInfo(String url, String info) {
+            this.url = url;
+            this.info = info;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public String getInfo() {
+            return info;
+        }
     }
 }
