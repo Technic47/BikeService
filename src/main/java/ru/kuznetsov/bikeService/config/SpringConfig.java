@@ -55,8 +55,6 @@ public class SpringConfig implements WebMvcConfigurer {
     private int httpPort;
     @Value("${server.port}")
     private int httpsPort;
-    @Value("${api.port}")
-    private int apiPort;
     @Value("${return.link}")
     private String backLink;
     @Value("${spring.mail.host}")
