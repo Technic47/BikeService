@@ -55,6 +55,8 @@ public class SpringConfig implements WebMvcConfigurer {
     private int httpPort;
     @Value("${server.port}")
     private int httpsPort;
+    @Value("${api.port}")
+    private int apiPort;
     @Value("${return.link}")
     private String backLink;
     @Value("${spring.mail.host}")
@@ -159,14 +161,4 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.debug", "true");
         return mailSender;
     }
-//
-//    @Bean(name = "applicationEventMulticaster")
-//    public ApplicationEventMulticaster simpleApplicationEventMulticaster(
-//            @Qualifier("MainExecutor") ExecutorService executorService) {
-//        SimpleApplicationEventMulticaster eventMulticaster =
-//                new SimpleApplicationEventMulticaster();
-//
-//        eventMulticaster.setTaskExecutor(executorService);
-//        return eventMulticaster;
-//    }
 }
