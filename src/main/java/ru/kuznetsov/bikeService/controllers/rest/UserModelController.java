@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
@@ -12,8 +13,12 @@ import java.util.List;
 @RequestMapping("/api/admin/users")
 public class UserModelController extends AbstractController {
     @GetMapping
-//    @Secured("ROLE_ADMIN")
     public List<UserModel> index() {
      return userService.index();
+    }
+
+    @GetMapping("/{id}")
+    public UserModel getUser(@PathVariable Long id){
+        return userService.getById(id);
     }
 }

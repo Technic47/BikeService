@@ -5,7 +5,7 @@ import java.util.List;
 public interface CommonService<E> {
     E save(E entity);
 
-    E show(Long id);
+    E getById(Long id);
 
     void update(Long id, E updateItem);
 

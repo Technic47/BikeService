@@ -66,7 +66,7 @@ public class UserController extends AbstractController {
     }
 
     private void addAllCreatedItems(Model model, Long id) {
-        model.addAttribute("userAccount", userService.show(id));
+        model.addAttribute("userAccount", userService.getById(id));
         model.addAttribute("documents", documentService.findByCreator(id));
         model.addAttribute("fasteners", fastenerService.findByCreator(id));
         model.addAttribute("manufacturers", manufacturerService.findByCreator(id));

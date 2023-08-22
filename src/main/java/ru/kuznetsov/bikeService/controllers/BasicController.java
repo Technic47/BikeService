@@ -82,8 +82,8 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         if (objects != null) {
             objects.forEach(object -> {
                 if (object.getCreator().equals(userId)) {
-                    indexMap.put(object, pictureService.show(object.getPicture()).getName());
-                } else sharedIndexMap.put(object, pictureService.show(object.getPicture()).getName());
+                    indexMap.put(object, pictureService.getById(object.getPicture()).getName());
+                } else sharedIndexMap.put(object, pictureService.getById(object.getPicture()).getName());
             });
         }
         model.addAttribute("objects", indexMap);
@@ -96,7 +96,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
                        Model model, Principal principal) {
-        T item = service.show(id);
+        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         } else
@@ -105,7 +105,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
 
     protected String show(T item, Model model, Principal principal) {
         boolean access = checkAccessToItem(item, principal);
-        model.addAttribute("picture", pictureService.show(item.getPicture()).getName());
+        model.addAttribute("picture", pictureService.getById(item.getPicture()).getName());
         this.addItemAttributesShow(model, item, principal);
         model.addAttribute("access", access);
         logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
@@ -148,7 +148,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     }
 
     protected void addItemAttributesEdit(Model model, T item, Principal principal) {
-        model.addAttribute("picture", pictureService.show(item.getPicture()));
+        model.addAttribute("picture", pictureService.getById(item.getPicture()));
         this.addItemAttributesNew(model, item, principal);
     }
 
@@ -177,7 +177,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
-        T item = service.show(id);
+        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         } else
@@ -201,7 +201,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model, Principal principal) {
-        T item = service.show(id);
+        T item = service.getById(id);
         return this.update(newItem, bindingResult, file, item, model, principal);
     }
 
@@ -228,7 +228,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
 
     @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id, Principal principal) {
-        T item = service.show(id);
+        T item = service.getById(id);
         if (checkAccessToItem(item, principal)) {
             UserModel userModel = this.getUserModelFromPrincipal(principal);
             service.delete(id);
@@ -261,7 +261,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @GetMapping(value = "/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
-        T item = this.service.show(id);
+        T item = this.service.getById(id);
 
         return this.prepareResponse(item, principal);
     }
@@ -298,7 +298,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         this.pdfService.newPDFDocument()
                 .addUserName(userModel.getUsername())
-                .addImage(this.pictureService.show(item.getPicture()).getName())
+                .addImage(this.pictureService.getById(item.getPicture()).getName())
                 .buildShowable(item);
     }
 
@@ -341,8 +341,8 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         Map<T, String> sharedIndexMap = new HashMap<>();
         resultSet.forEach(object -> {
             if (object.getCreator().equals(userId)) {
-                resultMap.put(object, pictureService.show(object.getPicture()).getName());
-            } else sharedIndexMap.put(object, pictureService.show(object.getPicture()).getName());
+                resultMap.put(object, pictureService.getById(object.getPicture()).getName());
+            } else sharedIndexMap.put(object, pictureService.getById(object.getPicture()).getName());
         });
 
         model.addAttribute("user", userModel);

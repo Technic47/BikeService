@@ -39,14 +39,14 @@ public class ApplicationEventsListener {
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
         System.out.println("Checking default picture...");
-        if (pictureService.show(1L) == null) {
+        if (pictureService.getById(1L) == null) {
             pictureService.save(new Picture("noImage.jpg"));
             System.out.println("Default picture was empty. New one is created in DB");
         }
         System.out.println("Default picture is OK.");
 
         System.out.println("Checking default manufacture...");
-        if (manufacturerService.show(1L) == null) {
+        if (manufacturerService.getById(1L) == null) {
             Manufacturer defaultManufacture = new Manufacturer();
             defaultManufacture.setName("Default");
             defaultManufacture.setPicture(1L);

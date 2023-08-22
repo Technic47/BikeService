@@ -38,8 +38,8 @@ class ServiceableControllerTest {
 
     @Test
     void show() throws Exception {
-        Long manufactureIndex = this.partService.show(1L).getManufacturer();
-        String manufactureName = manufacturerService.show(manufactureIndex).getName();
+        Long manufactureIndex = this.partService.getById(1L).getManufacturer();
+        String manufactureName = manufacturerService.getById(manufactureIndex).getName();
 
         this.mockMvc.perform(get("/parts/1"))
                 .andDo(print())
@@ -93,7 +93,7 @@ class ServiceableControllerTest {
 
     @Test
     void updateServiceList() throws Exception {
-        Part partTest = this.partService.show(1L);
+        Part partTest = this.partService.getById(1L);
         PartEntity entity = new PartEntity("Part", "Document", 2L, 1);
 
         this.mockMvc.perform(get("/parts/1/edit"));

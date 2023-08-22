@@ -3,6 +3,8 @@ package ru.kuznetsov.bikeService.models.users;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.util.Date;
+
 public class UserBuilder {
     private final UserModel user;
 
@@ -70,6 +72,7 @@ public class UserBuilder {
     }
 
     public UserModel build(){
+        this.user.setCreated(new Date());
         return this.user;
     }
 }

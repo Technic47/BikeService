@@ -50,7 +50,7 @@ class BasicControllerUSERTest {
 
     @BeforeEach
     void setUp() {
-        this.testDocFromDb = this.documentService.show(1L);
+        this.testDocFromDb = this.documentService.getById(1L);
         userService.addCreatedItem(userService.findByUsernameOrNull("test"),
                 new UserEntity("Document", 1L));
         userService.addCreatedItem(userService.findByUsernameOrNull("test"),
@@ -153,7 +153,7 @@ class BasicControllerUSERTest {
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("picture", pictureService.show(this.testDocFromDb.getPicture())))
+                .andExpect(model().attribute("picture", pictureService.getById(this.testDocFromDb.getPicture())))
                 .andExpect(model().attribute("object", this.testDocFromDb))
                 .andExpect(view().name("edit"))
                 .andExpect(xpath("//div/div/form[@action='/documents/1/edit']").exists());

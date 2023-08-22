@@ -45,13 +45,13 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        T item = service.show(id);
+        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         }
         ServiceList serviceList = this.getServiceList(item.getLinkedItems());
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", manufacturerService.show(manufactureIndex).getName());
+        model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
         this.addLinkedItemsToModel(model, serviceList);
         return super.show(item, model, principal);
     }
@@ -59,7 +59,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
     @Override
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable Long id, Principal principal) {
-        T item = service.show(id);
+        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         }
@@ -88,7 +88,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
             @RequestParam(value = "partId", required = false) Long partId,
             @RequestPart(value = "newImage", required = false) MultipartFile file,
             Model model, Principal principal) {
-        T oldItem = service.show(id);
+        T oldItem = service.getById(id);
         item.setLinkedItems(oldItem.getLinkedItems());
         switch (action) {
             case "finish":
@@ -147,19 +147,19 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     private void buildPDF(T item, Principal principal, ServiceList serviceList) {
-        this.pdfService.addManufacturer(this.manufacturerService.show(item.getManufacturer()));
+        this.pdfService.addManufacturer(this.manufacturerService.getById(item.getManufacturer()));
         this.pdfService.addServiceList(serviceList);
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         this.pdfService.newPDFDocument()
                 .addUserName(userModel.getUsername())
-                .addImage(this.pictureService.show(item.getPicture()).getName())
+                .addImage(this.pictureService.getById(item.getPicture()).getName())
                 .buildServiceable(item);
     }
 
     @GetMapping(value = "/pdfAll")
     @ResponseBody
     public ResponseEntity<Resource> createPdfAll(@Param("id") Long id, Principal principal) throws IOException {
-        T item = this.service.show(id);
+        T item = this.service.getById(id);
         ServiceList generalList = new ServiceList();
         ServiceList itemServiceList = this.getServiceList(item.getLinkedItems());
         generalList.addAllToList(itemServiceList);
@@ -177,14 +177,14 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
         ServiceList serviceList = new ServiceList();
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
-                case "Tool" -> serviceList.addToToolMap(this.toolDAO.show(entity.getItemId()), entity.getAmount());
+                case "Tool" -> serviceList.addToToolMap(this.toolDAO.getById(entity.getItemId()), entity.getAmount());
                 case "Fastener" ->
-                        serviceList.addToFastenerMap(this.fastenerDAO.show(entity.getItemId()), entity.getAmount());
+                        serviceList.addToFastenerMap(this.fastenerDAO.getById(entity.getItemId()), entity.getAmount());
                 case "Consumable" ->
-                        serviceList.addToConsumableMap(this.consumableDAO.show(entity.getItemId()), entity.getAmount());
+                        serviceList.addToConsumableMap(this.consumableDAO.getById(entity.getItemId()), entity.getAmount());
                 case "Document" ->
-                        serviceList.addToDocumentMap(this.documentDAO.show(entity.getItemId()), entity.getAmount());
-                case "Part" -> serviceList.addToPartMap(this.partDAO.show(entity.getItemId()), entity.getAmount());
+                        serviceList.addToDocumentMap(this.documentDAO.getById(entity.getItemId()), entity.getAmount());
+                case "Part" -> serviceList.addToPartMap(this.partDAO.getById(entity.getItemId()), entity.getAmount());
             }
         }
         return serviceList;

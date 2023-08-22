@@ -17,7 +17,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
 
     @Override
     public void update(Long id, E newItem) {
-        E toRepo = this.show(id);
+        E toRepo = this.getById(id);
         this.serviceableToRepo(toRepo, newItem);
     }
 

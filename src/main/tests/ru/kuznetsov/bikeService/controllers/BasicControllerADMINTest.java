@@ -37,7 +37,7 @@ public class BasicControllerADMINTest {
 
     @BeforeEach
     void setUp() {
-        this.testDocFromDb = this.documentService.show(1L);
+        this.testDocFromDb = this.documentService.getById(1L);
     }
 
     @Test

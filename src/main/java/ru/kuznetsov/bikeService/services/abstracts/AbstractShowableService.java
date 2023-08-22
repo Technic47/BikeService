@@ -29,7 +29,7 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
      */
     @Override
     public void update(Long id, E newItem) {
-        E toRepo = this.show(id);
+        E toRepo = this.getById(id);
         this.showableToRepo(toRepo, newItem);
     }
 

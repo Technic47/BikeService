@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.kuznetsov.bikeService.models.dto.RegistrationRequestDto;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.users.UserBuilder;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -22,6 +23,10 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public UserModel createUser(RegistrationRequestDto dto){
+        return this.registerNewUserAccount(dto.toUserModel());
     }
 
     /**
@@ -154,5 +159,14 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
                             + userModel.getEmail());
         }
         return this.constructRecordAndSave(userModel, ROLE_USER);
+    }
+
+    public UserModel registerNewUserAccount(RegistrationRequestDto dto) throws RuntimeException {
+        if (emailExist(dto.getEmail())) {
+            throw new RuntimeException(
+                    "В системе уже существует аккаунт с почтой: "
+                            + dto.getEmail());
+        }
+        return this.constructRecordAndSave(dto.toUserModel(), ROLE_USER);
     }
 }

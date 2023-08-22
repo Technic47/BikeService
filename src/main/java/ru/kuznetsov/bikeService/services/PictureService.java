@@ -110,7 +110,7 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
 
     @Override
     public void update(Long id, Picture newPicture) {
-        Picture toRepo = this.show(id);
+        Picture toRepo = this.getById(id);
         toRepo.setName(newPicture.getName());
         this.save(toRepo);
     }

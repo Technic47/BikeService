@@ -12,7 +12,7 @@ public abstract class AbstractUsableService<E extends AbstractUsableEntity,
 
     @Override
     public void update(Long id, E newItem) {
-        E toRepo = this.show(id);
+        E toRepo = this.getById(id);
         this.usableToRepo(toRepo, newItem);
     }
 

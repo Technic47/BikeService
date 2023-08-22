@@ -27,12 +27,12 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        T item = service.show(id);
+        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         }
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", manufacturerService.show(manufactureIndex).getName());
+        model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
         return super.show(item, model, principal);
     }
 
@@ -45,18 +45,18 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
 
     @Override
     protected void addItemAttributesEdit(Model model, T item, Principal principal) {
-        model.addAttribute("manufacture", manufacturerService.show(item.getManufacturer()));
+        model.addAttribute("manufacture", manufacturerService.getById(item.getManufacturer()));
         super.addItemAttributesEdit(model, item, principal);
     }
 
 
     @Override
     protected void preparePDF(T item, Principal principal) {
-        this.pdfService.addManufacturer(this.manufacturerService.show(item.getManufacturer()));
+        this.pdfService.addManufacturer(this.manufacturerService.getById(item.getManufacturer()));
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         this.pdfService.newPDFDocument()
                 .addUserName(userModel.getUsername())
-                .addImage(this.pictureService.show(item.getPicture()).getName())
+                .addImage(this.pictureService.getById(item.getPicture()).getName())
                 .buildUsable(item);
     }
 
