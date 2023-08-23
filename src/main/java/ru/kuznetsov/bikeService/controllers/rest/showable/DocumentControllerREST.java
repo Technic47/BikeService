@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.rest.modelControllers;
+package ru.kuznetsov.bikeService.controllers.rest.showable;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.rest;
+package ru.kuznetsov.bikeService.controllers.rest.addition;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

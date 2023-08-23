@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.dto.ShowableDto;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
@@ -124,7 +123,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         if (item == null) {
             throw new RuntimeException("Item not found!");
         } else {
-//            response.put("item", item);
             this.show(item, response, principal);
             return ResponseEntity.ok(response);
         }
@@ -133,20 +131,19 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     protected void show(T item, Map<Object, Object> response, Principal principal) {
         boolean access = checkAccessToItem(item, principal);
         response.put("access", access);
-        response.put("picture", pictureService.getById(item.getPicture()).getName());
         this.addItemAttributesShow(response, item, principal);
         logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
     }
 
     @PutMapping("/{id}")
-    public T update(@PathVariable Long id,
+    public ResponseEntity update(@PathVariable Long id,
                                  @RequestBody T newItem,
                                  @RequestPart(value = "newImage", required = false) MultipartFile file,
                                  Principal principal) {
         T item = service.getById(id);
         Map<Object, Object> response = new HashMap<>();
         T updated = this.update(newItem, file, item, response, principal);
-        return updated;
+        return ResponseEntity.ok(response);
     }
 
     public T update(T newItem, MultipartFile file, T oldItem, Map<Object, Object> response, Principal principal) {
@@ -156,7 +153,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                 newItem.setPicture(picture.getId());
             }
             T updated = service.update(oldItem, newItem);
-            response.put("updated", new ShowableDto(updated));
+            addItemAttributesEdit(response, updated, principal);
             UserModel userModel = this.getUserModelFromPrincipal(principal);
             logger.info(newItem.getClass()
                     .getSimpleName() + " id:" + oldItem.getId() + " was edited by '" + userModel.getUsername() + "'");
@@ -249,8 +246,14 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         }
     }
 
-    private void addItemAttributesShow(Map<Object, Object> response, T item, Principal principal) {
-        response.put("object", item);
+    protected void addItemAttributesShow(Map<Object, Object> response, T item, Principal principal) {
+//        response.put("object", item);
+        response.put("name", item.getName());
+        response.put("valueName", item.getValueName());
+        response.put("value", item.getValue());
+        response.put("description", item.getDescription());
+        response.put("link", item.getLink());
+        response.put("picture", pictureService.getById(item.getPicture()).getName());
         switch (category) {
             case "parts", "bikes" -> response.put("type", "Serviceable");
             case "tools", "consumables" -> response.put("type", "Usable");
@@ -270,7 +273,12 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     }
 
     protected void addItemAttributesEdit(Map<Object, Object> response, T item, Principal principal) {
-        response.put("picture", pictureService.getById(item.getPicture()));
+//        response.put("name", item.getName());
+//        response.put("valueName", item.getValueName());
+//        response.put("value", item.getValue());
+//        response.put("description", item.getDescription());
+//        response.put("link", item.getLink());
+//        response.put("picture", pictureService.getById(item.getPicture()));
         this.addItemAttributesNew(response, item, principal);
     }
 }

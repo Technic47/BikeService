@@ -18,10 +18,7 @@ public interface Showable {
     void setIsShared(boolean shared);
     String getCredentials();
     Date getCreated();
-
     void setCreated(Date created);
-
     Date getUpdated();
-
     void setUpdated(Date updated);
 }
