@@ -130,13 +130,18 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         repository.save(model);
     }
 
+    @Override
+    public UserModel update(Long id, UserModel updateItem) {
+        return null;
+    }
+
     /**
      * Update userName or password in user record.
      *
      * @param oldItem    userRecord for changing
      * @param updateItem object with new credentials
      */
-    public void update(UserModel oldItem, UserModel updateItem) {
+    public UserModel update(UserModel oldItem, UserModel updateItem) {
         String newName = updateItem.getUsername();
         if (!newName.isEmpty()) {
             oldItem.setUsername(newName);
@@ -149,7 +154,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
             String newPass = updateItem.getPassword();
             oldItem.setPassword(this.passwordEncoder.encode(newPass));
         }
-        repository.save(oldItem);
+        return repository.save(oldItem);
     }
 
     public UserModel registerNewUserAccount(UserModel userModel) throws RuntimeException {

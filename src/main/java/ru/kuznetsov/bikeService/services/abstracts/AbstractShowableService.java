@@ -28,16 +28,16 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
      * @param newItem donor form fields.
      */
     @Override
-    public void update(Long id, E newItem) {
+    public E update(Long id, E newItem) {
         E toRepo = this.getById(id);
-        this.showableToRepo(toRepo, newItem);
+        return this.showableToRepo(toRepo, newItem);
     }
 
-    public void update(E item, E newItem){
-        this.showableToRepo(item, newItem);
+    public E update(E item, E newItem){
+        return this.showableToRepo(item, newItem);
     }
 
-    void showableToRepo(E toRepo, E newItem) {
+    E showableToRepo(E toRepo, E newItem) {
         toRepo.setName(newItem.getName());
         toRepo.setDescription(newItem.getDescription());
         toRepo.setPicture(newItem.getPicture());
@@ -46,7 +46,7 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         toRepo.setIsShared(newItem.getIsShared());
         toRepo.setCreator(newItem.getCreator());
         toRepo.setUpdated(new Date());
-        this.save(toRepo);
+        return this.save(toRepo);
     }
 
     /**

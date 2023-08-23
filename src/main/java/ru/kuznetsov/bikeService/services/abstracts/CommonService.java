@@ -7,9 +7,9 @@ public interface CommonService<E> {
 
     E getById(Long id);
 
-    void update(Long id, E updateItem);
+    E update(Long id, E updateItem);
 
-    void update(E item, E updateItem);
+    E update(E item, E updateItem);
 
     List<E> index();
 

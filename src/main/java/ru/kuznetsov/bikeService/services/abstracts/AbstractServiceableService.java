@@ -16,17 +16,17 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
     }
 
     @Override
-    public void update(Long id, E newItem) {
+    public E update(Long id, E newItem) {
         E toRepo = this.getById(id);
-        this.serviceableToRepo(toRepo, newItem);
+        return this.serviceableToRepo(toRepo, newItem);
     }
 
-    public void update(E oldItem, E newItem){
-        this.serviceableToRepo(oldItem, newItem);
+    public E update(E oldItem, E newItem){
+        return this.serviceableToRepo(oldItem, newItem);
     }
 
-    void serviceableToRepo(E toRepo, E newItem) {
-        this.usableToRepo(toRepo, newItem);
+    E serviceableToRepo(E toRepo, E newItem) {
+        return this.usableToRepo(toRepo, newItem);
     }
 
     /**

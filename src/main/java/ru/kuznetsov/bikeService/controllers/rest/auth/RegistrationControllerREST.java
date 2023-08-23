@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.rest;
+package ru.kuznetsov.bikeService.controllers.rest.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

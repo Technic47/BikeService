@@ -10,4 +10,14 @@ public class ReplyMessageService extends AbstractService<ReplyMessage, ReplyMess
     protected ReplyMessageService(ReplyMessageRepository repository) {
         super(repository);
     }
+
+    @Override
+    public ReplyMessage update(Long id, ReplyMessage updateItem) {
+        return null;
+    }
+
+    @Override
+    public ReplyMessage update(ReplyMessage item, ReplyMessage updateItem) {
+        return null;
+    }
 }

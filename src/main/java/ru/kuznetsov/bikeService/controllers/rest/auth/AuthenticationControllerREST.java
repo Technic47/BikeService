@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.rest;
+package ru.kuznetsov.bikeService.controllers.rest.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,13 +20,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthenticationController {
+public class AuthenticationControllerREST {
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailsService userService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, CustomUserDetailsService userService) {
+    public AuthenticationControllerREST(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, CustomUserDetailsService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;

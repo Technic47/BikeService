@@ -87,4 +87,14 @@ public class VerificationTokenService extends AbstractService<VerificationToken,
         }
         return verificationToken;
     }
+
+    @Override
+    public VerificationToken update(Long id, VerificationToken updateItem) {
+        return null;
+    }
+
+    @Override
+    public VerificationToken update(VerificationToken item, VerificationToken updateItem) {
+        return null;
+    }
 }

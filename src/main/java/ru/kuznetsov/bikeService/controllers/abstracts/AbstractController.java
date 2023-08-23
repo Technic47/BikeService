@@ -42,7 +42,6 @@ public abstract class AbstractController {
         model.addAttribute("user", this.getUserModelFromPrincipal(principal));
     }
 
-
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;

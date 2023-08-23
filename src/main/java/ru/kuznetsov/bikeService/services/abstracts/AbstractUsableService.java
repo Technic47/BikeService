@@ -11,14 +11,14 @@ public abstract class AbstractUsableService<E extends AbstractUsableEntity,
     }
 
     @Override
-    public void update(Long id, E newItem) {
+    public E update(Long id, E newItem) {
         E toRepo = this.getById(id);
-        this.usableToRepo(toRepo, newItem);
+        return this.usableToRepo(toRepo, newItem);
     }
 
-    void usableToRepo(E toRepo, E newItem) {
+    E usableToRepo(E toRepo, E newItem) {
         toRepo.setManufacturer(newItem.getManufacturer());
         toRepo.setModel(newItem.getModel());
-        this.showableToRepo(toRepo, newItem);
+        return this.showableToRepo(toRepo, newItem);
     }
 }
