@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.additional;
+package ru.kuznetsov.bikeService.controllers.notRest.additional;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.controllers.notRest.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.ReplyMessage;
 import ru.kuznetsov.bikeService.services.ReplyMessageService;
 

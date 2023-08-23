@@ -3,7 +3,7 @@ package ru.kuznetsov.bikeService.controllers.rest.addition;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.controllers.notRest.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.dto.UserDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 

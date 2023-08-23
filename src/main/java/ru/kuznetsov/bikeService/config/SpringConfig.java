@@ -104,6 +104,8 @@ public class SpringConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/templates/**");
     }
 
+
+
     @Bean(name = "MainExecutor")
     public ExecutorService getMainService() {
         int coreCount = Runtime.getRuntime().availableProcessors();

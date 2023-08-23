@@ -1,4 +1,4 @@
-//package ru.kuznetsov.bikeService.controllers.additional;
+//package ru.kuznetsov.bikeService.controllers.notRest.additional;
 //
 //import org.junit.jupiter.api.AfterAll;
 //import org.junit.jupiter.api.BeforeEach;

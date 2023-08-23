@@ -15,7 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.kuznetsov.bikeService.exceptionHandlers.CustomAuthenticationFailureHandler;
+import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenFilter;
 import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenProvider;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.CustomOAuth2UserService;
@@ -47,16 +49,18 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //https://www.baeldung.com/spring-security-session   - session control
         http
                 .httpBasic().disable()
                 .csrf().disable()
+                .sessionManagement().sessionFixation().migrateSession() // protection against typical Session Fixation attacks
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
+                .and()
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**",
                             "/registrationConfirm", "/resendRegistrationToken", "/updateEmail").permitAll();
-//                    auth.requestMatchers("/api/auth/login/**", "/api/registration/**").permitAll();
-//                    auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
+                    auth.requestMatchers("/api/auth/login/**", "/api/registration/**").permitAll();
+                    auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/**").authenticated();
                     auth.requestMatchers("/login").anonymous();
                 })
@@ -80,8 +84,8 @@ public class SecurityConfiguration {
                 .and()
                 .logout()
                 .deleteCookies("JSESSIONID")
-//                .and()
-//                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .and()
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 ;
         return http.build();
     }

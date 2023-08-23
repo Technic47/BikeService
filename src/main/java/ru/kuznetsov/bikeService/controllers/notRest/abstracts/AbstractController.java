@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.abstracts;
+package ru.kuznetsov.bikeService.controllers.notRest.abstracts;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

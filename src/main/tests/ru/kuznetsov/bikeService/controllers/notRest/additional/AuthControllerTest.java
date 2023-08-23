@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers.additional;
+package ru.kuznetsov.bikeService.controllers.notRest.additional;
 
 import jakarta.servlet.ServletContext;
 import org.junit.jupiter.api.Test;

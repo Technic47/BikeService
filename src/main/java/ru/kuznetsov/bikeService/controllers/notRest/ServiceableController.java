@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers;
+package ru.kuznetsov.bikeService.controllers.notRest;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
