@@ -9,16 +9,16 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.kuznetsov.bikeService.exceptionHandlers.CustomAuthenticationFailureHandler;
-import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenFilter;
 import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenProvider;
+import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.CustomOAuth2UserService;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
 
 @Configuration
@@ -27,14 +27,17 @@ public class SecurityConfiguration {
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomOAuth2UserService oauthUserService;
 
     @Autowired
     public SecurityConfiguration(CustomUserDetailsService customUserDetailsService,
                                  PasswordEncoder passwordEncoder,
-                                 JwtTokenProvider jwtTokenProvider) {
+                                 JwtTokenProvider jwtTokenProvider,
+                                 CustomOAuth2UserService oauthUserService) {
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.oauthUserService = oauthUserService;
     }
 
     @Bean
@@ -47,14 +50,39 @@ public class SecurityConfiguration {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/login/**", "/api/registration/**").permitAll();
-                    auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**",
+                            "/registrationConfirm", "/resendRegistrationToken", "/updateEmail").permitAll();
+//                    auth.requestMatchers("/api/auth/login/**", "/api/registration/**").permitAll();
+//                    auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
+                    auth.requestMatchers("/**").authenticated();
+                    auth.requestMatchers("/login").anonymous();
                 })
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/title")
+                .failureUrl("/login?error")
+                .failureHandler(authenticationFailureHandler())
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(oauthUserService)
+                .and()
+                .loginPage("/login")
+                .successHandler((request, response, authentication) -> {
+                    UserModel oauthUser = new UserModel((OAuth2User) authentication.getPrincipal());
+                    oauthUserService.processOAuthPostLogin(oauthUser);
+                    response.sendRedirect("/successLogin");
+                })
+                .and()
+                .logout()
+                .deleteCookies("JSESSIONID")
+//                .and()
+//                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                ;
         return http.build();
     }
 
