@@ -63,12 +63,8 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     public ResponseEntity show(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
         Map<Object, Object> response = new HashMap<>();
-        if (item == null) {
-            throw new RuntimeException("Item not found!");
-        } else {
-            this.show(item, response, principal);
-            return ResponseEntity.ok(response);
-        }
+        this.show(item, response, principal);
+        return ResponseEntity.ok(response);
     }
 
     void show(T item, Map<Object, Object> response, Principal principal) {

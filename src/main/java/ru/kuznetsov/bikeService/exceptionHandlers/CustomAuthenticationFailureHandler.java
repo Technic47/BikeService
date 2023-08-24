@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.exceptionHandlers;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,18 +38,20 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             errorMessage = "Токен не найден.";
         } else if (exception.getMessage().contains("Token expired")) {
             errorMessage = "Токен просрочен.";
+        } else if (exception.getMessage().contains("JWT expired")) {
+            errorMessage = "JWT токен просрочен.";
         }
 
         request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
     }
 
-    @ExceptionHandler({MissingCsrfTokenException.class, InvalidCsrfTokenException.class, SessionAuthenticationException.class})
+    @ExceptionHandler({ExpiredJwtException.class, MissingCsrfTokenException.class, InvalidCsrfTokenException.class, SessionAuthenticationException.class})
     public ErrorInfo handleAuthenticationException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "error.authorization");
     }
 
-    public class ErrorInfo {
+    public static class ErrorInfo {
         private final String url;
         private final String info;
 

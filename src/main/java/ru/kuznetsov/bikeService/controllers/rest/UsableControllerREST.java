@@ -29,11 +29,6 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
                                Principal principal) {
         Map<Object, Object> response = new HashMap<>();
         T item = service.getById(id);
-        if (item == null) {
-            throw new RuntimeException("Item not found!");
-        }
-//        Long manufactureIndex = item.getManufacturer();
-//        response.put("manufacture", manufacturerService.getById(manufactureIndex).getName());
         this.show(item, response, principal);
         return ResponseEntity.ok(response);
     }

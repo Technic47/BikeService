@@ -35,7 +35,6 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-
     public String createToken(String username, Set<UserRole> roles) {
 
         Claims claims = Jwts.claims().setSubject(username);
@@ -75,6 +74,8 @@ public class JwtTokenProvider {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("JWT token is expired or invalid");
+//        } catch (ExpiredJwtException ex){
+//            throw new JwtAuthenticationException(ex.getMessage());
         }
     }
 

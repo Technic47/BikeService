@@ -27,13 +27,6 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
                                Principal principal) {
         Map<Object, Object> response = new HashMap<>();
         T item = service.getById(id);
-        if (item == null) {
-            throw new RuntimeException("Item not found!");
-        }
-//        ServiceList serviceList = this.getServiceList(item.getLinkedItems());
-//        Long manufactureIndex = item.getManufacturer();
-//        response.put("manufacture", manufacturerService.getById(manufactureIndex).getName());
-//        this.addLinkedItemsToModel(model, serviceList);
         super.show(item, response, principal);
         return ResponseEntity.ok(response);
     }

@@ -82,13 +82,13 @@ public class SecurityConfiguration {
                     response.sendRedirect("/successLogin");
                 })
                 .and()
-                .logout()
-                .deleteCookies("JSESSIONID")
-                .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                ;
+                .logout()
+                .deleteCookies("JSESSIONID");
         return http.build();
     }
+
+
 
     @Bean
     public AuthenticationManager authManager(UserDetailsService userDetailsService) {

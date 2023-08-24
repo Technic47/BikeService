@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.services.abstracts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import ru.kuznetsov.bikeService.exceptionHandlers.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 import java.util.ArrayList;
@@ -33,7 +34,10 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
     @Override
     public E getById(Long id) {
         Optional<E> entity = repository.findById(id);
-        return entity.orElse(null);
+        if (entity.isEmpty()) {
+            throw new ResourceNotFoundException(id);
+        }
+        return entity.get();
     }
 
     @Override
@@ -49,7 +53,9 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        if (repository.existsById(id)) {
+            throw new ResourceNotFoundException(id);
+        } else repository.deleteById(id);
     }
 
     @Autowired
