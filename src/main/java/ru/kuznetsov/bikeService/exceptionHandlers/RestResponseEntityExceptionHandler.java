@@ -25,15 +25,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
-
-    @ExceptionHandler(JwtAuthenticationException.class)
-    protected ResponseEntity<Object> handleJwtAuthentication(ResourceNotFoundException ex, WebRequest request) {
-        String bodyOfResponse = ex.getMessage();
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+//        return handleExceptionInternal(ex, bodyOfResponse,
+//                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        ApiError apiError =
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), bodyOfResponse);
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler({ConstraintViolationException.class})

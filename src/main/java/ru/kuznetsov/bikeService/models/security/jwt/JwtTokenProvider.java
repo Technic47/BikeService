@@ -11,9 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
-import ru.kuznetsov.bikeService.exceptionHandlers.JwtAuthenticationException;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 
 import java.util.*;
@@ -42,7 +40,6 @@ public class JwtTokenProvider {
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-
         return Jwts.builder()//
                 .setClaims(claims)//
                 .setIssuedAt(now)//
@@ -69,14 +66,14 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
+//        try {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+        return !claims.getBody().getExpiration().before(new Date());
+//        } catch (JwtException | IllegalArgumentException e) {
+//            throw new JwtAuthenticationException("JWT token is expired or invalid");
 //        } catch (ExpiredJwtException ex){
 //            throw new JwtAuthenticationException(ex.getMessage());
-        }
+//        }
     }
 
     private List<String> getRoleNames(Set<UserRole> userRoles) {

@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.kuznetsov.bikeService.exceptionHandlers.CustomAuthenticationFailureHandler;
-import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenFilter;
+import ru.kuznetsov.bikeService.models.security.jwt.CustomAuthorizationFilter;
 import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenProvider;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.CustomOAuth2UserService;
@@ -82,13 +82,11 @@ public class SecurityConfiguration {
                     response.sendRedirect("/successLogin");
                 })
                 .and()
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CustomAuthorizationFilter(jwtTokenProvider, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .deleteCookies("JSESSIONID");
         return http.build();
     }
-
-
 
     @Bean
     public AuthenticationManager authManager(UserDetailsService userDetailsService) {
