@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.controllers.notRest.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 
 import java.security.Principal;
 

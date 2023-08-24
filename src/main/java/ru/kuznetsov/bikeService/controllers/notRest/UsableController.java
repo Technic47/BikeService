@@ -33,7 +33,8 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
         }
         Long manufactureIndex = item.getManufacturer();
         model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
-        return super.show(item, model, principal);
+        this.addItemAttributesShow(model, item, principal);
+        return super.show(item, model, principal, category);
     }
 
 

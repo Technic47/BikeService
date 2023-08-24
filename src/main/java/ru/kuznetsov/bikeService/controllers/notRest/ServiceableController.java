@@ -53,7 +53,8 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
         Long manufactureIndex = item.getManufacturer();
         model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
         this.addLinkedItemsToModel(model, serviceList);
-        return super.show(item, model, principal);
+        this.addItemAttributesShow(model, item, principal);
+        return super.show(item, model, principal, category);
     }
 
     @Override

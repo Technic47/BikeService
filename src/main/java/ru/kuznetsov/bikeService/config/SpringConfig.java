@@ -105,7 +105,6 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
 
-
     @Bean(name = "MainExecutor")
     public ExecutorService getMainService() {
         int coreCount = Runtime.getRuntime().availableProcessors();
