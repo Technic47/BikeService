@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
@@ -38,12 +39,28 @@ public abstract class CommonEntityController extends AbstractController {
     protected PDFService pdfService;
 
     protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> List<T> buildIndexList(
+            S extends CommonAbstractEntityService<T>> List<T> buildIndexListIncludeShared(
             final S service, UserModel userModel, String category) {
         List<T> objects = null;
 
         if (userModel.getAuthorities().contains(ROLE_USER)) {
             objects = service.findByCreatorOrShared(userModel.getId());
+            logger.info("personal " + category + " are shown to '" + userModel.getUsername() + "'");
+        }
+        if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
+            objects = service.index();
+            logger.info(category + " are shown to " + userModel.getUsername());
+        }
+        return objects;
+    }
+
+    protected <T extends AbstractShowableEntity,
+            S extends CommonAbstractEntityService<T>> List<T> buildIndexListExcludeShared(
+            final S service, UserModel userModel, String category) {
+        List<T> objects = null;
+
+        if (userModel.getAuthorities().contains(ROLE_USER)) {
+            objects = service.findByCreator(userModel.getId());
             logger.info("personal " + category + " are shown to '" + userModel.getUsername() + "'");
         }
         if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
@@ -67,14 +84,24 @@ public abstract class CommonEntityController extends AbstractController {
         model.addAttribute("sharedObjects", sharedIndexMap);
     }
 
+    protected <T extends AbstractShowableEntity> List<AbstractEntityDto> convertItemsToDto(List<T> objects) {
+        List<AbstractEntityDto> indexList = new ArrayList<>();
+        if (objects != null) {
+            objects.forEach(object -> {
+                indexList.add(new AbstractEntityDto(object));
+            });
+        }
+        return indexList;
+    }
+
     protected <T extends AbstractShowableEntity> void addIndexListsToResponse(Map<Object, Object> response, Long userId, List<T> objects) {
-        List<T> indexList = new ArrayList<>();
-        List<T> sharedIndexList = new ArrayList<>();
+        List<AbstractEntityDto> indexList = new ArrayList<>();
+        List<AbstractEntityDto> sharedIndexList = new ArrayList<>();
         if (objects != null) {
             objects.forEach(object -> {
                 if (object.getCreator().equals(userId)) {
-                    indexList.add(object);
-                } else sharedIndexList.add(object);
+                    indexList.add(new AbstractEntityDto(object));
+                } else sharedIndexList.add(new AbstractEntityDto(object));
             });
         }
         response.put("indexList", indexList);

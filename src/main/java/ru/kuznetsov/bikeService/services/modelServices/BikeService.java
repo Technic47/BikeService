@@ -13,8 +13,15 @@ public class BikeService extends AbstractServiceableService<Bike, BikeRepository
         super(repository);
     }
 
-    public List<Bike> findByLinkedPartsItemIdAndLinkedPartsType(Long Item_id, String Type){
-        return this.repository.findByLinkedPartsItemIdAndLinkedPartsType(Item_id, Type);
+    /**
+     * Find all linked items for Bike with specified itemId.
+     *
+     * @param itemId - id of Bike to find.
+     * @param Type   - type of linked items.
+     * @return List of found items.
+     */
+    public List<Bike> findByLinkedPartsItemIdAndLinkedPartsType(Long itemId, String Type) {
+        return this.repository.findByLinkedPartsItemIdAndLinkedPartsType(itemId, Type);
     }
 }
 

@@ -15,5 +15,5 @@ public interface CommonService<E> {
 
     List<E> index();
 
-    void delete(Long id);
+    void delete(Long id) throws ResourceNotFoundException;
 }

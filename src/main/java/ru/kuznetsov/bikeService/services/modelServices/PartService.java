@@ -13,7 +13,13 @@ public class PartService extends AbstractServiceableService<Part, PartRepository
         super(repository);
     }
 
-    public List<Part> findByLinkedItemsItemIdAndLinkedItemsType(Long Item_id, String Type){
-        return this.repository.findByLinkedItemsItemIdAndLinkedItemsType(Item_id, Type);
+    /**
+     * Find all linked items for Part with specified itemId.
+     * @param itemId - id of Part to find.
+     * @param Type - type of linked items.
+     * @return List of found items.
+     */
+    public List<Part> findByLinkedItemsItemIdAndLinkedItemsType(Long itemId, String Type){
+        return this.repository.findByLinkedItemsItemIdAndLinkedItemsType(itemId, Type);
     }
 }

@@ -25,7 +25,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserModel createUser(RegistrationRequestDto dto){
+    public UserModel createUser(RegistrationRequestDto dto) {
         return this.registerNewUserAccount(dto.toUserModel());
     }
 
@@ -157,6 +157,12 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         return repository.save(oldItem);
     }
 
+    /**
+     * Create user with ROLE_USER.
+     *
+     * @param userModel prepared user record.
+     * @return false if user already exists.
+     */
     public UserModel registerNewUserAccount(UserModel userModel) throws RuntimeException {
         if (emailExist(userModel.getEmail())) {
             throw new RuntimeException(
@@ -166,6 +172,13 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         return this.constructRecordAndSave(userModel, ROLE_USER);
     }
 
+    /**
+     * Create user with ROLE_USER from dto object
+     *
+     * @param dto prepared user record.
+     * @return saved new UserModel record.
+     * @throws RuntimeException if user exist.
+     */
     public UserModel registerNewUserAccount(RegistrationRequestDto dto) throws RuntimeException {
         if (emailExist(dto.getEmail())) {
             throw new RuntimeException(

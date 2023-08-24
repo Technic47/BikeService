@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -39,50 +40,50 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     }
 
     @GetMapping()
-    public ResponseEntity index(Principal principal) {
+    public List<AbstractEntityDto> index(Principal principal,
+                                         @RequestParam(name = "include_shared", required = false) boolean include_shared) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
-        Long userId = userModel.getId();
-        List<T> objects = this.buildIndexList(service, userModel, category);
-
-        Map<Object, Object> response = new HashMap<>();
-
-        this.addIndexListsToResponse(response, userId, objects);
-        response.put("sharedCheck", false);
-        this.addItemAttributesIndex(response, principal);
-        return ResponseEntity.ok(response);
+        List<T> objects;
+        if (include_shared) {
+            objects = this.buildIndexListIncludeShared(service, userModel, category);
+        } else objects = this.buildIndexListExcludeShared(service, userModel, category);
+        return this.convertItemsToDto(objects);
     }
 
     @PostMapping()
-    public T create(@RequestBody T item,
-                    @RequestPart("newImage") MultipartFile file,
-                    Principal principal) {
-        return this.doCreateProcedure(item, service, file, principal);
+    public AbstractEntityDto create(@RequestBody T item,
+                                    @RequestPart("newImage") MultipartFile file,
+                                    Principal principal) {
+        T updatedItem = this.doCreateProcedure(item, service, file, principal);
+        return new AbstractEntityDto(updatedItem);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity show(@PathVariable("id") Long id, Principal principal) {
+    public AbstractEntityDto show(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
         Map<Object, Object> response = new HashMap<>();
-        this.show(item, response, principal);
-        return ResponseEntity.ok(response);
+        T show = this.show(item, response, principal);
+        return new AbstractEntityDto(show);
     }
 
-    void show(T item, Map<Object, Object> response, Principal principal) {
-        boolean access = checkAccessToItem(item, principal);
-        response.put("access", access);
-        this.addItemAttributesShow(response, item, principal);
-        logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
+    T show(T item, Map<Object, Object> response, Principal principal) {
+        if (checkAccessToItem(item, principal)) {
+            logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
+            return item;
+        } else return null;
+//        response.put("access", access);
+//        this.addItemAttributesShow(response, item, principal);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable Long id,
-                                 @RequestBody T newItem,
-                                 @RequestPart(value = "newImage", required = false) MultipartFile file,
-                                 Principal principal) {
+    public AbstractEntityDto update(@PathVariable Long id,
+                                    @RequestBody T newItem,
+                                    @RequestPart(value = "newImage", required = false) MultipartFile file,
+                                    Principal principal) {
         T item = service.getById(id);
         Map<Object, Object> response = new HashMap<>();
-        this.update(newItem, file, item, response, principal);
-        return ResponseEntity.ok(response);
+        T updated = this.update(newItem, file, item, response, principal);
+        return new AbstractEntityDto(updated);
     }
 
     public T update(T newItem, MultipartFile file, T oldItem, Map<Object, Object> response, Principal principal) {
@@ -90,7 +91,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
             T updated = this.doUpdateProcedure(newItem, service, oldItem, file, principal);
 
-            addItemAttributesEdit(response, updated, principal);
+//            addItemAttributesEdit(response, updated, principal);
             return updated;
         } else return null;
     }
@@ -121,7 +122,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     }
 
     protected void addItemAttributesShow(Map<Object, Object> response, T item, Principal principal) {
-//        response.put("object", item);
         response.put("name", item.getName());
         response.put("valueName", item.getValueName());
         response.put("value", item.getValue());

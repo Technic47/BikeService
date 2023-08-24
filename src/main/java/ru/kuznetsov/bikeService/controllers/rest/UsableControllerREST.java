@@ -1,8 +1,5 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
@@ -10,7 +7,6 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class UsableControllerREST<T extends AbstractUsableEntity,
@@ -23,15 +19,15 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
         this.manufacturerService = manufacturerService;
     }
 
-    @Override
-    @GetMapping("/{id}")
-    public ResponseEntity show(@PathVariable("id") Long id,
-                               Principal principal) {
-        Map<Object, Object> response = new HashMap<>();
-        T item = service.getById(id);
-        this.show(item, response, principal);
-        return ResponseEntity.ok(response);
-    }
+//    @Override
+//    @GetMapping("/{id}")
+//    public AbstractEntityDto show(@PathVariable("id") Long id,
+//                                  Principal principal) {
+//        Map<Object, Object> response = new HashMap<>();
+//        T item = service.getById(id);
+//        T show = this.show(item, response, principal);
+//        return new AbstractEntityDto(show);
+//    }
 
     @Override
     protected void addItemAttributesShow(Map<Object, Object> response, T item, Principal principal) {

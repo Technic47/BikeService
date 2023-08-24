@@ -49,7 +49,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
-        List<T> objects = this.buildIndexList(service, userModel, category);
+        List<T> objects = this.buildIndexListIncludeShared(service, userModel, category);
 
         this.addIndexMapsToModel(model, userId, objects);
         model.addAttribute("sharedCheck", false);
