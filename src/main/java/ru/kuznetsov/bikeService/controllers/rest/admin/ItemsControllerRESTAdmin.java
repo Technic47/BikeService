@@ -19,6 +19,8 @@ import ru.kuznetsov.bikeService.services.modelServices.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping("/api/admin/items")
@@ -42,53 +44,62 @@ public class ItemsControllerRESTAdmin extends CommonEntityController {
     }
 
     @GetMapping("/createdBy/{userId}")
-    public ResponseEntity getCreatedItems(@PathVariable Long userId) {
+    public ResponseEntity getCreatedItems(@PathVariable Long userId) throws ExecutionException, InterruptedException {
         if (userService.existById(userId)) {
             Map<Object, Object> response = new HashMap<>();
-            response.put("documents", documentService.findByCreator(userId));
-            response.put("fasteners", fastenerService.findByCreator(userId));
-            response.put("manufacturers", manufacturerService.findByCreator(userId));
-            response.put("consumables", consumableService.findByCreator(userId));
-            response.put("tools", toolService.findByCreator(userId));
-            response.put("parts", partService.findByCreator(userId));
-            response.put("bikes", bikeService.findByCreator(userId));
+
+            response.put("documents", mainExecutor.submit(() -> documentService.findByCreator(userId)).get());
+            response.put("fasteners", mainExecutor.submit(() -> fastenerService.findByCreator(userId)).get());
+            response.put("manufacturers", mainExecutor.submit(() -> manufacturerService.findByCreator(userId)).get());
+            response.put("consumables", mainExecutor.submit(() -> consumableService.findByCreator(userId)).get());
+            response.put("tools", mainExecutor.submit(() -> toolService.findByCreator(userId)).get());
+            response.put("parts", mainExecutor.submit(() -> partService.findByCreator(userId)).get());
+            response.put("bikes", mainExecutor.submit(() -> bikeService.findByCreator(userId)).get());
+
             return ResponseEntity.ok(response);
         } else throw new ResourceNotFoundException(userId);
     }
 
     @GetMapping("/documents")
-    public List<Document> getDocumentsList() {
-        return documentService.index();
+    public List<Document> getDocumentsList() throws ExecutionException, InterruptedException {
+        Future<List<Document>> allDocuments = mainExecutor.submit(documentService::index);
+        return allDocuments.get();
     }
 
     @GetMapping("/fasteners")
-    public List<Fastener> getFastenersList() {
-        return fastenerService.index();
+    public List<Fastener> getFastenersList() throws ExecutionException, InterruptedException {
+        Future<List<Fastener>> allFasteners = mainExecutor.submit(fastenerService::index);
+        return allFasteners.get();
     }
 
     @GetMapping("/manufacturers")
-    public List<Manufacturer> getManufacturersList() {
-        return manufacturerService.index();
+    public List<Manufacturer> getManufacturersList() throws ExecutionException, InterruptedException {
+        Future<List<Manufacturer>> allManufacturers = mainExecutor.submit(manufacturerService::index);
+        return allManufacturers.get();
     }
 
     @GetMapping("/consumables")
-    public List<Consumable> getConsumablesList() {
-        return consumableService.index();
+    public List<Consumable> getConsumablesList() throws ExecutionException, InterruptedException {
+        Future<List<Consumable>> allConsumables = mainExecutor.submit(consumableService::index);
+        return allConsumables.get();
     }
 
     @GetMapping("/tools")
-    public List<Tool> getToolsList() {
-        return toolService.index();
+    public List<Tool> getToolsList() throws ExecutionException, InterruptedException {
+        Future<List<Tool>> allTools = mainExecutor.submit(toolService::index);
+        return allTools.get();
     }
 
     @GetMapping("/parts")
-    public List<Part> getPartsList() {
-        return partService.index();
+    public List<Part> getPartsList() throws ExecutionException, InterruptedException {
+        Future<List<Part>> allParts = mainExecutor.submit(partService::index);
+        return allParts.get();
     }
 
     @GetMapping("/bikes")
-    public List<Bike> getBikesList() {
-        return bikeService.index();
+    public List<Bike> getBikesList() throws ExecutionException, InterruptedException {
+        Future<List<Bike>> allBikes = mainExecutor.submit(bikeService::index);
+        return allBikes.get();
     }
 
     @GetMapping("/documents/{id}")
