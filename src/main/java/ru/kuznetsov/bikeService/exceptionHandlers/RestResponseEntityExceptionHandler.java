@@ -25,10 +25,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
-//        return handleExceptionInternal(ex, bodyOfResponse,
-//                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
         ApiError apiError =
                 new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), bodyOfResponse);
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler(AccessToResourceDenied.class)
+    protected ResponseEntity<Object> handleResourceAccessDenied(ResourceNotFoundException ex, WebRequest request) {
+        String bodyOfResponse = ex.getMessage();
+        ApiError apiError =
+                new ApiError(HttpStatus.FORBIDDEN, ex.getLocalizedMessage(), bodyOfResponse);
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }

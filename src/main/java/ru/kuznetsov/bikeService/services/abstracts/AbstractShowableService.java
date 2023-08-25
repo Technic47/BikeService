@@ -9,12 +9,11 @@ import java.util.List;
 /**
  * Abstract service for main categories of project.
  * Showable, Usable and Serviceable.
+ *
  * @param <E>
  * @param <R>
  */
-public abstract class AbstractShowableService<E extends AbstractShowableEntity,
-        R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R>
-        implements CommonAbstractEntityService<E> {
+public abstract class AbstractShowableService<E extends AbstractShowableEntity, R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R> implements CommonAbstractEntityService<E> {
 
     public AbstractShowableService(R repository) {
         super(repository);
@@ -33,7 +32,7 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         return this.showableToRepo(toRepo, newItem);
     }
 
-    public E update(E item, E newItem){
+    public E update(E item, E newItem) {
         return this.showableToRepo(item, newItem);
     }
 
@@ -44,7 +43,9 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         toRepo.setLink(newItem.getLink());
         toRepo.setValue(newItem.getValue());
         toRepo.setIsShared(newItem.getIsShared());
-        toRepo.setCreator(newItem.getCreator());
+        if (newItem.getCreator() != null) {
+            toRepo.setCreator(newItem.getCreator());
+        }
         toRepo.setUpdated(new Date());
         return this.save(toRepo);
     }
@@ -87,5 +88,9 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
      */
     public List<E> findByDescriptionContainingIgnoreCase(String string) {
         return this.repository.findByDescriptionContainingIgnoreCase(string);
+    }
+
+    public boolean existById(Long id) {
+        return repository.existsById(id);
     }
 }

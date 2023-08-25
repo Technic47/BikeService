@@ -3,14 +3,17 @@ package ru.kuznetsov.bikeService.models.abstracts;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 
 import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractShowableEntity
         implements Showable {
     @Id
@@ -43,6 +46,7 @@ public abstract class AbstractShowableEntity
     protected String valueName;
 
     @Column(name = "creator")
+    @CreatedBy
     protected Long creator;
 
     @Column(name = "isShared")

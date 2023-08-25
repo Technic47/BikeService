@@ -21,7 +21,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         return this.serviceableToRepo(toRepo, newItem);
     }
 
-    public E update(E oldItem, E newItem){
+    public E update(E oldItem, E newItem) {
         return this.serviceableToRepo(oldItem, newItem);
     }
 
@@ -37,10 +37,10 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
      * @param item   item E where you want to add PartEntity.
      * @param entity entity to be added.
      */
-    public void addToLinkedItems(E item, PartEntity entity) {
+    public E addToLinkedItems(E item, PartEntity entity) {
         Set<PartEntity> entitySet = item.getLinkedItems();
 
-        Optional<PartEntity> searchItem = entitySet.parallelStream()
+        Optional<PartEntity> searchItem = entitySet.stream()
                 .filter(part -> part.equals(entity))
                 .findFirst();
 
@@ -58,7 +58,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         } else {
             entitySet.add(entity);
         }
-        repository.save(item);
+        return repository.save(item);
     }
 
     /**
@@ -69,9 +69,9 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
      * @param item   item E where you want to delete PartEntity.
      * @param entity entity to be deleted.
      */
-    public void delFromLinkedItems(E item, PartEntity entity) {
+    public E delFromLinkedItems(E item, PartEntity entity) {
         Set<PartEntity> entitySet = item.getLinkedItems();
-        Optional<PartEntity> searchItem = entitySet.parallelStream()
+        Optional<PartEntity> searchItem = entitySet.stream()
                 .filter(part -> part.equals(entity))
                 .findFirst();
 
@@ -89,7 +89,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
                 }
                 case "Part", "Document", "Tool" -> entitySet.remove(entity);
             }
-            repository.save(item);
-        }
+            return repository.save(item);
+        } else return item;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
+import ru.kuznetsov.bikeService.exceptionHandlers.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -52,7 +53,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
     @PostMapping()
     public AbstractEntityDto create(@RequestBody T item,
-                                    @RequestPart("newImage") MultipartFile file,
+                                    @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
         T updatedItem = this.doCreateProcedure(item, service, file, principal);
         return new AbstractEntityDto(updatedItem);
@@ -70,7 +71,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         if (checkAccessToItem(item, principal)) {
             logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
             return item;
-        } else return null;
+        } else throw new AccessToResourceDenied(item.getId());
 //        response.put("access", access);
 //        this.addItemAttributesShow(response, item, principal);
     }
@@ -93,7 +94,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
 //            addItemAttributesEdit(response, updated, principal);
             return updated;
-        } else return null;
+        } else throw new AccessToResourceDenied(oldItem.getId());
     }
 
     @DeleteMapping(value = "/{id}")
@@ -102,7 +103,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         if (checkAccessToItem(item, principal)) {
             this.doDeleteProcedure(item, service, principal, category);
             return true;
-        } else throw new RuntimeException("You do not have access to item with id: " + id);
+        } else throw new AccessToResourceDenied(item.getId());
     }
 
     @GetMapping(value = "/pdf")

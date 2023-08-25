@@ -180,6 +180,9 @@ public abstract class CommonEntityController extends AbstractController {
                 item.setPicture(picture.getId());
             }
         }
+        if (item.getPicture() == null) {
+            item.setPicture(1L);
+        }
     }
 
     protected <T extends AbstractShowableEntity> ResponseEntity<Resource> prepareResponse(T item, Principal principal) throws IOException {
