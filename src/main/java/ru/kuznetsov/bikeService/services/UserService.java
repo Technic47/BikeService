@@ -94,6 +94,10 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         return this.repository.findByEmail(email);
     }
 
+    public boolean existById(Long id){
+        return repository.existsById(id);
+    }
+
     private boolean emailExist(String email) {
         return repository.findByEmail(email) != null;
     }
