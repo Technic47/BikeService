@@ -1,6 +1,6 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
-import ru.kuznetsov.bikeService.exceptionHandlers.ResourceNotFoundException;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 
 import java.util.List;
 

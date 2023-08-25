@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.exceptionHandlers;
+package ru.kuznetsov.bikeService.customExceptions;
 
 import org.springframework.security.core.AuthenticationException;
 

@@ -2,7 +2,7 @@ package ru.kuznetsov.bikeService.services.abstracts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import ru.kuznetsov.bikeService.exceptionHandlers.ResourceNotFoundException;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 import java.util.ArrayList;

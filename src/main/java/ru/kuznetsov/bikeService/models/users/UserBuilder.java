@@ -18,7 +18,7 @@ public class UserBuilder {
         this.user.setPassword(password);
     }
 
-    public UserBuilder(String userName, String email, String password){
+    public UserBuilder(String userName, String email, String password) {
         this();
         this.user.setUsername(userName);
         this.user.setEmail(email);
@@ -30,48 +30,53 @@ public class UserBuilder {
     }
 
 
-    public UserBuilder setName(String name){
+    public UserBuilder setName(String name) {
         this.user.setUsername(name);
         return this;
     }
 
-    public UserBuilder setPassword(String password){
+    public UserBuilder setPassword(String password) {
         this.user.setPassword(password);
         return this;
     }
 
-    public UserBuilder setEmail(String email){
+    public UserBuilder setEmail(String email) {
         this.user.setEmail(email);
         return this;
     }
 
-    public UserBuilder encodePassword(PasswordEncoder encoder){
+    public UserBuilder encodePassword(PasswordEncoder encoder) {
         this.user.setPassword(encoder.encode(this.user.getPassword()));
         return this;
     }
 
-    public UserBuilder addRole(UserRole role){
+    public UserBuilder addRole(UserRole role) {
         this.user.getAuthorities().add(role);
         return this;
     }
 
 
-    public UserBuilder setActive(boolean state){
+    public UserBuilder setActive(boolean state) {
         this.user.setActive(state);
         return this;
     }
 
-    public UserBuilder setEnabled(boolean state){
+    public UserBuilder setEnabled(boolean state) {
         this.user.setEnabled(true);
         return this;
     }
 
-    public UserBuilder setProvider(Provider provider){
+    public UserBuilder setProvider(Provider provider) {
         this.user.setProvider(provider);
         return this;
     }
 
-    public UserModel build(){
+    public UserBuilder setCreationDate() {
+        this.user.setCreated(new Date());
+        return this;
+    }
+
+    public UserModel build() {
         this.user.setCreated(new Date());
         return this.user;
     }

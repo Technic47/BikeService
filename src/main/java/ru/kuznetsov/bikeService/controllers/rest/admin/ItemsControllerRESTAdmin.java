@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
-import ru.kuznetsov.bikeService.exceptionHandlers.ResourceNotFoundException;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.showable.Document;

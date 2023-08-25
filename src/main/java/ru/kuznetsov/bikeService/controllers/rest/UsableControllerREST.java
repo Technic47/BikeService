@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.exceptionHandlers.ResourceNotFoundException;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;

@@ -10,6 +10,7 @@ import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
+import java.util.Date;
 import java.util.List;
 
 import static ru.kuznetsov.bikeService.models.users.Provider.LOCAL;
@@ -53,7 +54,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
             return null;
         }
         UserModel newUser = new UserBuilder(userModel.getName(), userModel.getEmail(), userModel.getPassword())
-                .encodePassword(this.passwordEncoder).setActive(true)
+                .encodePassword(this.passwordEncoder).setActive(true).setCreationDate()
                 .addRole(role).setProvider(LOCAL).build();
         return repository.save(newUser);
     }
@@ -158,6 +159,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
             String newPass = updateItem.getPassword();
             oldItem.setPassword(this.passwordEncoder.encode(newPass));
         }
+        oldItem.setUpdated(new Date());
         return repository.save(oldItem);
     }
 
