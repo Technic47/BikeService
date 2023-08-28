@@ -1,7 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.notRest;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -225,30 +224,5 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
     @Override
     protected void addItemAttributesNew(Model model, T item, Principal principal) {
         super.addItemAttributesNew(model, item, principal);
-    }
-
-    @Autowired
-    private void setDocumentDAO(DocumentService documentDAO) {
-        this.documentDAO = documentDAO;
-    }
-
-    @Autowired
-    private void setFastenerDAO(FastenerService fastenerDAO) {
-        this.fastenerDAO = fastenerDAO;
-    }
-
-    @Autowired
-    private void setConsumableDAO(ConsumableService consumableDAO) {
-        this.consumableDAO = consumableDAO;
-    }
-
-    @Autowired
-    private void setToolDAO(ToolService toolDAO) {
-        this.toolDAO = toolDAO;
-    }
-
-    @Autowired
-    private void setPartDAO(PartService partDAO) {
-        this.partDAO = partDAO;
     }
 }

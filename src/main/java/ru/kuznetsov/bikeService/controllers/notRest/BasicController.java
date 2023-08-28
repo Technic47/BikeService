@@ -16,11 +16,16 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
-
+/**
+ * Abstract non-REST controller that provides general methods and mapping for AbstractShowableEntity models.
+ * @param <T> entities from AbstractShowableEntity.
+ * @param <S>
+ */
 @Component
 public abstract class BasicController<T extends AbstractShowableEntity,
         S extends CommonAbstractEntityService<T>>
@@ -49,7 +54,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
-        List<T> objects = this.buildIndexListIncludeShared(service, userModel, category);
+        List<T> objects = this.buildIndexList(service, userModel, category, true);
 
         this.addIndexMapsToModel(model, userId, objects);
         model.addAttribute("sharedCheck", false);
@@ -172,7 +177,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public String delete(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
         if (checkAccessToItem(item, principal)) {
-            this.doDeleteProcedure(item, service, principal, category);
+            this.doDeleteProcedure(item, service, principal);
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
     }
@@ -208,25 +213,10 @@ public abstract class BasicController<T extends AbstractShowableEntity,
                          @RequestParam(value = "shared", required = false) boolean shared,
                          Model model,
                          Principal principal) {
-        Set<T> resultSet = new HashSet<>();
-        resultSet.addAll(this.service.findByNameContainingIgnoreCase(value));
-        resultSet.addAll(this.service.findByDescriptionContainingIgnoreCase(value));
-
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
 
-        if (!userModel.getAuthorities().contains(ROLE_ADMIN)) {
-            if (shared) {
-                resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(userId)
-                                || item.getIsShared())
-                        .collect(Collectors.toSet());
-            } else {
-                resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(userId))
-                        .collect(Collectors.toSet());
-            }
-        }
+        List<T> resultSet = this.doSearchProcedure(value, this.service, principal, shared, category);
 
         Map<T, String> resultMap = new HashMap<>();
         Map<T, String> sharedIndexMap = new HashMap<>();
@@ -241,7 +231,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         model.addAttribute("sharedObjects", sharedIndexMap);
         model.addAttribute("category", category);
 
-        logger.info(userModel.getUsername() + " was searching " + value + " in " + category);
+
         return "index";
     }
 }

@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.controllers.notRest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,15 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
-import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
 import java.security.Principal;
 
 @Component
 public abstract class UsableController<T extends AbstractUsableEntity, S extends CommonAbstractEntityService<T>>
         extends BasicController<T, S> {
-    protected ManufacturerService manufacturerService;
-
     public UsableController(S service) {
         super(service);
     }
@@ -59,10 +55,5 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
                 .addUserName(userModel.getUsername())
                 .addImage(this.pictureService.getById(item.getPicture()).getName())
                 .buildUsable(item);
-    }
-
-    @Autowired
-    public void setManufacturerService(ManufacturerService manufacturerService) {
-        this.manufacturerService = manufacturerService;
     }
 }

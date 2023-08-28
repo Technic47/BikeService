@@ -42,7 +42,7 @@ services:
   bikeservice:
     build:
       context: .
-    container_name: app
+    container_name: app_V1.5
     depends_on:
       - db
     restart: always

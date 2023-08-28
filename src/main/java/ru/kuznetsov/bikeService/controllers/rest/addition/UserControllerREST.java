@@ -20,12 +20,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/users")
 public class UserControllerREST extends AbstractController {
-    protected final DocumentService documentService;
-    protected final ManufacturerService manufacturerService;
-    protected final FastenerService fastenerService;
-    protected final ConsumableService consumableService;
-    protected final ToolService toolService;
-
     public UserControllerREST(DocumentService documentService, ManufacturerService manufacturerService, FastenerService fastenerService, ConsumableService consumableService, ToolService toolService) {
         this.documentService = documentService;
         this.manufacturerService = manufacturerService;

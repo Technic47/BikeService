@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.models.lists;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 
 import java.util.Objects;
 
@@ -11,6 +12,11 @@ public class UserEntity {
     private String type;
     @Column(name = "itemId")
     private Long id;
+
+    public UserEntity(AbstractShowableEntity item) {
+        this.type = item.getClass().getSimpleName();
+        this.id = item.getId();
+    }
 
     public UserEntity(String type, Long id) {
         this.type = type;

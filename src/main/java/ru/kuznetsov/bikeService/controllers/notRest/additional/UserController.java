@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.controllers.notRest.additional;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -22,15 +21,17 @@ import java.util.Set;
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {
-    private DocumentService documentService;
-    private FastenerService fastenerService;
-    private ManufacturerService manufacturerService;
-    private ConsumableService consumableService;
-    private ToolService toolService;
     private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenService tokenService;
 
-    public UserController(ApplicationEventPublisher eventPublisher, VerificationTokenService tokenService) {
+    public UserController(DocumentService documentService, FastenerService fastenerService, ManufacturerService manufacturerService, ConsumableService consumableService, ToolService toolService, PartService partService, BikeService bikeService, ApplicationEventPublisher eventPublisher, VerificationTokenService tokenService) {
+        this.documentService = documentService;
+        this.fastenerService = fastenerService;
+        this.manufacturerService = manufacturerService;
+        this.consumableService = consumableService;
+        this.toolService = toolService;
+        this.partService = partService;
+        this.bikeService = bikeService;
         this.eventPublisher = eventPublisher;
         this.tokenService = tokenService;
     }
@@ -151,30 +152,5 @@ public class UserController extends AbstractController {
         this.addUserToModel(model, principal);
         model.addAttribute("users", resultSet);
         return "users_index";
-    }
-
-    @Autowired
-    private void setDocumentService(DocumentService documentService) {
-        this.documentService = documentService;
-    }
-
-    @Autowired
-    private void setFastenerService(FastenerService fastenerService) {
-        this.fastenerService = fastenerService;
-    }
-
-    @Autowired
-    private void setManufacturerService(ManufacturerService manufacturerService) {
-        this.manufacturerService = manufacturerService;
-    }
-
-    @Autowired
-    private void setConsumableService(ConsumableService consumableService) {
-        this.consumableService = consumableService;
-    }
-
-    @Autowired
-    private void setToolService(ToolService toolService) {
-        this.toolService = toolService;
     }
 }

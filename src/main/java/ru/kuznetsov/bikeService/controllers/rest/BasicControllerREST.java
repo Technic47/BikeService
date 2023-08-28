@@ -10,7 +10,6 @@ import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
@@ -27,7 +26,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     protected T thisClassNewObject;
     protected String category;
 
-    protected BasicControllerREST(S service, PDFService pdfService) {
+    protected BasicControllerREST(S service) {
         this.service = service;
     }
 
@@ -42,12 +41,14 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
     @GetMapping()
     public List<AbstractEntityDto> index(Principal principal,
-                                         @RequestParam(name = "include_shared", required = false) boolean include_shared) {
+                                         @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
+                                         @RequestParam(name = "search", required = false) String value) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         List<T> objects;
-        if (include_shared) {
-            objects = this.buildIndexListIncludeShared(service, userModel, category);
-        } else objects = this.buildIndexListExcludeShared(service, userModel, category);
+        if (value != null) {
+            objects = this.doSearchProcedure(value, this.service, principal, shared, category);
+        } else objects = this.buildIndexList(service, userModel, category, shared);
+
         return this.convertItemsToDto(objects);
     }
 
@@ -101,10 +102,11 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     public boolean delete(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
         if (checkAccessToItem(item, principal)) {
-            this.doDeleteProcedure(item, service, principal, category);
+            this.doDeleteProcedure(item, service, principal);
             return true;
         } else throw new AccessToResourceDenied(item.getId());
     }
+
 
     @GetMapping(value = "/pdf")
     @ResponseBody
@@ -120,32 +122,5 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                 .addUserName(userModel.getUsername())
                 .addImage(this.pictureService.getById(item.getPicture()).getName())
                 .buildShowable(item);
-    }
-
-    protected void addItemAttributesShow(Map<Object, Object> response, T item, Principal principal) {
-        response.put("name", item.getName());
-        response.put("valueName", item.getValueName());
-        response.put("value", item.getValue());
-        response.put("description", item.getDescription());
-        response.put("link", item.getLink());
-        response.put("picture", pictureService.getById(item.getPicture()).getName());
-        switch (category) {
-            case "parts", "bikes" -> response.put("type", "Serviceable");
-            case "tools", "consumables" -> response.put("type", "Usable");
-            case "documents", "fasteners", "manufacturers" -> response.put("type", "Showable");
-        }
-        this.addItemAttributesIndex(response, principal);
-    }
-
-    private void addItemAttributesIndex(Map<Object, Object> response, Principal principal) {
-        response.put("category", category);
-    }
-
-    protected void addItemAttributesNew(Map<Object, Object> response, T item, Principal principal) {
-        this.addItemAttributesShow(response, item, principal);
-    }
-
-    protected void addItemAttributesEdit(Map<Object, Object> response, T item, Principal principal) {
-        this.addItemAttributesNew(response, item, principal);
     }
 }
