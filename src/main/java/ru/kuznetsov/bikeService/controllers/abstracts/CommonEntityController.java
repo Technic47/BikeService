@@ -151,7 +151,7 @@ public abstract class CommonEntityController extends AbstractController {
         T createdItem = service.save(item);
         userService.addCreatedItem(userModel,
                 new UserEntity(item.getClass().getSimpleName(), createdItem.getId()));
-        logger.info(item.toString() + " was created by '" + userModel.getUsername());
+        logger.info(item.getId() + ":" + item.getName() + " was created by '" + userModel.getUsername());
         return createdItem;
     }
 

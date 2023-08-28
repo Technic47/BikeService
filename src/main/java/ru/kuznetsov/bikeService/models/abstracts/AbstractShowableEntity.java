@@ -82,14 +82,6 @@ public abstract class AbstractShowableEntity
         this.isShared = dtoNew.isShared();
     }
 
-    public AbstractShowableEntity makeFromDto(AbstractEntityDtoNew dtoNew){
-        this.name = dtoNew.getName();
-        this.description = dtoNew.getDescription();
-        this.link = dtoNew.getLink();
-        this.value = dtoNew.getValue();
-        this.isShared = dtoNew.isShared();
-        return this;
-    }
 
     public Long getId() {
         return id;
