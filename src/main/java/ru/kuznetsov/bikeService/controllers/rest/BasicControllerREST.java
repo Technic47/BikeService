@@ -14,9 +14,7 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public abstract class BasicControllerREST<T extends AbstractShowableEntity,
@@ -63,18 +61,15 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     @GetMapping("/{id}")
     public AbstractEntityDto show(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
-        Map<Object, Object> response = new HashMap<>();
-        T show = this.show(item, response, principal);
+        T show = this.show(item, principal);
         return new AbstractEntityDto(show);
     }
 
-    T show(T item, Map<Object, Object> response, Principal principal) {
+    T show(T item, Principal principal) {
         if (checkAccessToItem(item, principal)) {
             logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
             return item;
         } else throw new AccessToResourceDenied(item.getId());
-//        response.put("access", access);
-//        this.addItemAttributesShow(response, item, principal);
     }
 
     @PutMapping("/{id}")
@@ -83,18 +78,13 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
         T item = service.getById(id);
-        Map<Object, Object> response = new HashMap<>();
-        T updated = this.update(newItem, file, item, response, principal);
+        T updated = this.update(newItem, file, item, principal);
         return new AbstractEntityDto(updated);
     }
 
-    public T update(T newItem, MultipartFile file, T oldItem, Map<Object, Object> response, Principal principal) {
+    public T update(T newItem, MultipartFile file, T oldItem, Principal principal) {
         if (checkAccessToItem(oldItem, principal)) {
-
-            T updated = this.doUpdateProcedure(newItem, service, oldItem, file, principal);
-
-//            addItemAttributesEdit(response, updated, principal);
-            return updated;
+            return this.doUpdateProcedure(newItem, service, oldItem, file, principal);
         } else throw new AccessToResourceDenied(oldItem.getId());
     }
 

@@ -11,27 +11,13 @@ import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class UsableControllerREST<T extends AbstractUsableEntity,
         S extends CommonAbstractEntityService<T>>
         extends BasicControllerREST<T, S> {
-
     protected UsableControllerREST(S service) {
         super(service);
     }
-
-//    @Override
-//    @GetMapping("/{id}")
-//    public AbstractEntityDto show(@PathVariable("id") Long id,
-//                                  Principal principal) {
-//        Map<Object, Object> response = new HashMap<>();
-//        T item = service.getById(id);
-//        T show = this.show(item, response, principal);
-//        return new AbstractEntityDto(show);
-//    }
-
 
     @Override
     public AbstractEntityDto create(@RequestBody T item,
@@ -49,8 +35,7 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
                                     Principal principal) {
         T item = service.getById(id);
         this.checkManufacturer(newItem);
-        Map<Object, Object> response = new HashMap<>();
-        T updated = this.update(newItem, file, item, response, principal);
+        T updated = this.update(newItem, file, item, principal);
         return new AbstractEntityDto(updated);
     }
 

@@ -176,7 +176,7 @@ public abstract class CommonEntityController extends AbstractController {
      * Main procedure for deleting entity. Cleans up connected tables.
      *
      * @param item      entity for deleting.
-     * @param service   connected to item service.
+     * @param service   connected to entity service.
      * @param principal principal who is trying to delete the item.
      * @param <T>       AbstractShowableEntity from main models.
      * @param <S>
@@ -221,9 +221,23 @@ public abstract class CommonEntityController extends AbstractController {
         mainExecutor.submit(clearBikes);
     }
 
+    /**
+     * Searching via matching in Name and Description. Case is ignored. ResultSet is formed considering current user`s ROLE.
+     * If user is ADMIN -> no filtering.
+     * Else -> filtering remains shared and ID-filtered items, or just ID-filtered items.
+     *
+     * @param value     string to search.
+     * @param service   connected to entity service.
+     * @param principal who is searching.
+     * @param shared    flag for including shared items to resultSet.
+     * @param category  category of entities for logging.
+     * @param <T>       AbstractShowableEntity from main models.
+     * @param <S>
+     * @return List with search results.
+     */
     protected <T extends AbstractShowableEntity,
             S extends CommonAbstractEntityService<T>> List<T> doSearchProcedure(
-                    String value, final S service, final Principal principal, boolean shared, String category){
+            String value, final S service, final Principal principal, boolean shared, String category) {
         Set<T> resultSet = new HashSet<>();
         resultSet.addAll(service.findByNameContainingIgnoreCase(value));
         resultSet.addAll(service.findByDescriptionContainingIgnoreCase(value));
