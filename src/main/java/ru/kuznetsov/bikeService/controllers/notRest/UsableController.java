@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.notRest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
     }
 
 
+    @Operation(hidden = true)
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,

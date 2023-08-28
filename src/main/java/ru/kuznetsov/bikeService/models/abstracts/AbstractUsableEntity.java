@@ -3,6 +3,7 @@ package ru.kuznetsov.bikeService.models.abstracts;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Size;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.usable.Usable;
 
 import java.util.Objects;
@@ -23,6 +24,12 @@ public abstract class AbstractUsableEntity extends AbstractShowableEntity implem
         super(id, name, description, picture, link, value, creator);
         this.manufacturer = manufacturer;
         this.model = model;
+    }
+
+    public AbstractUsableEntity(AbstractEntityDtoNew dtoNew) {
+        super(dtoNew);
+        this.manufacturer = dtoNew.getManufacturer();
+        this.model = dtoNew.getModel();
     }
 
     public Long getManufacturer() {

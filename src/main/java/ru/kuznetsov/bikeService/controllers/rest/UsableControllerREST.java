@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -20,9 +21,10 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
     }
 
     @Override
-    public AbstractEntityDto create(@RequestBody T item,
+    public AbstractEntityDto create(@RequestBody AbstractEntityDtoNew itemDto,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
+        T item = this.convertFromDTO(thisClassNewObject, itemDto);
         this.checkManufacturer(item);
         T updatedItem = this.doCreateProcedure(item, service, file, principal);
         return new AbstractEntityDto(updatedItem);

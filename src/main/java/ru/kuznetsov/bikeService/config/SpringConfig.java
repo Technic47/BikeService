@@ -1,15 +1,9 @@
 package ru.kuznetsov.bikeService.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.servers.Server;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
-import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -28,7 +22,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -166,28 +159,5 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
         return mailSender;
-    }
-
-    @Bean
-    public GroupedOpenApi publicUserApi() {
-        return GroupedOpenApi.builder()
-                .group("Users")
-                .pathsToMatch("/users/**")
-                .build();
-    }
-
-    @Bean
-    public OpenAPI customOpenApi() {
-        return new OpenAPI().info(new Info().title("Application API")
-                        .version("TestAppVersion")
-                        .description("TestAppDescription")
-                        .license(new License().name("Apache 2.0")
-                                .url("http://springdoc.org"))
-                        .contact(new Contact().name("username")
-                                .email("Technic47@gmail.com")))
-                .servers(List.of(new Server().url("http://localhost:9090")
-                                .description("Dev service"),
-                        new Server().url("http://localhost:9443")
-                                .description("Beta service")));
     }
 }

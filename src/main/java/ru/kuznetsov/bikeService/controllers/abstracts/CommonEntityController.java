@@ -10,11 +10,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
+import ru.kuznetsov.bikeService.models.showable.Document;
+import ru.kuznetsov.bikeService.models.showable.Fastener;
+import ru.kuznetsov.bikeService.models.showable.Manufacturer;
+import ru.kuznetsov.bikeService.models.usable.Consumable;
+import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -145,8 +151,22 @@ public abstract class CommonEntityController extends AbstractController {
         T createdItem = service.save(item);
         userService.addCreatedItem(userModel,
                 new UserEntity(item.getClass().getSimpleName(), createdItem.getId()));
-        logger.info(item + " was created by '" + userModel.getUsername());
+        logger.info(item.toString() + " was created by '" + userModel.getUsername());
         return createdItem;
+    }
+
+    protected <T extends AbstractShowableEntity> T convertFromDTO(
+            T item, AbstractEntityDtoNew itemDto) {
+        switch (item.getClass().getSimpleName()) {
+            case "Document" -> item = (T) new Document(itemDto);
+            case "Fastener" -> item = (T) new Fastener(itemDto);
+            case "Manufacturer" -> item = (T) new Manufacturer(itemDto);
+            case "Consumable" -> item = (T) new Consumable(itemDto);
+            case "Tool" -> item = (T) new Tool(itemDto);
+            case "Part" -> item = (T) new Part(itemDto);
+            case "Bike" -> item = (T) new Bike(itemDto);
+        }
+        return item;
     }
 
     /**

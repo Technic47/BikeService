@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.notRest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
@@ -50,6 +51,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     }
 
 
+    @Operation(hidden = true)
     @GetMapping()
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
@@ -62,6 +64,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         return "index";
     }
 
+    @Operation(hidden = true)
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
                        Model model, Principal principal) {
@@ -82,6 +85,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         return "show";
     }
 
+    @Operation(hidden = true)
     @GetMapping(value = "/new")
     public String newItem(Model model, Principal principal) {
         this.addItemAttributesNew(model, thisClassNewObject, principal);
@@ -113,6 +117,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         this.addItemAttributesNew(model, item, principal);
     }
 
+    @Operation(hidden = true)
     @PostMapping()
     public String create(@Valid @ModelAttribute("object") T item,
                          BindingResult bindingResult,
@@ -127,6 +132,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         return "redirect:/" + category;
     }
 
+    @Operation(hidden = true)
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
@@ -147,6 +153,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         } else return "redirect:/" + category + "/" + item.getId();
     }
 
+    @Operation(hidden = true)
     @PostMapping("/{id}/edit")
     public String update(@Valid @ModelAttribute("object") T newItem,
                          BindingResult bindingResult,
@@ -173,6 +180,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         } else return "redirect:/" + category + "/" + oldItem.getId();
     }
 
+    @Operation(hidden = true)
     @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
@@ -182,6 +190,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         } else return "redirect:/" + category + "/" + id;
     }
 
+    @Operation(hidden = true)
     @GetMapping(value = "/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
@@ -208,6 +217,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
      * @param model
      * @return "index" page with search results.
      */
+    @Operation(hidden = true)
     @GetMapping(value = "/search")
     public String search(@RequestParam(value = "value") String value,
                          @RequestParam(value = "shared", required = false) boolean shared,

@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +21,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         super(service);
     }
 
+    @Operation(summary = "Add linked item to entity")
     @PutMapping("/{itemId}/linkedItems/{linkedItemId}")
     public AbstractEntityDto addItemToItemList(@PathVariable Long itemId,
                                                @PathVariable Long linkedItemId,
@@ -34,6 +36,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         } else throw new AccessToResourceDenied(itemToAdd.getId());
     }
 
+    @Operation(summary = "Del linked item from entity")
     @DeleteMapping("/{itemId}/linkedItems/{linkedItemId}")
     public AbstractEntityDto delItemFromItemList(@PathVariable Long itemId,
                                                  @PathVariable Long linkedItemId,

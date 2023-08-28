@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 
 import java.util.Date;
@@ -71,6 +72,23 @@ public abstract class AbstractShowableEntity
         this.link = link;
         this.value = value;
         this.creator = creator;
+    }
+
+    public AbstractShowableEntity(AbstractEntityDtoNew dtoNew){
+        this.name = dtoNew.getName();
+        this.description = dtoNew.getDescription();
+        this.link = dtoNew.getLink();
+        this.value = dtoNew.getValue();
+        this.isShared = dtoNew.isShared();
+    }
+
+    public AbstractShowableEntity makeFromDto(AbstractEntityDtoNew dtoNew){
+        this.name = dtoNew.getName();
+        this.description = dtoNew.getDescription();
+        this.link = dtoNew.getLink();
+        this.value = dtoNew.getValue();
+        this.isShared = dtoNew.isShared();
+        return this;
     }
 
     public Long getId() {

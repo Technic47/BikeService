@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.models.servicable;
 
 import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 
 import java.util.HashSet;
@@ -22,6 +23,10 @@ public class Bike extends AbstractServiceableEntity {
 
     public Bike(Long id, String name, String description, Long picture, String link, String value, Long creator, Long manufacturer, String model) {
         super(id, name, description, picture, link, value, creator, manufacturer, model);
+    }
+
+    public Bike(AbstractEntityDtoNew dtoNew) {
+        super(dtoNew);
     }
 
     @Override

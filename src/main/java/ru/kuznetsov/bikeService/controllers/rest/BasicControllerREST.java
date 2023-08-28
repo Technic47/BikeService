@@ -10,6 +10,7 @@ import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
+import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -39,16 +40,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     }
 
     @Operation(summary = "Get all entities")
-//    @ApiResponses(value = {
-//            @ApiResponse(
-//                    responseCode = "200",
-//                    description = "Found the entities",
-//                    content = {
-//                            @Content(
-//                                    mediaType = "application/json",
-//                                    array = @ArraySchema(schema = @Schema(implementation = DocumentControllerREST.class)))
-//                    })
-//    })
     @GetMapping()
     public List<AbstractEntityDto> index(Principal principal,
                                          @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
@@ -62,15 +53,18 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         return this.convertItemsToDto(objects);
     }
 
-    @Operation(summary = "Get all entities")
+    @Operation(summary = "Create a new entity")
     @PostMapping()
-    public AbstractEntityDto create(@RequestBody T item,
+    public AbstractEntityDto create(@RequestBody AbstractEntityDtoNew itemDto,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
+        T item = this.convertFromDTO(thisClassNewObject, itemDto);
         T updatedItem = this.doCreateProcedure(item, service, file, principal);
         return new AbstractEntityDto(updatedItem);
     }
 
+
+    @Operation(summary = "Get entity by id")
     @GetMapping("/{id}")
     public AbstractEntityDto show(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
@@ -85,6 +79,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         } else throw new AccessToResourceDenied(item.getId());
     }
 
+    @Operation(summary = "Edit entity")
     @PutMapping("/{id}")
     public AbstractEntityDto update(@PathVariable Long id,
                                     @RequestBody T newItem,
@@ -101,6 +96,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         } else throw new AccessToResourceDenied(oldItem.getId());
     }
 
+    @Operation(summary = "Delete entity")
     @DeleteMapping(value = "/{id}")
     public boolean delete(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
@@ -110,7 +106,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         } else throw new AccessToResourceDenied(item.getId());
     }
 
-
+    @Operation(summary = "Build PDF document")
     @GetMapping(value = "/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {

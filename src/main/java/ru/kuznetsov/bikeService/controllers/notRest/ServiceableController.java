@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.notRest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
@@ -39,6 +40,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
         super(service);
     }
 
+    @Operation(hidden = true)
     @Override
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
@@ -56,6 +58,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
         return super.show(item, model, principal, category);
     }
 
+    @Operation(hidden = true)
     @Override
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable Long id, Principal principal) {
@@ -73,6 +76,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
         return super.edit(model, item, principal);
     }
 
+    @Operation(hidden = true)
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public String updateServiceList(
             @Valid @ModelAttribute("object") T item,
@@ -156,6 +160,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
                 .buildServiceable(item);
     }
 
+    @Operation(hidden = true)
     @GetMapping(value = "/pdfAll")
     @ResponseBody
     public ResponseEntity<Resource> createPdfAll(@Param("id") Long id, Principal principal) throws IOException {
