@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,17 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         }
     }
 
+    @Operation(summary = "Get all entities")
+//    @ApiResponses(value = {
+//            @ApiResponse(
+//                    responseCode = "200",
+//                    description = "Found the entities",
+//                    content = {
+//                            @Content(
+//                                    mediaType = "application/json",
+//                                    array = @ArraySchema(schema = @Schema(implementation = DocumentControllerREST.class)))
+//                    })
+//    })
     @GetMapping()
     public List<AbstractEntityDto> index(Principal principal,
                                          @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
@@ -50,6 +62,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         return this.convertItemsToDto(objects);
     }
 
+    @Operation(summary = "Get all entities")
     @PostMapping()
     public AbstractEntityDto create(@RequestBody T item,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
