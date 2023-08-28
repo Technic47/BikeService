@@ -1,6 +1,6 @@
 package ru.kuznetsov.bikeService.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
@@ -8,7 +8,10 @@ import ru.kuznetsov.bikeService.models.usable.Usable;
 
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+/**
+ * Dto to show entities to users. Enable hiding service information.
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL) //Hide null fields
 public class AbstractEntityDto {
     private Long id;
     private String name;
