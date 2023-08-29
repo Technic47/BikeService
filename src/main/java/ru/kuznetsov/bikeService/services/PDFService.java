@@ -15,7 +15,9 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -99,7 +101,12 @@ public class PDFService {
      * @param item item for list forming.
      * @param <T>  class from .model package.
      */
-    public <T extends AbstractShowableEntity> void buildShowable(T item) {
+    public <T extends AbstractShowableEntity> void buildShowable(
+            T item, UserModel userModel, Picture picture
+    ) {
+        this.newPDFDocument()
+                .addUserName(userModel.getUsername())
+                .addImage(picture.getName());
         try {
             PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
             PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));
@@ -114,7 +121,13 @@ public class PDFService {
         }
     }
 
-    public <T extends AbstractUsableEntity> void buildUsable(T item) {
+    public <T extends AbstractUsableEntity> void buildUsable(
+            T item, UserModel userModel, Picture picture, Manufacturer manufacturer
+    ) {
+        this.newPDFDocument()
+                .addUserName(userModel.getUsername())
+                .addImage(picture.getName())
+                .addManufacturer(manufacturer);
         try {
             PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
             PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));
@@ -132,7 +145,13 @@ public class PDFService {
         }
     }
 
-    public <T extends AbstractServiceableEntity> void buildServiceable(T item) {
+    public <T extends AbstractServiceableEntity> void buildServiceable(
+            T item, UserModel userModel, Picture picture, Manufacturer manufacturer, ServiceList serviceList) {
+        this.newPDFDocument()
+                .addUserName(userModel.getUsername())
+                .addImage(picture.getName())
+                .addManufacturer(manufacturer)
+                .addServiceList(serviceList);
         try {
             PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
             PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));

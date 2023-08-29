@@ -24,7 +24,7 @@ public class RegistrationControllerREST extends AbstractController {
     }
 
     @PostMapping()
-    public UserDto newUser(@Valid RegistrationRequestDto dto,
+    public UserDto newUser(@Valid @RequestBody RegistrationRequestDto dto,
                            HttpServletRequest request
     ) {
 

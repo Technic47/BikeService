@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -201,10 +202,8 @@ public abstract class BasicController<T extends AbstractShowableEntity,
 
     protected void preparePDF(T item, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
-        this.pdfService.newPDFDocument()
-                .addUserName(userModel.getUsername())
-                .addImage(this.pictureService.getById(item.getPicture()).getName())
-                .buildShowable(item);
+        Picture picture = pictureService.getById(item.getPicture());
+        this.pdfService.buildShowable(item, userModel, picture);
     }
 
     /**

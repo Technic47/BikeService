@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
 
 import java.io.File;
@@ -71,10 +72,9 @@ class PDFServiceTest {
     @Test
     @Order(8)
     void buildShowable() throws IOException {
-        service.newPDFDocument()
-                .addUserName(TEST_NAME)
-                .addImage("testImage.jpg")
-                .buildShowable(TEST_FASTENER);
+        Picture picture = new Picture("testImage.jpg");
+
+        service.buildShowable(TEST_PART, TEST_USER, picture);
 
         File formedFile = new File(PDF_DOC_NAME);
 
@@ -96,11 +96,9 @@ class PDFServiceTest {
     @Test
     @Order(7)
     void buildUsable() throws IOException {
-        service.newPDFDocument()
-                .addUserName(TEST_NAME)
-                .addImage("testImage.jpg")
-                .addManufacturer(TEST_MANUFACTURER)
-                .buildUsable(TEST_TOOL);
+        Picture picture = new Picture("testImage.jpg");
+
+        service.buildUsable(TEST_PART, TEST_USER, picture, TEST_MANUFACTURER);
 
         File formedFile = new File(PDF_DOC_NAME);
 
@@ -131,12 +129,9 @@ class PDFServiceTest {
         fastener.setName("qwerty");
         list.addToFastenerMap(fastener, 123);
 
-        service.newPDFDocument()
-                .addUserName(TEST_NAME)
-                .addImage("testImage.jpg")
-                .addManufacturer(TEST_MANUFACTURER)
-                .addServiceList(list)
-                .buildServiceable(TEST_PART);
+        Picture picture = new Picture("testImage.jpg");
+
+        service.buildServiceable(TEST_PART, TEST_USER, picture, TEST_MANUFACTURER, list);
 
         File formedFile = new File(PDF_DOC_NAME);
 

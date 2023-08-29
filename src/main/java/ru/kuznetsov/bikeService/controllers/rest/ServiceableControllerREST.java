@@ -1,27 +1,46 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.kuznetsov.bikeService.config.ServiceListController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
+import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
+import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.showable.Showable;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
+import java.io.IOException;
 import java.security.Principal;
 
 public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity,
         S extends CommonServiceableEntityService<T>>
         extends UsableControllerREST<T, S> {
+    private ServiceListController serviceListController;
     protected ServiceableControllerREST(S service) {
         super(service);
     }
 
     @Operation(summary = "Add linked item to entity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity is updated",
+                    content = @Content),
+            @ApiResponse(responseCode = "200", description = "Entity is updated",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content)})
     @PutMapping("/{itemId}/linkedItems/{linkedItemId}")
     public AbstractEntityDto addItemToItemList(@PathVariable Long itemId,
                                                @PathVariable Long linkedItemId,
@@ -37,6 +56,14 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     }
 
     @Operation(summary = "Del linked item from entity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity is updated",
+                    content = @Content),
+            @ApiResponse(responseCode = "200", description = "Entity is updated",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content)})
     @DeleteMapping("/{itemId}/linkedItems/{linkedItemId}")
     public AbstractEntityDto delItemFromItemList(@PathVariable Long itemId,
                                                  @PathVariable Long linkedItemId,
@@ -84,5 +111,34 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
             }
             default -> throw new IllegalArgumentException("Argument 'type' is wrong!");
         }
+    }
+
+    @Override
+    protected void preparePDF(T item, Principal principal) {
+        this.buildPDF(item, principal, serviceListController.getServiceList(item.getLinkedItems()));
+    }
+    protected void preparePDF(T item, Principal principal, ServiceList serviceList) {
+        this.buildPDF(item, principal, serviceList);
+    }
+
+    private void buildPDF(T item, Principal principal, ServiceList serviceList) {
+        Manufacturer manufacturer = this.manufacturerService.getById(item.getManufacturer());
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+        Picture picture = pictureService.getById(item.getPicture());
+        this.pdfService.buildServiceable(item, userModel, picture, manufacturer, serviceList);
+    }
+
+    @GetMapping(value = "/{id}/pdfAll")
+    public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) throws IOException {
+        T item = this.service.getById(id);
+        ServiceList generalList = serviceListController.getGeneralServiceList(item.getLinkedItems());
+
+        this.preparePDF(item, principal, generalList);
+        return this.createResponse(item);
+    }
+
+    @Autowired
+    public void setServiceListController(ServiceListController serviceListController) {
+        this.serviceListController = serviceListController;
     }
 }

@@ -8,6 +8,8 @@ import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
+import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -52,11 +54,9 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
 
     @Override
     protected void preparePDF(T item, Principal principal) {
-        this.pdfService.addManufacturer(this.manufacturerService.getById(item.getManufacturer()));
+        Manufacturer manufacturer = this.manufacturerService.getById(item.getManufacturer());
         UserModel userModel = this.getUserModelFromPrincipal(principal);
-        this.pdfService.newPDFDocument()
-                .addUserName(userModel.getUsername())
-                .addImage(this.pictureService.getById(item.getPicture()).getName())
-                .buildUsable(item);
+        Picture picture = pictureService.getById(item.getPicture());
+        this.pdfService.buildUsable(item, userModel, picture, manufacturer);
     }
 }

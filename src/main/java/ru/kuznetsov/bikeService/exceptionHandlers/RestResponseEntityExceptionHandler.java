@@ -10,8 +10,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -22,9 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         ApiError apiError =
@@ -34,6 +35,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(AccessToResourceDenied.class)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
     protected ResponseEntity<Object> handleResourceAccessDenied(ResourceNotFoundException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         ApiError apiError =
@@ -43,6 +45,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleConstraintViolation(
             ConstraintViolationException ex) {
         List<String> errors = new ArrayList<>();
@@ -58,6 +61,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex) {
         String error =

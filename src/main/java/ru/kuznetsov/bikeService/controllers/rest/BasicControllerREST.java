@@ -1,8 +1,11 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.core.io.Resource;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,12 +14,15 @@ import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public abstract class BasicControllerREST<T extends AbstractShowableEntity,
@@ -40,6 +46,14 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     }
 
     @Operation(summary = "Get all entities")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity is found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = List.class)) }),
+//            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
+//                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content) })
     @GetMapping()
     public List<AbstractEntityDto> index(Principal principal,
                                          @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
@@ -54,6 +68,12 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     }
 
     @Operation(summary = "Create a new entity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity is found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid request Body",
+                    content = @Content)})
     @PostMapping()
     public AbstractEntityDto create(@RequestBody AbstractEntityDtoNew itemDto,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
@@ -65,6 +85,14 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
 
     @Operation(summary = "Get entity by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity is found",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class)) }),
+            @ApiResponse(responseCode = "403", description = "Access denied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content) })
     @GetMapping("/{id}")
     public AbstractEntityDto show(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
@@ -79,7 +107,15 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         } else throw new AccessToResourceDenied(item.getId());
     }
 
-    @Operation(summary = "Edit entity")
+    @Operation(summary = "Update entity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity is updated",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class)) }),
+            @ApiResponse(responseCode = "403", description = "Access denied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content) })
     @PutMapping("/{id}")
     public AbstractEntityDto update(@PathVariable Long id,
                                     @RequestBody T newItem,
@@ -97,19 +133,34 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     }
 
     @Operation(summary = "Delete entity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity is deleted",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "Access denied",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content) })
     @DeleteMapping(value = "/{id}")
-    public boolean delete(@PathVariable("id") Long id, Principal principal) {
+    public ResponseEntity delete(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
+
         if (checkAccessToItem(item, principal)) {
             this.doDeleteProcedure(item, service, principal);
-            return true;
+            Map<String, String> response = new HashMap<>();
+            response.put("deleted", "ok");
+            return ResponseEntity.ok(response);
         } else throw new AccessToResourceDenied(item.getId());
     }
 
     @Operation(summary = "Build PDF document")
-    @GetMapping(value = "/pdf")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PDF created",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content) })
+    @GetMapping(value = "/{id}/pdf")
     @ResponseBody
-    public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
+    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
         this.preparePDF(item, principal);
         return this.prepareResponse(item, principal);
@@ -117,9 +168,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
     protected void preparePDF(T item, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
-        this.pdfService.newPDFDocument()
-                .addUserName(userModel.getUsername())
-                .addImage(this.pictureService.getById(item.getPicture()).getName())
-                .buildShowable(item);
+        Picture picture = pictureService.getById(item.getPicture());
+        this.pdfService.buildShowable(item, userModel, picture);
     }
 }
