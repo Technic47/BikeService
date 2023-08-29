@@ -1,22 +1,22 @@
 TRUNCATE
-    bikeservicetest.public.users CASCADE;
+    bikeservicetest.public.users RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.documents CASCADE;
+    bikeservicetest.public.pictures RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.consumables CASCADE;
+    bikeservicetest.public.documents RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.fasteners CASCADE;
+    bikeservicetest.public.consumables RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.tools CASCADE;
+    bikeservicetest.public.fasteners RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.parts CASCADE;
+    bikeservicetest.public.manufacturers RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.manufacturers CASCADE;
+    bikeservicetest.public.tools RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.part_item CASCADE;
+    bikeservicetest.public.parts RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.pictures CASCADE;
+    bikeservicetest.public.part_item RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.user_role CASCADE;
+    bikeservicetest.public.user_role RESTART IDENTITY CASCADE;
 TRUNCATE
-    bikeservicetest.public.user_item CASCADE;
+    bikeservicetest.public.user_item RESTART IDENTITY CASCADE;

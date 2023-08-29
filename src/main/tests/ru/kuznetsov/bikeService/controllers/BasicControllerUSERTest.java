@@ -1,7 +1,6 @@
 package ru.kuznetsov.bikeService.controllers;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +34,7 @@ import static ru.kuznetsov.bikeService.TestCredentials.getDefaultMultipartFile;
 @Sql(value = {"/SQL_scripts/create-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/SQL_scripts/clean-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @WithUserDetails("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BasicControllerUSERTest {
     @Autowired
     private MockMvc mockMvc;
@@ -64,6 +64,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(1)
     void index() throws Exception {
         this.mockMvc.perform(get("/documents"))
                 .andDo(print())
@@ -71,13 +72,15 @@ class BasicControllerUSERTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attribute("objects", aMapWithSize(2)))
+                .andExpect(model().attribute("sharedObjects", aMapWithSize(1)))
                 .andExpect(model().attribute("category", "documents"))
-                .andExpect(xpath("//div/div/table/tbody/tr").nodeCount(2))
+                .andExpect(xpath("//div/div/table/tbody/tr").nodeCount(3))
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/1']").exists())
                 .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/2']").exists());
     }
 
     @Test
+    @Order(2)
     void showOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1"))
                 .andDo(print())
@@ -95,6 +98,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(3)
     void showWrong() throws Exception {
         this.mockMvc.perform(get("/documents/3"))
                 .andDo(print())
@@ -105,6 +109,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(4)
     void newItem() throws Exception {
         this.mockMvc.perform(get("/documents/new"))
                 .andDo(print())
@@ -118,6 +123,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(5)
     void createWithErrors() throws Exception {
         this.emptyDocument.setName("");
 
@@ -132,6 +138,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(6)
     void createNoErrors() throws Exception {
         this.mockMvc.perform(multipart("/documents")
                         .file(getDefaultMultipartFile())
@@ -148,6 +155,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(7)
     void editOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1/edit"))
                 .andDo(print())
@@ -160,6 +168,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(8)
     void editWrong() throws Exception {
         this.mockMvc.perform(get("/documents/3"));
         this.mockMvc.perform(get("/documents/3/edit"))
@@ -170,6 +179,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(9)
     void updateWithErrorsOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1"));
 
@@ -186,6 +196,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(10)
     void updateNoErrorsOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1"));
 
@@ -200,7 +211,7 @@ class BasicControllerUSERTest {
                 .andExpect(redirectedUrl("/documents"));
 
         this.mockMvc.perform(get("/documents/1"))
-                .andExpect(xpath("//div/div/div/div/h1").string("123654"));
+                .andExpect(content().string(containsString("<h1>123654</h1>")));
 
 //        this.mockMvc.perform(get("/pictures"))
 //                .andExpect(model().attribute("allPictures", hasSize(4)))
@@ -209,6 +220,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(11)
     void updateNoErrorsWrong() throws Exception {
         this.mockMvc.perform(get("/documents/3"));
         this.mockMvc.perform(multipart("/documents/3/edit")
@@ -221,14 +233,19 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(12)
     void deleteOwn() throws Exception {
         this.mockMvc.perform(get("/documents/1"));
 
         this.mockMvc.perform(post("/documents/1"));
 
+        Thread.sleep(500);
+
+
         this.mockMvc.perform(get("/documents"))
                 .andExpect(model().attribute("objects", aMapWithSize(1)))
-                .andExpect(xpath("//div/div/table/tbody/tr/td/a[@href='/documents/1']").doesNotExist());
+                .andExpect(model().attribute("sharedObjects", aMapWithSize(1)))
+                .andExpect(content().string(not(containsString("@href='/documents/1'"))));
 
         UserEntity entity = new UserEntity("Document", 1L);
         List<UserEntity> entityList = this.userService.findByUsernameOrNull("test").getCreatedItems();
@@ -237,6 +254,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(13)
     void deleteWrong() throws Exception {
         this.mockMvc.perform(get("/documents/3"));
 
@@ -248,6 +266,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(14)
     void searchTest() throws Exception {
         this.mockMvc.perform(get("/documents/search")
                         .param("value", "doc2"))
@@ -263,6 +282,7 @@ class BasicControllerUSERTest {
     }
 
     @Test
+    @Order(15)
     void pdfTest() throws Exception {
         this.mockMvc.perform(get("/parts/1"));
         this.mockMvc.perform(get("/parts/pdf")

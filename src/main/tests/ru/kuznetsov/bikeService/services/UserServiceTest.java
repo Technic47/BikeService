@@ -146,7 +146,7 @@ class UserServiceTest {
     @Order(10)
     void update(){
         userService.createUser(TEST_USER);
-        UserModel newModel = new UserModel("NewName", "NewPass");
+        UserModel newModel = new UserModel("NewName", "NewEmail", "NewPass");
         UserModel user = userService.findByUsernameOrNull(TEST_NAME);
         userService.update(user, newModel);
 

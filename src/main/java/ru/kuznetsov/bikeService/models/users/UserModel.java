@@ -65,13 +65,18 @@ public class UserModel implements UserDetails, OAuth2User {
 
     public UserModel() {
         this.attributes = new HashMap<>();
-        this.enabled=false;
+        this.enabled = false;
     }
 
     public UserModel(String username, String password) {
         this();
         this.username = username;
         this.password = password;
+    }
+
+    public UserModel(String username, String email, String password) {
+        this(username, password);
+        this.email = email;
     }
 
     public UserModel(OAuth2User oauth2User) {

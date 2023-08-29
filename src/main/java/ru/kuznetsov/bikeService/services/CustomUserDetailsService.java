@@ -30,20 +30,16 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserModel loadUserByUsername(String userEmail) throws RuntimeException {
-        try {
-            UserModel user = userService.findByEmailOrNull(userEmail);
-            if (user == null) {
-                throw new UsernameNotFoundException(
-                        "User not found: " + userEmail);
-            }
-            boolean enabled = user.isEnabled();
-            if (!enabled) {
-                throw new RuntimeException("User is disabled: " + userEmail);
-            }
-            return user;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        UserModel user = userService.findByEmailOrNull(userEmail);
+        if (user == null) {
+            throw new UsernameNotFoundException(
+                    "User not found: " + userEmail);
         }
+        boolean enabled = user.isEnabled();
+        if (!enabled) {
+            throw new RuntimeException("User is disabled: " + userEmail);
+        }
+        return user;
     }
 
 

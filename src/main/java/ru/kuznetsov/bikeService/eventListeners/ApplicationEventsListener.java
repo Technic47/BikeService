@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
@@ -39,14 +40,19 @@ public class ApplicationEventsListener {
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
         System.out.println("Checking default picture...");
-        if (pictureService.getById(1L) == null) {
+        try {
+            pictureService.getById(1L);
+            System.out.println("Default picture is OK.");
+        } catch(ResourceNotFoundException e) {
             pictureService.save(new Picture("noImage.jpg"));
             System.out.println("Default picture was empty. New one is created in DB");
         }
-        System.out.println("Default picture is OK.");
 
         System.out.println("Checking default manufacture...");
-        if (manufacturerService.getById(1L) == null) {
+        try {
+            manufacturerService.getById(1L);
+            System.out.println("Default manufacture is OK.");
+        } catch(ResourceNotFoundException e) {
             Manufacturer defaultManufacture = new Manufacturer();
             defaultManufacture.setName("Default");
             defaultManufacture.setPicture(1L);
@@ -57,7 +63,6 @@ public class ApplicationEventsListener {
             manufacturerService.save(defaultManufacture);
             System.out.println("Default manufacture was empty. New one is created in DB");
         }
-        System.out.println("Default manufacture is OK.");
     }
 
     //Registration of new user.

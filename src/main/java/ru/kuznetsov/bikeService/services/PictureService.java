@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.repositories.PictureRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
@@ -12,7 +13,6 @@ import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -128,22 +128,18 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
      */
     @Override
     public void delete(Long id) {
-        try {
-            Optional<Picture> entity = this.repository.findById(id);
-            if (entity.isPresent()) {
-                String imgPath = UPLOAD_PATH + "/" + entity.get().getName();
-                File file = new File(imgPath);
-                imgPath = UPLOAD_PATH + "/preview/" + entity.get().getName();
-                File previewFile = new File(imgPath);
-                file.delete();
-                previewFile.delete();
-                super.delete(id);
-            } else {
-                throw new FileNotFoundException("Picture not found.");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        Optional<Picture> entity = this.repository.findById(id);
+        if (entity.isPresent()) {
+            String imgPath = UPLOAD_PATH + "/" + entity.get().getName();
+            File file = new File(imgPath);
+            imgPath = UPLOAD_PATH + "/preview/" + entity.get().getName();
+            File previewFile = new File(imgPath);
+            file.delete();
+            previewFile.delete();
+            repository.deleteById(id);
+        } else {
             AbstractController.logger.warn("Picture with id = " + id + " not found. Can`t delete!");
+            throw new ResourceNotFoundException(id);
         }
     }
 }

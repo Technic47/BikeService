@@ -54,8 +54,8 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
     @Override
     public void delete(Long id) {
         if (repository.existsById(id)) {
-            throw new ResourceNotFoundException(id);
-        } else repository.deleteById(id);
+            repository.deleteById(id);
+        } else throw new ResourceNotFoundException(id);
     }
 
     @Autowired

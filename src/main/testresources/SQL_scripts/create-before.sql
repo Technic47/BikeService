@@ -31,7 +31,7 @@ VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testDoc1', 1, 'testValue', f
        (DEFAULT, 1, 'test', 'test', 'testDoc2', 1, 'test', false),
        (DEFAULT, 2, 'test', 'test', 'testDoc3', 1, 'test', false),
        (DEFAULT, 2, 'test', 'test', 'testDoc4', 1, 'test', false),
-       (DEFAULT, 2, 'test', 'test', 'testDoc5', 1, 'test', false);
+       (DEFAULT, 2, 'test', 'test', 'testDoc5', 1, 'test', true);
 
 INSERT INTO bikeservicetest.public.fasteners(id, creator, description, link, name, picture, value, is_shared)
 VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testFast1', 1, 'testValue', false);
@@ -59,9 +59,9 @@ VALUES (1, 1, 1, 'Part', 'Document'),
        (1, 1, 1, 'Part', 'Tool'),
        (1, 1, 1, 'Part', 'Part');
 
-INSERT INTO bikeservicetest.public.users(id, password, active, username, provider)
-VALUES (DEFAULT, '$2a$10$I/0KJRXs78nl5Z.Whzs9L.1uBwf9E/gJwqkZtgIZfrwarrOmJ.mBK', true, 'test', 'LOCAL'),
-       (DEFAULT, '$2a$10$NJqlcPwFazO1CF4oWQcJuerCYhpYnSehN8HdgRWyq1mLx/5814cdy', true, 'pavel', 'LOCAL');
+INSERT INTO bikeservicetest.public.users(id, password, active, username, provider, email, enabled)
+VALUES (DEFAULT, '$2a$10$I/0KJRXs78nl5Z.Whzs9L.1uBwf9E/gJwqkZtgIZfrwarrOmJ.mBK', true, 'test', 'LOCAL', 'test', true),
+       (DEFAULT, '$2a$10$NJqlcPwFazO1CF4oWQcJuerCYhpYnSehN8HdgRWyq1mLx/5814cdy', true, 'pavel', 'LOCAL', 'pavel', true);
 
 INSERT INTO bikeservicetest.public.user_role(user_id, status)
 VALUES (1, 'ROLE_USER'),

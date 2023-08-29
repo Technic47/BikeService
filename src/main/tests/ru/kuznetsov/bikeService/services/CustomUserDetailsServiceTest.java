@@ -8,13 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
-import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static ru.kuznetsov.bikeService.TestCredentials.TEST_NAME;
+import static ru.kuznetsov.bikeService.TestCredentials.*;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
@@ -34,21 +33,22 @@ class CustomUserDetailsServiceTest {
 
     @Test
     void loadUserByUsername() {
-        doReturn(new UserModel())
+        TEST_USER.setEnabled(true);
+        doReturn(TEST_USER)
                 .when(userRepository)
-                .findByUsername(TEST_NAME);
+                .findByEmail(TEST_NAME);
         UserDetails result = detailsService.loadUserByUsername(TEST_NAME);
 
-        assertEquals(new UserModel(), result);
-        verify(userRepository, times(1)).findByUsername(TEST_NAME);
+        assertEquals(TEST_USER, result);
+        verify(userRepository, times(1)).findByEmail(TEST_NAME);
     }
 
     @Test
     void loadUserByUsernameNull() {
         doReturn(null)
                 .when(userRepository)
-                .findByUsername(TEST_NAME);
+                .findByEmail(TEST_EMAIL);
 
-        assertThrows(UsernameNotFoundException.class, () -> detailsService.loadUserByUsername(TEST_NAME));
+        assertThrows(UsernameNotFoundException.class, () -> detailsService.loadUserByUsername(TEST_EMAIL));
     }
 }

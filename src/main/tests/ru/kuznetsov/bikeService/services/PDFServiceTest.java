@@ -168,8 +168,6 @@ class PDFServiceTest {
     @Test
     @Order(10)
     void wrongFontSet() {
-        assertThrows(DocumentException.class, () -> {
-            service.setFonts(TEST_NAME);
-        });
+        assertThrows(DocumentException.class, () -> service.setFonts(TEST_NAME));
     }
 }

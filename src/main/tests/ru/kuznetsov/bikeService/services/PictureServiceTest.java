@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.repositories.PictureRepository;
 
@@ -170,8 +171,6 @@ public class PictureServiceTest {
                 .when(repository)
                 .findById(TEST_ID);
 
-        pictureService.delete(TEST_ID);
-
-        verify(repository, times(0)).deleteById(TEST_ID);
+        assertThrows(ResourceNotFoundException.class, () -> pictureService.delete(TEST_ID));
     }
 }

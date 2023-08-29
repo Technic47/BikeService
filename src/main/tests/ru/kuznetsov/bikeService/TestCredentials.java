@@ -30,7 +30,8 @@ public final class TestCredentials {
     public static final Long TEST_MANUFACTURER_ID = 33L;
     public static final String TEST_MODEL = "testModel";
     public static final String TEST_PASS = "testPass";
-    public static final UserModel TEST_USER = new UserModel(TEST_NAME, TEST_PASS);
+    public static final String TEST_EMAIL = "email@gmail.com";
+    public static final UserModel TEST_USER = new UserModel(TEST_NAME, TEST_EMAIL, TEST_PASS);
     public static final Set<PartEntity> TEST_ITEM_LIST = testLinkedItemsFill();
     public static final Document TEST_DOCUMENT = new Document(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);
     public static final Fastener TEST_FASTENER = new Fastener(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);

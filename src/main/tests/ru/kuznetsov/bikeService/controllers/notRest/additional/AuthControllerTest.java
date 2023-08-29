@@ -79,9 +79,9 @@ class AuthControllerTest {
         this.mockMvc.perform(get("/login"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Please sign in")))
-                .andExpect(content().string(containsString("Username")))
-                .andExpect(content().string(containsString("Password")));
+                .andExpect(content().string(containsString("Пожалуйста, войдите в систему")))
+                .andExpect(content().string(containsString("Введите почту")))
+                .andExpect(content().string(containsString("Введите Пароль")));
     }
 
 //    @Test
@@ -99,7 +99,7 @@ class AuthControllerTest {
         this.mockMvc.perform(formLogin().user("test").password("test"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/title"));
     }
 
     @Test
@@ -110,7 +110,7 @@ class AuthControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"));
+                .andExpect(redirectedUrl("/login?error=true"));
     }
 
     @Test
@@ -123,21 +123,23 @@ class AuthControllerTest {
     void registrationOccupiedPOSTPageTest() throws Exception {
         this.mockMvc.perform(post("/registration")
                         .param("username", "pavel")
+                        .param("email", "pavel")
                         .param("password", "1999")
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("уже занято")));
+                .andExpect(content().string(containsString("уже существует аккаунт")));
     }
 
     @Test
     void registrationNewPOSTPageTest() throws Exception {
         this.mockMvc.perform(post("/registration")
                         .param("username", TEST_NAME)
+                        .param("email", TEST_NAME)
                         .param("password", TEST_PASS)
                 )
                 .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("registration"));
     }
 }
