@@ -28,6 +28,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         S extends CommonServiceableEntityService<T>>
         extends UsableControllerREST<T, S> {
     private ServiceListController serviceListController;
+
     protected ServiceableControllerREST(S service) {
         super(service);
     }
@@ -117,6 +118,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     protected void preparePDF(T item, Principal principal) {
         this.buildPDF(item, principal, serviceListController.getServiceList(item.getLinkedItems()));
     }
+
     protected void preparePDF(T item, Principal principal, ServiceList serviceList) {
         this.buildPDF(item, principal, serviceList);
     }
@@ -128,6 +130,12 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         this.pdfService.buildServiceable(item, userModel, picture, manufacturer, serviceList);
     }
 
+    @Operation(summary = "Build PDF document for entity including linked items")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PDF created",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content)})
     @GetMapping(value = "/{id}/pdfAll")
     public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
