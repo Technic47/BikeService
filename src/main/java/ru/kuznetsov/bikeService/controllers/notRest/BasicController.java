@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.buildIndexList;
+
 /**
  * Abstract non-REST controller that provides general methods and mapping for AbstractShowableEntity models.
  * @param <T> entities from AbstractShowableEntity.
@@ -57,7 +59,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
-        List<T> objects = this.buildIndexList(service, userModel, category, true);
+        List<T> objects = buildIndexList(service, userModel, category, true);
 
         this.addIndexMapsToModel(model, userId, objects);
         model.addAttribute("sharedCheck", false);
@@ -197,7 +199,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
         this.preparePDF(item, principal);
-        return this.prepareResponse(item, principal);
+        return this.createResponse(item);
     }
 
     protected void preparePDF(T item, Principal principal) {

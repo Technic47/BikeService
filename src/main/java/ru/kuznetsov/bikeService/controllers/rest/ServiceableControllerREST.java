@@ -24,6 +24,8 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityServic
 import java.io.IOException;
 import java.security.Principal;
 
+import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
+
 public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity,
         S extends CommonServiceableEntityService<T>>
         extends UsableControllerREST<T, S> {
@@ -52,7 +54,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         Showable itemToAdd = this.checkItem(linkedItemId, type);
         if (this.checkAccessToItem(item, principal)) {
             T updated = this.itemsManipulation(item, 1, itemToAdd.getClass(), linkedItemId, amount);
-            return new AbstractEntityDto(updated);
+            return createDtoFrom(updated);
         } else throw new AccessToResourceDenied(itemToAdd.getId());
     }
 
@@ -75,7 +77,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         Showable itemToAdd = this.checkItem(linkedItemId, type);
         if (this.checkAccessToItem(item, principal)) {
             T updated = this.itemsManipulation(item, 0, itemToAdd.getClass(), linkedItemId, amount);
-            return new AbstractEntityDto(updated);
+            return createDtoFrom(updated);
         } else throw new AccessToResourceDenied(itemToAdd.getId());
     }
 

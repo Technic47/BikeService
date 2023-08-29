@@ -9,18 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
-import ru.kuznetsov.bikeService.models.showable.Document;
-import ru.kuznetsov.bikeService.models.showable.Fastener;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.models.usable.Consumable;
-import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -35,7 +28,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
-import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
 
 /**
@@ -45,38 +37,6 @@ public abstract class CommonEntityController extends AbstractController {
     protected PDFService pdfService;
 
     /**
-     * Creates List of entities depending on userModel role and shared flag.
-     *
-     * @param service   service for entities.
-     * @param userModel user for whom List is being created.
-     * @param category  category of entities for logging.
-     * @param shared    flag for including shared entities.
-     * @param <T>       AbstractShowableEntity from main models.
-     * @param <S>
-     * @return formed List.
-     */
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> List<T> buildIndexList(
-            final S service, UserModel userModel, String category, boolean shared) {
-        List<T> objects = null;
-
-        if (userModel.getAuthorities().contains(ROLE_USER)) {
-            if (shared) {
-                objects = service.findByCreatorOrShared(userModel.getId());
-                logger.info("personal and shared " + category + " are shown to '" + userModel.getUsername() + "'");
-            } else {
-                objects = service.findByCreator(userModel.getId());
-                logger.info("personal " + category + " are shown to '" + userModel.getUsername() + "'");
-            }
-        }
-        if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
-            objects = service.index();
-            logger.info("All " + category + " are shown to " + userModel.getUsername());
-        }
-        return objects;
-    }
-
-    /**
      * Form and add Maps with owned and created entities. Add Maps to provided Model object.
      *
      * @param model   Model object where to put formed Maps.
@@ -84,7 +44,8 @@ public abstract class CommonEntityController extends AbstractController {
      * @param objects List of objects.
      * @param <T>     AbstractShowableEntity from main models.
      */
-    protected <T extends AbstractShowableEntity> void addIndexMapsToModel(Model model, Long userId, List<T> objects) {
+    protected <T extends AbstractShowableEntity> void addIndexMapsToModel(
+            Model model, Long userId, List<T> objects) {
         Map<T, String> indexMap = new HashMap<>();
         Map<T, String> sharedIndexMap = new HashMap<>();
         if (objects != null) {
@@ -96,38 +57,6 @@ public abstract class CommonEntityController extends AbstractController {
         }
         model.addAttribute("objects", indexMap);
         model.addAttribute("sharedObjects", sharedIndexMap);
-    }
-
-    /**
-     * Converts List of entities to representable DTO.
-     *
-     * @param objects List to covert.
-     * @param <T>     AbstractShowableEntity from main models.
-     * @return converted List.
-     */
-    protected <T extends AbstractShowableEntity> List<AbstractEntityDto> convertItemsToDto(List<T> objects) {
-        List<AbstractEntityDto> indexList = new ArrayList<>();
-        if (objects != null) {
-            objects.forEach(object -> {
-                indexList.add(new AbstractEntityDto(object));
-            });
-        }
-        return indexList;
-    }
-
-    @Deprecated
-    protected <T extends AbstractShowableEntity> void addIndexListsToResponse(Map<Object, Object> response, Long userId, List<T> objects) {
-        List<AbstractEntityDto> indexList = new ArrayList<>();
-        List<AbstractEntityDto> sharedIndexList = new ArrayList<>();
-        if (objects != null) {
-            objects.forEach(object -> {
-                if (object.getCreator().equals(userId)) {
-                    indexList.add(new AbstractEntityDto(object));
-                } else sharedIndexList.add(new AbstractEntityDto(object));
-            });
-        }
-        response.put("indexList", indexList);
-        response.put("sharedIndexList", sharedIndexList);
     }
 
     /**
@@ -153,20 +82,6 @@ public abstract class CommonEntityController extends AbstractController {
                 new UserEntity(item.getClass().getSimpleName(), createdItem.getId()));
         logger.info(item.getId() + ":" + item.getName() + " was created by '" + userModel.getUsername());
         return createdItem;
-    }
-
-    protected <T extends AbstractShowableEntity> T convertFromDTO(
-            T item, AbstractEntityDtoNew itemDto) {
-        switch (item.getClass().getSimpleName()) {
-            case "Document" -> item = (T) new Document(itemDto);
-            case "Fastener" -> item = (T) new Fastener(itemDto);
-            case "Manufacturer" -> item = (T) new Manufacturer(itemDto);
-            case "Consumable" -> item = (T) new Consumable(itemDto);
-            case "Tool" -> item = (T) new Tool(itemDto);
-            case "Part" -> item = (T) new Part(itemDto);
-            case "Bike" -> item = (T) new Bike(itemDto);
-        }
-        return item;
     }
 
     /**
@@ -221,7 +136,8 @@ public abstract class CommonEntityController extends AbstractController {
      * @param userModel creator of entity.
      * @param <T>       AbstractShowableEntity from main models.
      */
-    private <T extends AbstractShowableEntity> void cleanUpAfterDelete(T item, UserModel userModel) {
+    private <T extends AbstractShowableEntity> void cleanUpAfterDelete(
+            T item, UserModel userModel) {
         String partType = item.getClass().getSimpleName();
         Long id = item.getId();
         Runnable clearUser = () -> userService
@@ -322,11 +238,6 @@ public abstract class CommonEntityController extends AbstractController {
         if (item.getPicture() == null) {
             item.setPicture(1L);
         }
-    }
-
-    protected <T extends AbstractShowableEntity> ResponseEntity<Resource> prepareResponse(T item, Principal principal) throws IOException {
-//        this.preparePDF(item, principal);
-        return this.createResponse(item);
     }
 
     protected <T extends AbstractShowableEntity> ResponseEntity<Resource> createResponse(T item) throws IOException {

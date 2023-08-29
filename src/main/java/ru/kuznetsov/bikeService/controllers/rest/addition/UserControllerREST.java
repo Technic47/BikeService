@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserControllerREST extends AbstractController {
@@ -51,9 +53,9 @@ public class UserControllerREST extends AbstractController {
         return ResponseEntity.ok(response);
     }
 
-    private<T extends AbstractShowableEntity> List<AbstractEntityDto> convertToDto(List<T> list) {
+    private <T extends AbstractShowableEntity> List<AbstractEntityDto> convertToDto(List<T> list) {
         List<AbstractEntityDto> dtoList = new ArrayList<>();
-        list.forEach(item -> dtoList.add(new AbstractEntityDto(item)));
+        list.forEach(item -> dtoList.add(createDtoFrom(item)));
 
         return dtoList;
     }

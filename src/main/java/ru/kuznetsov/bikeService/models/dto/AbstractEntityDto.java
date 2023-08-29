@@ -2,9 +2,6 @@ package ru.kuznetsov.bikeService.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
-import ru.kuznetsov.bikeService.models.servicable.Serviceable;
-import ru.kuznetsov.bikeService.models.showable.Showable;
-import ru.kuznetsov.bikeService.models.usable.Usable;
 
 import java.util.Set;
 
@@ -23,21 +20,24 @@ public class AbstractEntityDto {
     private String model;
     private Set<PartEntity> linkedItems;
 
-    public AbstractEntityDto(Showable toConvert) {
-        if (toConvert instanceof Usable) {
-            this.manufacturer = ((Usable) toConvert).getManufacturer();
-            this.model = ((Usable) toConvert).getModel();
-        }
-        if (toConvert instanceof Serviceable) {
-            this.linkedItems = ((Serviceable) toConvert).getLinkedItems();
-        }
-        this.id = toConvert.getId();
-        this.name = toConvert.getName();
-        this.description = toConvert.getDescription();
-        this.picture = toConvert.getPicture();
-        this.link = toConvert.getLink();
-        this.value = toConvert.getValue();
-    }
+//    public static AbstractEntityDto createDtoFrom(Showable toConvert) {
+//        AbstractEntityDto newDto = new AbstractEntityDto();
+//        if (toConvert instanceof Usable) {
+//            newDto.manufacturer = ((Usable) toConvert).getManufacturer();
+//            newDto.model = ((Usable) toConvert).getModel();
+//        }
+//        if (toConvert instanceof Serviceable) {
+//            newDto.linkedItems = ((Serviceable) toConvert).getLinkedItems();
+//        }
+//        newDto.id = toConvert.getId();
+//        newDto.name = toConvert.getName();
+//        newDto.description = toConvert.getDescription();
+//        newDto.picture = toConvert.getPicture();
+//        newDto.link = toConvert.getLink();
+//        newDto.value = toConvert.getValue();
+//
+//        return newDto;
+//    }
 
     public Long getId() {
         return id;

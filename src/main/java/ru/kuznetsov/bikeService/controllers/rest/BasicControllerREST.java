@@ -14,6 +14,7 @@ import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
+import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -23,6 +24,8 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.*;
 
 
 public abstract class BasicControllerREST<T extends AbstractShowableEntity,
@@ -48,12 +51,10 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     @Operation(summary = "Get all entities")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity is found",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = List.class)) }),
-//            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
-//                    content = @Content),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = List.class))}),
             @ApiResponse(responseCode = "404", description = "Entity not found",
-                    content = @Content) })
+                    content = @Content)})
     @GetMapping()
     public List<AbstractEntityDto> index(Principal principal,
                                          @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
@@ -62,42 +63,42 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         List<T> objects;
         if (value != null) {
             objects = this.doSearchProcedure(value, this.service, principal, shared, category);
-        } else objects = this.buildIndexList(service, userModel, category, shared);
+        } else objects = buildIndexList(service, userModel, category, shared);
 
-        return this.convertItemsToDto(objects);
+        return convertListToDto(objects);
     }
 
     @Operation(summary = "Create a new entity")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity is found",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AbstractEntityDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class))}),
             @ApiResponse(responseCode = "400", description = "Invalid request Body",
                     content = @Content)})
     @PostMapping()
     public AbstractEntityDto create(@RequestBody AbstractEntityDtoNew itemDto,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
-        T item = this.convertFromDTO(thisClassNewObject, itemDto);
+        T item = EntitySupportService.convertFromDTO(category, itemDto);
         T updatedItem = this.doCreateProcedure(item, service, file, principal);
-        return new AbstractEntityDto(updatedItem);
+        return createDtoFrom(updatedItem);
     }
 
 
     @Operation(summary = "Get entity by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity is found",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AbstractEntityDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class))}),
             @ApiResponse(responseCode = "403", description = "Access denied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
-                    content = @Content) })
+                    content = @Content)})
     @GetMapping("/{id}")
     public AbstractEntityDto show(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
         T show = this.show(item, principal);
-        return new AbstractEntityDto(show);
+        return createDtoFrom(show);
     }
 
     T show(T item, Principal principal) {
@@ -110,12 +111,12 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     @Operation(summary = "Update entity")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity is updated",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AbstractEntityDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class))}),
             @ApiResponse(responseCode = "403", description = "Access denied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
-                    content = @Content) })
+                    content = @Content)})
     @PutMapping("/{id}")
     public AbstractEntityDto update(@PathVariable Long id,
                                     @RequestBody T newItem,
@@ -123,7 +124,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                                     Principal principal) {
         T item = service.getById(id);
         T updated = this.update(newItem, file, item, principal);
-        return new AbstractEntityDto(updated);
+        return createDtoFrom(updated);
     }
 
     public T update(T newItem, MultipartFile file, T oldItem, Principal principal) {
@@ -139,7 +140,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
             @ApiResponse(responseCode = "403", description = "Access denied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
-                    content = @Content) })
+                    content = @Content)})
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id, Principal principal) {
         T item = service.getById(id);
@@ -157,13 +158,13 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
             @ApiResponse(responseCode = "200", description = "PDF created",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
-                    content = @Content) })
+                    content = @Content)})
     @GetMapping(value = "/{id}/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
         this.preparePDF(item, principal);
-        return this.prepareResponse(item, principal);
+        return this.createResponse(item);
     }
 
     protected void preparePDF(T item, Principal principal) {

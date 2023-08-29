@@ -33,6 +33,7 @@ public class ModelTests {
         part.setManufacturer(TEST_MANUFACTURER_ID);
         part.setModel(TEST_MODEL);
 
+
         assertEquals(TEST_ID, part.getId());
         assertEquals(TEST_NAME, part.getName());
         assertEquals(TEST_DESCRIPTION, part.getDescription());
