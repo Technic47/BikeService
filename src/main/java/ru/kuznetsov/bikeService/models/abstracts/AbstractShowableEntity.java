@@ -77,6 +77,7 @@ public abstract class AbstractShowableEntity
     public AbstractShowableEntity(AbstractEntityDtoNew dtoNew){
         this.name = dtoNew.getName();
         this.description = dtoNew.getDescription();
+        this.picture = dtoNew.getPicture();
         this.link = dtoNew.getLink();
         this.value = dtoNew.getValue();
         this.isShared = dtoNew.isShared();

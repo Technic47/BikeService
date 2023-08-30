@@ -16,6 +16,7 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
 
+import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.convertFromDTO;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
 
 public abstract class UsableControllerREST<T extends AbstractUsableEntity,
@@ -37,12 +38,13 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
 
     @Override
     public AbstractEntityDto update(@PathVariable Long id,
-                                    @RequestBody T newItem,
+                                    @RequestBody AbstractEntityDtoNew newItem,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
         T item = service.getById(id);
-        this.checkManufacturer(newItem);
-        T updated = this.update(newItem, file, item, principal);
+        T newEntity = convertFromDTO(category, newItem);
+        this.checkManufacturer(newEntity);
+        T updated = this.update(newEntity, file, item, principal);
         return createDtoFrom(updated);
     }
 

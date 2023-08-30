@@ -50,11 +50,9 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
     @Operation(summary = "Get all entities")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Entity is found",
+            @ApiResponse(responseCode = "200", description = "Index is ok",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = List.class))}),
-            @ApiResponse(responseCode = "404", description = "Entity not found",
-                    content = @Content)})
+                            schema = @Schema(implementation = List.class))})})
     @GetMapping()
     public List<AbstractEntityDto> index(Principal principal,
                                          @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
@@ -70,7 +68,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
     @Operation(summary = "Create a new entity")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Entity is found",
+            @ApiResponse(responseCode = "200", description = "Entity is created",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AbstractEntityDto.class))}),
             @ApiResponse(responseCode = "400", description = "Invalid request Body",
@@ -80,8 +78,8 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
         T item = EntitySupportService.convertFromDTO(category, itemDto);
-        T updatedItem = this.doCreateProcedure(item, service, file, principal);
-        return createDtoFrom(updatedItem);
+        T createdItem = this.doCreateProcedure(item, service, file, principal);
+        return createDtoFrom(createdItem);
     }
 
 
@@ -119,11 +117,12 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                     content = @Content)})
     @PutMapping("/{id}")
     public AbstractEntityDto update(@PathVariable Long id,
-                                    @RequestBody T newItem,
+                                    @RequestBody AbstractEntityDtoNew newItem,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
         T item = service.getById(id);
-        T updated = this.update(newItem, file, item, principal);
+        T newEntity = convertFromDTO(category, newItem);
+        T updated = this.update(newEntity, file, item, principal);
         return createDtoFrom(updated);
     }
 
@@ -157,14 +156,19 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "PDF created",
                     content = @Content),
+            @ApiResponse(responseCode = "403", description = "Access denied",
+                    content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
     @GetMapping(value = "/{id}/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
-        this.preparePDF(item, principal);
-        return this.createResponse(item);
+
+        if (checkAccessToItem(item, principal)) {
+            this.preparePDF(item, principal);
+            return this.createResponse(item);
+        } else throw new AccessToResourceDenied(item.getId());
     }
 
     protected void preparePDF(T item, Principal principal) {

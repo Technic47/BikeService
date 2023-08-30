@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.controllers;
+package ru.kuznetsov.bikeService.controllers.notRest;
 
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;

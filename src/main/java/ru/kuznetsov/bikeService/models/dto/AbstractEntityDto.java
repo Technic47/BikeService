@@ -20,24 +20,8 @@ public class AbstractEntityDto {
     private String model;
     private Set<PartEntity> linkedItems;
 
-//    public static AbstractEntityDto createDtoFrom(Showable toConvert) {
-//        AbstractEntityDto newDto = new AbstractEntityDto();
-//        if (toConvert instanceof Usable) {
-//            newDto.manufacturer = ((Usable) toConvert).getManufacturer();
-//            newDto.model = ((Usable) toConvert).getModel();
-//        }
-//        if (toConvert instanceof Serviceable) {
-//            newDto.linkedItems = ((Serviceable) toConvert).getLinkedItems();
-//        }
-//        newDto.id = toConvert.getId();
-//        newDto.name = toConvert.getName();
-//        newDto.description = toConvert.getDescription();
-//        newDto.picture = toConvert.getPicture();
-//        newDto.link = toConvert.getLink();
-//        newDto.value = toConvert.getValue();
-//
-//        return newDto;
-//    }
+    public AbstractEntityDto() {
+    }
 
     public Long getId() {
         return id;
