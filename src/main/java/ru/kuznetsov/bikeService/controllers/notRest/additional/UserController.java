@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.controllers.notRest.additional;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
-import ru.kuznetsov.bikeService.services.modelServices.*;
 
 import java.security.Principal;
 import java.util.HashSet;
@@ -21,18 +19,9 @@ import java.util.Set;
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {
-    private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenService tokenService;
 
-    public UserController(DocumentService documentService, FastenerService fastenerService, ManufacturerService manufacturerService, ConsumableService consumableService, ToolService toolService, PartService partService, BikeService bikeService, ApplicationEventPublisher eventPublisher, VerificationTokenService tokenService) {
-        this.documentService = documentService;
-        this.fastenerService = fastenerService;
-        this.manufacturerService = manufacturerService;
-        this.consumableService = consumableService;
-        this.toolService = toolService;
-        this.partService = partService;
-        this.bikeService = bikeService;
-        this.eventPublisher = eventPublisher;
+    public UserController(VerificationTokenService tokenService) {
         this.tokenService = tokenService;
     }
 

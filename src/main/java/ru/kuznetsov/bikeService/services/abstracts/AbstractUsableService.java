@@ -5,7 +5,7 @@ import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRep
 
 public abstract class AbstractUsableService<E extends AbstractUsableEntity,
         R extends AbstractShowableEntityRepository<E>>
-        extends AbstractShowableService<E, R> {
+        extends AbstractShowableService<E, R> implements CommonUsableEntityService<E> {
     public AbstractUsableService(R repository) {
         super(repository);
     }
@@ -14,6 +14,11 @@ public abstract class AbstractUsableService<E extends AbstractUsableEntity,
     public E update(Long id, E newItem) {
         E toRepo = this.getById(id);
         return this.usableToRepo(toRepo, newItem);
+    }
+
+    @Override
+    public E update(E item, E newItem) {
+        return this.usableToRepo(item, newItem);
     }
 
     E usableToRepo(E toRepo, E newItem) {

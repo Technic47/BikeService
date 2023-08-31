@@ -242,7 +242,6 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         model.addAttribute("sharedObjects", sharedIndexMap);
         model.addAttribute("category", category);
 
-
         return "index";
     }
 }

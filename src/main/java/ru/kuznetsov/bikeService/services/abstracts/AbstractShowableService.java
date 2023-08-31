@@ -13,7 +13,9 @@ import java.util.List;
  * @param <E>
  * @param <R>
  */
-public abstract class AbstractShowableService<E extends AbstractShowableEntity, R extends AbstractShowableEntityRepository<E>> extends AbstractService<E, R> implements CommonAbstractEntityService<E> {
+public abstract class AbstractShowableService<E extends AbstractShowableEntity,
+        R extends AbstractShowableEntityRepository<E>>
+        extends AbstractService<E, R> implements CommonAbstractEntityService<E> {
 
     public AbstractShowableService(R repository) {
         super(repository);
@@ -32,6 +34,7 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity, 
         return this.showableToRepo(toRepo, newItem);
     }
 
+    @Override
     public E update(E item, E newItem) {
         return this.showableToRepo(item, newItem);
     }

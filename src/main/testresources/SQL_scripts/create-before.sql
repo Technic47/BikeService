@@ -39,8 +39,9 @@ VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testFast1', 1, 'testValue', 
 INSERT INTO bikeservicetest.public.consumables(id, creator, description, link, name, picture, value, is_shared)
 VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testCons1', 1, 'testValue', false);
 
-INSERT INTO bikeservicetest.public.tools(id, creator, description, link, name, picture, value, is_shared)
-VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testTool1', 1, 'testValue', false);
+INSERT INTO bikeservicetest.public.tools(id, creator, description, link, name, picture, value, manufacturer, model, is_shared)
+VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testTool1', 1, 'testValue', 1, 'testModel', false),
+       (DEFAULT, 2, 'testDescription', 'testLink', 'testTool1', 1, 'testValue', 1, 'testModel', false);
 
 INSERT INTO bikeservicetest.public.manufacturers(id, creator, description, link, name, picture, value, is_shared)
 VALUES (DEFAULT, 1, 'testDescription', 'testLink', 'testManufacture', 1, 'testValue', false);

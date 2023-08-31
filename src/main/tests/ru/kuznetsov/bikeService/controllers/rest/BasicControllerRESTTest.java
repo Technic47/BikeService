@@ -2,9 +2,7 @@ package ru.kuznetsov.bikeService.controllers.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +27,6 @@ import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.create
 @Sql(value = {"/SQL_scripts/create-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/SQL_scripts/clean-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @WithUserDetails("test")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BasicControllerRESTTest {
     private final ObjectMapper om = new ObjectMapper();
     @Autowired
@@ -50,16 +47,17 @@ class BasicControllerRESTTest {
 
     @Test
     void create() throws Exception {
+        Long pictureId = TEST_DOCUMENT.getPicture();
         mockMvc.perform(post("/api/documents")
-                .content(om.writeValueAsString(createDtoFrom(TEST_DOCUMENT)))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                        .content(om.writeValueAsString(createDtoFrom(TEST_DOCUMENT)))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.id", is(6)))
                 .andExpect(jsonPath("$.name", is(TEST_NAME)))
                 .andExpect(jsonPath("$.description", is(TEST_DESCRIPTION)))
-                .andExpect(jsonPath("$.picture", is(13)))
+                .andExpect(jsonPath("$.picture", is(pictureId.intValue())))
                 .andExpect(jsonPath("$.link", is(TEST_LINK)))
                 .andExpect(jsonPath("$.value", is(TEST_LINK)))
                 .andExpect(jsonPath("$.manufacturer").doesNotExist())
@@ -102,6 +100,7 @@ class BasicControllerRESTTest {
 
     @Test
     void testUpdate() throws Exception {
+        Long pictureId = TEST_DOCUMENT.getPicture();
         mockMvc.perform(put("/api/documents/1")
                         .content(om.writeValueAsString(createDtoFrom(TEST_DOCUMENT)))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
@@ -111,7 +110,7 @@ class BasicControllerRESTTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is(TEST_NAME)))
                 .andExpect(jsonPath("$.description", is(TEST_DESCRIPTION)))
-                .andExpect(jsonPath("$.picture", is(13)))
+                .andExpect(jsonPath("$.picture", is(pictureId.intValue())))
                 .andExpect(jsonPath("$.link", is(TEST_LINK)))
                 .andExpect(jsonPath("$.value", is(TEST_LINK)))
                 .andExpect(jsonPath("$.manufacturer").doesNotExist())
@@ -163,6 +162,7 @@ class BasicControllerRESTTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
     }
+
     @Test
     void createPdfErrors() throws Exception {
         //Unreal id
@@ -173,5 +173,4 @@ class BasicControllerRESTTest {
         mockMvc.perform(get("/api/documents/3/pdf"))
                 .andExpect(status().isForbidden());
     }
-
 }

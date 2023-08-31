@@ -8,11 +8,14 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
+import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,6 +42,40 @@ public class UserControllerNotAdminTest {
     }
 
     @Test
+    void showToOwner() throws Exception {
+        this.mockMvc.perform(get("/users/show"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("owner", true))
+                .andExpect(model().attribute("userAccount", any(UserModel.class)))
+                .andExpect(model().attribute("documents", hasSize(2)))
+                .andExpect(model().attribute("fasteners", hasSize(1)))
+                .andExpect(model().attribute("manufacturers", hasSize(1)))
+                .andExpect(model().attribute("consumables", hasSize(1)))
+                .andExpect(model().attribute("tools", hasSize(1)))
+                .andExpect(model().attribute("parts", hasSize(2)))
+                .andExpect(model().attribute("bikes", hasSize(0)));
+    }
+
+    @Test
+    void updateNameOrPasswordTest() throws Exception {
+        this.mockMvc.perform(get("/users/update"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("credentialsChange"))
+                .andExpect(model().attribute("user", any(UserModel.class)));
+    }
+
+    @Test
+    void uploadNewCredentialsTest() throws Exception {
+        UserModel userModel = new UserModel("TestTest", "EmailEmail", "PassPass");
+        this.mockMvc.perform(post("/users/update/credentialsChange")
+                .flashAttr("user", userModel))
+                .andDo(print())
+                .andExpect(redirectedUrl("/logout"));
+    }
+
+    @Test
     void update() throws Exception {
         this.mockMvc.perform(post("/users/update/1")
                         .param("admin", String.valueOf(1)))
@@ -49,6 +86,13 @@ public class UserControllerNotAdminTest {
     @Test
     void delete() throws Exception {
         this.mockMvc.perform(post("/users/delete/1"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void search() throws Exception{
+        this.mockMvc.perform(get("/users/search"))
+                .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
 }

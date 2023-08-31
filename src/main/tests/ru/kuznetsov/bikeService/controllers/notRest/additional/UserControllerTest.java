@@ -55,7 +55,7 @@ class UserControllerTest {
     }
 
     @Test
-    void update() throws Exception {
+    void updateUserAdmin() throws Exception {
         this.mockMvc.perform(post("/users/update/1")
                         .param("admin", String.valueOf(1)))
                 .andDo(print())
@@ -80,5 +80,14 @@ class UserControllerTest {
                 .andExpect(xpath("//div/div/table/tbody/tr").nodeCount(1))
                 .andExpect(content().string(containsString("pavel")))
                 .andExpect(content().string(not(containsString("test"))));
+    }
+
+    @Test
+    void search() throws Exception{
+        this.mockMvc.perform(get("/users/search")
+                        .param("value", "Test"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("users", hasSize(1)));
     }
 }

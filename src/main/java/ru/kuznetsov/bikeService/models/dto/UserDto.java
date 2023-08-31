@@ -8,33 +8,20 @@ import java.util.Set;
 
 public class UserDto {
     protected Date created;
-//    private Long id;
     private String username;
     private String email;
     private boolean active;
     private boolean enabled;
-//    protected Date updated;
     private Set<UserRole> authorities;
 
     public UserDto(UserModel userModel) {
-//        this.id = userModel.getId();
         this.username = userModel.getUsername();
         this.email = userModel.getEmail();
         this.active = userModel.isActive();
         this.enabled = userModel.isEnabled();
         this.created = userModel.getCreated();
-//        this.updated = userModel.getUpdated();
         this.authorities = userModel.getAuthorities();
     }
-
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
 
     public String getUsername() {
         return username;
@@ -75,14 +62,6 @@ public class UserDto {
     public void setCreated(Date created) {
         this.created = created;
     }
-
-//    public Date getUpdated() {
-//        return updated;
-//    }
-//
-//    public void setUpdated(Date updated) {
-//        this.updated = updated;
-//    }
 
     public Set<UserRole> getAuthorities() {
         return authorities;

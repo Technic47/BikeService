@@ -38,10 +38,12 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     @Operation(summary = "Add linked item to entity")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity is updated",
-                    content = @Content),
-            @ApiResponse(responseCode = "200", description = "Entity is updated",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AbstractEntityDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid request Body",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "Access denied",
+                    content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
     @PutMapping("/{itemId}/linkedItems/{linkedItemId}")
@@ -61,10 +63,12 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     @Operation(summary = "Del linked item from entity")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity is updated",
-                    content = @Content),
-            @ApiResponse(responseCode = "200", description = "Entity is updated",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AbstractEntityDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid request Body",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "Access denied",
+                    content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
     @DeleteMapping("/{itemId}/linkedItems/{linkedItemId}")
@@ -141,10 +145,12 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     @GetMapping(value = "/{id}/pdfAll")
     public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
-        ServiceList generalList = serviceListController.getGeneralServiceList(item.getLinkedItems());
+        if (checkAccessToItem(item, principal)) {
+            ServiceList generalList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
-        this.preparePDF(item, principal, generalList);
-        return this.createResponse(item);
+            this.preparePDF(item, principal, generalList);
+            return this.createResponse(item);
+        } else throw new AccessToResourceDenied(item.getId());
     }
 
     @Autowired

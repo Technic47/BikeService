@@ -284,13 +284,12 @@ class BasicControllerUSERTest {
     @Test
     @Order(15)
     void pdfTest() throws Exception {
-        this.mockMvc.perform(get("/parts/1"));
-        this.mockMvc.perform(get("/parts/pdf")
+        this.mockMvc.perform(get("/documents/1"));
+        this.mockMvc.perform(get("/documents/pdf")
                 .param("id", "1"))
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
-
     }
 }

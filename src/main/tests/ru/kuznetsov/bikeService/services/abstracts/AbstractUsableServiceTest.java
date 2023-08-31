@@ -46,6 +46,7 @@ class AbstractUsableServiceTest {
         assertEquals(TEST_VALUE, this.defaultTool.getValue());
         assertEquals(TEST_MANUFACTURER_ID, this.defaultTool.getManufacturer());
         assertEquals(TEST_MODEL, this.defaultTool.getModel());
+
         verify(repository, times(1)).findById(TEST_ID);
         verify(repository, times(1)).save(this.defaultTool);
     }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -16,6 +17,7 @@ import ru.kuznetsov.bikeService.services.modelServices.PartService;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -67,7 +69,7 @@ class ServiceableControllerTest {
                 .andDo(print())
                 .andExpect(model().attribute("allDocuments", hasSize(5)))
                 .andExpect(model().attribute("allFasteners", hasSize(1)))
-                .andExpect(model().attribute("allTools", hasSize(1)))
+                .andExpect(model().attribute("allTools", hasSize(2)))
                 .andExpect(model().attribute("allConsumables", hasSize(1)))
                 .andExpect(model().attribute("allParts", hasSize(5)))
                 .andExpect(model().attribute("documents", aMapWithSize(1)))
@@ -80,7 +82,7 @@ class ServiceableControllerTest {
                 .andExpect(xpath("//div/div/form[@action='/parts/1/update']").exists())
                 .andExpect(xpath("//div/div/form/div/div/div/select[@id='allParts']/option").nodeCount(4))
                 .andExpect(xpath("//div/div/form/div/div/div/select[@id='documents']/option").nodeCount(5))
-                .andExpect(xpath("//div/div/form/div/div/div/select[@id='tools']/option").nodeCount(1))
+                .andExpect(xpath("//div/div/form/div/div/div/select[@id='tools']/option").nodeCount(2))
                 .andExpect(xpath("//div/div/form/div/div/div/select[@id='fasteners']/option").nodeCount(1))
                 .andExpect(xpath("//div/div/form/div/div/div/select[@id='consumables']/option").nodeCount(1))
 
@@ -121,5 +123,27 @@ class ServiceableControllerTest {
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/parts"));
+    }
+
+    @Test
+    void pdfTest() throws Exception {
+        this.mockMvc.perform(get("/parts/1"));
+        this.mockMvc.perform(get("/parts/pdf")
+                        .param("id", "1"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
+    }
+
+    @Test
+    void pdfAllTest() throws Exception {
+        this.mockMvc.perform(get("/parts/1"));
+        this.mockMvc.perform(get("/parts/pdfAll")
+                        .param("id", "1"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
     }
 }
