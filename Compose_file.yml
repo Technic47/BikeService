@@ -17,15 +17,6 @@ services:
       - POSTGRES_PASSWORD=1999
       - POSTGRES_DB=BikeService
 
-#  adminer:
-#    image: adminer
-#    container_name: adminer
-#    depends_on:
-#      - db
-#    restart: always
-#    ports:
-#      - "8000:8000"
-
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
