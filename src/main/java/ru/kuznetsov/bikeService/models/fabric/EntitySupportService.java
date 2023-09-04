@@ -1,6 +1,7 @@
 package ru.kuznetsov.bikeService.models.fabric;
 
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.abstracts.comparators.ComparatorByName;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
@@ -17,6 +18,7 @@ import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
@@ -118,5 +120,15 @@ public class EntitySupportService {
             logger.info("All " + category + " are shown to " + userModel.getUsername() + "'");
         }
         return objects;
+    }
+
+    public static <T extends AbstractShowableEntity> List<T> sortBasic(List<T> list, String sort){
+        List<T> sortedList;
+        switch (sort) {
+            case "ASC", "asc" -> sortedList = list.stream().sorted(new ComparatorByName()).toList();
+            case "DESC", "desc" -> sortedList = list.stream().sorted(new ComparatorByName()).sorted(Collections.reverseOrder()).toList();
+            default -> sortedList = list;
+        }
+        return sortedList;
     }
 }

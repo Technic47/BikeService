@@ -16,7 +16,7 @@ import java.util.Objects;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractShowableEntity
-        implements Showable {
+        implements Showable, Comparable<AbstractShowableEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -83,6 +83,10 @@ public abstract class AbstractShowableEntity
         this.isShared = dtoNew.isShared();
     }
 
+    @Override
+    public int compareTo(AbstractShowableEntity o) {
+        return this.getName().compareToIgnoreCase(o.getName());
+    }
 
     public Long getId() {
         return id;

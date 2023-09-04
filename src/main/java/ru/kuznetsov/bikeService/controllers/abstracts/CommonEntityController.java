@@ -162,23 +162,70 @@ public abstract class CommonEntityController extends AbstractController {
      * If user is ADMIN -> no filtering.
      * Else -> filtering remains shared and ID-filtered items, or just ID-filtered items.
      *
-     * @param value     string to search.
-     * @param service   connected to entity service.
-     * @param principal who is searching.
-     * @param shared    flag for including shared items to resultSet.
-     * @param category  category of entities for logging.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param findBy      string field to search.
+     * @param searchValue string to search.
+     * @param service     connected to entity service.
+     * @param principal   who is searching.
+     * @param shared      flag for including shared items to resultSet.
+     * @param category    category of entities for logging.
+     * @param <T>         AbstractShowableEntity from main models.
      * @param <S>
      * @return List with search results.
      */
     protected <T extends AbstractShowableEntity,
             S extends CommonAbstractEntityService<T>> List<T> doSearchProcedure(
-            String value, final S service, final Principal principal, boolean shared, String category) {
+            String findBy, String searchValue, final S service, final Principal principal, boolean shared, String category) {
+        List<T> resultSet = new ArrayList<>();
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+
+        if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
+            resultSet = this.getAdminResults(findBy, searchValue, service, principal, category);
+        } else resultSet = this.getUserResults(findBy, searchValue, service, principal, shared, category);
+
+        logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
+        return resultSet;
+    }
+
+    private <T extends AbstractShowableEntity,
+            S extends CommonAbstractEntityService<T>> List<T> getAdminResults(
+            String findBy, String searchValue, final S service, final Principal principal, String category
+    ) {
         Set<T> resultSet = new HashSet<>();
-        resultSet.addAll(service.findByNameContainingIgnoreCase(value));
-        resultSet.addAll(service.findByDescriptionContainingIgnoreCase(value));
+
+        switch (findBy) {
+            case "name" -> resultSet.addAll(service.findByNameContainingIgnoreCase(searchValue));
+            case "description" -> resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
+            case "value" -> resultSet.addAll(service.findByValueContainingIgnoreCase(searchValue));
+            default -> {
+                resultSet.addAll(service.findByNameContainingIgnoreCase(searchValue));
+                resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
+            }
+        }
 
         UserModel userModel = this.getUserModelFromPrincipal(principal);
+
+        logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
+        return resultSet.stream().toList();
+    }
+
+    protected <T extends AbstractShowableEntity,
+            S extends CommonAbstractEntityService<T>> List<T> getUserResults(
+            String findBy, String searchValue, final S service, final Principal principal, boolean shared, String category) {
+        Set<T> resultSet = new HashSet<>();
+        UserModel userModel = this.getUserModelFromPrincipal(principal);
+
+        switch (findBy) {
+            case "name" ->
+                    resultSet.addAll(service.findByNameContainingIgnoreCaseAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
+            case "description" -> resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
+            case "value" -> resultSet.addAll(service.findByValueContainingIgnoreCase(searchValue));
+            default -> {
+                resultSet.addAll(service.findByNameContainingIgnoreCase(searchValue));
+                resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
+            }
+        }
+
+
         Long userId = userModel.getId();
 
         if (!userModel.getAuthorities().contains(ROLE_ADMIN)) {
@@ -193,7 +240,7 @@ public abstract class CommonEntityController extends AbstractController {
                         .collect(Collectors.toSet());
             }
         }
-        logger.info(userModel.getUsername() + " was searching " + value + " in " + category);
+        logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
         return resultSet.stream().toList();
     }
 

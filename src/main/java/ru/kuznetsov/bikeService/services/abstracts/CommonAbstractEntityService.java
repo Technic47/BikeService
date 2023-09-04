@@ -12,5 +12,9 @@ public interface CommonAbstractEntityService<E extends AbstractShowableEntity>
 
     List<E> findByNameContainingIgnoreCase(String string);
 
+    List<E> findByNameContainingIgnoreCaseAndCreatorOrIsShared(String string, Long creatorId, boolean shared);
+
     List<E> findByDescriptionContainingIgnoreCase(String string);
+
+    List<E> findByValueContainingIgnoreCase(String value);
 }

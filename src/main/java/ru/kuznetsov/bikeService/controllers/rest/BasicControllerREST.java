@@ -56,14 +56,18 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     @GetMapping()
     public List<AbstractEntityDto> index(Principal principal,
                                          @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
-                                         @RequestParam(name = "search", required = false) String value) {
+                                         @RequestParam(name = "searchValue", required = false) String searchValue,
+                                         @RequestParam(name = "sort", required = false, defaultValue = "") String sort,
+                                         @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         List<T> objects;
-        if (value != null) {
-            objects = this.doSearchProcedure(value, this.service, principal, shared, category);
+        if (searchValue != null) {
+            objects = this.doSearchProcedure(findBy, searchValue, this.service, principal, shared, category);
         } else objects = buildIndexList(service, userModel, category, shared);
 
-        return convertListToDto(objects);
+        List<T> sortedList = sortBasic(objects, sort);
+
+        return convertListToDto(sortedList);
     }
 
     @Operation(summary = "Create a new entity")
