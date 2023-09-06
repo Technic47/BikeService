@@ -175,7 +175,7 @@ public abstract class CommonEntityController extends AbstractController {
     protected <T extends AbstractShowableEntity,
             S extends CommonAbstractEntityService<T>> List<T> doSearchProcedure(
             String findBy, String searchValue, final S service, final Principal principal, boolean shared, String category) {
-        List<T> resultSet = new ArrayList<>();
+        List<T> resultSet;
         UserModel userModel = this.getUserModelFromPrincipal(principal);
 
         if (userModel.getAuthorities().contains(ROLE_ADMIN)) {

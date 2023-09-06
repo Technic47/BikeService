@@ -2,14 +2,14 @@ package ru.kuznetsov.bikeService.services.abstracts;
 
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
-import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
+import ru.kuznetsov.bikeService.repositories.abstracts.AbstractServiceableEntityRepository;
 
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class AbstractServiceableService<E extends AbstractServiceableEntity,
-        R extends AbstractShowableEntityRepository<E>>
-        extends AbstractUsableService<E, R> implements CommonServiceableEntityService<E> {
+public abstract class AbstractServiceableService<E extends AbstractServiceableEntity, R extends AbstractServiceableEntityRepository<E>>
+        extends AbstractUsableService<E, R>
+        implements CommonServiceableEntityService<E> {
 
     public AbstractServiceableService(R repository) {
         super(repository);

@@ -9,7 +9,6 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.UserDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.modelServices.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -22,14 +21,6 @@ import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.create
 @RestController
 @RequestMapping("/api/users")
 public class UserControllerREST extends AbstractController {
-    public UserControllerREST(DocumentService documentService, ManufacturerService manufacturerService, FastenerService fastenerService, ConsumableService consumableService, ToolService toolService) {
-        this.documentService = documentService;
-        this.manufacturerService = manufacturerService;
-        this.fastenerService = fastenerService;
-        this.consumableService = consumableService;
-        this.toolService = toolService;
-    }
-
     @GetMapping()
     public UserDto getUser(Principal principal) {
         String name = principal.getName();

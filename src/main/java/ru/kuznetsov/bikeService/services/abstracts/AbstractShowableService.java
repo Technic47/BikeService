@@ -13,9 +13,9 @@ import java.util.List;
  * @param <E>
  * @param <R>
  */
-public abstract class AbstractShowableService<E extends AbstractShowableEntity,
-        R extends AbstractShowableEntityRepository<E>>
-        extends AbstractService<E, R> implements CommonAbstractEntityService<E> {
+public abstract class AbstractShowableService<E extends AbstractShowableEntity, R extends AbstractShowableEntityRepository<E>>
+        extends AbstractService<E, R>
+        implements CommonAbstractEntityService<E> {
 
     public AbstractShowableService(R repository) {
         super(repository);
@@ -104,6 +104,10 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
         return this.repository.findByDescriptionContainingIgnoreCase(string);
     }
 
+    public List<E> findByDescriptionContainingIgnoreCaseAndCreatorOrIsShared(String string, Long creatorId, boolean shared) {
+        return this.repository.findByDescriptionContainingIgnoreCaseAndCreatorOrIsShared(string, creatorId, shared);
+    }
+
     /**
      * Find records containing argument String in Value field.
      *
@@ -112,6 +116,10 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity,
      */
     public List<E> findByValueContainingIgnoreCase(String value) {
         return this.repository.findByValueContainingIgnoreCase(value);
+    }
+
+    public List<E> findByValueContainingIgnoreCaseAndCreatorOrIsShared(String string, Long creatorId, boolean shared) {
+        return this.repository.findByValueContainingIgnoreCaseAndCreatorOrIsShared(string, creatorId, shared);
     }
 
     public boolean existById(Long id) {

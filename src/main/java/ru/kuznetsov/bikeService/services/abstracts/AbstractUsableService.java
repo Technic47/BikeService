@@ -1,11 +1,13 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
-import ru.kuznetsov.bikeService.repositories.abstracts.AbstractShowableEntityRepository;
+import ru.kuznetsov.bikeService.repositories.abstracts.AbstractUsableEntityRepository;
 
-public abstract class AbstractUsableService<E extends AbstractUsableEntity,
-        R extends AbstractShowableEntityRepository<E>>
-        extends AbstractShowableService<E, R> implements CommonUsableEntityService<E> {
+import java.util.List;
+
+public abstract class AbstractUsableService<E extends AbstractUsableEntity, R extends AbstractUsableEntityRepository<E>>
+        extends AbstractShowableService<E, R>
+        implements CommonUsableEntityService<E> {
     public AbstractUsableService(R repository) {
         super(repository);
     }
@@ -25,5 +27,9 @@ public abstract class AbstractUsableService<E extends AbstractUsableEntity,
         toRepo.setManufacturer(newItem.getManufacturer());
         toRepo.setModel(newItem.getModel());
         return this.showableToRepo(toRepo, newItem);
+    }
+
+    public List<E> findByManufacturer(Long manufacturerId) {
+        return repository.findByManufacturer(manufacturerId);
     }
 }
