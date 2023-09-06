@@ -37,6 +37,10 @@ public abstract class AbstractUsableService<E extends AbstractUsableEntity, R ex
         return repository.findByManufacturerAndCreatorOrIsShared(manufacturerId, userId, shared);
     }
 
+    public List<E> findByModel(String model) {
+        return repository.findByModel(model);
+    }
+
     public List<E> findByModelAndCreatorOrIsShared(String model, Long userId, boolean shared) {
         return repository.findByModelAndCreatorOrIsShared(model, userId, shared);
     }

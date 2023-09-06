@@ -16,6 +16,7 @@ import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
+import ru.kuznetsov.bikeService.services.SearchService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.File;
@@ -35,6 +36,7 @@ import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
  */
 public abstract class CommonEntityController extends AbstractController {
     protected PDFService pdfService;
+    protected SearchService searchService;
 
     /**
      * Form and add Maps with owned and created entities. Add Maps to provided Model object.
@@ -311,7 +313,12 @@ public abstract class CommonEntityController extends AbstractController {
     }
 
     @Autowired
-    public void setPdfService(PDFService pdfService) {
+    private void setPdfService(PDFService pdfService) {
         this.pdfService = pdfService;
+    }
+
+    @Autowired
+    private void setSearchService(SearchService searchService) {
+        this.searchService = searchService;
     }
 }

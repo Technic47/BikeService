@@ -6,17 +6,13 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.services.modelServices.*;
 
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.stream.Collectors;
 
+import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 
 @Service
@@ -44,93 +40,99 @@ public class SearchService {
     }
 
     /**
-     * Searching via matching in Name and Description. Case is ignored. ResultSet is formed considering current user`s ROLE.
+     * Searching via matching in 'findBy' field. Case is ignored. ResultList is formed considering current user`s ROLE.
      * If user is ADMIN -> no filtering.
-     * Else -> filtering remains shared and ID-filtered items, or just ID-filtered items.
+     * Else -> filtering keeps shared and ID-filtered items, or just ID-filtered items.
      *
      * @param findBy      string field to search.
      * @param searchValue string to search.
-     * @param service     connected to entity service.
-     * @param principal   who is searching.
+     * @param userModel   who is searching.
      * @param shared      flag for including shared items to resultSet.
-     * @param category    category of entities for logging.
-     * @param <T>         AbstractShowableEntity from main models.
-     * @param <S>
+     * @param category    category of entities.
      * @return List with search results.
      */
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> List<T> doSearchProcedure(
-            String findBy, String searchValue, final S service, final Principal principal, boolean shared, String category) {
-        List<T> resultSet;
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
+    public List<AbstractShowableEntity> doSearchProcedure(
+            String findBy, String searchValue, final UserModel userModel, boolean shared, String category) {
+        List<AbstractShowableEntity> results;
 
         if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
-            resultSet = this.getAdminResults(findBy, searchValue, service, principal, category);
-        } else resultSet = this.getUserResults(findBy, searchValue, service, principal, shared, category);
+            results = this.getAdminResults(findBy, searchValue, userModel, category);
+        } else results = this.getUserResults(findBy, searchValue, userModel, shared, category);
 
         logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
-        return resultSet;
+        return results;
     }
 
-    private <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> List<T> getAdminResults(
-            String findBy, String searchValue, final S service, final Principal principal, String category
+    /**
+     * Get all entities from category.
+     *
+     * @param findBy      string field to search.
+     * @param searchValue string to search.
+     * @param userModel   who is searching.
+     * @param category    category of entities.
+     * @return with search results.
+     */
+    private List<AbstractShowableEntity> getAdminResults(
+            String findBy, String searchValue, final UserModel userModel, String category
     ) {
-        Set<T> resultSet = new HashSet<>();
+        List<AbstractShowableEntity> results = new ArrayList<>();
 
         switch (findBy) {
-            case "name" -> resultSet.addAll(service.findByNameContainingIgnoreCase(searchValue));
-            case "description" -> resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
-            case "value" -> resultSet.addAll(service.findByValueContainingIgnoreCase(searchValue));
+            case "name" -> results.addAll(findByName(searchValue, category));
+            case "description" -> results.addAll(findByDescription(searchValue, category));
+            case "value" -> results.addAll(findByValue(searchValue, category));
+            case "manufacturer" -> results.addAll(findByManufacture(searchValue, category));
+            case "model" -> results.addAll(findByModel(searchValue, category));
             default -> {
-                resultSet.addAll(service.findByNameContainingIgnoreCase(searchValue));
-                resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
+                results.addAll(findByName(searchValue, category));
+                results.addAll(findByDescription(searchValue, category));
             }
         }
 
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
-
         logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
-        return resultSet.stream().toList();
+        return results;
     }
 
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> List<T> getUserResults(
-            String findBy, String searchValue, final S service, final Principal principal, boolean shared, String category) {
-        Set<T> resultSet = new HashSet<>();
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
+    /**
+     * Get user specific entities from category.
+     *
+     * @param findBy      string field to search.
+     * @param searchValue string to search.
+     * @param userModel   who is searching.
+     * @param category    category of entities.
+     * @return with search results.
+     */
+    protected List<AbstractShowableEntity> getUserResults(
+            String findBy, String searchValue, final UserModel userModel, boolean shared, String category) {
+        List<AbstractShowableEntity> results = new ArrayList<>();
 
         switch (findBy) {
-            case "name" ->
-                    resultSet.addAll(service.findByNameContainingIgnoreCaseAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
-            case "description" -> resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
-            case "value" -> resultSet.addAll(service.findByValueContainingIgnoreCase(searchValue));
+            case "name" -> results.addAll(findByNameCreatorShared(searchValue, category, userModel, shared));
+            case "description" ->
+                    results.addAll(findByDescriptionCreatorShared(searchValue, category, userModel, shared));
+            case "value" -> results.addAll(findByValueCreatorShared(searchValue, category, userModel, shared));
+            case "manufacturer" ->
+                    results.addAll(findByManufactureCreatorShared(searchValue, category, userModel, shared));
+            case "model" -> results.addAll(findByModelCreatorShared(searchValue, category, userModel, shared));
             default -> {
-                resultSet.addAll(service.findByNameContainingIgnoreCase(searchValue));
-                resultSet.addAll(service.findByDescriptionContainingIgnoreCase(searchValue));
+                results.addAll(findByNameCreatorShared(searchValue, category, userModel, shared));
+                results.addAll(findByDescriptionCreatorShared(searchValue, category, userModel, shared));
             }
         }
 
-
-        Long userId = userModel.getId();
-
-        if (!userModel.getAuthorities().contains(ROLE_ADMIN)) {
-            if (shared) {
-                resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(userId)
-                                || item.getIsShared())
-                        .collect(Collectors.toSet());
-            } else {
-                resultSet = resultSet.stream()
-                        .filter(item -> item.getCreator().equals(userId))
-                        .collect(Collectors.toSet());
-            }
-        }
-        logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
-        return resultSet.stream().toList();
+        logger.info(userModel.getUsername() + " id: " + userModel.getId() + " was searching " + searchValue + " in " + category);
+        return results;
     }
 
-
+    /**
+     * Searching entities in all categories via matching in 'findBy' field. Case is ignored.
+     *
+     * @param findBy      string field to search.
+     * @param searchValue string to search.
+     * @param userModel   who is searching.
+     * @param shared      flag for including shared items to resultSet.
+     * @return List with search results.
+     */
     public List<AbstractShowableEntity> doGlobalSearchProcedure(
             String findBy, String searchValue, final UserModel userModel, boolean shared) {
 
@@ -233,6 +235,23 @@ public class SearchService {
         return results;
     }
 
+    private List<AbstractShowableEntity> findByName(String searchValue, String category) {
+        List<AbstractShowableEntity> results = new ArrayList<>();
+
+        switch (category) {
+            case "documents" -> results.addAll(documentService.findByNameContainingIgnoreCase(searchValue));
+            case "fasteners" -> results.addAll(fastenerService.findByNameContainingIgnoreCase(searchValue));
+            case "manufacturers" -> results.addAll(manufacturerService.findByNameContainingIgnoreCase(searchValue));
+            case "consumables" -> results.addAll(consumableService.findByNameContainingIgnoreCase(searchValue));
+            case "tools" -> results.addAll(toolService.findByNameContainingIgnoreCase(searchValue));
+            case "parts" -> results.addAll(partService.findByNameContainingIgnoreCase(searchValue));
+            case "bikes" -> results.addAll(bikeService.findByNameContainingIgnoreCase(searchValue));
+            default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
+        }
+
+        return results;
+    }
+
     private List<AbstractShowableEntity> findByDescriptionCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractShowableEntity> results = new ArrayList<>();
 
@@ -257,6 +276,24 @@ public class SearchService {
         return results;
     }
 
+    private List<AbstractShowableEntity> findByDescription(String searchValue, String category) {
+        List<AbstractShowableEntity> results = new ArrayList<>();
+
+        switch (category) {
+            case "documents" -> results.addAll(documentService.findByDescriptionContainingIgnoreCase(searchValue));
+            case "fasteners" -> results.addAll(fastenerService.findByDescriptionContainingIgnoreCase(searchValue));
+            case "manufacturers" ->
+                    results.addAll(manufacturerService.findByDescriptionContainingIgnoreCase(searchValue));
+            case "consumables" -> results.addAll(consumableService.findByDescriptionContainingIgnoreCase(searchValue));
+            case "tools" -> results.addAll(toolService.findByDescriptionContainingIgnoreCase(searchValue));
+            case "parts" -> results.addAll(partService.findByDescriptionContainingIgnoreCase(searchValue));
+            case "bikes" -> results.addAll(bikeService.findByDescriptionContainingIgnoreCase(searchValue));
+            default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
+        }
+
+        return results;
+    }
+
     private List<AbstractShowableEntity> findByValueCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractShowableEntity> results = new ArrayList<>();
 
@@ -275,6 +312,23 @@ public class SearchService {
                     results.addAll(partService.findByValueContainingIgnoreCaseAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
             case "bikes" ->
                     results.addAll(bikeService.findByValueContainingIgnoreCaseAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
+            default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
+        }
+
+        return results;
+    }
+
+    private List<AbstractShowableEntity> findByValue(String searchValue, String category) {
+        List<AbstractShowableEntity> results = new ArrayList<>();
+
+        switch (category) {
+            case "documents" -> results.addAll(documentService.findByValueContainingIgnoreCase(searchValue));
+            case "fasteners" -> results.addAll(fastenerService.findByValueContainingIgnoreCase(searchValue));
+            case "manufacturers" -> results.addAll(manufacturerService.findByValueContainingIgnoreCase(searchValue));
+            case "consumables" -> results.addAll(consumableService.findByValueContainingIgnoreCase(searchValue));
+            case "tools" -> results.addAll(toolService.findByValueContainingIgnoreCase(searchValue));
+            case "parts" -> results.addAll(partService.findByValueContainingIgnoreCase(searchValue));
+            case "bikes" -> results.addAll(bikeService.findByValueContainingIgnoreCase(searchValue));
             default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
         }
 
@@ -306,6 +360,27 @@ public class SearchService {
         return results;
     }
 
+    private List<AbstractUsableEntity> findByManufacture(String searchValue, String category) {
+        List<AbstractUsableEntity> results = new ArrayList<>();
+        List<Manufacturer> manufacturers = manufacturerService.findByNameContainingIgnoreCase(searchValue);
+
+        if (manufacturers.isEmpty()) {
+            throw new IllegalArgumentException("Manufacturer with name: " + searchValue + " is not found!");
+        }
+
+        manufacturers.forEach(item -> {
+            switch (category) {
+                case "consumables" -> results.addAll(consumableService.findByManufacturer(item.getId()));
+                case "tools" -> results.addAll(toolService.findByManufacturer(item.getId()));
+                case "parts" -> results.addAll(partService.findByManufacturer(item.getId()));
+                case "bikes" -> results.addAll(bikeService.findByManufacturer(item.getId()));
+                default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
+            }
+        });
+
+        return results;
+    }
+
     private List<AbstractUsableEntity> findByModelCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractUsableEntity> results = new ArrayList<>();
 
@@ -318,6 +393,20 @@ public class SearchService {
                     results.addAll(partService.findByModelAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
             case "bikes" ->
                     results.addAll(bikeService.findByModelAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
+            default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
+        }
+
+        return results;
+    }
+
+    private List<AbstractUsableEntity> findByModel(String searchValue, String category) {
+        List<AbstractUsableEntity> results = new ArrayList<>();
+
+        switch (category) {
+            case "consumables" -> results.addAll(consumableService.findByModel(searchValue));
+            case "tools" -> results.addAll(toolService.findByModel(searchValue));
+            case "parts" -> results.addAll(partService.findByModel(searchValue));
+            case "bikes" -> results.addAll(bikeService.findByModel(searchValue));
             default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
         }
 
