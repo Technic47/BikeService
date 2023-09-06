@@ -83,10 +83,11 @@ public class SearchService {
             case "value" -> results.addAll(findByValue(searchValue, category));
             case "manufacturer" -> results.addAll(findByManufacture(searchValue, category));
             case "model" -> results.addAll(findByModel(searchValue, category));
-            default -> {
+            case "standard" -> {
                 results.addAll(findByName(searchValue, category));
                 results.addAll(findByDescription(searchValue, category));
             }
+            default -> throw new IllegalArgumentException("Value findBy is wrong!");
         }
 
         logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
@@ -114,10 +115,11 @@ public class SearchService {
             case "manufacturer" ->
                     results.addAll(findByManufactureCreatorShared(searchValue, category, userModel, shared));
             case "model" -> results.addAll(findByModelCreatorShared(searchValue, category, userModel, shared));
-            default -> {
-                results.addAll(findByNameCreatorShared(searchValue, category, userModel, shared));
-                results.addAll(findByDescriptionCreatorShared(searchValue, category, userModel, shared));
+            case "standard" -> {
+                results.addAll(findAllByNameOrShared(searchValue, userModel, shared));
+                results.addAll(findAllByDescriptionOrShared(searchValue, userModel, shared));
             }
+            default -> throw new IllegalArgumentException("Value findBy is wrong!");
         }
 
         logger.info(userModel.getUsername() + " id: " + userModel.getId() + " was searching " + searchValue + " in " + category);
@@ -144,10 +146,11 @@ public class SearchService {
             case "value" -> results.addAll(findAllByValueOrShared(searchValue, userModel, shared));
             case "manufacturer" -> results.addAll(findAllByManufacturer(searchValue, userModel, shared));
             case "model" -> results.addAll(findAllByModelOrShared(searchValue, userModel, shared));
-            default -> {
+            case "standard" -> {
                 results.addAll(findAllByNameOrShared(searchValue, userModel, shared));
                 results.addAll(findAllByDescriptionOrShared(searchValue, userModel, shared));
             }
+            default -> throw new IllegalArgumentException("Value findBy is wrong!");
         }
         return results;
     }

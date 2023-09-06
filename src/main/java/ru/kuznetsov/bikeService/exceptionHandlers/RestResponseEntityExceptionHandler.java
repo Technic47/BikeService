@@ -36,10 +36,20 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(AccessToResourceDenied.class)
 //    @ResponseStatus(HttpStatus.FORBIDDEN)
-    protected ResponseEntity<Object> handleResourceAccessDenied(ResourceNotFoundException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleResourceAccessDenied(AccessToResourceDenied ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         ApiError apiError =
                 new ApiError(HttpStatus.FORBIDDEN, ex.getLocalizedMessage(), bodyOfResponse);
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
+        String bodyOfResponse = ex.getMessage();
+        ApiError apiError =
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), bodyOfResponse);
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }

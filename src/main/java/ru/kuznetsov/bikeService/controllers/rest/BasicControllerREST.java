@@ -60,12 +60,12 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                                          @RequestParam(name = "sort", required = false, defaultValue = "") String sort,
                                          @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
-        List<AbstractShowableEntity> objects;
+        List<T> objects;
         if (searchValue != null) {
-            objects = searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
+            objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
         } else objects = buildIndexList(service, userModel, category, shared);
 
-        List<AbstractShowableEntity> sortedList = sortBasic(objects, sort);
+        List<T> sortedList = sortBasic(objects, sort);
 
         return convertListToDto(sortedList);
     }
