@@ -227,7 +227,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
 
-        List<T> resultSet = this.doSearchProcedure("standard", value, this.service, principal, shared, category);
+        List<T> resultSet = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
 
         Map<T, String> resultMap = new HashMap<>();
         Map<T, String> sharedIndexMap = new HashMap<>();

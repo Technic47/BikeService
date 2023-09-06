@@ -29,7 +29,7 @@ public class SearchController extends AbstractController {
     @GetMapping()
     public List<AbstractEntityDto> doSearch(Principal principal,
                                             @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
-                                            @RequestParam(name = "searchValue", defaultValue = "") String searchValue,
+                                            @RequestParam(name = "searchValue") String searchValue,
                                             @RequestParam(name = "sort", required = false, defaultValue = "") String sort,
                                             @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
