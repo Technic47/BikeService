@@ -21,6 +21,7 @@ public class Starter extends SpringBootServletInitializer {
 
 /*TODO
 - sorting results
+- logIn logOut user work (active true/false)
 - resend token via login, not email
 - oauth2 from VK
  */

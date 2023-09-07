@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.session.SessionDestroyedEvent;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
@@ -16,6 +19,7 @@ import ru.kuznetsov.bikeService.services.EmailService;
 import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 @Component
@@ -26,10 +30,7 @@ public class ApplicationEventsListener {
     private final ExecutorService mainExecutor;
 
     @Autowired
-    public ApplicationEventsListener(PictureService pictureService,
-                                     ManufacturerService manufacturerService,
-                                     EmailService emailService,
-                                     @Qualifier("MainExecutor") ExecutorService mainExecutor) {
+    public ApplicationEventsListener(PictureService pictureService, ManufacturerService manufacturerService, EmailService emailService, @Qualifier("MainExecutor") ExecutorService mainExecutor) {
         this.pictureService = pictureService;
         this.manufacturerService = manufacturerService;
         this.emailService = emailService;
@@ -43,7 +44,7 @@ public class ApplicationEventsListener {
         try {
             pictureService.getById(1L);
             System.out.println("Default picture is OK.");
-        } catch(ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             pictureService.save(new Picture("noImage.jpg"));
             System.out.println("Default picture was empty. New one is created in DB");
         }
@@ -52,7 +53,7 @@ public class ApplicationEventsListener {
         try {
             manufacturerService.getById(1L);
             System.out.println("Default manufacture is OK.");
-        } catch(ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             Manufacturer defaultManufacture = new Manufacturer();
             defaultManufacture.setName("Default");
             defaultManufacture.setPicture(1L);
@@ -87,5 +88,33 @@ public class ApplicationEventsListener {
         };
         mainExecutor.submit(emailSend);
     }
+
+
+    //LogIn tracking
+//    @EventListener(InteractiveAuthenticationSuccessEvent.class)
+    @EventListener(AuthenticationSuccessEvent.class)
+    public void logInEvent(AuthenticationSuccessEvent event) {
+        Object principal = event.getAuthentication().getPrincipal();
+        //TODO
+        //work with logIn User.
+        //That`s working fine.
+    }
+
+    //LogIOut tracking
+    @EventListener(SessionDestroyedEvent.class)
+    public void logOutEvent(SessionDestroyedEvent event) {
+        List<SecurityContext> securityContexts = event.getSecurityContexts();
+        securityContexts.forEach(item -> {
+            Object principal = item.getAuthentication().getPrincipal();
+        });
+        //TODO
+        //work with logOut User.
+        //
+    }
+
+//    @EventListener(HttpSessionBindingEvent.class)
+//    public void logInEvent2(HttpSessionBindingEvent event) {
+//        Object value = event.getValue();
+//    }
 }
 
