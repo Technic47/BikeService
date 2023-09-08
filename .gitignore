@@ -44,8 +44,6 @@ src/main/resources/static/siteIMG/big
 src/main/resources/static/ssl
 LOGS/
 scripts/
-src/main/resources/application-dev.properties
-src/main/resources/application-prod.properties
 src/main/resources/junit-platform.properties
 .mvn/wrapper/MavenWrapperDownloader.java
 src/main/testresources/application-test.properties
