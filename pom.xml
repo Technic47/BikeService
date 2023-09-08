@@ -7,10 +7,7 @@
     <groupId>ru.kuznetsov.bikeService</groupId>
     <artifactId>BikeService</artifactId>
     <version>1.5-SNAPSHOT</version>
-    <modules>
-        <module>Search</module>
-    </modules>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>bikeService Maven Webapp</name>
     <url>https://yourbikeservice.ru</url>
