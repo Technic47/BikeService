@@ -24,6 +24,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.*;
 
@@ -62,7 +63,13 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         List<T> objects;
         if (searchValue != null) {
-            objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
+            try {
+                objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } else objects = buildIndexList(service, userModel, category, shared);
 
         List<T> sortedList = sortBasic(objects, sort);

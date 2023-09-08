@@ -10,6 +10,7 @@ import ru.kuznetsov.bikeService.services.modelServices.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
@@ -52,15 +53,19 @@ public class SearchService {
      * @return List with search results.
      */
     public List<AbstractShowableEntity> doSearchProcedure(
-            String findBy, String searchValue, final UserModel userModel, boolean shared, String category) {
-        List<AbstractShowableEntity> results;
+            String findBy, String searchValue, final UserModel userModel, boolean shared, String category) throws ExecutionException, InterruptedException {
+        return mainExecutor.submit(() -> {
+                    List<AbstractShowableEntity> results;
 
-        if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
-            results = this.getAdminResults(findBy, searchValue, userModel, category);
-        } else results = this.getUserResults(findBy, searchValue, userModel, shared, category);
+                    if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
+                        results = this.getAdminResults(findBy, searchValue, userModel, category);
+                    } else results = this.getUserResults(findBy, searchValue, userModel, shared, category);
 
-        logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
-        return results;
+                    logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + category);
+                    return results;
+                })
+                .get();
+
     }
 
     /**
@@ -136,7 +141,25 @@ public class SearchService {
      * @return List with search results.
      */
     public List<AbstractShowableEntity> doGlobalSearchProcedure(
-            String findBy, String searchValue, final UserModel userModel, boolean shared) {
+            String findBy, String searchValue, final UserModel userModel, boolean shared) throws ExecutionException, InterruptedException {
+//        return mainExecutor.submit(() -> {
+//                    List<AbstractShowableEntity> results = new ArrayList<>();
+//
+//                    switch (findBy) {
+//                        case "name" -> results.addAll(findAllByNameOrShared(searchValue, userModel, shared));
+//                        case "description" -> results.addAll(findAllByDescriptionOrShared(searchValue, userModel, shared));
+//                        case "value" -> results.addAll(findAllByValueOrShared(searchValue, userModel, shared));
+//                        case "manufacturer" -> results.addAll(findAllByManufacturer(searchValue, userModel, shared));
+//                        case "model" -> results.addAll(findAllByModelOrShared(searchValue, userModel, shared));
+//                        case "standard" -> {
+//                            results.addAll(findAllByNameOrShared(searchValue, userModel, shared));
+//                            results.addAll(findAllByDescriptionOrShared(searchValue, userModel, shared));
+//                        }
+//                        default -> throw new IllegalArgumentException("Value findBy is wrong!");
+//                    }
+//                    return results;
+//                })
+//                .get();
 
         List<AbstractShowableEntity> results = new ArrayList<>();
 
@@ -216,7 +239,6 @@ public class SearchService {
 
     private List<AbstractShowableEntity> findByNameCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractShowableEntity> results = new ArrayList<>();
-
         switch (category) {
             case "documents" ->
                     results.addAll(documentService.findByNameContainingIgnoreCaseAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
@@ -234,7 +256,6 @@ public class SearchService {
                     results.addAll(bikeService.findByNameContainingIgnoreCaseAndCreatorOrIsShared(searchValue, userModel.getId(), shared));
             default -> throw new IllegalArgumentException("Argument " + category + " is wrong!");
         }
-
         return results;
     }
 

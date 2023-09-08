@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.buildIndexList;
 
@@ -227,7 +228,14 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
 
-        List<T> resultSet = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
+        List<T> resultSet = null;
+        try {
+            resultSet = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         Map<T, String> resultMap = new HashMap<>();
         Map<T, String> sharedIndexMap = new HashMap<>();

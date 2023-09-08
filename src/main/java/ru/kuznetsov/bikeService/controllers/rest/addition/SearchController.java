@@ -12,6 +12,7 @@ import ru.kuznetsov.bikeService.services.SearchService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.convertListToDto;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.sortBasic;
@@ -34,7 +35,14 @@ public class SearchController extends AbstractController {
                                             @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
 
-        List<AbstractShowableEntity> objects = searchService.doGlobalSearchProcedure(findBy, searchValue, userModel, shared);
+        List<AbstractShowableEntity> objects = null;
+        try {
+            objects = searchService.doGlobalSearchProcedure(findBy, searchValue, userModel, shared);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         List<AbstractShowableEntity> sortedList = sortBasic(objects, sort);
 
         return convertListToDto(sortedList);
