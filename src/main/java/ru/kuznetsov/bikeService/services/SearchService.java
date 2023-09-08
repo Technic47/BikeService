@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
@@ -142,25 +143,6 @@ public class SearchService {
      */
     public List<AbstractShowableEntity> doGlobalSearchProcedure(
             String findBy, String searchValue, final UserModel userModel, boolean shared) throws ExecutionException, InterruptedException {
-//        return mainExecutor.submit(() -> {
-//                    List<AbstractShowableEntity> results = new ArrayList<>();
-//
-//                    switch (findBy) {
-//                        case "name" -> results.addAll(findAllByNameOrShared(searchValue, userModel, shared));
-//                        case "description" -> results.addAll(findAllByDescriptionOrShared(searchValue, userModel, shared));
-//                        case "value" -> results.addAll(findAllByValueOrShared(searchValue, userModel, shared));
-//                        case "manufacturer" -> results.addAll(findAllByManufacturer(searchValue, userModel, shared));
-//                        case "model" -> results.addAll(findAllByModelOrShared(searchValue, userModel, shared));
-//                        case "standard" -> {
-//                            results.addAll(findAllByNameOrShared(searchValue, userModel, shared));
-//                            results.addAll(findAllByDescriptionOrShared(searchValue, userModel, shared));
-//                        }
-//                        default -> throw new IllegalArgumentException("Value findBy is wrong!");
-//                    }
-//                    return results;
-//                })
-//                .get();
-
         List<AbstractShowableEntity> results = new ArrayList<>();
 
         switch (findBy) {
@@ -179,62 +161,130 @@ public class SearchService {
     }
 
     private List<AbstractShowableEntity> findAllByNameOrShared(final String searchValue, final UserModel userModel, boolean shared) {
-        List<AbstractShowableEntity> results = new ArrayList<>();
-        results.addAll(findByNameCreatorShared(searchValue, "documents", userModel, shared));
-        results.addAll(findByNameCreatorShared(searchValue, "fasteners", userModel, shared));
-        results.addAll(findByNameCreatorShared(searchValue, "manufacturers", userModel, shared));
-        results.addAll(findByNameCreatorShared(searchValue, "consumables", userModel, shared));
-        results.addAll(findByNameCreatorShared(searchValue, "tools", userModel, shared));
-        results.addAll(findByNameCreatorShared(searchValue, "parts", userModel, shared));
-        results.addAll(findByNameCreatorShared(searchValue, "bikes", userModel, shared));
+//        List<AbstractShowableEntity> results = new ArrayList<>();
+//        results.addAll(findByNameCreatorShared(searchValue, "documents", userModel, shared));
+//        results.addAll(findByNameCreatorShared(searchValue, "fasteners", userModel, shared));
+//        results.addAll(findByNameCreatorShared(searchValue, "manufacturers", userModel, shared));
+//        results.addAll(findByNameCreatorShared(searchValue, "consumables", userModel, shared));
+//        results.addAll(findByNameCreatorShared(searchValue, "tools", userModel, shared));
+//        results.addAll(findByNameCreatorShared(searchValue, "parts", userModel, shared));
+//        results.addAll(findByNameCreatorShared(searchValue, "bikes", userModel, shared));
+        //
+//        return results;
 
+        Future<List<AbstractShowableEntity>> documents = mainExecutor.submit(() -> findByNameCreatorShared(searchValue, "documents", userModel, shared));
+        Future<List<AbstractShowableEntity>> fasteners = mainExecutor.submit(() -> findByNameCreatorShared(searchValue, "fasteners", userModel, shared));
+        Future<List<AbstractShowableEntity>> manufacturers = mainExecutor.submit(() -> findByNameCreatorShared(searchValue, "manufacturers", userModel, shared));
+        Future<List<AbstractShowableEntity>> consumables = mainExecutor.submit(() -> findByNameCreatorShared(searchValue, "consumables", userModel, shared));
+        Future<List<AbstractShowableEntity>> tools = mainExecutor.submit(() -> findByNameCreatorShared(searchValue, "tools", userModel, shared));
+        Future<List<AbstractShowableEntity>> parts = mainExecutor.submit(() -> findByNameCreatorShared(searchValue, "parts", userModel, shared));
+        Future<List<AbstractShowableEntity>> bikes = mainExecutor.submit(() -> findByNameCreatorShared(searchValue, "bikes", userModel, shared));
+
+        return this.addResultsShowable(List.of(documents, fasteners, manufacturers, consumables, tools, parts, bikes));
+    }
+
+    private List<AbstractShowableEntity> addResultsShowable(List<Future<List<AbstractShowableEntity>>> list) {
+        List<AbstractShowableEntity> results = new ArrayList<>();
+
+        list.forEach(item -> {
+            try {
+                results.addAll(item.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return results;
+    }
+
+    private List<AbstractUsableEntity> addResultsUsable(List<Future<List<AbstractUsableEntity>>> list) {
+        List<AbstractUsableEntity> results = new ArrayList<>();
+
+        list.forEach(item -> {
+            try {
+                results.addAll(item.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        });
         return results;
     }
 
     private List<AbstractShowableEntity> findAllByDescriptionOrShared(final String searchValue, final UserModel userModel, boolean shared) {
-        List<AbstractShowableEntity> results = new ArrayList<>();
-        results.addAll(findByDescriptionCreatorShared(searchValue, "documents", userModel, shared));
-        results.addAll(findByDescriptionCreatorShared(searchValue, "fasteners", userModel, shared));
-        results.addAll(findByDescriptionCreatorShared(searchValue, "manufacturers", userModel, shared));
-        results.addAll(findByDescriptionCreatorShared(searchValue, "consumables", userModel, shared));
-        results.addAll(findByDescriptionCreatorShared(searchValue, "tools", userModel, shared));
-        results.addAll(findByDescriptionCreatorShared(searchValue, "parts", userModel, shared));
-        results.addAll(findByDescriptionCreatorShared(searchValue, "bikes", userModel, shared));
+//        List<AbstractShowableEntity> results = new ArrayList<>();
+//        results.addAll(findByDescriptionCreatorShared(searchValue, "documents", userModel, shared));
+//        results.addAll(findByDescriptionCreatorShared(searchValue, "fasteners", userModel, shared));
+//        results.addAll(findByDescriptionCreatorShared(searchValue, "manufacturers", userModel, shared));
+//        results.addAll(findByDescriptionCreatorShared(searchValue, "consumables", userModel, shared));
+//        results.addAll(findByDescriptionCreatorShared(searchValue, "tools", userModel, shared));
+//        results.addAll(findByDescriptionCreatorShared(searchValue, "parts", userModel, shared));
+//        results.addAll(findByDescriptionCreatorShared(searchValue, "bikes", userModel, shared));
+        //
+//        return results;
 
-        return results;
+        Future<List<AbstractShowableEntity>> documents = mainExecutor.submit(() -> findByDescriptionCreatorShared(searchValue, "documents", userModel, shared));
+        Future<List<AbstractShowableEntity>> fasteners = mainExecutor.submit(() -> findByDescriptionCreatorShared(searchValue, "fasteners", userModel, shared));
+        Future<List<AbstractShowableEntity>> manufacturers = mainExecutor.submit(() -> findByDescriptionCreatorShared(searchValue, "manufacturers", userModel, shared));
+        Future<List<AbstractShowableEntity>> consumables = mainExecutor.submit(() -> findByDescriptionCreatorShared(searchValue, "consumables", userModel, shared));
+        Future<List<AbstractShowableEntity>> tools = mainExecutor.submit(() -> findByDescriptionCreatorShared(searchValue, "tools", userModel, shared));
+        Future<List<AbstractShowableEntity>> parts = mainExecutor.submit(() -> findByDescriptionCreatorShared(searchValue, "parts", userModel, shared));
+        Future<List<AbstractShowableEntity>> bikes = mainExecutor.submit(() -> findByDescriptionCreatorShared(searchValue, "bikes", userModel, shared));
+
+        return this.addResultsShowable(List.of(documents, fasteners, manufacturers, consumables, tools, parts, bikes));
     }
 
     private List<AbstractShowableEntity> findAllByValueOrShared(final String searchValue, final UserModel userModel, boolean shared) {
-        List<AbstractShowableEntity> results = new ArrayList<>();
-        results.addAll(findByValueCreatorShared(searchValue, "documents", userModel, shared));
-        results.addAll(findByValueCreatorShared(searchValue, "fasteners", userModel, shared));
-        results.addAll(findByValueCreatorShared(searchValue, "manufacturers", userModel, shared));
-        results.addAll(findByValueCreatorShared(searchValue, "consumables", userModel, shared));
-        results.addAll(findByValueCreatorShared(searchValue, "tools", userModel, shared));
-        results.addAll(findByValueCreatorShared(searchValue, "parts", userModel, shared));
-        results.addAll(findByValueCreatorShared(searchValue, "bikes", userModel, shared));
+//        List<AbstractShowableEntity> results = new ArrayList<>();
+//        results.addAll(findByValueCreatorShared(searchValue, "documents", userModel, shared));
+//        results.addAll(findByValueCreatorShared(searchValue, "fasteners", userModel, shared));
+//        results.addAll(findByValueCreatorShared(searchValue, "manufacturers", userModel, shared));
+//        results.addAll(findByValueCreatorShared(searchValue, "consumables", userModel, shared));
+//        results.addAll(findByValueCreatorShared(searchValue, "tools", userModel, shared));
+//        results.addAll(findByValueCreatorShared(searchValue, "parts", userModel, shared));
+//        results.addAll(findByValueCreatorShared(searchValue, "bikes", userModel, shared));
+//
+//        return results;
 
-        return results;
+        Future<List<AbstractShowableEntity>> documents = mainExecutor.submit(() -> findByValueCreatorShared(searchValue, "documents", userModel, shared));
+        Future<List<AbstractShowableEntity>> fasteners = mainExecutor.submit(() -> findByValueCreatorShared(searchValue, "fasteners", userModel, shared));
+        Future<List<AbstractShowableEntity>> manufacturers = mainExecutor.submit(() -> findByValueCreatorShared(searchValue, "manufacturers", userModel, shared));
+        Future<List<AbstractShowableEntity>> consumables = mainExecutor.submit(() -> findByValueCreatorShared(searchValue, "consumables", userModel, shared));
+        Future<List<AbstractShowableEntity>> tools = mainExecutor.submit(() -> findByValueCreatorShared(searchValue, "tools", userModel, shared));
+        Future<List<AbstractShowableEntity>> parts = mainExecutor.submit(() -> findByValueCreatorShared(searchValue, "parts", userModel, shared));
+        Future<List<AbstractShowableEntity>> bikes = mainExecutor.submit(() -> findByValueCreatorShared(searchValue, "bikes", userModel, shared));
+
+        return this.addResultsShowable(List.of(documents, fasteners, manufacturers, consumables, tools, parts, bikes));
     }
 
-    private List<AbstractShowableEntity> findAllByManufacturer(final String searchValue, final UserModel userModel, boolean shared) {
-        List<AbstractShowableEntity> results = new ArrayList<>();
-        results.addAll(findByManufactureCreatorShared(searchValue, "consumables", userModel, shared));
-        results.addAll(findByManufactureCreatorShared(searchValue, "tools", userModel, shared));
-        results.addAll(findByManufactureCreatorShared(searchValue, "parts", userModel, shared));
-        results.addAll(findByManufactureCreatorShared(searchValue, "bikes", userModel, shared));
+    private List<AbstractUsableEntity> findAllByManufacturer(final String searchValue, final UserModel userModel, boolean shared) {
+//        List<AbstractShowableEntity> results = new ArrayList<>();
+//        results.addAll(findByManufactureCreatorShared(searchValue, "consumables", userModel, shared));
+//        results.addAll(findByManufactureCreatorShared(searchValue, "tools", userModel, shared));
+//        results.addAll(findByManufactureCreatorShared(searchValue, "parts", userModel, shared));
+//        results.addAll(findByManufactureCreatorShared(searchValue, "bikes", userModel, shared));
+//
+//        return results;
+        Future<List<AbstractUsableEntity>> consumables = mainExecutor.submit(() -> findByManufactureCreatorShared(searchValue, "consumables", userModel, shared));
+        Future<List<AbstractUsableEntity>> tools = mainExecutor.submit(() -> findByManufactureCreatorShared(searchValue, "tools", userModel, shared));
+        Future<List<AbstractUsableEntity>> parts = mainExecutor.submit(() -> findByManufactureCreatorShared(searchValue, "parts", userModel, shared));
+        Future<List<AbstractUsableEntity>> bikes = mainExecutor.submit(() -> findByManufactureCreatorShared(searchValue, "bikes", userModel, shared));
 
-        return results;
+        return this.addResultsUsable(List.of(consumables, tools, parts, bikes));
     }
 
-    private List<AbstractShowableEntity> findAllByModelOrShared(final String searchValue, final UserModel userModel, boolean shared) {
-        List<AbstractShowableEntity> results = new ArrayList<>();
-        results.addAll(findByModelCreatorShared(searchValue, "consumables", userModel, shared));
-        results.addAll(findByModelCreatorShared(searchValue, "tools", userModel, shared));
-        results.addAll(findByModelCreatorShared(searchValue, "parts", userModel, shared));
-        results.addAll(findByModelCreatorShared(searchValue, "bikes", userModel, shared));
+    private List<AbstractUsableEntity> findAllByModelOrShared(final String searchValue, final UserModel userModel, boolean shared) {
+//        List<AbstractShowableEntity> results = new ArrayList<>();
+//        results.addAll(findByModelCreatorShared(searchValue, "consumables", userModel, shared));
+//        results.addAll(findByModelCreatorShared(searchValue, "tools", userModel, shared));
+//        results.addAll(findByModelCreatorShared(searchValue, "parts", userModel, shared));
+//        results.addAll(findByModelCreatorShared(searchValue, "bikes", userModel, shared));
+//
+//        return results;
+        Future<List<AbstractUsableEntity>> consumables = mainExecutor.submit(() -> findByModelCreatorShared(searchValue, "consumables", userModel, shared));
+        Future<List<AbstractUsableEntity>> tools = mainExecutor.submit(() -> findByModelCreatorShared(searchValue, "tools", userModel, shared));
+        Future<List<AbstractUsableEntity>> parts = mainExecutor.submit(() -> findByModelCreatorShared(searchValue, "parts", userModel, shared));
+        Future<List<AbstractUsableEntity>> bikes = mainExecutor.submit(() -> findByModelCreatorShared(searchValue, "bikes", userModel, shared));
 
-        return results;
+        return this.addResultsUsable(List.of(consumables, tools, parts, bikes));
     }
 
     private List<AbstractShowableEntity> findByNameCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
