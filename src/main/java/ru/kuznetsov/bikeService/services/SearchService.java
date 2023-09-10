@@ -157,6 +157,7 @@ public class SearchService {
             }
             default -> throw new IllegalArgumentException("Value findBy is wrong!");
         }
+        logger.info(userModel.getUsername() + " was searching " + searchValue + " in " + findBy);
         return results;
     }
 

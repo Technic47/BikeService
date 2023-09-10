@@ -14,16 +14,10 @@ import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
 import ru.kuznetsov.bikeService.models.usable.Usable;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
-import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
-import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 public class EntitySupportService {
     /**
@@ -90,43 +84,12 @@ public class EntitySupportService {
         return indexList;
     }
 
-    /**
-     * Creates List of entities depending on userModel role and shared flag.
-     *
-     * @param service   service for entities.
-     * @param userModel user for whom List is being created.
-     * @param category  category of entities for logging.
-     * @param shared    flag for including shared entities.
-     * @param <T>       AbstractShowableEntity from main models.
-     * @param <S>
-     * @return formed List.
-     */
-    public static <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> List<T> buildIndexList(
-            final S service, UserModel userModel, String category, boolean shared) {
-        List<T> objects = null;
-
-        if (userModel.getAuthorities().contains(ROLE_USER)) {
-            if (shared) {
-                objects = service.findByCreatorOrShared(userModel.getId());
-                logger.info("Personal and shared " + category + " are shown to '" + userModel.getUsername() + "'");
-            } else {
-                objects = service.findByCreator(userModel.getId());
-                logger.info("Personal " + category + " are shown to '" + userModel.getUsername() + "'");
-            }
-        }
-        if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
-            objects = service.index();
-            logger.info("All " + category + " are shown to " + userModel.getUsername() + "'");
-        }
-        return objects;
-    }
-
-    public static <T extends AbstractShowableEntity> List<T> sortBasic(List<T> list, String sort){
+    public static <T extends AbstractShowableEntity> List<T> sortBasic(List<T> list, String sort) {
         List<T> sortedList;
         switch (sort) {
             case "ASC", "asc" -> sortedList = list.stream().sorted(new ComparatorByName()).toList();
-            case "DESC", "desc" -> sortedList = list.stream().sorted(new ComparatorByName()).sorted(Collections.reverseOrder()).toList();
+            case "DESC", "desc" ->
+                    sortedList = list.stream().sorted(new ComparatorByName()).sorted(Collections.reverseOrder()).toList();
             default -> sortedList = list;
         }
         return sortedList;

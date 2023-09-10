@@ -65,12 +65,10 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         if (searchValue != null) {
             try {
                 objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        } else objects = buildIndexList(service, userModel, category, shared);
+        } else objects = doIndexProcedure(service, userModel, category, shared);
 
         List<T> sortedList = sortBasic(objects, sort);
 
@@ -112,8 +110,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
     T show(T item, Principal principal) {
         if (checkAccessToItem(item, principal)) {
-            logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
-            return item;
+            return this.doShowProcedure(item, principal);
         } else throw new AccessToResourceDenied(item.getId());
     }
 

@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.buildIndexList;
 
 /**
  * Abstract non-REST controller that provides general methods and mapping for AbstractShowableEntity models.
@@ -60,10 +59,10 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
-        List<T> objects = buildIndexList(service, userModel, category, true);
+        List<T> objects = this.doIndexProcedure(service, userModel, category, true);
 
         this.addIndexMapsToModel(model, userId, objects);
-        model.addAttribute("sharedCheck", false);
+        model.addAttribute("sharedCheck", true);
         this.addItemAttributesIndex(model, principal);
         return "index";
     }
@@ -85,7 +84,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         this.addItemAttributesShow(model, item, principal);
         model.addAttribute("picture", pictureService.getById(item.getPicture()).getName());
         model.addAttribute("access", access);
-        logger.info(category + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
+        this.doShowProcedure(item, principal);
         return "show";
     }
 

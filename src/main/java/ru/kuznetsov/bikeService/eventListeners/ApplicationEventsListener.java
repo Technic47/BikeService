@@ -7,6 +7,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.session.SessionDestroyedEvent;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
@@ -17,23 +18,28 @@ import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.EmailService;
 import ru.kuznetsov.bikeService.services.PictureService;
+import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+
+import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
 
 @Component
 public class ApplicationEventsListener {
     private final PictureService pictureService;
     private final ManufacturerService manufacturerService;
     private final EmailService emailService;
+    private final UserService userService;
     private final ExecutorService mainExecutor;
 
     @Autowired
-    public ApplicationEventsListener(PictureService pictureService, ManufacturerService manufacturerService, EmailService emailService, @Qualifier("MainExecutor") ExecutorService mainExecutor) {
+    public ApplicationEventsListener(PictureService pictureService, ManufacturerService manufacturerService, EmailService emailService, UserService userService, @Qualifier("MainExecutor") ExecutorService mainExecutor) {
         this.pictureService = pictureService;
         this.manufacturerService = manufacturerService;
         this.emailService = emailService;
+        this.userService = userService;
         this.mainExecutor = mainExecutor;
     }
 
@@ -89,15 +95,16 @@ public class ApplicationEventsListener {
         mainExecutor.submit(emailSend);
     }
 
-
-    //LogIn tracking
-//    @EventListener(InteractiveAuthenticationSuccessEvent.class)
     @EventListener(AuthenticationSuccessEvent.class)
     public void logInEvent(AuthenticationSuccessEvent event) {
         Object principal = event.getAuthentication().getPrincipal();
-        //TODO
-        //work with logIn User.
-        //That`s working fine.
+        String userName = "null";
+        if (principal instanceof UserModel) {
+            userName = ((UserModel) principal).getName();
+        } else if (principal instanceof OAuth2AuthenticationToken) {
+            userName = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
+        }
+        logger.info("User " + userName + " is logged in.");
     }
 
     //LogIOut tracking
