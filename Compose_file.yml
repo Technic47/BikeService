@@ -46,6 +46,8 @@ services:
       - ../images:/app/IMG
 #      Linux:
 #      - /home/technic47/images:/app/IMG
-    environment:
-      - spring.config.location=classpath:/application-prod.properties
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/BikeService
+#    environment:
+#      - spring.config.location=classpath:/application-prod.properties
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/BikeService
+    env_file:
+      - ../.env
