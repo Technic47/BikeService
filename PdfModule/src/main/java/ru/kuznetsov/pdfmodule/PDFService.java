@@ -63,13 +63,13 @@ public class PDFService {
      * Construct PDF document.
      *
      * @param item     item for list forming.
-     * @param userName who is creating pdf.
      */
-    public void build(PdfEntityDto item, String userName) {
+    public void build(PdfEntityDto item) {
         this.document = new Document(PageSize.A4);
-        this.userName = userName;
-        this.imagePath = "https://yourbikeservice.ru/IMG/" + item.getPicture();
+        this.userName = item.getUserName();
+        this.imagePath = "yourbikeservice.ru/IMG/" + item.getPicture();
         this.manufacturer = item.getManufacturer();
+        this.model = item.getModel();
         this.serviceList = item.getLinkedItems();
 
         try {

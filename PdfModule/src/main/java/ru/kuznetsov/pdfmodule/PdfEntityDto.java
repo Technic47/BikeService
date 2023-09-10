@@ -10,6 +10,7 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL) //Hide null fields
 public class PdfEntityDto {
     private String category;
+    private String userName;
     private String name;
     private String description;
     private String picture;
@@ -23,12 +24,33 @@ public class PdfEntityDto {
     public PdfEntityDto() {
     }
 
+    public PdfEntityDto(String category, String name, String description, String picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this.link = link;
+        this.valueName = valueName;
+        this.value = value;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.linkedItems = linkedItems;
+    }
+
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getName() {
