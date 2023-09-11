@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static ru.kuznetsov.pdfmodule.PDFController.TMP_PATH;
+
 @Component
 public class PDFService {
     // https://coderlessons.com/tutorials/raznoe/uznaite-itext/itext-kratkoe-rukovodstvo
@@ -67,7 +69,8 @@ public class PDFService {
     public void build(PdfEntityDto item) {
         this.document = new Document(PageSize.A4);
         this.userName = item.getUserName();
-        this.imagePath = "yourbikeservice.ru/IMG/" + item.getPicture();
+//        this.imagePath = "resources/pdfDocs/picture.jpeg";
+//        this.imagePath = "yourbikeservice.ru/IMG/" + item.getPicture();
         this.manufacturer = item.getManufacturer();
         this.model = item.getModel();
         this.serviceList = item.getLinkedItems();
@@ -109,7 +112,7 @@ public class PDFService {
     private PdfPTable insertHeaderTable(PdfEntityDto item) {
         PdfPTable table = new PdfPTable(2);
         try {
-            Path path = Paths.get(this.imagePath);
+            Path path = Paths.get(TMP_PATH);
             PdfPCell imageCell = new PdfPCell(Image.getInstance(path.toAbsolutePath().toString()));
             imageCell.setBorder(Rectangle.NO_BORDER);
 

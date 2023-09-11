@@ -13,7 +13,7 @@ public class PdfEntityDto {
     private String userName;
     private String name;
     private String description;
-    private String picture;
+    private Long picture;
     private String link;
     private String valueName;
     private String value;
@@ -24,7 +24,7 @@ public class PdfEntityDto {
     public PdfEntityDto() {
     }
 
-    public PdfEntityDto(String category, String name, String description, String picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
+    public PdfEntityDto(String category, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
         this.category = category;
         this.name = name;
         this.description = description;
@@ -69,11 +69,11 @@ public class PdfEntityDto {
         this.description = description;
     }
 
-    public String getPicture() {
+    public Long getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(Long picture) {
         this.picture = picture;
     }
 

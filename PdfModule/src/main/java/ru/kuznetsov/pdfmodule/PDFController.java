@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,13 +19,17 @@ import java.nio.file.Paths;
 
 import static ru.kuznetsov.pdfmodule.PDFService.PDF_DOC_NAME;
 
+
 @RestController
 @RequestMapping("/api/pdf")
 public class PDFController {
     private final PDFService pdfService;
+    private final WebClient webClient;
+    public static final String TMP_PATH = "src/main/resources/tmp/download.dat";
 
-    public PDFController(PDFService pdfService) {
+    public PDFController(PDFService pdfService, WebClient webClient) {
         this.pdfService = pdfService;
+        this.webClient = webClient;
     }
 
 
@@ -39,6 +44,18 @@ public class PDFController {
     @GetMapping()
 //    @ResponseBody
     public ResponseEntity<Resource> createPdf(@RequestBody PdfEntityDto item) throws IOException {
+        byte[] imageBytes = webClient.get()
+                .uri(String.join("", "/api/pictures/" + item.getPicture()))
+                .accept(MediaType.ALL)
+                .retrieve()
+                .bodyToMono(byte[].class)
+//                .doOnError(error -> System.out.println(error.getMessage()))
+//                .doOnSuccess(System.out::println)
+//                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
+                .block();
+        Path path = Paths.get(TMP_PATH);
+        Files.write(path, imageBytes);
+
         pdfService.build(item);
         return this.createResponse(item);
     }

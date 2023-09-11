@@ -59,7 +59,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**",
                             "/registrationConfirm", "/resendRegistrationToken", "/updateEmail").permitAll();
-                    auth.requestMatchers("/api/auth/login/**", "/api/registration/**").permitAll();
+                    auth.requestMatchers("/api/auth/login/**", "/api/registration/**", "/api/pictures/**").permitAll();
                     auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/**").authenticated();
                     auth.requestMatchers("/login").anonymous();
