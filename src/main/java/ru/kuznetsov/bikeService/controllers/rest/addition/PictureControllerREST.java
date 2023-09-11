@@ -1,22 +1,17 @@
 package ru.kuznetsov.bikeService.controllers.rest.addition;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.services.PictureService;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Paths;
 
 @RestController
@@ -59,7 +54,7 @@ public class PictureControllerREST {
     public ResponseEntity<Resource> get(@PathVariable Long id) {
         System.out.println("Method called with id: " + id);
         Picture picture = pictureService.getById(id);
-        String path = uploadPath + "/" + picture.getName();
+        String path = uploadPath + "/preview/" + picture.getName();
         return ResponseEntity.ok()
                 .body(new FileSystemResource(Paths.get(path)));
     }
