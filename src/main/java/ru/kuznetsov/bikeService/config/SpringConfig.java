@@ -1,5 +1,11 @@
 package ru.kuznetsov.bikeService.config;
 
+import io.netty.channel.ChannelOption;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -12,19 +18,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import reactor.netty.http.client.HttpClient;
 
+import javax.net.ssl.SSLException;
 import javax.sql.DataSource;
+import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @ComponentScan("ru.kuznetsov.bikeService")
@@ -65,6 +77,8 @@ public class SpringConfig implements WebMvcConfigurer {
     private String smtpUserName;
     @Value("${spring.mail.password}")
     private String smtpUserPass;
+    public static final int TIMEOUT = 1000;
+    private static final String PDF_MODULE_URL = "http://localhost:9443/api/pdf";
 
 
     @Value("${upload.path}")
@@ -159,5 +173,29 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
         return mailSender;
+    }
+
+    @Bean(name = "PdfModule")
+    public WebClient localApiClient(HttpClient httpClient) throws SSLException {
+        return WebClient
+                .builder()
+                .baseUrl(PDF_MODULE_URL)
+                .clientConnector(new ReactorClientHttpConnector(httpClient)).build();
+    }
+
+    @Bean
+    HttpClient getClient() throws SSLException {
+        SslContext context = SslContextBuilder.forClient()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                .build();
+
+        return HttpClient.create()
+                .secure(t -> t.sslContext(context))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT)
+                .responseTimeout(Duration.ofMillis(TIMEOUT))
+                .doOnConnected(conn ->
+                        conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS)));
+
     }
 }

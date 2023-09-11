@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -69,8 +70,6 @@ public class PDFService {
     public void build(PdfEntityDto item) {
         this.document = new Document(PageSize.A4);
         this.userName = item.getUserName();
-//        this.imagePath = "resources/pdfDocs/picture.jpeg";
-//        this.imagePath = "yourbikeservice.ru/IMG/" + item.getPicture();
         this.manufacturer = item.getManufacturer();
         this.model = item.getModel();
         this.serviceList = item.getLinkedItems();
@@ -159,10 +158,10 @@ public class PDFService {
 
         this.serviceList.forEach(item -> {
             switch (item.getCategory()) {
-                case "Tools" -> toolCell.addElement(new Phrase(item.getCredentials(), commonFont));
-                case "Consumables" ->
+                case "Tool" -> toolCell.addElement(new Phrase(item.getCredentials(), commonFont));
+                case "Consumable" ->
                         consumableCell.addElement(new Phrase(item.getName() + ", " + item.getValue(), commonFont));
-                case "Fasteners" ->
+                case "Fastener" ->
                         fastenerCell.addElement(new Phrase(item.getName() + ", " + item.getValue(), commonFont));
             }
         });

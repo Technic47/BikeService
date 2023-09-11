@@ -2,11 +2,9 @@ package ru.kuznetsov.pdfmodule;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Map;
 import java.util.Set;
 
-/**
- * Dto to show entities to users. Enable hiding service information.
- */
 @JsonInclude(JsonInclude.Include.NON_NULL) //Hide null fields
 public class PdfEntityDto {
     private String category;
@@ -21,21 +19,21 @@ public class PdfEntityDto {
     private String model;
     private Set<PdfEntityDto> linkedItems;
 
-    public PdfEntityDto() {
-    }
-
-    public PdfEntityDto(String category, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
-        this.category = category;
-        this.name = name;
-        this.description = description;
-        this.picture = picture;
-        this.link = link;
-        this.valueName = valueName;
-        this.value = value;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.linkedItems = linkedItems;
-    }
+//    public PdfEntityDto() {
+//    }
+//
+//    public PdfEntityDto(String category, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, Map<PdfEntityDto, Integer> linkedItems) {
+//        this.category = category;
+//        this.name = name;
+//        this.description = description;
+//        this.picture = picture;
+//        this.link = link;
+//        this.valueName = valueName;
+//        this.value = value;
+//        this.manufacturer = manufacturer;
+//        this.model = model;
+//        this.linkedItems = linkedItems;
+//    }
 
     public String getCategory() {
         return category;

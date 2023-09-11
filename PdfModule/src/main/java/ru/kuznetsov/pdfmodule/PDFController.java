@@ -5,17 +5,16 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.util.retry.Retry;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 
 import static ru.kuznetsov.pdfmodule.PDFService.PDF_DOC_NAME;
 
@@ -32,18 +31,9 @@ public class PDFController {
         this.webClient = webClient;
     }
 
-
-    //    @Operation(summary = "Build PDF document")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "PDF created",
-//                    content = @Content),
-//            @ApiResponse(responseCode = "403", description = "Access denied",
-//                    content = @Content),
-//            @ApiResponse(responseCode = "404", description = "Entity not found",
-//                    content = @Content)})
     @GetMapping()
-//    @ResponseBody
     public ResponseEntity<Resource> createPdf(@RequestBody PdfEntityDto item) throws IOException {
+        System.out.println("!!!");
         byte[] imageBytes = webClient.get()
                 .uri(String.join("", "/api/pictures/" + item.getPicture()))
                 .accept(MediaType.ALL)

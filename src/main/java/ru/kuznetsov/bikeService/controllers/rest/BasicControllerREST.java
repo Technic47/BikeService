@@ -5,22 +5,29 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
+import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
-import java.io.IOException;
 import java.security.Principal;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +42,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     protected final S service;
     protected T thisClassNewObject;
     protected String category;
+    protected WebClient pdfWebClient;
 
     protected BasicControllerREST(S service) {
         this.service = service;
@@ -172,18 +180,39 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                     content = @Content)})
     @GetMapping(value = "/{id}/pdf")
     @ResponseBody
-    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) throws IOException {
+    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
+        UserModel userModel = getUserModelFromPrincipal(principal);
 
-        if (checkAccessToItem(item, principal)) {
-            this.preparePDF(item, principal);
-            return this.createResponse(item);
-        } else throw new AccessToResourceDenied(item.getId());
+        PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername());
+
+        return ResponseEntity.ok(pdfWebClient.post()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(body), PdfEntityDto.class)
+                .accept(MediaType.ALL)
+                .retrieve()
+                .bodyToMono(Resource.class)
+//                .doOnError(error -> System.out.println(error.getMessage()))
+//                .doOnSuccess(System.out::println)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
+                .block());
+//
+//        T item = this.service.getById(id);
+//
+//        if (checkAccessToItem(item, principal)) {
+//            this.preparePDF(item, principal);
+//            return this.createResponse(item);
+//        } else throw new AccessToResourceDenied(item.getId());
     }
 
     protected void preparePDF(T item, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Picture picture = pictureService.getById(item.getPicture());
         this.pdfService.buildShowable(item, userModel, picture);
+    }
+
+    @Autowired
+    public void setPdfWebClient(@Qualifier("PdfModule") WebClient pdfWebClient) {
+        this.pdfWebClient = pdfWebClient;
     }
 }
