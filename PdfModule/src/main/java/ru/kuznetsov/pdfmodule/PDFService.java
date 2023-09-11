@@ -160,9 +160,9 @@ public class PDFService {
             switch (item.getCategory()) {
                 case "Tool" -> toolCell.addElement(new Phrase(item.getCredentials(), commonFont));
                 case "Consumable" ->
-                        consumableCell.addElement(new Phrase(item.getName() + ", " + item.getValue(), commonFont));
+                        consumableCell.addElement(new Phrase(item.getName() + ", " + item.getAmount(), commonFont));
                 case "Fastener" ->
-                        fastenerCell.addElement(new Phrase(item.getName() + ", " + item.getValue(), commonFont));
+                        fastenerCell.addElement(new Phrase(item.getName() + ", " + item.getAmount(), commonFont));
             }
         });
 

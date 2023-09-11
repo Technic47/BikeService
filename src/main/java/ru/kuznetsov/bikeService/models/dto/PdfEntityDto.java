@@ -6,7 +6,7 @@ import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Usable;
 
-import java.util.Map;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PdfEntityDto {
@@ -20,7 +20,8 @@ public class PdfEntityDto {
     private String value;
     private String manufacturer;
     private String model;
-    private Map<PdfEntityDto, Integer> linkedItems;
+    private int amount;
+    private Set<PdfEntityDto> linkedItems;
 
     public PdfEntityDto() {
     }
@@ -29,22 +30,28 @@ public class PdfEntityDto {
         this.setMainFields(item, userName);
     }
 
+    public PdfEntityDto(Showable item, String userName, int amount) {
+        this(item, userName);
+        this.amount = amount;
+    }
+
     public PdfEntityDto(Usable item, String userName, String manufacturer) {
         this.setMainFields(item, userName);
         this.manufacturer = manufacturer;
         this.model = item.getModel();
     }
+
     public PdfEntityDto(Serviceable item, String userName, String manufacturer, ServiceList list) {
         this.setMainFields(item, userName);
         this.manufacturer = manufacturer;
         this.model = item.getModel();
-        list.getDocsMap().forEach((key, value) -> this.linkedItems.put(new PdfEntityDto(key, userName), value));
-        list.getConsumableMap().forEach((key, value) -> this.linkedItems.put(new PdfEntityDto(key, userName), value));
-        list.getToolMap().forEach((key, value) -> this.linkedItems.put(new PdfEntityDto(key, userName), value));
-        list.getFastenerMap().forEach((key, value) -> this.linkedItems.put(new PdfEntityDto(key, userName), value));
+        list.getDocsMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
+        list.getConsumableMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
+        list.getToolMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
+        list.getFastenerMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
     }
 
-    public PdfEntityDto(String category, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, Map<PdfEntityDto, Integer> linkedItems) {
+    public PdfEntityDto(String category, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
         this.category = category;
         this.name = name;
         this.description = description;
@@ -148,11 +155,19 @@ public class PdfEntityDto {
         this.model = model;
     }
 
-    public Map<PdfEntityDto, Integer> getLinkedItems() {
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public Set<PdfEntityDto> getLinkedItems() {
         return linkedItems;
     }
 
-    public void setLinkedItems(Map<PdfEntityDto, Integer> linkedItems) {
+    public void setLinkedItems(Set<PdfEntityDto> linkedItems) {
         this.linkedItems = linkedItems;
     }
 

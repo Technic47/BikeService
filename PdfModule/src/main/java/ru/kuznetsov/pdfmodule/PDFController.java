@@ -31,23 +31,21 @@ public class PDFController {
         this.webClient = webClient;
     }
 
-    @GetMapping()
+    @PostMapping()
     public ResponseEntity<Resource> createPdf(@RequestBody PdfEntityDto item) throws IOException {
-        System.out.println("!!!");
         byte[] imageBytes = webClient.get()
                 .uri(String.join("", "/api/pictures/" + item.getPicture()))
                 .accept(MediaType.ALL)
                 .retrieve()
                 .bodyToMono(byte[].class)
-//                .doOnError(error -> System.out.println(error.getMessage()))
-//                .doOnSuccess(System.out::println)
-//                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
+                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
                 .block();
         Path path = Paths.get(TMP_PATH);
         Files.write(path, imageBytes);
 
         pdfService.build(item);
-        return this.createResponse(item);
+        ResponseEntity<Resource> response = this.createResponse(item);
+        return response;
     }
 
     protected ResponseEntity<Resource> createResponse(PdfEntityDto item) throws IOException {
@@ -56,7 +54,8 @@ public class PDFController {
         ByteArrayResource resource = new ByteArrayResource
                 (Files.readAllBytes(path));
 
-        return ResponseEntity.ok().headers(this.headers(item.getClass().getSimpleName() + "_" + item.getName()))
+        return ResponseEntity.ok()
+                .headers(this.headers(item.getClass().getSimpleName() + "_" + item.getName()))
                 .contentLength(file.length())
                 .contentType(MediaType.parseMediaType
                         ("application/octet-stream")).body(resource);

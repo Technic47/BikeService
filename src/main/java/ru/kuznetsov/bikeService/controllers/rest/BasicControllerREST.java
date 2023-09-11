@@ -26,6 +26,7 @@ import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.Duration;
 import java.util.HashMap;
@@ -180,29 +181,20 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                     content = @Content)})
     @GetMapping(value = "/{id}/pdf")
     @ResponseBody
-    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
+    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
         UserModel userModel = getUserModelFromPrincipal(principal);
 
         PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername());
 
-        return ResponseEntity.ok(pdfWebClient.post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(body), PdfEntityDto.class)
-                .accept(MediaType.ALL)
-                .retrieve()
-                .bodyToMono(Resource.class)
-//                .doOnError(error -> System.out.println(error.getMessage()))
-//                .doOnSuccess(System.out::println)
-                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
-                .block());
-//
-//        T item = this.service.getById(id);
-//
-//        if (checkAccessToItem(item, principal)) {
-//            this.preparePDF(item, principal);
-//            return this.createResponse(item);
-//        } else throw new AccessToResourceDenied(item.getId());
+        return pdfWebClient.post()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(Mono.just(body), PdfEntityDto.class)
+        .accept(MediaType.ALL)
+        .retrieve()
+        .toEntity(Resource.class)
+        .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
+        .block();
     }
 
     protected void preparePDF(T item, Principal principal) {

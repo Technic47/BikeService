@@ -78,7 +78,7 @@ public class SpringConfig implements WebMvcConfigurer {
     @Value("${spring.mail.password}")
     private String smtpUserPass;
     public static final int TIMEOUT = 1000;
-    private static final String PDF_MODULE_URL = "http://localhost:9443/api/pdf";
+    private static final String PDF_MODULE_URL = "https://localhost:8081/api/pdf";
 
 
     @Value("${upload.path}")

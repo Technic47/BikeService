@@ -263,7 +263,8 @@ public abstract class CommonEntityController extends AbstractController {
         ByteArrayResource resource = new ByteArrayResource
                 (Files.readAllBytes(path));
 
-        return ResponseEntity.ok().headers(this.headers(item.getClass().getSimpleName() + "_" + item.getId()))
+        return ResponseEntity.ok()
+                .headers(this.headers(item.getClass().getSimpleName() + "_" + item.getId()))
                 .contentLength(file.length())
                 .contentType(MediaType.parseMediaType
                         ("application/octet-stream")).body(resource);

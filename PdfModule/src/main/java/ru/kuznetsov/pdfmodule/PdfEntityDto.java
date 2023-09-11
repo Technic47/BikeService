@@ -17,23 +17,26 @@ public class PdfEntityDto {
     private String value;
     private String manufacturer;
     private String model;
+    private int amount;
     private Set<PdfEntityDto> linkedItems;
 
-//    public PdfEntityDto() {
-//    }
-//
-//    public PdfEntityDto(String category, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, Map<PdfEntityDto, Integer> linkedItems) {
-//        this.category = category;
-//        this.name = name;
-//        this.description = description;
-//        this.picture = picture;
-//        this.link = link;
-//        this.valueName = valueName;
-//        this.value = value;
-//        this.manufacturer = manufacturer;
-//        this.model = model;
-//        this.linkedItems = linkedItems;
-//    }
+    public PdfEntityDto() {
+    }
+
+    public PdfEntityDto(String category, String userName, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, int amount, Set<PdfEntityDto> linkedItems) {
+        this.category = category;
+        this.userName = userName;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this.link = link;
+        this.valueName = valueName;
+        this.value = value;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.amount = amount;
+        this.linkedItems = linkedItems;
+    }
 
     public String getCategory() {
         return category;
@@ -115,6 +118,14 @@ public class PdfEntityDto {
         this.model = model;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public Set<PdfEntityDto> getLinkedItems() {
         return linkedItems;
     }
@@ -123,7 +134,7 @@ public class PdfEntityDto {
         this.linkedItems = linkedItems;
     }
 
-    public String getCredentials(){
+    public String getCredentials() {
         return this.valueName + " - " + this.value;
     }
 }
