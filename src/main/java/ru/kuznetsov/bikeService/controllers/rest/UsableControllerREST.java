@@ -1,5 +1,7 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -8,8 +10,8 @@ import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
+import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -58,10 +60,13 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
     }
 
     @Override
-    protected void preparePDF(T item, Principal principal) {
-        Manufacturer manufacturer = this.manufacturerService.getById(item.getManufacturer());
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
-        Picture picture = pictureService.getById(item.getPicture());
-        this.pdfService.buildUsable(item, userModel, picture, manufacturer);
+    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
+        T item = this.service.getById(id);
+        UserModel userModel = getUserModelFromPrincipal(principal);
+        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
+
+        PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), manufacturer.getName());
+
+        return preparePDF(body);
     }
 }

@@ -13,6 +13,7 @@ import ru.kuznetsov.bikeService.config.ServiceListController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
+import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
@@ -121,8 +122,15 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     }
 
     @Override
-    protected void preparePDF(T item, Principal principal) {
-        this.buildPDF(item, principal, serviceListController.getServiceList(item.getLinkedItems()));
+    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
+        T item = this.service.getById(id);
+        UserModel userModel = getUserModelFromPrincipal(principal);
+        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
+        ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
+
+        PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), manufacturer.getName(), serviceList);
+
+        return preparePDF(body);
     }
 
     protected void preparePDF(T item, Principal principal, ServiceList serviceList) {
@@ -145,12 +153,13 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     @GetMapping(value = "/{id}/pdfAll")
     public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
-        if (checkAccessToItem(item, principal)) {
-            ServiceList generalList = serviceListController.getGeneralServiceList(item.getLinkedItems());
+        UserModel userModel = getUserModelFromPrincipal(principal);
+        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
+        ServiceList serviceList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
-            this.preparePDF(item, principal, generalList);
-            return this.createResponse(item);
-        } else throw new AccessToResourceDenied(item.getId());
+        PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), manufacturer.getName(), serviceList);
+
+        return preparePDF(body);
     }
 
     @Autowired

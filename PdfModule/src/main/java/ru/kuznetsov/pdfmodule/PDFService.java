@@ -76,7 +76,11 @@ public class PDFService {
 
         try {
             PDF_DOC_NAME = PDF_DOC_PATH + this.userName + ".pdf";
-            PdfWriter.getInstance(this.document, new FileOutputStream(PDF_DOC_NAME));
+            File newPDF = new File(PDF_DOC_NAME);
+            if (!newPDF.exists()) {
+                newPDF.createNewFile();
+            }
+            PdfWriter.getInstance(this.document, new FileOutputStream(newPDF));
             document.open();
 
             document.add(insertHeaderTable(item));
@@ -158,7 +162,7 @@ public class PDFService {
 
         this.serviceList.forEach(item -> {
             switch (item.getCategory()) {
-                case "Tool" -> toolCell.addElement(new Phrase(item.getCredentials(), commonFont));
+                case "Tool" -> toolCell.addElement(new Phrase(item.getName(), commonFont));
                 case "Consumable" ->
                         consumableCell.addElement(new Phrase(item.getName() + ", " + item.getAmount(), commonFont));
                 case "Fastener" ->

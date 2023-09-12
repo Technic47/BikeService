@@ -22,7 +22,6 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -187,20 +186,18 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
         PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername());
 
-        return pdfWebClient.post()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(Mono.just(body), PdfEntityDto.class)
-        .accept(MediaType.ALL)
-        .retrieve()
-        .toEntity(Resource.class)
-        .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
-        .block();
+        return preparePDF(body);
     }
 
-    protected void preparePDF(T item, Principal principal) {
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
-        Picture picture = pictureService.getById(item.getPicture());
-        this.pdfService.buildShowable(item, userModel, picture);
+    protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
+        return pdfWebClient.post()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(body), PdfEntityDto.class)
+                .accept(MediaType.ALL)
+                .retrieve()
+                .toEntity(Resource.class)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
+                .block();
     }
 
     @Autowired

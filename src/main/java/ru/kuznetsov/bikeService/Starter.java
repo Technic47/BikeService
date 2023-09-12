@@ -20,7 +20,8 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
-- sorting results
+- repository return DTO from DB
+- add to user 'last login' field
 - logIn logOut user work (active true/false)
 - resend token via login, not email
 - oauth2 from VK
