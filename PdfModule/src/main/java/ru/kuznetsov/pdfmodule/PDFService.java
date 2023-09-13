@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,7 +70,7 @@ public class PDFService {
      *
      * @param item     item for list forming.
      */
-    public void build(PdfEntityDto item) {
+    public void build(PdfEntityDto item, byte[] imageBytes) {
         this.document = new Document(PageSize.A4);
         this.userName = item.getUserName();
         this.manufacturer = item.getManufacturer();
@@ -83,7 +86,7 @@ public class PDFService {
             PdfWriter.getInstance(this.document, new FileOutputStream(newPDF));
             document.open();
 
-            document.add(insertHeaderTable(item));
+            document.add(insertHeaderTable(item, imageBytes));
             if (this.manufacturer != null) {
                 document.add(insertManufacture());
             } else document.add(new Paragraph());
@@ -112,11 +115,12 @@ public class PDFService {
     }
 
     //Table former for header of document
-    private PdfPTable insertHeaderTable(PdfEntityDto item) {
+    private PdfPTable insertHeaderTable(PdfEntityDto item, byte[] imageBytes) {
         PdfPTable table = new PdfPTable(2);
         try {
             Path path = Paths.get(TMP_PATH);
-            PdfPCell imageCell = new PdfPCell(Image.getInstance(path.toAbsolutePath().toString()));
+            PdfPCell imageCell = new PdfPCell(Image.getInstance(imageBytes));
+//            PdfPCell imageCell = new PdfPCell(Image.getInstance(path.toAbsolutePath().toString()));
             imageCell.setBorder(Rectangle.NO_BORDER);
 
             PdfPCell content = new PdfPCell();

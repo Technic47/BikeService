@@ -20,7 +20,7 @@ public class PdfEntityDto implements Serializable {
     private String userName;
     private String name;
     private String description;
-    private Long picture;
+    private byte[] picture;
     private String link;
     private String valueName;
     private String value;
@@ -29,13 +29,55 @@ public class PdfEntityDto implements Serializable {
     private int amount;
     private Set<PdfEntityDto> linkedItems;
 
+    public PdfEntityDto(Showable item, String userName, byte[] picture) {
+        this.setMainFields(item, userName, picture);
+    }
+
+    public PdfEntityDto() {
+    }
+
+    public PdfEntityDto(Showable item, String userName, int amount) {
+        this(item, userName, null);
+        this.amount = amount;
+    }
+
+    public PdfEntityDto(Usable item, String userName, byte[] picture, String manufacturer) {
+        this.setMainFields(item, userName, picture);
+        this.manufacturer = manufacturer;
+        this.model = item.getModel();
+    }
+
+    public PdfEntityDto(Serviceable item, String userName, byte[] picture, String manufacturer, ServiceList list) {
+        this.setMainFields(item, userName, picture);
+        this.manufacturer = manufacturer;
+        this.model = item.getModel();
+        this.linkedItems = new HashSet<>();
+        list.getDocsMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
+        list.getConsumableMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
+        list.getToolMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
+        list.getFastenerMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
+    }
+
+    public PdfEntityDto(String category, String name, String description, byte[] picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this.link = link;
+        this.valueName = valueName;
+        this.value = value;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.linkedItems = linkedItems;
+    }
+
     public byte[] getBytes() {
         Map<String, String> fields = new HashMap<>();
         fields.put("category", category);
         fields.put("userName", userName);
         fields.put("name", name);
         fields.put("description", description);
-        fields.put("picture", picture.toString());
+        fields.put("picture", new String(picture));
         fields.put("link", link);
         fields.put("valueName", valueName);
         fields.put("value", value);
@@ -52,54 +94,12 @@ public class PdfEntityDto implements Serializable {
         }
     }
 
-    public PdfEntityDto() {
-    }
-
-    public PdfEntityDto(Showable item, String userName) {
-        this.setMainFields(item, userName);
-    }
-
-    public PdfEntityDto(Showable item, String userName, int amount) {
-        this(item, userName);
-        this.amount = amount;
-    }
-
-    public PdfEntityDto(Usable item, String userName, String manufacturer) {
-        this.setMainFields(item, userName);
-        this.manufacturer = manufacturer;
-        this.model = item.getModel();
-    }
-
-    public PdfEntityDto(Serviceable item, String userName, String manufacturer, ServiceList list) {
-        this.setMainFields(item, userName);
-        this.manufacturer = manufacturer;
-        this.model = item.getModel();
-        this.linkedItems = new HashSet<>();
-        list.getDocsMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-        list.getConsumableMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-        list.getToolMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-        list.getFastenerMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-    }
-
-    public PdfEntityDto(String category, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
-        this.category = category;
-        this.name = name;
-        this.description = description;
-        this.picture = picture;
-        this.link = link;
-        this.valueName = valueName;
-        this.value = value;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.linkedItems = linkedItems;
-    }
-
-    private void setMainFields(Showable item, String userName) {
+    private void setMainFields(Showable item, String userName, byte[] picture) {
         this.category = item.getClass().getSimpleName();
         this.userName = userName;
         this.name = item.getName();
         this.description = item.getDescription();
-        this.picture = item.getPicture();
+        this.picture = picture;
         this.link = item.getLink();
         this.valueName = item.getValueName();
         this.value = item.getValue();
@@ -138,11 +138,11 @@ public class PdfEntityDto implements Serializable {
         this.description = description;
     }
 
-    public Long getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(Long picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 

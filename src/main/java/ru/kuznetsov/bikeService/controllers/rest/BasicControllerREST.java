@@ -22,12 +22,16 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.SUBSCRIBER_PDF;
+import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.*;
 
 
@@ -199,37 +205,34 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                     content = @Content)})
     @GetMapping(value = "/{id}/pdf")
     @ResponseBody
-    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) throws IOException {
+    public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
         UserModel userModel = getUserModelFromPrincipal(principal);
 
-        PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername());
-
-        try (Connection connection = Nats.connect()) {
-            CompletableFuture<Message> request = connection.request("server.pdf", body.getBytes());
-            byte[] data = request.get().getData();
-            System.out.println(data.length);
-            ByteArrayResource resource = new ByteArrayResource(data);
-            return ResponseEntity.ok()
-                    .headers(this.headers(item.getClass().getSimpleName() + "_" + item.getName()))
-                    .contentLength(data.length)
-                    .contentType(MediaType.parseMediaType
-                            ("application/octet-stream")).body(resource);
+        Picture picture = pictureService.getById(item.getPicture());
+        Path path = Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
+        try {
+            PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path));
+            return preparePDF(body);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
     protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
-        return null;
-//        return pdfWebClient.post()
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(Mono.just(body), PdfEntityDto.class)
-//                .accept(MediaType.ALL)
-//                .retrieve()
-//                .toEntity(Resource.class)
-//                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
-//                .block();
+        try (Connection connection = Nats.connect()) {
+            CompletableFuture<Message> request = connection.request(SUBSCRIBER_PDF, body.getBytes());
+            byte[] data = request.get().getData();
+            System.out.println(data.length);
+            ByteArrayResource resource = new ByteArrayResource(data);
+            return ResponseEntity.ok()
+                    .headers(this.headers(body.getCategory() + "_" + body.getName()))
+                    .contentLength(data.length)
+                    .contentType(MediaType.parseMediaType
+                            ("application/octet-stream")).body(resource);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 //    @Autowired

@@ -14,7 +14,7 @@ public class PdfEntityDto implements Serializable {
     private String userName;
     private String name;
     private String description;
-    private Long picture;
+    private byte[] picture;
     private String link;
     private String valueName;
     private String value;
@@ -26,7 +26,7 @@ public class PdfEntityDto implements Serializable {
     public PdfEntityDto() {
     }
 
-    public PdfEntityDto(String category, String userName, String name, String description, Long picture, String link, String valueName, String value, String manufacturer, String model, int amount, Set<PdfEntityDto> linkedItems) {
+    public PdfEntityDto(String category, String userName, String name, String description, byte[] picture, String link, String valueName, String value, String manufacturer, String model, int amount, Set<PdfEntityDto> linkedItems) {
         this.category = category;
         this.userName = userName;
         this.name = name;
@@ -49,7 +49,7 @@ public class PdfEntityDto implements Serializable {
             this.userName = fields.get("userName");
             this.name = fields.get("name");
             this.description = fields.get("description");
-            this.picture = Long.parseLong(fields.get("picture"));
+            this.picture = fields.get("picture").getBytes();
             this.link = fields.get("link");
             this.valueName = fields.get("valueName");
             this.value = fields.get("value");
@@ -93,11 +93,11 @@ public class PdfEntityDto implements Serializable {
         this.description = description;
     }
 
-    public Long getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(Long picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 

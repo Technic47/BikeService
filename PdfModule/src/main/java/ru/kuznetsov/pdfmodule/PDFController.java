@@ -2,6 +2,7 @@ package ru.kuznetsov.pdfmodule;
 
 import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
+import io.nats.client.Message;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +16,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.CompletableFuture;
 
 import static ru.kuznetsov.pdfmodule.PDFService.PDF_DOC_NAME;
 import static ru.kuznetsov.pdfmodule.SpringConfig.SUBSCRIBER;
+import static ru.kuznetsov.pdfmodule.SpringConfig.SUBSCRIBER_PICTURES;
 
 
 @RestController
@@ -38,7 +41,9 @@ public class PDFController {
     public byte[] getData(byte[] bytes) {
         PdfEntityDto item = new PdfEntityDto(bytes);
         try {
-            pdfService.build(item);
+//            Files.write(Paths.get(TMP_PATH), item.getPicture());
+
+            pdfService.build(item, item.getPicture());
 
             File file = new File(PDF_DOC_NAME);
             Path path = Paths.get(file.getAbsolutePath());
@@ -50,33 +55,33 @@ public class PDFController {
         }
     }
 
-    //    @PostMapping()
-    public ResponseEntity<Resource> createPdf(PdfEntityDto item) throws IOException {
-        pdfService.build(item);
-        return this.createResponse(item);
-    }
-
-    protected ResponseEntity<Resource> createResponse(PdfEntityDto item) throws IOException {
-        File file = new File(PDF_DOC_NAME);
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource
-                (Files.readAllBytes(path));
-
-        return ResponseEntity.ok()
-                .headers(this.headers(item.getClass().getSimpleName() + "_" + item.getName()))
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType
-                        ("application/octet-stream")).body(resource);
-    }
-
-    private HttpHeaders headers(String fileName) {
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=" + fileName + ".pdf");
-        header.add("Cache-Control", "no-cache, no-store,"
-                + " must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
-        return header;
-    }
+//    //    @PostMapping()
+//    public ResponseEntity<Resource> createPdf(PdfEntityDto item) throws IOException {
+//        pdfService.build(item);
+//        return this.createResponse(item);
+//    }
+//
+//    protected ResponseEntity<Resource> createResponse(PdfEntityDto item) throws IOException {
+//        File file = new File(PDF_DOC_NAME);
+//        Path path = Paths.get(file.getAbsolutePath());
+//        ByteArrayResource resource = new ByteArrayResource
+//                (Files.readAllBytes(path));
+//
+//        return ResponseEntity.ok()
+//                .headers(this.headers(item.getClass().getSimpleName() + "_" + item.getName()))
+//                .contentLength(file.length())
+//                .contentType(MediaType.parseMediaType
+//                        ("application/octet-stream")).body(resource);
+//    }
+//
+//    private HttpHeaders headers(String fileName) {
+//        HttpHeaders header = new HttpHeaders();
+//        header.add(HttpHeaders.CONTENT_DISPOSITION,
+//                "attachment; filename=" + fileName + ".pdf");
+//        header.add("Cache-Control", "no-cache, no-store,"
+//                + " must-revalidate");
+//        header.add("Pragma", "no-cache");
+//        header.add("Expires", "0");
+//        return header;
+//    }
 }

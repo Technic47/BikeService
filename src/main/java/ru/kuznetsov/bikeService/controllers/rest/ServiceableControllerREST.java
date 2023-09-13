@@ -23,8 +23,12 @@ import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
 
 public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity,
@@ -127,22 +131,17 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         UserModel userModel = getUserModelFromPrincipal(principal);
         Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
-
-        PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), manufacturer.getName(), serviceList);
-
-        return preparePDF(body);
-    }
-
-    protected void preparePDF(T item, Principal principal, ServiceList serviceList) {
-        this.buildPDF(item, principal, serviceList);
-    }
-
-    private void buildPDF(T item, Principal principal, ServiceList serviceList) {
-        Manufacturer manufacturer = this.manufacturerService.getById(item.getManufacturer());
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
         Picture picture = pictureService.getById(item.getPicture());
-        this.pdfService.buildServiceable(item, userModel, picture, manufacturer, serviceList);
+        Path path = Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
+
+        try {
+            PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName(), serviceList);
+            return preparePDF(body);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
+
 
     @Operation(summary = "Build PDF document for entity including linked items")
     @ApiResponses(value = {
@@ -156,10 +155,15 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         UserModel userModel = getUserModelFromPrincipal(principal);
         Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
         ServiceList serviceList = serviceListController.getGeneralServiceList(item.getLinkedItems());
+        Picture picture = pictureService.getById(item.getPicture());
+        Path path = Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
 
-        PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), manufacturer.getName(), serviceList);
-
-        return preparePDF(body);
+        try {
+            PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName(), serviceList);
+            return preparePDF(body);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Autowired

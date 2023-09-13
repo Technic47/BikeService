@@ -4,12 +4,6 @@ import io.nats.client.Connection;
 import io.nats.client.ErrorListener;
 import io.nats.client.Nats;
 import io.nats.client.Options;
-import io.netty.channel.ChannelOption;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -22,26 +16,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import reactor.netty.http.client.HttpClient;
 
-import javax.net.ssl.SSLException;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @ComponentScan("ru.kuznetsov.bikeService")
@@ -84,7 +72,8 @@ public class SpringConfig implements WebMvcConfigurer {
     private String smtpUserPass;
     public static final int TIMEOUT = 1000;
     private static final String PDF_MODULE_URL = "https://yourbikeservice.ru:8081/api/pdf";
-    public static final String SUBSCRIBER_PDF = "server.pdfResponse";
+    public static final String SUBSCRIBER_PDF = "server.pdf";
+    public static final String SUBSCRIBER_Picture = "server.getPicture";
 
 
     @Value("${upload.path}")
@@ -181,29 +170,29 @@ public class SpringConfig implements WebMvcConfigurer {
         return mailSender;
     }
 
-    @Bean(name = "PdfModule")
-    public WebClient localApiClient(HttpClient httpClient) throws SSLException {
-        return WebClient
-                .builder()
-                .baseUrl(PDF_MODULE_URL)
-                .clientConnector(new ReactorClientHttpConnector(httpClient)).build();
-    }
-
-    @Bean
-    HttpClient getClient() throws SSLException {
-        SslContext context = SslContextBuilder.forClient()
-                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                .build();
-
-        return HttpClient.create()
-                .secure(t -> t.sslContext(context))
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT)
-                .responseTimeout(Duration.ofMillis(TIMEOUT))
-                .doOnConnected(conn ->
-                        conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS))
-                                .addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS)));
-
-    }
+//    @Bean(name = "PdfModule")
+//    public WebClient localApiClient(HttpClient httpClient) throws SSLException {
+//        return WebClient
+//                .builder()
+//                .baseUrl(PDF_MODULE_URL)
+//                .clientConnector(new ReactorClientHttpConnector(httpClient)).build();
+//    }
+//
+//    @Bean
+//    HttpClient getClient() throws SSLException {
+//        SslContext context = SslContextBuilder.forClient()
+//                .trustManager(InsecureTrustManagerFactory.INSTANCE)
+//                .build();
+//
+//        return HttpClient.create()
+//                .secure(t -> t.sslContext(context))
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT)
+//                .responseTimeout(Duration.ofMillis(TIMEOUT))
+//                .doOnConnected(conn ->
+//                        conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS))
+//                                .addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS)));
+//
+//    }
 
     //NATS
     @Bean
