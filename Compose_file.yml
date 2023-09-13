@@ -1,10 +1,21 @@
 version: '3.1'
 
 services:
+  nats:
+    image: nats:alpine
+    restart: always
+    container_name: nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    hostname: nats-server
+
   db:
     image: postgres
     restart: always
     container_name: db
+    depends_on:
+      - nats
     ports:
       - "5555:5432"
     volumes:
@@ -29,7 +40,6 @@ services:
     ports:
       - "5050:80"
 
-
   bikeservice:
     build:
       context: .
@@ -46,5 +56,15 @@ services:
       - ../images:/app/IMG
 #      Linux:
 #      - /home/technic47/images:/app/IMG
+    env_file:
+      - ../.env
+
+  pdf_module:
+    build:
+      context: ./PdfModule/
+    container_name: pdf_V1
+    restart: always
+    ports:
+      - "8081:8081"
     env_file:
       - ../.env

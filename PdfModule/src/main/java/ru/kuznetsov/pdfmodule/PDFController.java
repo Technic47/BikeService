@@ -1,51 +1,59 @@
 package ru.kuznetsov.pdfmodule;
 
+import io.nats.client.Connection;
+import io.nats.client.Dispatcher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.util.retry.Retry;
+import org.springframework.util.SerializationUtils;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 
 import static ru.kuznetsov.pdfmodule.PDFService.PDF_DOC_NAME;
+import static ru.kuznetsov.pdfmodule.SpringConfig.SUBSCRIBER;
 
 
 @RestController
-@RequestMapping("/api/pdf")
+//@RequestMapping("/api/pdf")
 public class PDFController {
     private final PDFService pdfService;
-    private final WebClient webClient;
+    private final Connection connection;
     public static final String TMP_PATH = "src/main/resources/tmp/download.dat";
 
-    public PDFController(PDFService pdfService, WebClient webClient) {
+
+    public PDFController(PDFService pdfService, Connection connection) {
         this.pdfService = pdfService;
-        this.webClient = webClient;
+        this.connection = connection;
+        Dispatcher dispatcher = connection.createDispatcher();
+        dispatcher.subscribe(SUBSCRIBER, msg -> connection.publish(msg.getReplyTo(), getData(msg.getData())));
     }
 
-    @PostMapping()
-    public ResponseEntity<Resource> createPdf(@RequestBody PdfEntityDto item) throws IOException {
-        byte[] imageBytes = webClient.get()
-                .uri(String.join("", "/api/pictures/" + item.getPicture()))
-                .accept(MediaType.ALL)
-                .retrieve()
-                .bodyToMono(byte[].class)
-                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
-                .block();
-        Path path = Paths.get(TMP_PATH);
-        Files.write(path, imageBytes);
+    public byte[] getData(byte[] bytes) {
+        PdfEntityDto item = new PdfEntityDto(bytes);
+        try {
+            pdfService.build(item);
 
+            File file = new File(PDF_DOC_NAME);
+            Path path = Paths.get(file.getAbsolutePath());
+
+
+            return Files.readAllBytes(path);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    //    @PostMapping()
+    public ResponseEntity<Resource> createPdf(PdfEntityDto item) throws IOException {
         pdfService.build(item);
-        ResponseEntity<Resource> response = this.createResponse(item);
-        return response;
+        return this.createResponse(item);
     }
 
     protected ResponseEntity<Resource> createResponse(PdfEntityDto item) throws IOException {

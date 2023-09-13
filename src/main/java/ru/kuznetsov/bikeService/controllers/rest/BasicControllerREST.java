@@ -1,20 +1,20 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
+import io.nats.client.Connection;
+import io.nats.client.Message;
+import io.nats.client.Nats;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import reactor.util.retry.Retry;
 import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
@@ -25,12 +25,14 @@ import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.security.Principal;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.*;
@@ -42,11 +44,18 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     protected final S service;
     protected T thisClassNewObject;
     protected String category;
-    protected WebClient pdfWebClient;
+//    protected WebClient pdfWebClient;
+//    public Connection connection;
 
     protected BasicControllerREST(S service) {
         this.service = service;
+//        this.setSubscription();
     }
+
+//    private void setSubscription() {
+//        Dispatcher dispatcher = connection.createDispatcher();
+//        dispatcher.subscribe(SUBSCRIBER_PDF);
+//    }
 
     public void setCurrentClass(Class<T> currentClass) {
         this.category = currentClass.getSimpleName().toLowerCase() + "s";
@@ -170,6 +179,16 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         } else throw new AccessToResourceDenied(item.getId());
     }
 
+    public static Object deserialize(byte[] data) {
+        try (ByteArrayInputStream in = new ByteArrayInputStream(data);
+             ObjectInputStream is = new ObjectInputStream(in)) {
+            return is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Operation(summary = "Build PDF document")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "PDF created",
@@ -186,22 +205,46 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
         PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername());
 
-        return preparePDF(body);
+        try (Connection connection = Nats.connect()) {
+            CompletableFuture<Message> request = connection.request("server.pdf", body.getBytes());
+            byte[] data = request.get().getData();
+            System.out.println(data.length);
+            ByteArrayResource resource = new ByteArrayResource(data);
+            return ResponseEntity.ok()
+                    .headers(this.headers(item.getClass().getSimpleName() + "_" + item.getName()))
+                    .contentLength(data.length)
+                    .contentType(MediaType.parseMediaType
+                            ("application/octet-stream")).body(resource);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
-        return pdfWebClient.post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(body), PdfEntityDto.class)
-                .accept(MediaType.ALL)
-                .retrieve()
-                .toEntity(Resource.class)
-                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
-                .block();
+        return null;
+//        return pdfWebClient.post()
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(Mono.just(body), PdfEntityDto.class)
+//                .accept(MediaType.ALL)
+//                .retrieve()
+//                .toEntity(Resource.class)
+//                .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
+//                .block();
     }
 
-    @Autowired
-    public void setPdfWebClient(@Qualifier("PdfModule") WebClient pdfWebClient) {
-        this.pdfWebClient = pdfWebClient;
+//    @Autowired
+//    public void setPdfWebClient(@Qualifier("PdfModule") WebClient pdfWebClient) {
+//        this.pdfWebClient = pdfWebClient;
+//    }
+
+    private HttpHeaders headers(String fileName) {
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=" + fileName + ".pdf");
+        header.add("Cache-Control", "no-cache, no-store,"
+                + " must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+        return header;
     }
 }

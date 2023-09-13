@@ -6,11 +6,16 @@ import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Usable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PdfEntityDto {
+public class PdfEntityDto implements Serializable {
     private String category;
     private String userName;
     private String name;
@@ -23,6 +28,29 @@ public class PdfEntityDto {
     private String model;
     private int amount;
     private Set<PdfEntityDto> linkedItems;
+
+    public byte[] getBytes() {
+        Map<String, String> fields = new HashMap<>();
+        fields.put("category", category);
+        fields.put("userName", userName);
+        fields.put("name", name);
+        fields.put("description", description);
+        fields.put("picture", picture.toString());
+        fields.put("link", link);
+        fields.put("valueName", valueName);
+        fields.put("value", value);
+        fields.put("manufacturer", manufacturer);
+        fields.put("model", model);
+        fields.put("amount", String.valueOf(amount));
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+             ObjectOutputStream os = new ObjectOutputStream(out)) {
+            os.writeObject(fields);
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     public PdfEntityDto() {
     }
@@ -76,6 +104,7 @@ public class PdfEntityDto {
         this.valueName = item.getValueName();
         this.value = item.getValue();
     }
+
 
     public String getCategory() {
         return category;

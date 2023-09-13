@@ -2,11 +2,14 @@ package ru.kuznetsov.pdfmodule;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) //Hide null fields
-public class PdfEntityDto {
+public class PdfEntityDto implements Serializable {
     private String category;
     private String userName;
     private String name;
@@ -36,6 +39,26 @@ public class PdfEntityDto {
         this.model = model;
         this.amount = amount;
         this.linkedItems = linkedItems;
+    }
+
+    public PdfEntityDto(byte[] bytes) {
+        try (ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+             ObjectInputStream is = new ObjectInputStream(in)) {
+            Map<String, String> fields = (Map<String, String>) is.readObject();
+            this.category = fields.get("category");
+            this.userName = fields.get("userName");
+            this.name = fields.get("name");
+            this.description = fields.get("description");
+            this.picture = Long.parseLong(fields.get("picture"));
+            this.link = fields.get("link");
+            this.valueName = fields.get("valueName");
+            this.value = fields.get("value");
+            this.manufacturer = fields.get("manufacturer");
+            this.model = fields.get("model");
+            this.amount = Integer.parseInt(fields.get("amount"));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public String getCategory() {

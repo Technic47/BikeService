@@ -42,6 +42,7 @@ public abstract class CommonEntityController extends AbstractController {
     protected PDFService pdfService;
     protected SearchService searchService;
 
+
     /**
      * Creates List of entities depending on userModel role and shared flag.
      *
@@ -290,4 +291,6 @@ public abstract class CommonEntityController extends AbstractController {
     private void setSearchService(SearchService searchService) {
         this.searchService = searchService;
     }
+
+
 }

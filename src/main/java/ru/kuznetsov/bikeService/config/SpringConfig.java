@@ -1,5 +1,9 @@
 package ru.kuznetsov.bikeService.config;
 
+import io.nats.client.Connection;
+import io.nats.client.ErrorListener;
+import io.nats.client.Nats;
+import io.nats.client.Options;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -32,6 +36,7 @@ import reactor.netty.http.client.HttpClient;
 
 import javax.net.ssl.SSLException;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -79,6 +84,7 @@ public class SpringConfig implements WebMvcConfigurer {
     private String smtpUserPass;
     public static final int TIMEOUT = 1000;
     private static final String PDF_MODULE_URL = "https://yourbikeservice.ru:8081/api/pdf";
+    public static final String SUBSCRIBER_PDF = "server.pdfResponse";
 
 
     @Value("${upload.path}")
@@ -197,5 +203,19 @@ public class SpringConfig implements WebMvcConfigurer {
                         conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS))
                                 .addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS)));
 
+    }
+
+    //NATS
+    @Bean
+    public Connection getConnection() throws IOException, InterruptedException {
+        Options options = new Options.Builder()
+                .server("nats://localhost:4222")
+                .connectionListener((connection, eventType) -> {
+                })
+                .errorListener(new ErrorListener() {
+                })
+                .build();
+
+        return Nats.connect(options);
     }
 }
