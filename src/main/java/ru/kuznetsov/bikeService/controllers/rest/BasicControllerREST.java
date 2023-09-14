@@ -1,17 +1,11 @@
 package ru.kuznetsov.bikeService.controllers.rest;
 
-import io.nats.client.Connection;
-import io.nats.client.Message;
-import io.nats.client.Nats;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,27 +14,19 @@ import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
-import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static ru.kuznetsov.bikeService.config.SpringConfig.SUBSCRIBER_PDF;
-import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.*;
 
 
@@ -209,45 +195,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
-        UserModel userModel = getUserModelFromPrincipal(principal);
-        Path path = this.getPicturePath(item.getPicture());
-
-        try {
-            PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path));
-            return preparePDF(body);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    protected Path getPicturePath(Long id) {
-        Picture picture = pictureService.getById(id);
-        return Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
-    }
-
-    protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
-        try (Connection connection = Nats.connect()) {
-            CompletableFuture<Message> request = connection.request(SUBSCRIBER_PDF, body.getBytes());
-            byte[] data = request.get().getData();
-            ByteArrayResource resource = new ByteArrayResource(data);
-            return ResponseEntity.ok()
-                    .headers(this.headers(body.getCategory() + "_" + body.getName()))
-                    .contentLength(data.length)
-                    .contentType(MediaType.parseMediaType
-                            ("application/octet-stream")).body(resource);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    private HttpHeaders headers(String fileName) {
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=" + fileName + ".pdf");
-        header.add("Cache-Control", "no-cache, no-store,"
-                + " must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
-        return header;
+        return this.prepareShowablePDF(item, principal);
     }
 }

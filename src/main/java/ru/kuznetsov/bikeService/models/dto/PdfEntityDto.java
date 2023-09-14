@@ -212,7 +212,10 @@ public class PdfEntityDto implements Serializable {
         return linkedItems;
     }
 
-    public void setLinkedItems(Map<String, String[]> linkedItems) {
-        this.linkedItems = linkedItems;
+    public void setLinkedItems(ServiceList list) {
+        this.linkedItems = new HashMap<>();
+        this.linkedItems.put("tools", formToolArray(list.getToolMap()));
+        this.linkedItems.put("consumables", formConsumableArray(list.getConsumableMap()));
+        this.linkedItems.put("fasteners", formFastenerArray(list.getFastenerMap()));
     }
 }

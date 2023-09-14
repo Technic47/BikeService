@@ -1,16 +1,16 @@
 package ru.kuznetsov.bikeService.controllers.notRest;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @Component
@@ -50,12 +50,10 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
         super.addItemAttributesEdit(model, item, principal);
     }
 
-
     @Override
-    protected void preparePDF(T item, Principal principal) {
-        Manufacturer manufacturer = this.manufacturerService.getById(item.getManufacturer());
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
-        Picture picture = pictureService.getById(item.getPicture());
-        this.pdfService.buildUsable(item, userModel, picture, manufacturer);
+    public ResponseEntity<Resource> createPdf(Long id, Principal principal) throws IOException {
+        T item = this.service.getById(id);
+
+        return this.prepareUsablePDF(item, principal);
     }
 }

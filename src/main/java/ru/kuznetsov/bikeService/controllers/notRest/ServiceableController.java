@@ -15,14 +15,11 @@ import ru.kuznetsov.bikeService.config.ServiceListController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.showable.Document;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
-import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
 import java.io.IOException;
@@ -140,19 +137,11 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
     }
 
     @Override
-    protected void preparePDF(T item, Principal principal) {
-        this.buildPDF(item, principal, serviceListController.getServiceList(item.getLinkedItems()));
-    }
+    public ResponseEntity<Resource> createPdf(Long id, Principal principal) throws IOException {
+        T item = this.service.getById(id);
+        ServiceList generalList = serviceListController.getServiceList(item.getLinkedItems());
 
-    protected void preparePDF(T item, Principal principal, ServiceList serviceList) {
-        this.buildPDF(item, principal, serviceList);
-    }
-
-    private void buildPDF(T item, Principal principal, ServiceList serviceList) {
-        Manufacturer manufacturer = this.manufacturerService.getById(item.getManufacturer());
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
-        Picture picture = pictureService.getById(item.getPicture());
-        this.pdfService.buildServiceable(item, userModel, picture, manufacturer, serviceList);
+        return this.prepareServiceablePDF(item, principal, generalList);
     }
 
     @Operation(hidden = true)
@@ -161,8 +150,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
         T item = this.service.getById(id);
         ServiceList generalList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
-        this.preparePDF(item, principal, generalList);
-        return this.createResponse(item);
+        return this.prepareServiceablePDF(item, principal, generalList);
     }
 
     private void addLinkedItemsToModel(Model model, ServiceList serviceList) {

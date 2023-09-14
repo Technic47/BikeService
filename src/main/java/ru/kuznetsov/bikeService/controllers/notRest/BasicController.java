@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -198,15 +197,9 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
         T item = this.service.getById(id);
-        this.preparePDF(item, principal);
-        return this.createResponse(item);
+        return this.prepareShowablePDF(item, principal);
     }
-
-    protected void preparePDF(T item, Principal principal) {
-        UserModel userModel = this.getUserModelFromPrincipal(principal);
-        Picture picture = pictureService.getById(item.getPicture());
-        this.pdfService.buildShowable(item, userModel, picture);
-    }
+//
 
     /**
      * Searching via matching in Name and Description. Case is ignored. ResultSet is formed considering current user`s ROLE.

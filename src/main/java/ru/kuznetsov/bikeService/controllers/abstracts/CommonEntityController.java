@@ -1,5 +1,8 @@
 package ru.kuznetsov.bikeService.controllers.abstracts;
 
+import io.nats.client.Connection;
+import io.nats.client.Message;
+import io.nats.client.Nats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -8,32 +11,36 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
+import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
+import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
+import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
+import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.SearchService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.SUBSCRIBER_PDF;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
-import static ru.kuznetsov.bikeService.services.PDFService.PDF_DOC_NAME;
 
 /**
  * Intermediate layer that includes common methods for REST and non-REST controllers.
@@ -234,6 +241,54 @@ public abstract class CommonEntityController extends AbstractController {
         }
     }
 
+    protected <T extends AbstractShowableEntity> ResponseEntity<Resource> prepareShowablePDF(
+            T item, Principal principal
+    ) {
+        try {
+            PdfEntityDto body = this.buildShowableDTO(item, principal);
+            return preparePDF(body);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    protected <T extends AbstractUsableEntity> ResponseEntity<Resource> prepareUsablePDF(
+            T item, Principal principal
+    ) {
+        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
+
+        try {
+            PdfEntityDto body = this.buildShowableDTO(item, principal);
+            body.setManufacturer(manufacturer.getName());
+            return preparePDF(body);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    protected <T extends AbstractServiceableEntity> ResponseEntity<Resource> prepareServiceablePDF(
+            T item, Principal principal, ServiceList serviceList
+    ) {
+        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
+
+        try {
+            PdfEntityDto body = this.buildShowableDTO(item, principal);
+            body.setManufacturer(manufacturer.getName());
+            body.setLinkedItems(serviceList);
+            return preparePDF(body);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private <T extends AbstractShowableEntity> PdfEntityDto buildShowableDTO(
+            T item, Principal principal
+    ) throws IOException {
+        UserModel userModel = getUserModelFromPrincipal(principal);
+        Path path = pictureService.getPicturePath(item.getPicture());
+        return new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path));
+    }
+
     private void logAccess(Showable item, String userName, boolean access) {
         logger.info("User " + userName + " tries to get access to item: "
                 + item.getClass().getSimpleName() + " id: " + item.getId() + " access - " + access);
@@ -258,17 +313,19 @@ public abstract class CommonEntityController extends AbstractController {
         }
     }
 
-    protected <T extends AbstractShowableEntity> ResponseEntity<Resource> createResponse(T item) throws IOException {
-        File file = new File(PDF_DOC_NAME);
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource
-                (Files.readAllBytes(path));
-
-        return ResponseEntity.ok()
-                .headers(this.headers(item.getClass().getSimpleName() + "_" + item.getId()))
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType
-                        ("application/octet-stream")).body(resource);
+    protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
+        try (Connection connection = Nats.connect()) {
+            CompletableFuture<Message> request = connection.request(SUBSCRIBER_PDF, body.getBytes());
+            byte[] data = request.get().getData();
+            ByteArrayResource resource = new ByteArrayResource(data);
+            return ResponseEntity.ok()
+                    .headers(this.headers(body.getCategory() + "_" + body.getName()))
+                    .contentLength(data.length)
+                    .contentType(MediaType.parseMediaType
+                            ("application/octet-stream")).body(resource);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private HttpHeaders headers(String fileName) {

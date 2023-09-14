@@ -13,6 +13,8 @@ import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -141,5 +143,16 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
             AbstractController.logger.warn("Picture with id = " + id + " not found. Can`t delete!");
             throw new ResourceNotFoundException(id);
         }
+    }
+
+    /**
+     * Return path of stored picture with specified id.
+     *
+     * @param id id of picture.
+     * @return Path.
+     */
+    public Path getPicturePath(Long id) {
+        Picture picture = this.getById(id);
+        return Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
     }
 }

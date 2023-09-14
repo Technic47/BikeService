@@ -13,16 +13,11 @@ import ru.kuznetsov.bikeService.config.ServiceListController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
-import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.showable.Showable;
-import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.Principal;
 
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
@@ -126,20 +121,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         T item = this.service.getById(id);
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
 
-        return this.prepareDTOEntity(item, principal, serviceList);
-    }
-
-    private ResponseEntity<Resource> prepareDTOEntity(T item, Principal principal, ServiceList serviceList) {
-        UserModel userModel = getUserModelFromPrincipal(principal);
-        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
-        Path path = this.getPicturePath(item.getPicture());
-
-        try {
-            PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName(), serviceList);
-            return preparePDF(body);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return this.prepareServiceablePDF(item, principal, serviceList);
     }
 
     @Operation(summary = "Build PDF document for entity including linked items")
@@ -155,7 +137,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         T item = this.service.getById(id);
         ServiceList serviceList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
-        return this.prepareDTOEntity(item, principal, serviceList);
+        return this.prepareServiceablePDF(item, principal, serviceList);
     }
 
     @Autowired

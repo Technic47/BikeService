@@ -10,14 +10,9 @@ import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
-import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.Principal;
 
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.convertFromDTO;
@@ -64,15 +59,6 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
     @Override
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
-        UserModel userModel = getUserModelFromPrincipal(principal);
-        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
-        Path path = this.getPicturePath(item.getPicture());
-
-        try {
-            PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName());
-            return preparePDF(body);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return this.prepareUsablePDF(item, principal);
     }
 }
