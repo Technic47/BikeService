@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import static ru.kuznetsov.bikeService.config.SpringConfig.NATS_SERVER;
 import static ru.kuznetsov.bikeService.config.SpringConfig.SUBSCRIBER_PDF;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
@@ -314,7 +315,7 @@ public abstract class CommonEntityController extends AbstractController {
     }
 
     protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
-        try (Connection connection = Nats.connect()) {
+        try (Connection connection = Nats.connect(NATS_SERVER)) {
             CompletableFuture<Message> request = connection.request(SUBSCRIBER_PDF, body.getBytes());
             byte[] data = request.get().getData();
             ByteArrayResource resource = new ByteArrayResource(data);

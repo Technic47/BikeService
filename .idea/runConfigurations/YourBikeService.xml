@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="YourBikeService" type="docker-deploy" factoryName="docker-compose.yml" singleton="false" server-name="Docker Windows">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="envFilePath" value="" />
+        <option name="profiles">
+          <list>
+            <option value="prod" />
+          </list>
+        </option>
+        <option name="sourceFilePath" value="Compose_file.yml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>

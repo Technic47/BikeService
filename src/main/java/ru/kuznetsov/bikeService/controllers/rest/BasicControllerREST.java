@@ -18,9 +18,6 @@ import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -171,15 +168,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         } else throw new AccessToResourceDenied(item.getId());
     }
 
-    public static Object deserialize(byte[] data) {
-        try (ByteArrayInputStream in = new ByteArrayInputStream(data);
-             ObjectInputStream is = new ObjectInputStream(in)) {
-            return is.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     @Operation(summary = "Build PDF document")
     @ApiResponses(value = {

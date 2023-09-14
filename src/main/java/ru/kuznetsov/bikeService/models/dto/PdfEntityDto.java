@@ -2,12 +2,10 @@ package ru.kuznetsov.bikeService.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Fastener;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Consumable;
 import ru.kuznetsov.bikeService.models.usable.Tool;
-import ru.kuznetsov.bikeService.models.usable.Usable;
 import ru.kuznetsov.bikeService.utils.ByteUtils;
 
 import java.io.Serializable;
@@ -32,26 +30,6 @@ public class PdfEntityDto implements Serializable {
 
     public PdfEntityDto(Showable item, String userName, byte[] picture) {
         this.setMainFields(item, userName, picture);
-    }
-
-    public PdfEntityDto() {
-    }
-
-
-    public PdfEntityDto(Usable item, String userName, byte[] picture, String manufacturer) {
-        this.setMainFields(item, userName, picture);
-        this.manufacturer = manufacturer;
-        this.model = item.getModel();
-    }
-
-    public PdfEntityDto(Serviceable item, String userName, byte[] picture, String manufacturer, ServiceList list) {
-        this.setMainFields(item, userName, picture);
-        this.manufacturer = manufacturer;
-        this.model = item.getModel();
-        this.linkedItems = new HashMap<>();
-        this.linkedItems.put("tools", formToolArray(list.getToolMap()));
-        this.linkedItems.put("consumables", formConsumableArray(list.getConsumableMap()));
-        this.linkedItems.put("fasteners", formFastenerArray(list.getFastenerMap()));
     }
 
     private String[] formToolArray(Map<Tool, Integer> map) {

@@ -2,6 +2,7 @@ package ru.kuznetsov.pdfmodule;
 
 import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import static ru.kuznetsov.pdfmodule.SpringConfig.SUBSCRIBER;
 public class PDFController {
     private final PDFService pdfService;
 
+    @Autowired
     public PDFController(PDFService pdfService, Connection connection) {
         this.pdfService = pdfService;
         Dispatcher dispatcher = connection.createDispatcher();
