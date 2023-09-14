@@ -12,15 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -68,9 +64,9 @@ public class PDFService {
     /**
      * Construct PDF document.
      *
-     * @param item     item for list forming.
+     * @param item item for list forming.
      */
-    public void build(PdfEntityDto item, byte[] imageBytes) {
+    public void build(PdfEntityDto item) {
         this.document = new Document(PageSize.A4);
         this.userName = item.getUserName();
         this.manufacturer = item.getManufacturer();
@@ -86,7 +82,7 @@ public class PDFService {
             PdfWriter.getInstance(this.document, new FileOutputStream(newPDF));
             document.open();
 
-            document.add(insertHeaderTable(item, imageBytes));
+            document.add(insertHeaderTable(item, item.getPicture()));
             if (this.manufacturer != null) {
                 document.add(insertManufacture());
             } else document.add(new Paragraph());
@@ -118,9 +114,8 @@ public class PDFService {
     private PdfPTable insertHeaderTable(PdfEntityDto item, byte[] imageBytes) {
         PdfPTable table = new PdfPTable(2);
         try {
-            Path path = Paths.get(TMP_PATH);
             PdfPCell imageCell = new PdfPCell(Image.getInstance(imageBytes));
-//            PdfPCell imageCell = new PdfPCell(Image.getInstance(path.toAbsolutePath().toString()));
+
             imageCell.setBorder(Rectangle.NO_BORDER);
 
             PdfPCell content = new PdfPCell();

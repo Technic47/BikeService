@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class PdfEntityDto implements Serializable {
             this.userName = fields.get("userName");
             this.name = fields.get("name");
             this.description = fields.get("description");
-            this.picture = fields.get("picture").getBytes();
+            this.picture = Base64.getDecoder().decode(fields.get("picture"));
             this.link = fields.get("link");
             this.valueName = fields.get("valueName");
             this.value = fields.get("value");

@@ -9,10 +9,8 @@ import ru.kuznetsov.bikeService.models.usable.Usable;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PdfEntityDto implements Serializable {
@@ -77,7 +75,7 @@ public class PdfEntityDto implements Serializable {
         fields.put("userName", userName);
         fields.put("name", name);
         fields.put("description", description);
-        fields.put("picture", new String(picture));
+        fields.put("picture", Base64.getEncoder().encodeToString(picture));
         fields.put("link", link);
         fields.put("valueName", valueName);
         fields.put("value", value);

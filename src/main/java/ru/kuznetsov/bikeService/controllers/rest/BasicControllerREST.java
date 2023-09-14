@@ -25,14 +25,16 @@ import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
+import ru.kuznetsov.bikeService.utils.ByteUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -210,8 +212,13 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         UserModel userModel = getUserModelFromPrincipal(principal);
 
         Picture picture = pictureService.getById(item.getPicture());
-        Path path = Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
+        String pathString = UPLOAD_PATH + "/preview/" + picture.getName();
+        Path path = Paths.get(pathString);
+
         try {
+//            BufferedImage image = ImageIO.read(new File(pathString));
+//            byte [] imageBytes = ByteUtils.bufferedImageToBytes(image, "jpg");
+
             PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path));
             return preparePDF(body);
         } catch (Exception e) {
@@ -223,7 +230,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         try (Connection connection = Nats.connect()) {
             CompletableFuture<Message> request = connection.request(SUBSCRIBER_PDF, body.getBytes());
             byte[] data = request.get().getData();
-            System.out.println(data.length);
             ByteArrayResource resource = new ByteArrayResource(data);
             return ResponseEntity.ok()
                     .headers(this.headers(body.getCategory() + "_" + body.getName()))
