@@ -25,16 +25,14 @@ import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
-import ru.kuznetsov.bikeService.utils.ByteUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,9 +214,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         Path path = Paths.get(pathString);
 
         try {
-//            BufferedImage image = ImageIO.read(new File(pathString));
-//            byte [] imageBytes = ByteUtils.bufferedImageToBytes(image, "jpg");
-
             PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path));
             return preparePDF(body);
         } catch (Exception e) {
@@ -240,11 +235,6 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
             throw new RuntimeException(e.getMessage());
         }
     }
-
-//    @Autowired
-//    public void setPdfWebClient(@Qualifier("PdfModule") WebClient pdfWebClient) {
-//        this.pdfWebClient = pdfWebClient;
-//    }
 
     private HttpHeaders headers(String fileName) {
         HttpHeaders header = new HttpHeaders();

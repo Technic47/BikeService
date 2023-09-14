@@ -22,7 +22,6 @@ import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -131,8 +130,10 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         UserModel userModel = getUserModelFromPrincipal(principal);
         Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
+
         Picture picture = pictureService.getById(item.getPicture());
-        Path path = Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
+        String pathString = UPLOAD_PATH + "/preview/" + picture.getName();
+        Path path = Paths.get(pathString);
 
         try {
             PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName(), serviceList);
@@ -150,13 +151,15 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
             @ApiResponse(responseCode = "404", description = "Entity not found",
                     content = @Content)})
     @GetMapping(value = "/{id}/pdfAll")
-    public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) throws IOException {
+    public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
         UserModel userModel = getUserModelFromPrincipal(principal);
         Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
         ServiceList serviceList = serviceListController.getGeneralServiceList(item.getLinkedItems());
+
         Picture picture = pictureService.getById(item.getPicture());
-        Path path = Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
+        String pathString = UPLOAD_PATH + "/preview/" + picture.getName();
+        Path path = Paths.get(pathString);
 
         try {
             PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName(), serviceList);

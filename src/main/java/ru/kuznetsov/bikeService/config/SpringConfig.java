@@ -70,8 +70,6 @@ public class SpringConfig implements WebMvcConfigurer {
     private String smtpUserName;
     @Value("${spring.mail.password}")
     private String smtpUserPass;
-    public static final int TIMEOUT = 1000;
-    private static final String PDF_MODULE_URL = "https://yourbikeservice.ru:8081/api/pdf";
     public static final String SUBSCRIBER_PDF = "server.pdf";
     public static final String SUBSCRIBER_Picture = "server.getPicture";
 
@@ -169,30 +167,6 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.debug", "true");
         return mailSender;
     }
-
-//    @Bean(name = "PdfModule")
-//    public WebClient localApiClient(HttpClient httpClient) throws SSLException {
-//        return WebClient
-//                .builder()
-//                .baseUrl(PDF_MODULE_URL)
-//                .clientConnector(new ReactorClientHttpConnector(httpClient)).build();
-//    }
-//
-//    @Bean
-//    HttpClient getClient() throws SSLException {
-//        SslContext context = SslContextBuilder.forClient()
-//                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-//                .build();
-//
-//        return HttpClient.create()
-//                .secure(t -> t.sslContext(context))
-//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT)
-//                .responseTimeout(Duration.ofMillis(TIMEOUT))
-//                .doOnConnected(conn ->
-//                        conn.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS))
-//                                .addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS)));
-//
-//    }
 
     //NATS
     @Bean

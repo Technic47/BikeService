@@ -27,38 +27,29 @@ public class PdfEntityDto implements Serializable {
     public PdfEntityDto() {
     }
 
-    public PdfEntityDto(String category, String userName, String name, String description, byte[] picture, String link, String valueName, String value, String manufacturer, String model, int amount, Set<PdfEntityDto> linkedItems) {
-        this.category = category;
-        this.userName = userName;
-        this.name = name;
-        this.description = description;
-        this.picture = picture;
-        this.link = link;
-        this.valueName = valueName;
-        this.value = value;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.amount = amount;
-        this.linkedItems = linkedItems;
+    private void setMainFields(Map<String, String> fields) {
+        this.category = fields.getOrDefault("category", null);
+        this.category = fields.getOrDefault("userName", null);
+        this.category = fields.getOrDefault("name", null);
+        this.category = fields.getOrDefault("description", null);
+        this.picture = Base64.getDecoder().decode(fields.get("picture"));
+        this.category = fields.getOrDefault("link", null);
+        this.category = fields.getOrDefault("valueName", null);
+        this.category = fields.getOrDefault("value", null);
+        this.category = fields.getOrDefault("manufacturer", null);
+        this.category = fields.getOrDefault("model", null);
+        this.amount = Integer.parseInt(fields.get("amount"));
     }
 
     public PdfEntityDto(byte[] bytes) {
-        try (ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-             ObjectInputStream is = new ObjectInputStream(in)) {
-            Map<String, String> fields = (Map<String, String>) is.readObject();
-            this.category = fields.get("category");
-            this.userName = fields.get("userName");
-            this.name = fields.get("name");
-            this.description = fields.get("description");
-            this.picture = Base64.getDecoder().decode(fields.get("picture"));
-            this.link = fields.get("link");
-            this.valueName = fields.get("valueName");
-            this.value = fields.get("value");
-            this.manufacturer = fields.get("manufacturer");
-            this.model = fields.get("model");
-            this.amount = Integer.parseInt(fields.get("amount"));
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        Map<String, String> fields = (Map<String, String>) ByteUtils.fromBytes(bytes);
+        setMainFields(fields);
+
+        if (fields.containsKey("linkedItems")) {
+            byte[] listBytes = Base64.getDecoder().decode(fields.get("linkedItems"));
+
+            Set<byte[]> list = (Set<byte[]>) ByteUtils.fromBytes(listBytes);
+            list.forEach(item -> this.linkedItems.add(new PdfEntityDto(item)));
         }
     }
 

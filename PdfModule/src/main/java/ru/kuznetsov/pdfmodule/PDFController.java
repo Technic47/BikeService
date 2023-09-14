@@ -19,7 +19,6 @@ import static ru.kuznetsov.pdfmodule.SpringConfig.SUBSCRIBER;
 
 
 @RestController
-//@RequestMapping("/api/pdf")
 public class PDFController {
     private final PDFService pdfService;
     private final Connection connection;

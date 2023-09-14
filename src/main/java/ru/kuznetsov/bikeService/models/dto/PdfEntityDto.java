@@ -5,11 +5,9 @@ import ru.kuznetsov.bikeService.models.lists.ServiceList;
 import ru.kuznetsov.bikeService.models.servicable.Serviceable;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.usable.Usable;
+import ru.kuznetsov.bikeService.utils.ByteUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,7 +23,7 @@ public class PdfEntityDto implements Serializable {
     private String manufacturer;
     private String model;
     private int amount;
-    private Set<PdfEntityDto> linkedItems;
+    private Set<byte[]> linkedItems;
 
     public PdfEntityDto(Showable item, String userName, byte[] picture) {
         this.setMainFields(item, userName, picture);
@@ -50,46 +48,36 @@ public class PdfEntityDto implements Serializable {
         this.manufacturer = manufacturer;
         this.model = item.getModel();
         this.linkedItems = new HashSet<>();
-        list.getDocsMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-        list.getConsumableMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-        list.getToolMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-        list.getFastenerMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value)));
-    }
-
-    public PdfEntityDto(String category, String name, String description, byte[] picture, String link, String valueName, String value, String manufacturer, String model, Set<PdfEntityDto> linkedItems) {
-        this.category = category;
-        this.name = name;
-        this.description = description;
-        this.picture = picture;
-        this.link = link;
-        this.valueName = valueName;
-        this.value = value;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.linkedItems = linkedItems;
+//        list.getDocsMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value).getBasicBytes()));
+        list.getConsumableMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value).getBasicBytes()));
+        list.getToolMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value).getBasicBytes()));
+        list.getFastenerMap().forEach((key, value) -> this.linkedItems.add(new PdfEntityDto(key, userName, value).getBasicBytes()));
     }
 
     public byte[] getBytes() {
-        Map<String, String> fields = new HashMap<>();
-        fields.put("category", category);
+        Map<String, String> fields = getFieldsForLinkedList();
         fields.put("userName", userName);
-        fields.put("name", name);
         fields.put("description", description);
-        fields.put("picture", Base64.getEncoder().encodeToString(picture));
         fields.put("link", link);
-        fields.put("valueName", valueName);
-        fields.put("value", value);
         fields.put("manufacturer", manufacturer);
         fields.put("model", model);
-        fields.put("amount", String.valueOf(amount));
+        fields.put("picture", Base64.getEncoder().encodeToString(picture));
+        fields.put("linkedItems", Base64.getEncoder().encodeToString(ByteUtils.toBytes(linkedItems)));
+        return ByteUtils.toBytes(fields);
+    }
 
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-             ObjectOutputStream os = new ObjectOutputStream(out)) {
-            os.writeObject(fields);
-            return out.toByteArray();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+    private byte[] getBasicBytes() {
+        return ByteUtils.toBytes(this.getFieldsForLinkedList());
+    }
+
+    private Map<String, String> getFieldsForLinkedList() {
+        Map<String, String> fields = new HashMap<>();
+        fields.put("category", category);
+        fields.put("name", name);
+        fields.put("valueName", valueName);
+        fields.put("value", value);
+        fields.put("amount", String.valueOf(amount));
+        return fields;
     }
 
     private void setMainFields(Showable item, String userName, byte[] picture) {
@@ -192,11 +180,11 @@ public class PdfEntityDto implements Serializable {
         this.amount = amount;
     }
 
-    public Set<PdfEntityDto> getLinkedItems() {
+    public Set<byte[]> getLinkedItems() {
         return linkedItems;
     }
 
-    public void setLinkedItems(Set<PdfEntityDto> linkedItems) {
+    public void setLinkedItems(Set<byte[]> linkedItems) {
         this.linkedItems = linkedItems;
     }
 
