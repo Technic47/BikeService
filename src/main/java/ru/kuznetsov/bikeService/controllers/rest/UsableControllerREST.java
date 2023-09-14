@@ -12,17 +12,14 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.convertFromDTO;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
 
@@ -69,8 +66,7 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
         T item = this.service.getById(id);
         UserModel userModel = getUserModelFromPrincipal(principal);
         Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
-        Picture picture = pictureService.getById(item.getPicture());
-        Path path = Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
+        Path path = this.getPicturePath(item.getPicture());
 
         try {
             PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName());

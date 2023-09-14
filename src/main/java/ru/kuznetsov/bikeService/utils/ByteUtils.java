@@ -3,23 +3,8 @@ package ru.kuznetsov.bikeService.utils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.ByteBuffer;
 
 public class ByteUtils {
-    private static ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-
-
-    public static byte[] longToBytes(long x) {
-        buffer.putLong(0, x);
-        return buffer.array();
-    }
-
-    public static long bytesToLong(byte[] bytes) {
-        buffer.put(bytes, 0, bytes.length);
-        buffer.flip();//need flip
-        return buffer.getLong();
-    }
-
     public static byte[] toBytes(Object object) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(bos)) {

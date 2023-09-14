@@ -202,16 +202,15 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
             @ApiResponse(responseCode = "403", description = "Access denied",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @GetMapping(value = "/{id}/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
         UserModel userModel = getUserModelFromPrincipal(principal);
-
-        Picture picture = pictureService.getById(item.getPicture());
-        String pathString = UPLOAD_PATH + "/preview/" + picture.getName();
-        Path path = Paths.get(pathString);
+        Path path = this.getPicturePath(item.getPicture());
 
         try {
             PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path));
@@ -219,6 +218,11 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    protected Path getPicturePath(Long id) {
+        Picture picture = pictureService.getById(id);
+        return Paths.get(UPLOAD_PATH + "/preview/" + picture.getName());
     }
 
     protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {

@@ -2,32 +2,22 @@ package ru.kuznetsov.pdfmodule;
 
 import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static ru.kuznetsov.pdfmodule.PDFService.PDF_DOC_NAME;
 import static ru.kuznetsov.pdfmodule.SpringConfig.SUBSCRIBER;
 
-
-@RestController
+@Controller
 public class PDFController {
     private final PDFService pdfService;
-    private final Connection connection;
-    public static final String TMP_PATH = "src/main/resources/tmp/download.jpg";
-
 
     public PDFController(PDFService pdfService, Connection connection) {
         this.pdfService = pdfService;
-        this.connection = connection;
         Dispatcher dispatcher = connection.createDispatcher();
         dispatcher.subscribe(SUBSCRIBER, msg -> connection.publish(msg.getReplyTo(), getData(msg.getData())));
     }

@@ -15,22 +15,14 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Set;
+import java.util.Map;
 import java.util.stream.Stream;
-
-import static ru.kuznetsov.pdfmodule.PDFController.TMP_PATH;
 
 @Component
 public class PDFService {
-    // https://coderlessons.com/tutorials/raznoe/uznaite-itext/itext-kratkoe-rukovodstvo
-    // https://www.baeldung.com/java-pdf-creation
-    private Document document;
-    private String imagePath;
     private String manufacturer;
     private String model;
-    private Set<PdfEntityDto> serviceList;
+    private Map<String, String[]> serviceList;
     public static String PDF_DOC_PATH;
     private String fontPath;
     private Font commonFont;
@@ -67,7 +59,9 @@ public class PDFService {
      * @param item item for list forming.
      */
     public void build(PdfEntityDto item) {
-        this.document = new Document(PageSize.A4);
+        // https://coderlessons.com/tutorials/raznoe/uznaite-itext/itext-kratkoe-rukovodstvo
+        // https://www.baeldung.com/java-pdf-creation
+        Document document = new Document(PageSize.A4);
         this.userName = item.getUserName();
         this.manufacturer = item.getManufacturer();
         this.model = item.getModel();
@@ -79,7 +73,7 @@ public class PDFService {
             if (!newPDF.exists()) {
                 newPDF.createNewFile();
             }
-            PdfWriter.getInstance(this.document, new FileOutputStream(newPDF));
+            PdfWriter.getInstance(document, new FileOutputStream(newPDF));
             document.open();
 
             document.add(insertHeaderTable(item, item.getPicture()));
@@ -91,7 +85,8 @@ public class PDFService {
             }
 
             document.close();
-//            this.clean(PDF_DOC_NAME);
+            logger.info("PDF was created for user: " + userName
+                    + ". Entity: " + item.getName());
             this.cleanFields();
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,16 +153,15 @@ public class PDFService {
         PdfPCell toolCell = new PdfPCell();
         PdfPCell consumableCell = new PdfPCell();
         PdfPCell fastenerCell = new PdfPCell();
-
-        this.serviceList.forEach(item -> {
-            switch (item.getCategory()) {
-                case "Tool" -> toolCell.addElement(new Phrase(item.getName(), commonFont));
-                case "Consumable" ->
-                        consumableCell.addElement(new Phrase(item.getName() + ", " + item.getAmount(), commonFont));
-                case "Fastener" ->
-                        fastenerCell.addElement(new Phrase(item.getName() + ", " + item.getAmount(), commonFont));
-            }
-        });
+        for (String string : this.serviceList.get("tools")) {
+            toolCell.addElement(new Phrase(string, commonFont));
+        }
+        for (String string : this.serviceList.get("consumables")) {
+            consumableCell.addElement(new Phrase(string, commonFont));
+        }
+        for (String string : this.serviceList.get("fasteners")) {
+            consumableCell.addElement(new Phrase(string, commonFont));
+        }
 
         table.addCell(new Phrase("Инструменты", commonFont));
         table.addCell(toolCell);
@@ -179,35 +173,12 @@ public class PDFService {
         table.addCell(fastenerCell);
     }
 
-    public boolean cleanFile(String path) {
-        return new File(path).delete();
-    }
 
     private void cleanFields() {
         this.userName = "";
         this.manufacturer = "";
-        this.imagePath = "";
+        this.model = "";
         this.serviceList = null;
-    }
-
-    public String getFontPath() {
-        return fontPath;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public Set<PdfEntityDto> getServiceList() {
-        return serviceList;
     }
 
     @Autowired
@@ -218,13 +189,5 @@ public class PDFService {
     @Autowired
     public void setPDFSavePath(@Value("${pdf.path}") String pdfDocPath) {
         PDF_DOC_PATH = pdfDocPath;
-    }
-
-    public Font getCommonFont() {
-        return commonFont;
-    }
-
-    public Font getBigFont() {
-        return bigFont;
     }
 }

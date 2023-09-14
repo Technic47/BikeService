@@ -16,7 +16,6 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
@@ -24,10 +23,8 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityServic
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.config.SpringConfig.UPLOAD_PATH;
 import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
 
 public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity,
@@ -127,13 +124,15 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     @Override
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
-        UserModel userModel = getUserModelFromPrincipal(principal);
-        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
 
-        Picture picture = pictureService.getById(item.getPicture());
-        String pathString = UPLOAD_PATH + "/preview/" + picture.getName();
-        Path path = Paths.get(pathString);
+        return this.prepareDTOEntity(item, principal, serviceList);
+    }
+
+    private ResponseEntity<Resource> prepareDTOEntity(T item, Principal principal, ServiceList serviceList) {
+        UserModel userModel = getUserModelFromPrincipal(principal);
+        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
+        Path path = this.getPicturePath(item.getPicture());
 
         try {
             PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName(), serviceList);
@@ -143,30 +142,20 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         }
     }
 
-
     @Operation(summary = "Build PDF document for entity including linked items")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "PDF created",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @GetMapping(value = "/{id}/pdfAll")
     public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) {
         T item = this.service.getById(id);
-        UserModel userModel = getUserModelFromPrincipal(principal);
-        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
         ServiceList serviceList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
-        Picture picture = pictureService.getById(item.getPicture());
-        String pathString = UPLOAD_PATH + "/preview/" + picture.getName();
-        Path path = Paths.get(pathString);
-
-        try {
-            PdfEntityDto body = new PdfEntityDto(item, userModel.getUsername(), Files.readAllBytes(path), manufacturer.getName(), serviceList);
-            return preparePDF(body);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return this.prepareDTOEntity(item, principal, serviceList);
     }
 
     @Autowired
