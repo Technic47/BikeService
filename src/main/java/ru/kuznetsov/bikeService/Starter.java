@@ -20,6 +20,9 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
+- REST API module
+- Email sender module
+- admin module
 - repository return DTO from DB
 - add to user 'last login' field
 - logIn logOut user work (active true/false)
