@@ -58,7 +58,7 @@ public class PDFService {
      *
      * @param item item for list forming.
      */
-    public void build(PdfEntityDto item) {
+    public synchronized void build(PdfEntityDto item) {
         // https://coderlessons.com/tutorials/raznoe/uznaite-itext/itext-kratkoe-rukovodstvo
         // https://www.baeldung.com/java-pdf-creation
         Document document = new Document(PageSize.A4);
