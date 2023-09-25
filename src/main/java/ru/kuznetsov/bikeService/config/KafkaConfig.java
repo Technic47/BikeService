@@ -82,10 +82,7 @@ public class KafkaConfig {
     public ConsumerFactory<String, byte[]> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
-//        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-//        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(byte[].class, false));
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(byte[].class, false));
     }
 
     @Bean

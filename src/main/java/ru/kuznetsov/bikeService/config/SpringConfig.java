@@ -1,9 +1,6 @@
 package ru.kuznetsov.bikeService.config;
 
-import io.nats.client.Connection;
-import io.nats.client.ErrorListener;
-import io.nats.client.Nats;
-import io.nats.client.Options;
+
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -26,7 +23,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -70,11 +66,6 @@ public class SpringConfig implements WebMvcConfigurer {
     private String smtpUserName;
     @Value("${spring.mail.password}")
     private String smtpUserPass;
-    public static String NATS_SERVER;
-    @Value("${nats.server}")
-    private String natsServer;
-    public static final String SUBSCRIBER_PDF = "server.pdf";
-    public static final String SUBSCRIBER_Picture = "server.getPicture";
 
     @Value("${upload.path}")
     private void setUploadPath() {
@@ -82,7 +73,6 @@ public class SpringConfig implements WebMvcConfigurer {
         ADMIN_NAME = adminName;
         ADMIN_PASS = adminPass;
         BACK_LINK = backLink;
-        NATS_SERVER = natsServer;
     }
 
     @Bean
@@ -169,19 +159,5 @@ public class SpringConfig implements WebMvcConfigurer {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
         return mailSender;
-    }
-
-    //NATS
-    @Bean
-    public Connection getConnection(@Value("${nats.server}") String server) throws IOException, InterruptedException {
-        Options options = new Options.Builder()
-                .server(server)
-                .connectionListener((connection, eventType) -> {
-                })
-                .errorListener(new ErrorListener() {
-                })
-                .build();
-
-        return Nats.connect(options);
     }
 }

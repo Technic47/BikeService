@@ -315,26 +315,10 @@ public abstract class CommonEntityController extends AbstractController {
     }
 
     protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
-//        try (Connection connection = Nats.connect(NATS_SERVER)) {
-//            CompletableFuture<Message> request = connection.request(SUBSCRIBER_PDF, body.getBytes());
-//            byte[] data = request.get().getData();
-//            ByteArrayResource resource = new ByteArrayResource(data);
-//            return ResponseEntity.ok()
-//                    .headers(this.headers(body.getCategory() + "_" + body.getName()))
-//                    .contentLength(data.length)
-//                    .contentType(MediaType.parseMediaType
-//                            ("application/octet-stream")).body(resource);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e.getMessage());
-//        }
-//        String message = Base64.getEncoder().encodeToString(body.getBytes());
-//        byte[] bytes = body.getBytes();
-//        System.out.println(bytes.length);
         ProducerRecord<String, PdfEntityDto> record = new ProducerRecord<>("pdf", body);
         RequestReplyFuture<String, PdfEntityDto, byte[]> reply = replyingKafkaTemplate.sendAndReceive(record);
 
         try {
-//            ByteArrayResource data = reply.get().value();
             ByteArrayResource resource = new ByteArrayResource(reply.get().value());
 
             return ResponseEntity.ok()

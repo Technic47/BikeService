@@ -134,12 +134,6 @@
             <artifactId>spring-kafka</artifactId>
             <version>3.0.4</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.nats/jnats -->
-        <dependency>
-            <groupId>io.nats</groupId>
-            <artifactId>jnats</artifactId>
-            <version>2.16.14</version>
-        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
