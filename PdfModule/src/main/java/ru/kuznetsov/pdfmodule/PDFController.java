@@ -1,26 +1,30 @@
 package ru.kuznetsov.pdfmodule;
 
-import io.nats.client.Connection;
-import io.nats.client.Dispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Controller;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 
 import static ru.kuznetsov.pdfmodule.PDFService.PDF_DOC_NAME;
 
-@Controller
+@Component
 public class PDFController {
     private final PDFService pdfService;
 
-    @Value("${kafka.group.id}")
-    private String kafkaGroupId;
+//    @Value("${kafka.group.id}")
+//    private String kafkaGroupId;
+//    @Value("${kafka.request.topic}")
+//    private String topic;
+
+//    @Autowired
+//    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     @Autowired
     public PDFController(PDFService pdfService
@@ -31,16 +35,21 @@ public class PDFController {
 //        dispatcher.subscribe(SUBSCRIBER, msg -> connection.publish(msg.getReplyTo(), getData(msg.getData())));
     }
 
-    @KafkaListener(topics = "pdf", id = "pdfBuilder", containerFactory = "kafkaListenerContainerFactory")
-    public void listenGroupFoo(String message) {
-//        Base64.getDecoder().decode(message);
-        System.out.println("Received Message in group foo: " + message.length());
+    @KafkaListener(topics = "pdf", id = "${kafka.group.id}")
+    @SendTo
+    public byte[] listenGroupFoo(PdfEntityDto message) {
+//        System.out.println("Received Message in group foo: " + message);
+//        byte[] bytes = Base64.getDecoder().decode(message);
+//        String reply = Base64.getEncoder().encodeToString(getData(bytes));
+        return getData(message);
+//        kafkaTemplate.send("pdf", getData(message));
+
     }
 
-    public byte[] getData(byte[] bytes) {
-        PdfEntityDto item = new PdfEntityDto(bytes);
+    public byte[] getData(PdfEntityDto bytes) {
+//        PdfEntityDto item = new PdfEntityDto(bytes);
         try {
-            pdfService.build(item);
+            pdfService.build(bytes);
             File file = new File(PDF_DOC_NAME);
             Path path = Paths.get(file.getAbsolutePath());
 

@@ -1,10 +1,14 @@
 package ru.kuznetsov.bikeService.controllers.abstracts;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
+import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
@@ -28,7 +32,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
@@ -40,7 +47,7 @@ public abstract class CommonEntityController extends AbstractController {
     protected PDFService pdfService;
     protected SearchService searchService;
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> replyingKafkaTemplate;
 
 
     /**
@@ -270,7 +277,8 @@ public abstract class CommonEntityController extends AbstractController {
             body.setLinkedItems(serviceList);
             return preparePDF(body);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -319,10 +327,24 @@ public abstract class CommonEntityController extends AbstractController {
 //        } catch (Exception e) {
 //            throw new RuntimeException(e.getMessage());
 //        }
-        String message = Base64.getEncoder().encodeToString(body.getBytes());
-        kafkaTemplate.send("pdf", message);
-        System.out.println(message.length());
-        return null;
+//        String message = Base64.getEncoder().encodeToString(body.getBytes());
+//        byte[] bytes = body.getBytes();
+//        System.out.println(bytes.length);
+        ProducerRecord<String, PdfEntityDto> record = new ProducerRecord<>("pdf", body);
+        RequestReplyFuture<String, PdfEntityDto, byte[]> reply = replyingKafkaTemplate.sendAndReceive(record);
+
+        try {
+//            ByteArrayResource data = reply.get().value();
+            ByteArrayResource resource = new ByteArrayResource(reply.get().value());
+
+            return ResponseEntity.ok()
+                    .headers(this.headers(body.getCategory() + "_" + body.getName()))
+                    .contentLength(resource.contentLength())
+                    .contentType(MediaType.parseMediaType
+                            ("application/octet-stream")).body(resource);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private HttpHeaders headers(String fileName) {

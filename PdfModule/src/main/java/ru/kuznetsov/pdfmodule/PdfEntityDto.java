@@ -24,6 +24,20 @@ public class PdfEntityDto implements Serializable {
     public PdfEntityDto() {
     }
 
+    public PdfEntityDto(String category, String userName, String name, String description, byte[] picture, String link, String valueName, String value, String manufacturer, String model, int amount, Map<String, String[]> linkedItems) {
+        this.category = category;
+        this.userName = userName;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this.link = link;
+        this.valueName = valueName;
+        this.value = value;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.amount = amount;
+        this.linkedItems = linkedItems;
+    }
 
     public PdfEntityDto(byte[] bytes) {
         Map<String, String> fields = (Map<String, String>) ByteUtils.fromBytes(bytes);
