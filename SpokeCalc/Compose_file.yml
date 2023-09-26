@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+  spoke_calc:
+    build:
+      context: .
+    container_name: spoke_calc_V1
+    restart: always
+    ports:
+      - "8090:8087"

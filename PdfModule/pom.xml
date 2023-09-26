@@ -46,13 +46,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<mainClass>ru/kuznetsov/pdfmodule/SpringConfig.java</mainClass>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
 		</plugins>
 	</build>
 

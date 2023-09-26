@@ -47,7 +47,7 @@ public abstract class CommonEntityController extends AbstractController {
     protected PDFService pdfService;
     protected SearchService searchService;
     @Autowired
-    private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> replyingKafkaTemplate;
+    private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfKafkaTemplate;
 
 
     /**
@@ -316,7 +316,7 @@ public abstract class CommonEntityController extends AbstractController {
 
     protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
         ProducerRecord<String, PdfEntityDto> record = new ProducerRecord<>("pdf", body);
-        RequestReplyFuture<String, PdfEntityDto, byte[]> reply = replyingKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, PdfEntityDto, byte[]> reply = pdfKafkaTemplate.sendAndReceive(record);
 
         try {
             ByteArrayResource resource = new ByteArrayResource(reply.get().value());

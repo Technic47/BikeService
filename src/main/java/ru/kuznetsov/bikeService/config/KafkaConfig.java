@@ -42,7 +42,7 @@ public class KafkaConfig {
         return new NewTopic("pdf", 1, (short) 1);
     }
 
-    @Bean
+    @Bean(name = "pdfFactory")
     public ProducerFactory<String, PdfEntityDto> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
@@ -53,11 +53,32 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    @Bean
+    @Bean(name = "pdfTemplate")
     public ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> replyingKafkaTemplate(
             ProducerFactory<String, PdfEntityDto> pf,
             ConcurrentKafkaListenerContainerFactory<String, byte[]> factory) {
         ConcurrentMessageListenerContainer<String, byte[]> replyContainer = factory.createContainer(replyTopic);
+        replyContainer.getContainerProperties().setMissingTopicsFatal(false);
+        replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
+        return new ReplyingKafkaTemplate<>(pf, replyContainer);
+    }
+
+    @Bean(name = "spokeCalcFactory")
+    public ProducerFactory<String, Map<String, Double>> spokeCalcProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean(name = "spokeCalcTemplate")
+    public ReplyingKafkaTemplate<String, Map<String, Double>, Double> spokeCalcReplyingKafkaTemplate(
+            ProducerFactory<String, Map<String, Double>> pf,
+            ConcurrentKafkaListenerContainerFactory<String, Double> factory) {
+        ConcurrentMessageListenerContainer<String, Double> replyContainer = factory.createContainer(replyTopic);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
         return new ReplyingKafkaTemplate<>(pf, replyContainer);
@@ -79,19 +100,37 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, byte[]> consumerFactory() {
+    public ConsumerFactory<String, byte[]> pdfConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(byte[].class, false));
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(byte[].class, false));
     }
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, byte[]>
-    kafkaListenerContainerFactory() {
+    pdfKafkaListenerContainerFactory() {
 
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(pdfConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, Double> spokeCalkConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Double.class, false));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Double>
+    spokeCalkKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Double> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(spokeCalkConsumerFactory());
         return factory;
     }
 }
