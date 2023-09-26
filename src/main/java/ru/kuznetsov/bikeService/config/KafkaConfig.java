@@ -58,21 +58,6 @@ public class KafkaConfig {
         return new ReplyingKafkaTemplate<>(pf, replyContainer);
     }
 
-//    @Bean
-//    public KafkaTemplate<String, PdfEntityDto> pdfReplyTemplate(
-//            ProducerFactory<String, PdfEntityDto> pf,
-//            ConcurrentKafkaListenerContainerFactory<String, byte[]> factory) {
-//        KafkaTemplate<String, PdfEntityDto> kafkaTemplate = new KafkaTemplate<>(pf);
-//        factory.getContainerProperties().setMissingTopicsFatal(false);
-//        factory.setReplyTemplate(kafkaTemplate);
-//        return kafkaTemplate;
-//    }
-
-//    @Bean
-//    public KafkaTemplate<String, PdfEntityDto> pdfKafkaTemplate() {
-//        return new KafkaTemplate<>(pdfProducerFactory());
-//    }
-
     @Bean
     public ConsumerFactory<String, byte[]> pdfConsumerFactory() {
         Map<String, Object> props = new HashMap<>();

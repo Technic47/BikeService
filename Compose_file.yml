@@ -61,7 +61,7 @@ services:
   bikeservice:
     build:
       context: .
-    container_name: app_V1.5
+    container_name: main_app_V1.5
     depends_on:
       - db
     restart: always
@@ -84,5 +84,15 @@ services:
     restart: always
     ports:
       - "8081:8081"
+    env_file:
+      - ../.env
+
+  spoke_calc_module:
+    build:
+      context: ./SpokeCalc/
+    container_name: spoke_calc_V1
+    restart: always
+    ports:
+      - "8082:8082"
     env_file:
       - ../.env
