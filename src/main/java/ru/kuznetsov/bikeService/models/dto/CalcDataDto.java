@@ -1,10 +1,11 @@
 package ru.kuznetsov.bikeService.models.dto;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class CalcDataDto {
+    // 1.0 - left, 2.0 - right(drive)
+    private double side;
     private double flange_hole_diameter;
     private double distance_between_holes;
     private double spoke_hole_offset;
@@ -21,6 +22,7 @@ public class CalcDataDto {
 
     public Map<String, Double> makeMap() {
         Map<String, Double> map = new HashMap<>();
+        map.put("side", side);
         map.put("flange_hole_diameter", flange_hole_diameter);
         map.put("distance_between_holes", distance_between_holes);
         map.put("spoke_hole_offset", spoke_hole_offset);
@@ -33,6 +35,14 @@ public class CalcDataDto {
         map.put("frame_offset", frame_offset);
 
         return map;
+    }
+
+    public double getSide() {
+        return side;
+    }
+
+    public void setSide(double side) {
+        this.side = side;
     }
 
     public double getFlange_hole_diameter() {

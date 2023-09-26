@@ -3,6 +3,7 @@ package ru.kuznetsov.spokecalc.springConfig;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.DoubleSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,33 +13,17 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-//@ComponentScan("ru.kuznetsov.spokecalc")
-//@EnableJpaRepositories("ru.kuznetsov.spokecalc")
-//@EntityScan("ru.kuznetsov.spokecalc.model")
 @EnableKafka
 public class SpringConfig {
-    //    @Value("${datasource.driver}")
-//    private String driver;
-//    @Value("${spring.datasource.url}")
-//    private String jdbcURL;
-//    @Value("${spring.datasource.username}")
-//    private String username;
-//    @Value("${spring.datasource.password}")
-//    private String password;
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
     @Value("${kafka.group.id}")
     private String kafkaGroupId;
-    @Value("${kafka.reply.topic}")
-    private String replyTopic;
-    @Value("${kafka.request.topic}")
-    private String requestTopic;
 
     //Kafka
     @Bean
@@ -55,7 +40,7 @@ public class SpringConfig {
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, DoubleSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
@@ -76,13 +61,14 @@ public class SpringConfig {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Map.class, false));
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        return new DefaultKafkaConsumerFactory<>(props);
     }
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Map<String, Double>>
     kafkaListenerContainerFactory() {
-
         ConcurrentKafkaListenerContainerFactory<String, Map<String, Double>> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());

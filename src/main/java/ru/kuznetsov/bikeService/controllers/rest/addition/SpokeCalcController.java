@@ -17,7 +17,7 @@ public class SpokeCalcController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Double> calculate(@RequestBody CalcDataDto data){
         double result = service.calculate(data);
         return ResponseEntity.ok(result);
