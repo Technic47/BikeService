@@ -24,7 +24,6 @@ import ru.kuznetsov.bikeService.models.servicable.Part;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.showable.Showable;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.PDFService;
 import ru.kuznetsov.bikeService.services.SearchService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -44,7 +43,6 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
  * Intermediate layer that includes common methods for REST and non-REST controllers.
  */
 public abstract class CommonEntityController extends AbstractController {
-    protected PDFService pdfService;
     protected SearchService searchService;
     @Autowired
     private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfKafkaTemplate;
@@ -342,10 +340,6 @@ public abstract class CommonEntityController extends AbstractController {
         return header;
     }
 
-    @Autowired
-    private void setPdfService(PDFService pdfService) {
-        this.pdfService = pdfService;
-    }
 
     @Autowired
     private void setSearchService(SearchService searchService) {
