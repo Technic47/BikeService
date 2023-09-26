@@ -3,6 +3,7 @@ package ru.kuznetsov.bikeService.config;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.DoubleDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -38,8 +39,8 @@ public class KafkaConfig {
         return new KafkaAdmin(configs);
     }
 
-    @Bean(name = "pdfFactory")
-    public ProducerFactory<String, PdfEntityDto> producerFactory() {
+    @Bean
+    public ProducerFactory<String, PdfEntityDto> pdfProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -47,8 +48,8 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    @Bean(name = "pdfTemplate")
-    public ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> replyingKafkaTemplate(
+    @Bean
+    public ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfReplyingKafkaTemplate(
             ProducerFactory<String, PdfEntityDto> pf,
             ConcurrentKafkaListenerContainerFactory<String, byte[]> factory) {
         ConcurrentMessageListenerContainer<String, byte[]> replyContainer = factory.createContainer(replyTopicPdf);
@@ -57,7 +58,43 @@ public class KafkaConfig {
         return new ReplyingKafkaTemplate<>(pf, replyContainer);
     }
 
-    @Bean(name = "spokeCalcFactory")
+//    @Bean
+//    public KafkaTemplate<String, PdfEntityDto> pdfReplyTemplate(
+//            ProducerFactory<String, PdfEntityDto> pf,
+//            ConcurrentKafkaListenerContainerFactory<String, byte[]> factory) {
+//        KafkaTemplate<String, PdfEntityDto> kafkaTemplate = new KafkaTemplate<>(pf);
+//        factory.getContainerProperties().setMissingTopicsFatal(false);
+//        factory.setReplyTemplate(kafkaTemplate);
+//        return kafkaTemplate;
+//    }
+
+//    @Bean
+//    public KafkaTemplate<String, PdfEntityDto> pdfKafkaTemplate() {
+//        return new KafkaTemplate<>(pdfProducerFactory());
+//    }
+
+    @Bean
+    public ConsumerFactory<String, byte[]> pdfConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
+        return new DefaultKafkaConsumerFactory<>(props);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, byte[]>
+    pdfKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(pdfConsumerFactory());
+        return factory;
+    }
+
+    @Bean
     public ProducerFactory<String, Map<String, Double>> spokeCalcProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -66,7 +103,7 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    @Bean(name = "spokeCalcTemplate")
+    @Bean
     public ReplyingKafkaTemplate<String, Map<String, Double>, Double> spokeCalcReplyingKafkaTemplate(
             ProducerFactory<String, Map<String, Double>> pf,
             ConcurrentKafkaListenerContainerFactory<String, Double> factory) {
@@ -74,41 +111,6 @@ public class KafkaConfig {
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
         return new ReplyingKafkaTemplate<>(pf, replyContainer);
-    }
-
-    @Bean
-    public KafkaTemplate<String, PdfEntityDto> replyTemplate(
-            ProducerFactory<String, PdfEntityDto> pf,
-            ConcurrentKafkaListenerContainerFactory<String, byte[]> factory) {
-        KafkaTemplate<String, PdfEntityDto> kafkaTemplate = new KafkaTemplate<>(pf);
-        factory.getContainerProperties().setMissingTopicsFatal(false);
-        factory.setReplyTemplate(kafkaTemplate);
-        return kafkaTemplate;
-    }
-
-    @Bean
-    public KafkaTemplate<String, PdfEntityDto> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
-    }
-
-    @Bean
-    public ConsumerFactory<String, byte[]> pdfConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
-        return new DefaultKafkaConsumerFactory<>(props,
-                new StringDeserializer(),
-                new JsonDeserializer<>(byte[].class, false));
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, byte[]>
-    pdfKafkaListenerContainerFactory() {
-
-        ConcurrentKafkaListenerContainerFactory<String, byte[]> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(pdfConsumerFactory());
-        return factory;
     }
 
     @Bean

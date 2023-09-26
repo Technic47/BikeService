@@ -22,7 +22,7 @@ public class PDFController {
         this.pdfService = pdfService;
     }
 
-    @KafkaListener(topics = "pdf", id = "${kafka.group.id}")
+    @KafkaListener(topics = "pdf", id = "pdfBuilder")
     @SendTo
     public byte[] listenGroupFoo(PdfEntityDto message) {
         return getData(message);
