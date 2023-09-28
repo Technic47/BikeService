@@ -23,13 +23,6 @@ public class KafkaConfig {
     @Value("${kafka.group.id}")
     private String kafkaGroupId;
 
-//    @Bean
-//    public KafkaAdmin kafkaAdmin() {
-//        Map<String, Object> configs = new HashMap<>();
-//        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-//        return new KafkaAdmin(configs);
-//    }
-
     @Bean
     public ConsumerFactory<String, byte[]> consumerFactory() {
         Map<String, Object> props = new HashMap<>();

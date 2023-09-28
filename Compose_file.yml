@@ -96,3 +96,13 @@ services:
       - "8082:8082"
     env_file:
       - ../.env
+
+  email_module:
+    build:
+      context: ./EmailSender/
+    container_name: email_sender_V1
+    restart: always
+    ports:
+      - "8083:8083"
+    env_file:
+      - ../.env

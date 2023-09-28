@@ -1,7 +1,6 @@
 package ru.kuznetsov.emailsender.models.users;
 
 public class UserModel {
-    private Long id;
     private String username;
     private String email;
     private boolean active;
@@ -17,13 +16,5 @@ public class UserModel {
 
     public String getEmail() {
         return this.email;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Username='" + username +
-                "', id=" + id +
-                ", enabled=" + enabled;
     }
 }

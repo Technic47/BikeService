@@ -13,9 +13,6 @@ import java.util.concurrent.Executors;
 
 @Configuration
 public class SpringConfig{
-    public static String BACK_LINK;
-    @Value("${return.link}")
-    private String backLink;
     @Value("${spring.mail.host}")
     private String smtpHost;
     @Value("${spring.mail.port}")

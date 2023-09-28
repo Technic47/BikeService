@@ -14,8 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -23,7 +21,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,7 +34,6 @@ public class SpringConfig implements WebMvcConfigurer {
     public static String UPLOAD_PATH;
     public static String ADMIN_NAME;
     public static String ADMIN_PASS;
-    public static String BACK_LINK;
     @Value("${upload.path}")
     private String path;
     @Value("${admin.name}")
@@ -56,23 +52,13 @@ public class SpringConfig implements WebMvcConfigurer {
     private int httpPort;
     @Value("${server.port}")
     private int httpsPort;
-    @Value("${return.link}")
-    private String backLink;
-    @Value("${spring.mail.host}")
-    private String smtpHost;
-    @Value("${spring.mail.port}")
-    private String smtpPort;
-    @Value("${spring.mail.username}")
-    private String smtpUserName;
-    @Value("${spring.mail.password}")
-    private String smtpUserPass;
+
 
     @Value("${upload.path}")
     private void setUploadPath() {
         UPLOAD_PATH = this.path;
         ADMIN_NAME = adminName;
         ADMIN_PASS = adminPass;
-        BACK_LINK = backLink;
     }
 
     @Bean
@@ -141,23 +127,5 @@ public class SpringConfig implements WebMvcConfigurer {
         connector.setSecure(false);
         connector.setRedirectPort(httpsPort);
         return connector;
-    }
-
-    //email sender setUp
-    @Bean
-    public JavaMailSender getJavaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(smtpHost);
-        mailSender.setPort(Integer.parseInt(smtpPort));
-        mailSender.setUsername(smtpUserName);
-        mailSender.setPassword(smtpUserPass);
-
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.smtp.ssl.enable", "true");
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
-        return mailSender;
     }
 }

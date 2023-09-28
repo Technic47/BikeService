@@ -1,6 +1,5 @@
 package ru.kuznetsov.spokecalc.springConfig;
 
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.DoubleSerializer;
@@ -26,13 +25,6 @@ public class SpringConfig {
     private String kafkaGroupId;
 
     //Kafka
-    @Bean
-    public KafkaAdmin kafkaAdmin() {
-        Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        return new KafkaAdmin(configs);
-    }
-
     @Bean
     public ProducerFactory<String, Double> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();

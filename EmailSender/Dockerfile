@@ -12,7 +12,7 @@ RUN ./mvnw clean package spring-boot:repackage
 FROM eclipse-temurin:19-jre-alpine
 WORKDIR /app
 
-COPY --from=builder /app/target/SpokeCalc-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY --from=builder /app/target/EmailSender-1.0.0-SNAPSHOT.jar /app/app.jar
 
-EXPOSE 8082
+EXPOSE 8083
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
