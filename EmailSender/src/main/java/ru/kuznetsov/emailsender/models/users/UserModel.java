@@ -4,15 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import ru.kuznetsov.bikeService.models.lists.UserEntity;
 
 import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class UserModel implements UserDetails, OAuth2User {
+public class UserModel {
     @Transient
     private final Map<String, Object> attributes;
     @Column(name = "created")
@@ -37,10 +34,10 @@ public class UserModel implements UserDetails, OAuth2User {
     private boolean active;
     @Column(name = "enabled")
     private boolean enabled;
-    @ElementCollection(targetClass = UserEntity.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_item",
-            joinColumns = @JoinColumn(name = "user_id"))
-    private List<UserEntity> createdItems = new ArrayList<>();
+//    @ElementCollection(targetClass = UserEntity.class, fetch = FetchType.EAGER)
+//    @CollectionTable(name = "user_item",
+//            joinColumns = @JoinColumn(name = "user_id"))
+//    private List<UserEntity> createdItems = new ArrayList<>();
     @Column(name = "password", length = 1000)
     private String password;
     @Enumerated(EnumType.STRING)
@@ -69,11 +66,11 @@ public class UserModel implements UserDetails, OAuth2User {
         this.email = email;
     }
 
-    public UserModel(OAuth2User oauth2User) {
-        this.attributes = oauth2User.getAttributes();
-        this.setUsername(this.attributes.get("email").toString());
-        this.setEmail(this.attributes.get("email").toString());
-    }
+//    public UserModel(OAuth2User oauth2User) {
+//        this.attributes = oauth2User.getAttributes();
+//        this.setUsername(this.attributes.get("email").toString());
+//        this.setEmail(this.attributes.get("email").toString());
+//    }
 
     public Long getId() {
         return id;
@@ -99,7 +96,7 @@ public class UserModel implements UserDetails, OAuth2User {
         this.active = active;
     }
 
-    @Override
+//    @Override
     public Set<UserRole> getAuthorities() {
         return this.authorities;
     }
@@ -108,13 +105,13 @@ public class UserModel implements UserDetails, OAuth2User {
         this.authorities = authorities;
     }
 
-    public List<UserEntity> getCreatedItems() {
-        return createdItems;
-    }
+//    public List<UserEntity> getCreatedItems() {
+//        return createdItems;
+//    }
 
-    public void setCreatedItems(List<UserEntity> createdItems) {
-        this.createdItems = createdItems;
-    }
+//    public void setCreatedItems(List<UserEntity> createdItems) {
+//        this.createdItems = createdItems;
+//    }
 
     public String getPassword() {
         return password;
@@ -132,36 +129,36 @@ public class UserModel implements UserDetails, OAuth2User {
         this.provider = provider;
     }
 
-    @Override
-    public Map<String, Object> getAttributes() {
-        return this.attributes;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
+//    @Override
+//    public Map<String, Object> getAttributes() {
+//        return this.attributes;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return enabled;
+//    }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
-    @Override
+//    @Override
     public String getName() {
         return this.username;
     }
@@ -190,17 +187,17 @@ public class UserModel implements UserDetails, OAuth2User {
         this.updated = updated;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserModel userModel)) return false;
-        return active == userModel.active && Objects.equals(id, userModel.id) && Objects.equals(username, userModel.username);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, active, authorities, createdItems, password);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof UserModel userModel)) return false;
+//        return active == userModel.active && Objects.equals(id, userModel.id) && Objects.equals(username, userModel.username);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, username, active, authorities, createdItems, password);
+//    }
 
     @Override
     public String toString() {

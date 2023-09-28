@@ -1,6 +1,7 @@
 package ru.kuznetsov.emailsender.models;
 
-import ru.kuznetsov.bikeService.models.users.UserModel;
+
+import ru.kuznetsov.emailsender.models.users.UserModel;
 
 import java.sql.Timestamp;
 import java.util.Calendar;

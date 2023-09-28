@@ -1,18 +1,12 @@
 package ru.kuznetsov.emailsender.services;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.authentication.AccountExpiredException;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Service;
-import ru.kuznetsov.bikeService.config.security.VerificationToken;
-import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.repositories.VerificationTokenRepository;
-import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
+import ru.kuznetsov.emailsender.models.VerificationToken;
+import ru.kuznetsov.emailsender.models.users.UserModel;
+import ru.kuznetsov.emailsender.repositories.VerificationTokenRepository;
 
 import java.util.Calendar;
-import java.util.UUID;
 
 @Service
 public class VerificationTokenService extends AbstractService<VerificationToken, VerificationTokenRepository> {
@@ -42,21 +36,21 @@ public class VerificationTokenService extends AbstractService<VerificationToken,
         return repository.save(myToken);
     }
 
-    public void createUpdateTokenEvent(HttpServletRequest request, UserModel userModel) {
-        VerificationToken token = repository.findByUser(userModel);
-        if (token == null) {
-            String newToken = UUID.randomUUID().toString();
-            token = this.createVerificationToken(userModel, newToken);
-        } else {
-            token = this.updateVerificationToken(token);
-        }
-
-        String appUrl =
-                "https://" + request.getServerName() +
-                        ":" + request.getServerPort() +
-                        request.getContextPath();
-        eventPublisher.publishEvent(new ResentTokenEvent(appUrl, userModel.getEmail(), token));
-    }
+//    public void createUpdateTokenEvent(HttpServletRequest request, UserModel userModel) {
+//        VerificationToken token = repository.findByUser(userModel);
+//        if (token == null) {
+//            String newToken = UUID.randomUUID().toString();
+//            token = this.createVerificationToken(userModel, newToken);
+//        } else {
+//            token = this.updateVerificationToken(token);
+//        }
+//
+//        String appUrl =
+//                "https://" + request.getServerName() +
+//                        ":" + request.getServerPort() +
+//                        request.getContextPath();
+//        eventPublisher.publishEvent(new ResentTokenEvent(appUrl, userModel.getEmail(), token));
+//    }
 
     /**
      * Update expiryDate of token.
