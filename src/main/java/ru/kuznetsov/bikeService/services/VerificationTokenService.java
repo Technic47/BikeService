@@ -1,12 +1,10 @@
 package ru.kuznetsov.bikeService.services;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Service;
-import ru.kuznetsov.bikeService.config.security.VerificationToken;
-import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
+import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.repositories.VerificationTokenRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
@@ -31,6 +29,13 @@ public class VerificationTokenService extends AbstractService<VerificationToken,
         return repository.findByToken(VerificationToken);
     }
 
+//    public VerificationToken findByUser(UserModel userModel){
+//        Optional<VerificationToken> token = repository.findByUser(userModel);
+//        if (token.isPresent()) {
+//            return token.get();
+//        } else throw new ResourceNotFoundException("Token for user " + userModel.getUsername() + " not found");
+//    }
+
     /**
      * Create new VerificationToken object and save it to DB.
      *
@@ -42,7 +47,7 @@ public class VerificationTokenService extends AbstractService<VerificationToken,
         return repository.save(myToken);
     }
 
-    public void createUpdateTokenEvent(HttpServletRequest request, UserModel userModel) {
+    public VerificationToken createOrUpdateToken(UserModel userModel) {
         VerificationToken token = repository.findByUser(userModel);
         if (token == null) {
             String newToken = UUID.randomUUID().toString();
@@ -50,12 +55,7 @@ public class VerificationTokenService extends AbstractService<VerificationToken,
         } else {
             token = this.updateVerificationToken(token);
         }
-
-        String appUrl =
-                "https://" + request.getServerName() +
-                        ":" + request.getServerPort() +
-                        request.getContextPath();
-        eventPublisher.publishEvent(new ResentTokenEvent(appUrl, userModel.getEmail(), token));
+        return token;
     }
 
     /**

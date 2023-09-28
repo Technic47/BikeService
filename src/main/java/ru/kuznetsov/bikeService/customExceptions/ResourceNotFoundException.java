@@ -12,6 +12,10 @@ public class ResourceNotFoundException extends RuntimeException {
         this.id = id;
     }
 
+    public ResourceNotFoundException(String message){
+        super(message);
+    }
+
     public ResourceNotFoundException(Throwable cause) {
         super(cause);
     }

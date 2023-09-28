@@ -95,7 +95,7 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         return this.repository.findByEmail(email);
     }
 
-    public boolean existById(Long id){
+    public boolean existById(Long id) {
         return repository.existsById(id);
     }
 
@@ -187,10 +187,15 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      */
     public UserModel registerNewUserAccount(RegistrationRequestDto dto) throws RuntimeException {
         if (emailExist(dto.getEmail())) {
-            throw new RuntimeException(
+            throw new IllegalArgumentException(
                     "В системе уже существует аккаунт с почтой: "
                             + dto.getEmail());
         }
-        return this.constructRecordAndSave(dto.toUserModel(), ROLE_USER);
+        UserModel newUser = this.constructRecordAndSave(dto.toUserModel(), ROLE_USER);
+        if (newUser != null) {
+            return newUser;
+        } else throw new IllegalArgumentException(
+                "В системе уже существует аккаунт с таким логином: "
+                        + dto.getUsername());
     }
 }

@@ -2,10 +2,21 @@ package ru.kuznetsov.bikeService.models.events;
 
 import org.springframework.context.ApplicationEvent;
 import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.utils.ByteUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
     private String appUrl;
     private UserModel userModel;
+
+    public byte[] getBytes() {
+        Map<String, String> fields = new HashMap<>();
+        fields.put("appUrl", appUrl);
+        fields.put("userEmail", userModel.getEmail());
+        return ByteUtils.toBytes(fields);
+    }
 
     public OnRegistrationCompleteEvent(UserModel user, String appUrl) {
         super(user);

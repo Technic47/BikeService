@@ -2,12 +2,15 @@ package ru.kuznetsov.bikeService.controllers.notRest.additional;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
+import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
@@ -19,9 +22,11 @@ import java.util.Set;
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController {
+    private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenService tokenService;
 
-    public UserController(VerificationTokenService tokenService) {
+    public UserController(ApplicationEventPublisher eventPublisher, VerificationTokenService tokenService) {
+        this.eventPublisher = eventPublisher;
         this.tokenService = tokenService;
     }
 
@@ -121,7 +126,12 @@ public class UserController extends AbstractController {
         userModelExist.setEnabled(false);
         this.userService.update(userModelExist, userModelNew);
 
-        tokenService.createUpdateTokenEvent(request, userModelExist);
+        VerificationToken token = tokenService.createOrUpdateToken(userModelExist);
+        String appUrl =
+                "https://" + request.getServerName() +
+                        ":" + request.getServerPort() +
+                        request.getContextPath();
+        eventPublisher.publishEvent(new ResentTokenEvent(appUrl, userModelExist.getEmail(), token));
         return "redirect:/logout";
     }
 

@@ -1,15 +1,13 @@
 package ru.kuznetsov.bikeService.services;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.kuznetsov.bikeService.config.security.VerificationToken;
+import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Service for sending verification emails.
@@ -21,7 +19,8 @@ public class EmailService {
     @Value("${smtp.mail.fromWho}")
     private String smtpFrom;
 
-    public EmailService(JavaMailSender mailSender, VerificationTokenService tokenService, @Qualifier("MainExecutor") ExecutorService mainExecutor) {
+    public EmailService(JavaMailSender mailSender,
+                        VerificationTokenService tokenService) {
         this.mailSender = mailSender;
         this.tokenService = tokenService;
     }

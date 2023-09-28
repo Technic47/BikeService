@@ -1,4 +1,4 @@
-package ru.kuznetsov.emailsender;
+package ru.kuznetsov.emailsender.config;
 
 
 import org.springframework.beans.factory.annotation.Value;

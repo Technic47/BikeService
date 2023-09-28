@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.kuznetsov.bikeService.config.security.VerificationToken;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
+import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
+import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
@@ -147,7 +148,12 @@ public class AuthController extends AbstractController {
             message = "Проверьте правильность написания почты.";
             model.addAttribute("user", new UserModel());
         } else {
-            tokenService.createUpdateTokenEvent(request, userModel);
+            VerificationToken token = tokenService.createOrUpdateToken(userModel);
+            String appUrl =
+                    "https://" + request.getServerName() +
+                            ":" + request.getServerPort() +
+                            request.getContextPath();
+            eventPublisher.publishEvent(new ResentTokenEvent(appUrl, userModel.getEmail(), token));
             model.addAttribute("user", userModel);
         }
 

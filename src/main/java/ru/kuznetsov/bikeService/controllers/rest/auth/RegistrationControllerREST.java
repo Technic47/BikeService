@@ -4,11 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
-import ru.kuznetsov.bikeService.config.security.VerificationToken;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.dto.RegistrationRequestDto;
 import ru.kuznetsov.bikeService.models.dto.UserDto;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
+import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
+import ru.kuznetsov.bikeService.models.security.VerificationToken;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
@@ -27,7 +28,6 @@ public class RegistrationControllerREST extends AbstractController {
     public UserDto newUser(@Valid @RequestBody RegistrationRequestDto dto,
                            HttpServletRequest request
     ) {
-
         UserModel registered = userService.registerNewUserAccount(dto);
         String appUrl =
                 "https://" + request.getServerName() +
@@ -50,6 +50,15 @@ public class RegistrationControllerREST extends AbstractController {
                             @RequestParam(value = "email") String email) {
         UserModel userModel = userService.findByEmailOrNull(email);
 
-        tokenService.createUpdateTokenEvent(request, userModel);
+        if (userModel == null) {
+            throw new IllegalArgumentException("Проверьте правильность написания почты!");
+        } else {
+            VerificationToken token = tokenService.createOrUpdateToken(userModel);
+            String appUrl =
+                    "https://" + request.getServerName() +
+                            ":" + request.getServerPort() +
+                            request.getContextPath();
+            eventPublisher.publishEvent(new ResentTokenEvent(appUrl, userModel.getEmail(), token));
+        }
     }
 }

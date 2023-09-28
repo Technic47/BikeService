@@ -1,7 +1,11 @@
 package ru.kuznetsov.bikeService.models.events;
 
 import org.springframework.context.ApplicationEvent;
-import ru.kuznetsov.bikeService.config.security.VerificationToken;
+import ru.kuznetsov.bikeService.models.security.VerificationToken;
+import ru.kuznetsov.bikeService.utils.ByteUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResentTokenEvent extends ApplicationEvent {
     private final String appUrl;
@@ -13,6 +17,14 @@ public class ResentTokenEvent extends ApplicationEvent {
         this.appUrl = appUrl;
         this.userEmail = userEmail;
         this.token = token;
+    }
+
+    public byte[] getBytes(){
+        Map<String, String> fields = new HashMap<>();
+        fields.put("appUrl", appUrl);
+        fields.put("userEmail", userEmail);
+        fields.put("token", token.getToken());
+        return ByteUtils.toBytes(fields);
     }
 
     public String getAppUrl() {
