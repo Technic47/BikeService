@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/ru/kuznetsov/bikeService/pdfModule/pom.xml" />
         <option value="$PROJECT_DIR$/SpokeCalc/pom.xml" />
+        <option value="$PROJECT_DIR$/EmailSender/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
