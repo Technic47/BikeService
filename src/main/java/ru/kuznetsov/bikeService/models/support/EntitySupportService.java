@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.models.fabric;
+package ru.kuznetsov.bikeService.models.support;
 
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.abstracts.comparators.ComparatorByName;

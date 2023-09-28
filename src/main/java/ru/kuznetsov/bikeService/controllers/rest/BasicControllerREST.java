@@ -14,7 +14,7 @@ import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
-import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
+import ru.kuznetsov.bikeService.models.support.EntitySupportService;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.*;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.*;
 
 
 public abstract class BasicControllerREST<T extends AbstractShowableEntity,

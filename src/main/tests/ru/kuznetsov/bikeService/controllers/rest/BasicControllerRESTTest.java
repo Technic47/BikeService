@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.kuznetsov.bikeService.TestCredentials.*;
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.createDtoFrom;
 
 @SpringBootTest
 @AutoConfigureMockMvc

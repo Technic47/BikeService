@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.kuznetsov.bikeService.config.security.jwt.JwtTokenProvider;
 import ru.kuznetsov.bikeService.models.dto.AuthenticationRequestDto;
-import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenProvider;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
 

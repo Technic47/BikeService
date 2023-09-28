@@ -10,13 +10,13 @@ import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
-import ru.kuznetsov.bikeService.models.fabric.EntitySupportService;
+import ru.kuznetsov.bikeService.models.support.EntitySupportService;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.convertFromDTO;
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.convertFromDTO;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.createDtoFrom;
 
 public abstract class UsableControllerREST<T extends AbstractUsableEntity,
         S extends CommonAbstractEntityService<T>>

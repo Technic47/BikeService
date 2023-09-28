@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kuznetsov.bikeService.config.ServiceListController;
+import ru.kuznetsov.bikeService.controllers.ServiceListController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
@@ -20,7 +20,7 @@ import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityServic
 
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.createDtoFrom;
 
 public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity,
         S extends CommonServiceableEntityService<T>>

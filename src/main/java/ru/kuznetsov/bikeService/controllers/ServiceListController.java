@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.config;
+package ru.kuznetsov.bikeService.controllers;
 
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;

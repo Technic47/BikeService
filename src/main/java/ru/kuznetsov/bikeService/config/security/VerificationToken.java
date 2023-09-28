@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.models.security;
+package ru.kuznetsov.bikeService.config.security;
 
 import jakarta.persistence.*;
 import ru.kuznetsov.bikeService.models.users.UserModel;

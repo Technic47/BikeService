@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.models.security.jwt;
+package ru.kuznetsov.bikeService.config.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

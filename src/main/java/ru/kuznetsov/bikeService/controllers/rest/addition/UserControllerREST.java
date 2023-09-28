@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.createDtoFrom;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.createDtoFrom;
 
 @RestController
 @RequestMapping("/api/users")

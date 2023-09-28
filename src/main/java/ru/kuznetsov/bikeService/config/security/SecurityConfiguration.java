@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.config;
+package ru.kuznetsov.bikeService.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +16,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.kuznetsov.bikeService.config.security.jwt.CustomAuthorizationFilter;
+import ru.kuznetsov.bikeService.config.security.jwt.JwtTokenProvider;
 import ru.kuznetsov.bikeService.exceptionHandlers.CustomAuthenticationFailureHandler;
-import ru.kuznetsov.bikeService.models.security.jwt.CustomAuthorizationFilter;
-import ru.kuznetsov.bikeService.models.security.jwt.JwtTokenProvider;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.CustomOAuth2UserService;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;

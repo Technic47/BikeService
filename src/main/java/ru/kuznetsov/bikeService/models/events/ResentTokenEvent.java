@@ -1,7 +1,7 @@
 package ru.kuznetsov.bikeService.models.events;
 
 import org.springframework.context.ApplicationEvent;
-import ru.kuznetsov.bikeService.models.security.VerificationToken;
+import ru.kuznetsov.bikeService.config.security.VerificationToken;
 
 public class ResentTokenEvent extends ApplicationEvent {
     private final String appUrl;

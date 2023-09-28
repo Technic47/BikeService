@@ -14,8 +14,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.convertListToDto;
-import static ru.kuznetsov.bikeService.models.fabric.EntitySupportService.sortBasic;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.convertListToDto;
+import static ru.kuznetsov.bikeService.models.support.EntitySupportService.sortBasic;
 
 @RestController
 @RequestMapping("/api/search")
