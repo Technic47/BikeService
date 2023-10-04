@@ -198,4 +198,24 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
                 "В системе уже существует аккаунт с таким логином: "
                         + dto.getUsername());
     }
+
+    /**
+     * Sets active status. User is logged in or not.
+     *
+     * @param username username of user.
+     * @param status   status to set.
+     */
+    public void setActive(String username, boolean status) {
+        UserModel userModel = findByUsernameOrNull(username);
+        userModel.setActive(status);
+        userModel.setLastLogIn(new Date());
+        repository.save(userModel);
+    }
+
+    /**
+     * sets all user`s active status to false.
+     */
+    public void setNotActiveToAll() {
+        repository.setNotActiveToAll();
+    }
 }

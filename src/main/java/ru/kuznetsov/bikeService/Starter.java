@@ -13,6 +13,7 @@ public class Starter extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(Starter.class, args);
     }
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(Starter.class);
@@ -22,8 +23,7 @@ public class Starter extends SpringBootServletInitializer {
 /*TODO
 - REST API module ???
 - admin module
-- add to user 'last login' field
-- logIn logOut user work (active true/false)
+- logOut user work (active true/false) User may stay active.
 - resend token via login, not email
 - oauth2 from VK
  */

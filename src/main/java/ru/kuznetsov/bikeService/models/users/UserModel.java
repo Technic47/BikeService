@@ -55,6 +55,9 @@ public class UserModel implements UserDetails, OAuth2User {
     @LastModifiedDate
     protected Date updated;
 
+    @Column(name = "lastLogIn")
+    protected Date lastLogIn;
+
     @Column(name = "status")
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
@@ -198,6 +201,14 @@ public class UserModel implements UserDetails, OAuth2User {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public Date getLastLogIn() {
+        return lastLogIn;
+    }
+
+    public void setLastLogIn(Date lastLogIn) {
+        this.lastLogIn = lastLogIn;
     }
 
     @Override

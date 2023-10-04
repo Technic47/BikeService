@@ -3,11 +3,11 @@ package ru.kuznetsov.bikeService.eventListeners;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.session.SessionDestroyedEvent;
+import org.springframework.security.authentication.event.LogoutSuccessEvent;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
@@ -17,10 +17,10 @@ import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.showable.Manufacturer;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.PictureService;
+import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
@@ -31,17 +31,19 @@ public class ApplicationEventsListener {
     private final PictureService pictureService;
     private final ManufacturerService manufacturerService;
     private final VerificationTokenService tokenService;
+    private final UserService userService;
     private final ExecutorService mainExecutor;
     private final KafkaTemplate<String, byte[]> emailTemplate;
 
     @Autowired
     public ApplicationEventsListener(PictureService pictureService,
                                      ManufacturerService manufacturerService,
-                                     VerificationTokenService tokenService, @Qualifier("MainExecutor") ExecutorService mainExecutor,
+                                     VerificationTokenService tokenService, UserService userService, @Qualifier("MainExecutor") ExecutorService mainExecutor,
                                      KafkaTemplate<String, byte[]> emailTemplate) {
         this.pictureService = pictureService;
         this.manufacturerService = manufacturerService;
         this.tokenService = tokenService;
+        this.userService = userService;
         this.mainExecutor = mainExecutor;
         this.emailTemplate = emailTemplate;
     }
@@ -75,6 +77,12 @@ public class ApplicationEventsListener {
         }
     }
 
+    @EventListener(ContextClosedEvent.class)
+    public void onContextClosedEvent(ContextClosedEvent contextClosedEvent) {
+//        userService.setNotActiveToAll();
+        System.out.println("ContextClosedEvent occurred at millis: " + contextClosedEvent.getTimestamp());
+    }
+
     //Registration of new user.
     @EventListener(OnRegistrationCompleteEvent.class)
     public void registration(OnRegistrationCompleteEvent event) {
@@ -97,6 +105,7 @@ public class ApplicationEventsListener {
         mainExecutor.submit(emailSend);
     }
 
+    //LogIn tracking
     @EventListener(AuthenticationSuccessEvent.class)
     public void logInEvent(AuthenticationSuccessEvent event) {
         Object principal = event.getAuthentication().getPrincipal();
@@ -107,23 +116,15 @@ public class ApplicationEventsListener {
             userName = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
         }
         logger.info("User " + userName + " is logged in.");
+        userService.setActive(userName, true);
     }
 
     //LogOut tracking
-    @EventListener(SessionDestroyedEvent.class)
-    public void logOutEvent(SessionDestroyedEvent event) {
-        List<SecurityContext> securityContexts = event.getSecurityContexts();
-        securityContexts.forEach(item -> {
-            Object principal = item.getAuthentication().getPrincipal();
-        });
-        //TODO
-        //work with logOut User.
-        //
+    @EventListener(LogoutSuccessEvent.class)
+    public void logOutEvent(LogoutSuccessEvent event){
+        String userName = event.getAuthentication().getName();
+        logger.info("User " + userName + " is logged out.");
+        userService.setActive(userName, false);
     }
-
-//    @EventListener(HttpSessionBindingEvent.class)
-//    public void logInEvent2(HttpSessionBindingEvent event) {
-//        Object value = event.getValue();
-//    }
 }
 
