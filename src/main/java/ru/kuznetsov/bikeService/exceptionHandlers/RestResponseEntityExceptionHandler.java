@@ -21,11 +21,11 @@ import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<Object> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         ApiError apiError =
@@ -35,7 +35,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(AccessToResourceDenied.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
     protected ResponseEntity<Object> handleResourceAccessDenied(AccessToResourceDenied ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         ApiError apiError =
@@ -45,7 +44,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         ApiError apiError =
@@ -55,23 +53,31 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleConstraintViolation(
             ConstraintViolationException ex) {
         List<String> errors = new ArrayList<>();
-        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            errors.add(violation.getRootBeanClass().getName() + " " +
+        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+        for (ConstraintViolation<?> violation : constraintViolations) {
+            errors.add(
                     violation.getPropertyPath() + ": " + violation.getMessage());
         }
 
         ApiError apiError =
-                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+                new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), errors);
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
+//        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+//            errors.add(violation.getRootBeanClass().getName() + " " +
+//                    violation.getPropertyPath() + ": " + violation.getMessage());
+//        }
+//
+//        ApiError apiError =
+//                new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+//        return new ResponseEntity<>(
+//                apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex) {
         String error =

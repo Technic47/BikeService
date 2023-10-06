@@ -2,6 +2,8 @@ package ru.kuznetsov.bikeService.models.abstracts;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 import ru.kuznetsov.bikeService.models.usable.Usable;
@@ -10,9 +12,11 @@ import java.util.Objects;
 
 @MappedSuperclass
 public abstract class AbstractUsableEntity extends AbstractShowableEntity implements Usable {
+    @NotNull(message = "Поле не должно быть пустым!")
     @Column(name = "manufacturer")
     protected Long manufacturer = 1L;
-    @Size(max = 100)
+    @NotBlank(message = "Поле не должно быть пустым!")
+    @Size(min = 1, max = 100)
     @Column(name = "model")
     protected String model;
 

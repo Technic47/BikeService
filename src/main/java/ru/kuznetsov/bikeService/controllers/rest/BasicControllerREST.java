@@ -33,18 +33,10 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     protected final S service;
     protected T thisClassNewObject;
     protected String category;
-//    protected WebClient pdfWebClient;
-//    public Connection connection;
 
     protected BasicControllerREST(S service) {
         this.service = service;
-//        this.setSubscription();
     }
-
-//    private void setSubscription() {
-//        Dispatcher dispatcher = connection.createDispatcher();
-//        dispatcher.subscribe(SUBSCRIBER_PDF);
-//    }
 
     public void setCurrentClass(Class<T> currentClass) {
         this.category = currentClass.getSimpleName().toLowerCase() + "s";
