@@ -9,7 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
@@ -29,7 +29,7 @@ import static ru.kuznetsov.bikeService.models.support.EntitySupportService.*;
 
 public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         S extends CommonAbstractEntityService<T>>
-        extends CommonEntityController {
+        extends AbstractEntityController {
     protected final S service;
     protected T thisClassNewObject;
     protected String category;

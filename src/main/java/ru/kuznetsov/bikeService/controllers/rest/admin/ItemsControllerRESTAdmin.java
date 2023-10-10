@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.servicable.Bike;
 import ru.kuznetsov.bikeService.models.servicable.Part;
@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping("/api/admin/items")
-public class ItemsControllerRESTAdmin extends CommonEntityController {
+public class ItemsControllerRESTAdmin extends AbstractEntityController {
     private final DocumentService documentService;
     private final FastenerService fastenerService;
     private final ConsumableService consumableService;

@@ -1,5 +1,7 @@
 package ru.kuznetsov.bikeService.services.abstracts;
 
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
 import ru.kuznetsov.bikeService.models.lists.PartEntity;
 import ru.kuznetsov.bikeService.repositories.abstracts.AbstractServiceableEntityRepository;
@@ -37,6 +39,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
      * @param item   item E where you want to add PartEntity.
      * @param entity entity to be added.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public E addToLinkedItems(E item, PartEntity entity) {
         Set<PartEntity> entitySet = item.getLinkedItems();
 
@@ -69,6 +72,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
      * @param item   item E where you want to delete PartEntity.
      * @param entity entity to be deleted.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public E delFromLinkedItems(E item, PartEntity entity) {
         Set<PartEntity> entitySet = item.getLinkedItems();
         Optional<PartEntity> searchItem = entitySet.stream()

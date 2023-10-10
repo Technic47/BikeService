@@ -7,7 +7,7 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 
 @Entity
 @Table(name = "consumables")
-public class Consumable extends AbstractUsableEntity {
+public final class Consumable extends AbstractUsableEntity {
     public Consumable() {
     }
 

@@ -2,6 +2,8 @@ package ru.kuznetsov.bikeService.services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsov.bikeService.models.dto.RegistrationRequestDto;
 import ru.kuznetsov.bikeService.models.lists.UserEntity;
 import ru.kuznetsov.bikeService.models.users.UserBuilder;
@@ -10,6 +12,7 @@ import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
 import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param userModel prepared user record
      * @return false if user already exists.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public boolean createUser(UserModel userModel) {
         return this.constructRecordAndSave(userModel, ROLE_USER) != null;
     }
@@ -45,6 +50,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      *
      * @param userModel prepared user record
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public void createAdmin(UserModel userModel) {
         this.constructRecordAndSave(userModel, ROLE_ADMIN);
     }
@@ -65,6 +72,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param user   user to add entity.
      * @param entity entity to add.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public void addCreatedItem(UserModel user, UserEntity entity) {
         user.getCreatedItems().add(entity);
         repository.save(user);
@@ -76,6 +85,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param user   user to remove entity.
      * @param entity entity to remove.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public void delCreatedItem(UserModel user, UserEntity entity) {
         user.getCreatedItems().remove(entity);
         repository.save(user);
@@ -118,6 +129,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      *
      * @param id id of user.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public void userToAdmin(Long id) {
         UserModel model = repository.findById(id).get();
         model.getAuthorities().add(ROLE_ADMIN);
@@ -129,6 +142,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      *
      * @param id id of user.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public void adminToUser(Long id) {
         UserModel model = repository.findById(id).get();
         model.getAuthorities().remove(ROLE_ADMIN);
@@ -146,6 +161,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param oldItem    userRecord for changing
      * @param updateItem object with new credentials
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public UserModel update(UserModel oldItem, UserModel updateItem) {
         String newName = updateItem.getUsername();
         if (!newName.isEmpty()) {
@@ -169,6 +186,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param userModel prepared user record.
      * @return false if user already exists.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public UserModel registerNewUserAccount(UserModel userModel) throws RuntimeException {
         if (emailExist(userModel.getEmail())) {
             throw new RuntimeException(
@@ -185,6 +204,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @return saved new UserModel record.
      * @throws RuntimeException if user exist.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public UserModel registerNewUserAccount(RegistrationRequestDto dto) throws RuntimeException {
         if (emailExist(dto.getEmail())) {
             throw new IllegalArgumentException(
@@ -205,6 +226,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
      * @param username username of user.
      * @param status   status to set.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public void setActive(String username, boolean status) {
         UserModel userModel = findByUsernameOrNull(username);
         userModel.setActive(status);
@@ -215,6 +238,8 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
     /**
      * sets all user`s active status to false.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     public void setNotActiveToAll() {
         repository.setNotActiveToAll();
     }

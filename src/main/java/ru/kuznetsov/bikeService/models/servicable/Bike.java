@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "bikes")
-public class Bike extends AbstractServiceableEntity {
+public final class Bike extends AbstractServiceableEntity {
     @ElementCollection(targetClass = PartEntity.class,
             fetch = FetchType.EAGER)
     @CollectionTable(name = "bike_part",

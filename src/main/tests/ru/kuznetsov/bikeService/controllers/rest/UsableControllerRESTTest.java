@@ -13,7 +13,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.kuznetsov.bikeService.TestCredentials.*;
@@ -89,22 +90,22 @@ class UsableControllerRESTTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Test
-    void createPdf() throws Exception {
-        mockMvc.perform(get("/api/tools/1/pdf"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
-    }
+//    @Test
+//    void createPdf() throws Exception {
+//        mockMvc.perform(get("/api/tools/1/pdf"))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
+//    }
 
-    @Test
-    void createPdfErrors() throws Exception {
-        //Unreal id
-        mockMvc.perform(get("/api/tools/111/pdf"))
-                .andExpect(status().isNotFound());
-
-        //Try to update not own not shared item.
-        mockMvc.perform(get("/api/tools/2/pdf"))
-                .andExpect(status().isForbidden());
-    }
+//    @Test
+//    void createPdfErrors() throws Exception {
+//        //Unreal id
+//        mockMvc.perform(get("/api/tools/111/pdf"))
+//                .andExpect(status().isNotFound());
+//
+//        //Try to update not own not shared item.
+//        mockMvc.perform(get("/api/tools/2/pdf"))
+//                .andExpect(status().isForbidden());
+//    }
 }

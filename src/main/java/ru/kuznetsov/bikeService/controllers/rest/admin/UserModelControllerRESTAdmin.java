@@ -4,14 +4,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/users")
-public class UserModelControllerRESTAdmin extends CommonEntityController {
+public class UserModelControllerRESTAdmin extends AbstractEntityController {
     @GetMapping
     public List<UserModel> index() {
      return userService.index();

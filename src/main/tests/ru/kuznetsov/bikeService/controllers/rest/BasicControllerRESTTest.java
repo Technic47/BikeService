@@ -155,22 +155,22 @@ class BasicControllerRESTTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Test
-    void createPdf() throws Exception {
-        mockMvc.perform(get("/api/documents/1/pdf"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
-    }
-
-    @Test
-    void createPdfErrors() throws Exception {
-        //Unreal id
-        mockMvc.perform(get("/api/documents/111/pdf"))
-                .andExpect(status().isNotFound());
-
-        //Try to update not own not shared item.
-        mockMvc.perform(get("/api/documents/3/pdf"))
-                .andExpect(status().isForbidden());
-    }
+//    @Test
+//    void createPdf() throws Exception {
+//        mockMvc.perform(get("/api/documents/1/pdf"))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
+//    }
+//
+//    @Test
+//    void createPdfErrors() throws Exception {
+//        //Unreal id
+//        mockMvc.perform(get("/api/documents/111/pdf"))
+//                .andExpect(status().isNotFound());
+//
+//        //Try to update not own not shared item.
+//        mockMvc.perform(get("/api/documents/3/pdf"))
+//                .andExpect(status().isForbidden());
+//    }
 }

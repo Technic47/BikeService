@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
@@ -31,6 +33,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +45,7 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 /**
  * Intermediate layer that includes common methods for REST and non-REST controllers.
  */
-public abstract class CommonEntityController extends AbstractController {
+public abstract class AbstractEntityController extends AbstractController {
     protected SearchService searchService;
     @Autowired
     private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfKafkaTemplate;
@@ -132,6 +135,7 @@ public abstract class CommonEntityController extends AbstractController {
      * @param <S>
      * @return updated entity.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     protected <T extends AbstractShowableEntity,
             S extends CommonAbstractEntityService<T>>
     T doCreateProcedure(final T item, final S service, MultipartFile file, Principal principal) {
@@ -158,6 +162,7 @@ public abstract class CommonEntityController extends AbstractController {
      * @param <S>
      * @return updated entity.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     protected <T extends AbstractShowableEntity,
             S extends CommonAbstractEntityService<T>>
     T doUpdateProcedure(final T newItem, final S service, final T oldItem, MultipartFile file, Principal principal) {
@@ -178,6 +183,7 @@ public abstract class CommonEntityController extends AbstractController {
      * @param <T>       AbstractShowableEntity from main models.
      * @param <S>
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     protected <T extends AbstractShowableEntity,
             S extends CommonAbstractEntityService<T>>
     void doDeleteProcedure(final T item, final S service, final Principal principal) {
@@ -345,6 +351,4 @@ public abstract class CommonEntityController extends AbstractController {
     private void setSearchService(SearchService searchService) {
         this.searchService = searchService;
     }
-
-
 }

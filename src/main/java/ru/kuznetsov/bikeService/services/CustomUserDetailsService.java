@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kuznetsov.bikeService.models.users.UserModel;
+
+import java.sql.SQLException;
 
 import static ru.kuznetsov.bikeService.config.SpringConfig.ADMIN_NAME;
 import static ru.kuznetsov.bikeService.config.SpringConfig.ADMIN_PASS;
@@ -47,6 +51,8 @@ public class CustomUserDetailsService implements UserDetailsService {
      * Creates built-in admin user and send it to DB.
      * Deletes admin credentials.
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED,
+            rollbackFor = {SQLException.class, RuntimeException.class})
     private void adminSave() {
         UserModel adminUser = new UserModel();
         adminUser.setUsername(ADMIN_NAME);

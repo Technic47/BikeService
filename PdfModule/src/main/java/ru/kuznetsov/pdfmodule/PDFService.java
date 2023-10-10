@@ -31,8 +31,6 @@ public class PDFService {
     private String userName;
     public final static Logger logger = LoggerFactory.getLogger("PDFServiceLogger");
 
-    public PDFService() {
-    }
 
     @PostConstruct
     void setUp() {
@@ -51,7 +49,6 @@ public class PDFService {
         BaseFont baseFont2 = BaseFont.createFont(string, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         this.bigFont = new Font(baseFont2, 16, Font.BOLD);
     }
-
 
     /**
      * Construct PDF document.
@@ -179,6 +176,34 @@ public class PDFService {
         this.manufacturer = "";
         this.model = "";
         this.serviceList = null;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public Map<String, String[]> getServiceList() {
+        return serviceList;
+    }
+
+    public String getFontPath() {
+        return fontPath;
+    }
+
+    public Font getCommonFont() {
+        return commonFont;
+    }
+
+    public Font getBigFont() {
+        return bigFont;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     @Autowired

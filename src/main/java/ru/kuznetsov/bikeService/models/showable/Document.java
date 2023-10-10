@@ -7,7 +7,7 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 
 @Entity
 @Table(name = "documents")
-public class Document extends AbstractShowableEntity {
+public final class Document extends AbstractShowableEntity {
     public Document() {
     }
 

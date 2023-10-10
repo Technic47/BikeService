@@ -8,7 +8,7 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 
 @Entity
 @Table(name = "fasteners")
-public class Fastener extends AbstractShowableEntity {
+public final class Fastener extends AbstractShowableEntity {
     public Fastener() {
     }
 

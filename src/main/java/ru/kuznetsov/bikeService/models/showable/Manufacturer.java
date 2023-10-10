@@ -7,7 +7,7 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 
 @Entity
 @Table(name = "manufacturers")
-public class Manufacturer extends AbstractShowableEntity {
+public final class Manufacturer extends AbstractShowableEntity {
     public Manufacturer() {
     }
 

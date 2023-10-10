@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.controllers.abstracts.CommonEntityController;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 @Component
 public abstract class BasicController<T extends AbstractShowableEntity,
         S extends CommonAbstractEntityService<T>>
-        extends CommonEntityController {
+        extends AbstractEntityController {
     protected final S service;
     protected T thisClassNewObject;
     protected String category;
@@ -220,18 +220,16 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
 
-        List<T> resultSet = null;
+        List<T> resultList = null;
         try {
-            resultSet = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+            resultList = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         Map<T, String> resultMap = new HashMap<>();
         Map<T, String> sharedIndexMap = new HashMap<>();
-        resultSet.forEach(object -> {
+        resultList.forEach(object -> {
             if (object.getCreator().equals(userId)) {
                 resultMap.put(object, pictureService.getById(object.getPicture()).getName());
             } else sharedIndexMap.put(object, pictureService.getById(object.getPicture()).getName());

@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class PartEntity {
+public final class PartEntity {
     @Column(name = "part_type")
     private String part_type;
     @Column(name = "type")

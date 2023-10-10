@@ -8,7 +8,7 @@ import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
 
 @Entity
 @Table(name = "tools")
-public class Tool extends AbstractUsableEntity {
+public final class Tool extends AbstractUsableEntity {
     public Tool() {
     }
 

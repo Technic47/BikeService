@@ -7,7 +7,7 @@ import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
 import java.util.Objects;
 
 @Embeddable
-public class UserEntity {
+public final class UserEntity {
     @Column(name = "type")
     private String type;
     @Column(name = "itemId")

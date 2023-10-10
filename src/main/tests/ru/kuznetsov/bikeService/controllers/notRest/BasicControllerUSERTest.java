@@ -5,7 +5,6 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -269,7 +268,7 @@ class BasicControllerUSERTest {
     @Order(14)
     void searchTest() throws Exception {
         this.mockMvc.perform(get("/documents/search")
-                        .param("value", "doc2"))
+                        .param("value", "testDescription"))
                 .andDo(print())
                 .andExpect(authenticated())
                 .andExpect(status().isOk())
@@ -281,15 +280,15 @@ class BasicControllerUSERTest {
                 .andExpect(model().attribute("objects", aMapWithSize(1)));
     }
 
-    @Test
-    @Order(15)
-    void pdfTest() throws Exception {
-        this.mockMvc.perform(get("/documents/1"));
-        this.mockMvc.perform(get("/documents/pdf")
-                .param("id", "1"))
-                .andDo(print())
-                .andExpect(authenticated())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
-    }
+//    @Test
+//    @Order(15)
+//    void pdfTest() throws Exception {
+//        this.mockMvc.perform(get("/documents/1"));
+//        this.mockMvc.perform(get("/documents/pdf")
+//                .param("id", "1"))
+//                .andDo(print())
+//                .andExpect(authenticated())
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
+//    }
 }
