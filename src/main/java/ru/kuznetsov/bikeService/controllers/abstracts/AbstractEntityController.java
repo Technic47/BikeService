@@ -150,6 +150,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param item      entity with new information.
      * @param file      Multipart file with picture.
      * @param principal principal who is updating.
+     * @param category  category of entities.
      * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @return updated entity.
      */
@@ -182,21 +183,33 @@ public abstract class AbstractEntityController extends AbstractController {
      * Main procedure for updating entity.
      *
      * @param newItem   entity with new information.
-     * @param service   connected to entity service.
+     * @param category  category of entities.
      * @param oldItem   entity to apply new information.
      * @param file      Multipart file with picture.
      * @param principal principal who is updating.
      * @param <T>       AbstractShowableEntity from main mainResources.models.
-     * @param <S>
      * @return updated entity.
      */
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>>
-    T doUpdateProcedure(final T newItem, final S service, final T oldItem, MultipartFile file, Principal principal) {
-        this.checkImageFile(file, newItem);
-        T updated = service.update(oldItem, newItem);
+    protected <T extends AbstractShowableEntity>
+    T doUpdateProcedure(final T newItem, String category, final T oldItem, MultipartFile file, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
+
+        EntityKafkaTransfer body = new EntityKafkaTransfer(newItem, category);
+        body.setId(oldItem.getId());
+        this.checkImageFile(file, body);
+        ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>("updateItem", body);
+        RequestReplyFuture<String, EntityKafkaTransfer, AbstractShowableEntity> reply = creatorTemlate.sendAndReceive(record);
+
+        T updated;
+        try {
+            updated = (T) reply.get().value();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+//        T updated = service.update(oldItem, newItem);
+
         logger.info(newItem.getClass()
                 .getSimpleName() + " id:" + oldItem.getId() + " was edited by '" + userModel.getUsername() + "'");
         return updated;

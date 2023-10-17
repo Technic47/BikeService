@@ -131,7 +131,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
 
     public T update(T newItem, MultipartFile file, T oldItem, Principal principal) {
         if (checkAccessToItem(oldItem, principal)) {
-            return this.doUpdateProcedure(newItem, service, oldItem, file, principal);
+            return this.doUpdateProcedure(newItem, category, oldItem, file, principal);
         } else throw new AccessToResourceDenied(oldItem.getId());
     }
 

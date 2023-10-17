@@ -137,7 +137,8 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @Operation(hidden = true)
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
-        T item = service.getById(id);
+        T item = this.doShowProcedure(category, id, principal);
+//        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         } else
@@ -162,7 +163,8 @@ public abstract class BasicController<T extends AbstractShowableEntity,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model, Principal principal) {
-        T item = service.getById(id);
+        T item = this.doShowProcedure(category, id, principal);
+//        T item = service.getById(id);
         return this.update(newItem, bindingResult, file, item, model, principal);
     }
 
@@ -176,7 +178,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
                 return "edit";
             }
 
-            this.doUpdateProcedure(newItem, service, oldItem, file, principal);
+            this.doUpdateProcedure(newItem, category, oldItem, file, principal);
 
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + oldItem.getId();
