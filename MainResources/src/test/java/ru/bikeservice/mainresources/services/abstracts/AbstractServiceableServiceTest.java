@@ -3,9 +3,7 @@ package ru.bikeservice.mainresources.services.abstracts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.servicable.Part;
 import ru.bikeservice.mainresources.repositories.modelRepositories.PartRepository;
@@ -18,9 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.bikeservice.mainresources.TestCredentials.*;
 
-@SpringBootTest
-@TestPropertySource("/application-test.properties")
-class AbstractServiceableServiceTest {
+class AbstractServiceableServiceTest extends AbstractServiceTests {
     private PartService partService;
     @MockBean
     private PartRepository repository;

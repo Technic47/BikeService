@@ -3,9 +3,7 @@ package ru.bikeservice.mainresources.services.abstracts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.bikeservice.mainresources.repositories.modelRepositories.ToolRepository;
 import ru.bikeservice.mainresources.services.modelServices.ToolService;
@@ -16,9 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static ru.bikeservice.mainresources.TestCredentials.*;
 
-@SpringBootTest
-@TestPropertySource("/application-test.properties")
-class AbstractUsableServiceTest {
+
+class AbstractUsableServiceTest extends AbstractServiceTests {
     private ToolService toolService;
     @MockBean
     private ToolRepository repository;

@@ -10,10 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
 import java.security.Principal;

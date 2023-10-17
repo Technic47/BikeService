@@ -13,21 +13,21 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
-import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
-import ru.kuznetsov.bikeService.models.lists.PartEntity;
-import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.lists.UserEntity;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
-import ru.kuznetsov.bikeService.models.servicable.Bike;
-import ru.kuznetsov.bikeService.models.servicable.Part;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.models.showable.Showable;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.SearchService;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
+import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
+import ru.bikeservice.mainresources.models.dto.PdfEntityDto;
+import ru.bikeservice.mainresources.models.lists.PartEntity;
+import ru.bikeservice.mainresources.models.lists.ServiceList;
+import ru.bikeservice.mainresources.models.lists.UserEntity;
+import ru.bikeservice.mainresources.models.pictures.Picture;
+import ru.bikeservice.mainresources.models.servicable.Bike;
+import ru.bikeservice.mainresources.models.servicable.Part;
+import ru.bikeservice.mainresources.models.showable.Manufacturer;
+import ru.bikeservice.mainresources.models.showable.Showable;
+import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.bikeservice.mainresources.services.SearchService;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,8 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
-import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
+import static ru.bikeservice.mainresources.models.users.UserRole.ROLE_ADMIN;
+import static ru.bikeservice.mainresources.models.users.UserRole.ROLE_USER;
 
 /**
  * Intermediate layer that includes common methods for REST and non-REST controllers.
@@ -58,7 +58,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param userModel user for whom List is being created.
      * @param category  category of entities for logging.
      * @param shared    flag for including shared entities.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @param <S>
      * @return formed List.
      */
@@ -89,7 +89,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param model   Model object where to put formed Maps.
      * @param userId  Id of user. User to for creation check in filtering results.
      * @param objects List of objects.
-     * @param <T>     AbstractShowableEntity from main models.
+     * @param <T>     AbstractShowableEntity from main mainResources.models.
      */
     protected <T extends AbstractShowableEntity> void addIndexMapsToModel(
             Model model, Long userId, List<T> objects) {
@@ -111,7 +111,7 @@ public abstract class AbstractEntityController extends AbstractController {
      *
      * @param item      entity with new information.
      * @param principal principal to whom entity is shown.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @param <S>
      * @return entity.
      */
@@ -131,7 +131,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param service   connected to entity service.
      * @param file      Multipart file with picture.
      * @param principal principal who is updating.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @param <S>
      * @return updated entity.
      */
@@ -158,7 +158,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param oldItem   entity to apply new information.
      * @param file      Multipart file with picture.
      * @param principal principal who is updating.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @param <S>
      * @return updated entity.
      */
@@ -180,7 +180,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param item      entity for deleting.
      * @param service   connected to entity service.
      * @param principal principal who is trying to delete the item.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @param <S>
      */
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
@@ -202,7 +202,7 @@ public abstract class AbstractEntityController extends AbstractController {
      *
      * @param item      entity to delete.
      * @param userModel creator of entity.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param <T>       AbstractShowableEntity from main mainResources.models.
      */
     private <T extends AbstractShowableEntity> void cleanUpAfterDelete(
             T item, UserModel userModel) {
@@ -230,7 +230,7 @@ public abstract class AbstractEntityController extends AbstractController {
      *
      * @param item      secured entity.
      * @param principal Principal to check.
-     * @param <T>       AbstractShowableEntity from main models.
+     * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @return access boolean.
      */
     protected <T extends AbstractShowableEntity> boolean checkAccessToItem(T item, Principal principal) {
@@ -304,7 +304,7 @@ public abstract class AbstractEntityController extends AbstractController {
      *
      * @param file file to check.
      * @param item entity to set picture.
-     * @param <T>  AbstractShowableEntity from main models.
+     * @param <T>  AbstractShowableEntity from main mainResources.models.
      */
     protected <T extends AbstractShowableEntity> void checkImageFile(MultipartFile file, T item) {
         if (file != null) {

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kuznetsov.bikeService.models.dto.CalcDataDto;
-import ru.kuznetsov.bikeService.services.SpokeCalcService;
+import ru.bikeservice.mainresources.models.dto.CalcDataDto;
+import ru.bikeservice.mainresources.services.SpokeCalcService;
 
 @RestController
 @RequestMapping("/api/spokeCalc")

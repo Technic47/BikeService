@@ -10,21 +10,20 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
-import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
+import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
+import ru.bikeservice.mainresources.models.pictures.Picture;
+import ru.bikeservice.mainresources.models.showable.Manufacturer;
+import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.bikeservice.mainresources.services.PictureService;
+import ru.bikeservice.mainresources.services.modelServices.ManufacturerService;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
-import ru.kuznetsov.bikeService.models.pictures.Picture;
-import ru.kuznetsov.bikeService.models.showable.Manufacturer;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.PictureService;
-import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
-import ru.kuznetsov.bikeService.services.modelServices.ManufacturerService;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
-import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
+import static ru.bikeservice.mainresources.controllers.abstracts.AbstractController.logger;
 
 @Component
 public class ApplicationEventsListener {

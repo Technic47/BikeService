@@ -7,13 +7,23 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import ru.kuznetsov.bikeService.models.lists.UserEntity;
+import ru.bikeservice.mainresources.models.lists.UserEntity;
 
 import java.util.*;
 
 @Entity
 @Table(name = "users")
 public class UserModel implements UserDetails, OAuth2User {
+    @Transient
+    private final Map<String, Object> attributes;
+    @Column(name = "created")
+    @CreatedDate
+    protected Date created;
+    @Column(name = "updated")
+    @LastModifiedDate
+    protected Date updated;
+    @Column(name = "lastLogIn")
+    protected Date lastLogIn;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,42 +32,22 @@ public class UserModel implements UserDetails, OAuth2User {
     @NotBlank(message = "Поле не должно быть пустым!")
     @Size(min = 1, max = 255)
     private String username;
-
     @Column(name = "email", unique = true)
     @NotBlank(message = "Поле не должно быть пустым!")
     @Size(min = 1, max = 255)
     private String email;
     @Column(name = "active")
     private boolean active;
-
     @Column(name = "enabled")
     private boolean enabled;
-
-    @Transient
-    private final Map<String, Object> attributes;
-
     @ElementCollection(targetClass = UserEntity.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_item",
             joinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> createdItems = new ArrayList<>();
-
     @Column(name = "password", length = 1000)
     private String password;
-
     @Enumerated(EnumType.STRING)
     private Provider provider;
-
-    @Column(name = "created")
-    @CreatedDate
-    protected Date created;
-
-    @Column(name = "updated")
-    @LastModifiedDate
-    protected Date updated;
-
-    @Column(name = "lastLogIn")
-    protected Date lastLogIn;
-
     @Column(name = "status")
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
@@ -104,14 +94,6 @@ public class UserModel implements UserDetails, OAuth2User {
         this.username = name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -145,12 +127,12 @@ public class UserModel implements UserDetails, OAuth2User {
         this.password = password;
     }
 
-    public void setProvider(Provider provider) {
-        this.provider = provider;
-    }
-
     public Provider getProvider() {
         return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 
     @Override
@@ -178,6 +160,10 @@ public class UserModel implements UserDetails, OAuth2User {
         return enabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String getName() {
         return this.username;
@@ -185,6 +171,10 @@ public class UserModel implements UserDetails, OAuth2User {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getCreated() {

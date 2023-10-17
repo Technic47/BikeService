@@ -1,7 +1,7 @@
 package ru.kuznetsov.bikeService.models.events;
 
 import org.springframework.context.ApplicationEvent;
-import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.kuznetsov.bikeService.utils.ByteUtils;
 
 import java.util.HashMap;

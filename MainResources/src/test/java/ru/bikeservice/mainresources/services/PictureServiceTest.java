@@ -3,14 +3,13 @@ package ru.bikeservice.mainresources.services;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
 import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.repositories.PictureRepository;
+import ru.bikeservice.mainresources.services.abstracts.AbstractServiceTests;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -29,10 +28,8 @@ import static ru.bikeservice.mainresources.TestCredentials.*;
 import static ru.bikeservice.mainresources.config.Config.UPLOAD_PATH;
 
 
-@SpringBootTest
-@TestPropertySource("/application-test.properties")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PictureServiceTest {
+public class PictureServiceTest extends AbstractServiceTests {
     public static final String PATH_WIDE_FILE = "src/test/testresources/testImage.jpg";
     private static final String PATH_TALL_FILE = "src/test/testresources/testImage2.jpg";
     private PictureService pictureService;

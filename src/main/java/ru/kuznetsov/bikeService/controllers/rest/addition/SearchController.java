@@ -4,18 +4,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.SearchService;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
+import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.bikeservice.mainresources.services.SearchService;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static ru.kuznetsov.bikeService.models.support.EntitySupportService.convertListToDto;
-import static ru.kuznetsov.bikeService.models.support.EntitySupportService.sortBasic;
+import static ru.bikeservice.mainresources.models.support.EntitySupportService.convertListToDto;
+import static ru.bikeservice.mainresources.models.support.EntitySupportService.sortBasic;
 
 @RestController
 @RequestMapping("/api/search")

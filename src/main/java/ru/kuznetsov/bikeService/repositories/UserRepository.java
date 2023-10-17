@@ -3,8 +3,8 @@ package ru.kuznetsov.bikeService.repositories;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.bikeservice.mainresources.repositories.abstracts.CommonRepository;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.repositories.abstracts.CommonRepository;
 
 import java.util.List;
 

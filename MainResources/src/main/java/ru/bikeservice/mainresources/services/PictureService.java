@@ -4,7 +4,7 @@ import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.bikeservice.mainresources.controllers.abstracts.AbstractController;
+import ru.bikeservice.mainresources.controllers.abstracts.KafkaController;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
 import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.repositories.PictureRepository;
@@ -140,7 +140,7 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
             previewFile.delete();
             repository.deleteById(id);
         } else {
-            AbstractController.logger.warn("Picture with id = " + id + " not found. Can`t delete!");
+            KafkaController.logger.warn("Picture with id = " + id + " not found. Can`t delete!");
             throw new ResourceNotFoundException(id);
         }
     }

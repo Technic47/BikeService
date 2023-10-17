@@ -8,10 +8,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import ru.bikeservice.mainresources.services.PictureService;
+import ru.bikeservice.mainresources.services.modelServices.*;
 import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
-import ru.kuznetsov.bikeService.services.modelServices.*;
 
 import java.security.Principal;
 import java.util.concurrent.ExecutorService;

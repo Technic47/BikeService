@@ -1,9 +1,8 @@
 package ru.kuznetsov.bikeService.controllers;
 
 import org.springframework.stereotype.Component;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
-import ru.kuznetsov.bikeService.models.lists.PartEntity;
-import ru.kuznetsov.bikeService.models.lists.ServiceList;
+import ru.bikeservice.mainresources.models.lists.PartEntity;
+import ru.bikeservice.mainresources.models.lists.ServiceList;
 
 import java.util.Set;
 

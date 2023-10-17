@@ -13,7 +13,7 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.kuznetsov.bikeService.models.dto.PdfEntityDto;
+import ru.bikeservice.mainresources.models.dto.PdfEntityDto;
 
 import java.util.HashMap;
 import java.util.Map;

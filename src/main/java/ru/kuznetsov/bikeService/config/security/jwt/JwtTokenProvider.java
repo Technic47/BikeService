@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import ru.kuznetsov.bikeService.models.users.UserRole;
+import ru.bikeservice.mainresources.models.users.UserRole;
 
 import java.util.*;
 

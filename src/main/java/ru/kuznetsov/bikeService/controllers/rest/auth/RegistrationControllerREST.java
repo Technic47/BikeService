@@ -4,13 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
-import ru.kuznetsov.bikeService.models.dto.RegistrationRequestDto;
-import ru.kuznetsov.bikeService.models.dto.UserDto;
+import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
-import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
 @RestController

@@ -1,7 +1,7 @@
 package ru.kuznetsov.bikeService.models.security;
 
 import jakarta.persistence.*;
-import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.bikeservice.mainresources.models.users.UserModel;
 
 import java.sql.Timestamp;
 import java.util.Calendar;

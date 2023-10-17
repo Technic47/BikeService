@@ -4,13 +4,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kuznetsov.bikeService.models.dto.RegistrationRequestDto;
-import ru.kuznetsov.bikeService.models.lists.UserEntity;
+import ru.bikeservice.mainresources.models.lists.UserEntity;
+import ru.bikeservice.mainresources.services.abstracts.AbstractService;
+import ru.kuznetsov.bikeService.models.RegistrationRequestDto;
 import ru.kuznetsov.bikeService.models.users.UserBuilder;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.models.users.UserRole;
 import ru.kuznetsov.bikeService.repositories.UserRepository;
-import ru.kuznetsov.bikeService.services.abstracts.AbstractService;
 
 import java.sql.SQLException;
 import java.util.Date;

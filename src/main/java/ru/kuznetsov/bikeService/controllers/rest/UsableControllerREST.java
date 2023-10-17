@@ -6,17 +6,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
-import ru.kuznetsov.bikeService.models.support.EntitySupportService;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
+import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
+import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
+import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
+import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.support.EntitySupportService;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.models.support.EntitySupportService.convertFromDTO;
-import static ru.kuznetsov.bikeService.models.support.EntitySupportService.createDtoFrom;
+import static ru.bikeservice.mainresources.models.support.EntitySupportService.convertFromDTO;
+import static ru.bikeservice.mainresources.models.support.EntitySupportService.createDtoFrom;
 
 public abstract class UsableControllerREST<T extends AbstractUsableEntity,
         S extends CommonAbstractEntityService<T>>

@@ -9,14 +9,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
-import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractShowableEntity;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDtoNew;
-import ru.kuznetsov.bikeService.models.support.EntitySupportService;
-import ru.kuznetsov.bikeService.models.users.UserModel;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
+import ru.bikeservice.mainresources.customExceptions.AccessToResourceDenied;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
+import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.support.EntitySupportService;
+import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static ru.kuznetsov.bikeService.models.support.EntitySupportService.*;
+import static ru.bikeservice.mainresources.models.support.EntitySupportService.*;
 
 
 public abstract class BasicControllerREST<T extends AbstractShowableEntity,

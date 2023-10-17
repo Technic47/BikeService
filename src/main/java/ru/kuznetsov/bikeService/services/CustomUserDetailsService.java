@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.bikeservice.mainresources.models.users.UserModel;
 
 import java.sql.SQLException;
 
@@ -53,7 +53,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED,
             rollbackFor = {SQLException.class, RuntimeException.class})
-    private void adminSave() {
+    void adminSave() {
         UserModel adminUser = new UserModel();
         adminUser.setUsername(ADMIN_NAME);
         adminUser.setEmail(ADMIN_NAME);

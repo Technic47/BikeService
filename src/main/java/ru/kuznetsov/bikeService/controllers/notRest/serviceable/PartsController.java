@@ -3,9 +3,9 @@ package ru.kuznetsov.bikeService.controllers.notRest.serviceable;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.bikeservice.mainresources.models.servicable.Part;
+import ru.bikeservice.mainresources.services.modelServices.PartService;
 import ru.kuznetsov.bikeService.controllers.notRest.ServiceableController;
-import ru.kuznetsov.bikeService.models.servicable.Part;
-import ru.kuznetsov.bikeService.services.modelServices.PartService;
 
 @Hidden
 @Controller

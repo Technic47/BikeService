@@ -9,18 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.bikeservice.mainresources.customExceptions.AccessToResourceDenied;
+import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
+import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
+import ru.bikeservice.mainresources.models.lists.PartEntity;
+import ru.bikeservice.mainresources.models.lists.ServiceList;
+import ru.bikeservice.mainresources.models.showable.Showable;
+import ru.bikeservice.mainresources.services.abstracts.CommonServiceableEntityService;
 import ru.kuznetsov.bikeService.controllers.ServiceListController;
-import ru.kuznetsov.bikeService.customExceptions.AccessToResourceDenied;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractServiceableEntity;
-import ru.kuznetsov.bikeService.models.dto.AbstractEntityDto;
-import ru.kuznetsov.bikeService.models.lists.PartEntity;
-import ru.kuznetsov.bikeService.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.models.showable.Showable;
-import ru.kuznetsov.bikeService.services.abstracts.CommonServiceableEntityService;
 
 import java.security.Principal;
 
-import static ru.kuznetsov.bikeService.models.support.EntitySupportService.createDtoFrom;
+import static ru.bikeservice.mainresources.models.support.EntitySupportService.createDtoFrom;
 
 public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity,
         S extends CommonServiceableEntityService<T>>

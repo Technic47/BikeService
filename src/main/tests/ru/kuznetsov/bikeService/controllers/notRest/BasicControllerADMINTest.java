@@ -9,8 +9,8 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.kuznetsov.bikeService.models.showable.Document;
-import ru.kuznetsov.bikeService.services.modelServices.DocumentService;
+import ru.bikeservice.mainresources.models.showable.Document;
+import ru.bikeservice.mainresources.services.modelServices.DocumentService;
 
 import static org.hamcrest.Matchers.aMapWithSize;
 import static org.hamcrest.Matchers.containsString;
@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.kuznetsov.bikeService.TestCredentials.TEST_DOCUMENT;
-import static ru.kuznetsov.bikeService.TestCredentials.getDefaultMultipartFile;
+import static ru.kuznetsov.bikeService.controllers.TestCredentials.TEST_DOCUMENT;
+import static ru.kuznetsov.bikeService.controllers.TestCredentials.getDefaultMultipartFile;
 
 @SpringBootTest
 @AutoConfigureMockMvc

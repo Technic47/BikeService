@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.kuznetsov.bikeService.models.abstracts.AbstractUsableEntity;
-import ru.kuznetsov.bikeService.services.abstracts.CommonAbstractEntityService;
+import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
 import java.security.Principal;
