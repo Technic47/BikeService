@@ -21,15 +21,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainResourcesKafkaConfig extends KafkaConfig{
-    private String replyMainResourses;
+public class MainResourcesKafkaConfig extends KafkaConfig {
+    private String replyMainResources;
+
     @Bean
     public ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>>
     mainResourcesReplyingKafkaTemplate(
             ProducerFactory<String, ShowableGetter> pf,
             ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory) {
         ConcurrentMessageListenerContainer<String, List<AbstractShowableEntity>> replyContainer =
-                factory.createContainer(replyMainResourses);
+                factory.createContainer(replyMainResources);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
         return new ReplyingKafkaTemplate<>(pf, replyContainer);

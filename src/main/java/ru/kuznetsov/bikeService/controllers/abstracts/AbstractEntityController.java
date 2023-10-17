@@ -64,8 +64,6 @@ public abstract class AbstractEntityController extends AbstractController {
      */
     protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(UserModel userModel, String category, boolean shared) {
         List<T> objects = null;
-
-
         try {
             if (userModel.getAuthorities().contains(ROLE_USER)) {
                 ShowableGetter body = new ShowableGetter(category, userModel.getId(), userModel.getAuthorities(), shared);

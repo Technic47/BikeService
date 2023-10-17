@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL) //Hide null fields
 public class AbstractEntityDtoNew {
+    private String category;
     private String name;
     private String description;
     private Long picture;
@@ -15,6 +16,14 @@ public class AbstractEntityDtoNew {
     private boolean shared;
     private Long manufacturer;
     private String model;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getName() {
         return name;

@@ -4,10 +4,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
@@ -17,15 +14,7 @@ import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 import java.util.HashMap;
 import java.util.Map;
 
-@EnableKafka
-@Configuration
-public class KafkaServiceConfig {
-    @Value(value = "${spring.kafka.bootstrap-servers}")
-    private String bootstrapAddress;
-    @Value("${kafka.group.id}")
-    private String kafkaGroupId;
-
-
+public class KafkaServiceConfig extends KafkaConfig {
     @Bean
     public ProducerFactory<String, Object> multiTypeProducerFactory() {
         Map<String, Object> producerProps = new HashMap<>();
@@ -74,6 +63,7 @@ public class KafkaServiceConfig {
         ConcurrentKafkaListenerContainerFactory<String, ShowableGetter> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        factory.setBatchListener(false);
         return factory;
     }
 }

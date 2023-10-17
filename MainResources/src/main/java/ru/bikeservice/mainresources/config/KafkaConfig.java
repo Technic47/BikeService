@@ -21,9 +21,9 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
-    private String bootstrapAddress;
+    protected String bootstrapAddress;
     @Value("${kafka.group.id}")
-    private String kafkaGroupId;
+    protected String kafkaGroupId;
     @Value("${kafka.reply.topic.pdf}")
     private String replyTopicPdf;
     @Value("${kafka.reply.topic.spokeCalc}")

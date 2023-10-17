@@ -1,4 +1,4 @@
-package ru.bikeservice.mainresources.services;
+package ru.kuznetsov.bikeService.services;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
