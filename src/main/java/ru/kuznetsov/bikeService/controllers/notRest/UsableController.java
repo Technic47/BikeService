@@ -27,7 +27,7 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        T item = service.getById(id);
+        T item = this.doShowProcedure(category, id, principal);
         if (item == null) {
             return "redirect:/" + category;
         }

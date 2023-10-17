@@ -66,7 +66,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        } else objects = doIndexProcedure(service, userModel, category, shared);
+        } else objects = doIndexProcedure(userModel, category, shared);
 
         List<T> sortedList = sortBasic(objects, sort);
 
@@ -101,14 +101,9 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                     content = @Content)})
     @GetMapping("/{id}")
     public AbstractEntityDto show(@PathVariable("id") Long id, Principal principal) {
-        T item = service.getById(id);
-        T show = this.show(item, principal);
-        return createDtoFrom(show);
-    }
-
-    T show(T item, Principal principal) {
+        T item = this.doShowProcedure(category, id, principal);
         if (checkAccessToItem(item, principal)) {
-            return this.doShowProcedure(item, principal);
+            return createDtoFrom(item);
         } else throw new AccessToResourceDenied(item.getId());
     }
 

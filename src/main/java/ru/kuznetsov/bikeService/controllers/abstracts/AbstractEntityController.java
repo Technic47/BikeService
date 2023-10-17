@@ -27,6 +27,7 @@ import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.services.SearchService;
 import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
+import ru.kuznetsov.bikeService.models.ShowableGetter;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
@@ -49,36 +51,43 @@ public abstract class AbstractEntityController extends AbstractController {
     protected SearchService searchService;
     @Autowired
     private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfKafkaTemplate;
-
+    protected ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
 
     /**
      * Creates List of entities depending on userModel role and shared flag.
      *
-     * @param service   service for entities.
      * @param userModel user for whom List is being created.
      * @param category  category of entities for logging.
      * @param shared    flag for including shared entities.
      * @param <T>       AbstractShowableEntity from main mainResources.models.
-     * @param <S>
      * @return formed List.
      */
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> List<T> doIndexProcedure(
-            final S service, UserModel userModel, String category, boolean shared) {
+    protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(UserModel userModel, String category, boolean shared) {
         List<T> objects = null;
 
-        if (userModel.getAuthorities().contains(ROLE_USER)) {
-            if (shared) {
-                objects = service.findByCreatorOrShared(userModel.getId());
-                logger.info("Personal and shared " + category + " are shown to '" + userModel.getUsername() + "'");
-            } else {
-                objects = service.findByCreator(userModel.getId());
-                logger.info("Personal " + category + " are shown to '" + userModel.getUsername() + "'");
+
+        try {
+            if (userModel.getAuthorities().contains(ROLE_USER)) {
+                ShowableGetter body = new ShowableGetter(category, userModel.getId(), userModel.getAuthorities(), shared);
+                ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
+                RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
+
+                objects = (List<T>) reply.get().value();
+                if (shared) {
+//                    objects = service.findByCreatorOrShared(userModel.getId());
+                    logger.info("Personal and shared " + category + " are shown to '" + userModel.getUsername() + "'");
+                } else {
+//                    objects = service.findByCreator(userModel.getId());
+                    logger.info("Personal " + category + " are shown to '" + userModel.getUsername() + "'");
+                }
             }
-        }
-        if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
-            objects = service.index();
-            logger.info("All " + category + " are shown to '" + userModel.getUsername() + "'");
+            if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
+
+//                objects = service.index();
+                logger.info("All " + category + " are shown to '" + userModel.getUsername() + "'");
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
         return objects;
     }
@@ -109,16 +118,26 @@ public abstract class AbstractEntityController extends AbstractController {
     /**
      * Main procedure for showing entity.
      *
-     * @param item      entity with new information.
+     * @param category  category of entities.
+     * @param id        id of entity.
      * @param principal principal to whom entity is shown.
-     * @param <T>       AbstractShowableEntity from main mainResources.models.
-     * @param <S>
+     * @param <T>       AbstractShowableEntity from main models.
      * @return entity.
      */
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>> T doShowProcedure(
-            final T item, Principal principal
+    protected <T extends AbstractShowableEntity> T doShowProcedure(
+            final String category, Long id, Principal principal
     ) {
+        ShowableGetter body = new ShowableGetter(category, id);
+        ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
+        RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
+
+        T item;
+        try {
+            item = (T) reply.get().value().get(0);
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
         logger.info(item.getClass()
                 .getSimpleName() + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
         return item;
@@ -320,7 +339,8 @@ public abstract class AbstractEntityController extends AbstractController {
 
     protected ResponseEntity<Resource> preparePDF(PdfEntityDto body) {
         ProducerRecord<String, PdfEntityDto> record = new ProducerRecord<>("pdf", body);
-        RequestReplyFuture<String, PdfEntityDto, byte[]> reply = pdfKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, PdfEntityDto, byte[]> reply = pdfKafkaTemplate
+                .sendAndReceive(record);
 
         try {
             ByteArrayResource resource = new ByteArrayResource(reply.get().value());

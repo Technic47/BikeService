@@ -14,22 +14,21 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.bikeservice.mainresources.models.showable.Showable;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.kuznetsov.bikeService.models.ShowableGetter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainResourcesKafkaConfig extends KafkaConfig {
+public class MainResourcesKafkaConfig extends KafkaConfig{
     private String replyMainResourses;
-
     @Bean
-    public ReplyingKafkaTemplate<String, ShowableGetter, List<Showable>>
+    public ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>>
     mainResourcesReplyingKafkaTemplate(
             ProducerFactory<String, ShowableGetter> pf,
-            ConcurrentKafkaListenerContainerFactory<String, List<Showable>> factory) {
-        ConcurrentMessageListenerContainer<String, List<Showable>> replyContainer =
+            ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory) {
+        ConcurrentMessageListenerContainer<String, List<AbstractShowableEntity>> replyContainer =
                 factory.createContainer(replyMainResourses);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
@@ -46,16 +45,16 @@ public class MainResourcesKafkaConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, List<Showable>>
+    public ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>>
     mainResourcesKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, List<Showable>> factory =
+        ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(mainResourcesConsumerFactory());
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, List<Showable>> mainResourcesConsumerFactory() {
+    public ConsumerFactory<String, List<AbstractShowableEntity>> mainResourcesConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);

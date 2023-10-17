@@ -5,17 +5,14 @@ import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
-import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
-import ru.kuznetsov.bikeService.models.ShowableGetter;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.IOException;
@@ -29,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Abstract non-REST controller that provides general methods and mapping for AbstractShowableEntity models.
+ *
  * @param <T> entities from AbstractShowableEntity.
  * @param <S>
  */
@@ -40,13 +38,10 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     protected T thisClassNewObject;
     protected String category;
 
-    private final ReplyingKafkaTemplate<String, ShowableGetter, List<Showable>> spokeCalcKafkaTemplate;
-
 
     public BasicController(S service) {
         this.service = service;
     }
-
 
     public void setCurrentClass(Class<T> currentClass) {
         this.category = currentClass.getSimpleName().toLowerCase() + "s";
@@ -63,7 +58,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
-        List<T> objects = this.doIndexProcedure(service, userModel, category, true);
+        List<T> objects = this.doIndexProcedure(userModel, category, true);
 
         this.addIndexMapsToModel(model, userId, objects);
         model.addAttribute("sharedCheck", true);
@@ -75,21 +70,21 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
                        Model model, Principal principal) {
-        T item = service.getById(id);
-        if (item == null) {
-            return "redirect:/" + category;
-        } else {
-            return this.show(item, model, principal, category);
-        }
+        T item = this.doShowProcedure(category, id, principal);
+        return this.show(item, model, principal, category);
     }
 
     String show(T item, Model model, Principal principal, String category) {
-        boolean access = checkAccessToItem(item, principal);
-        this.addItemAttributesShow(model, item, principal);
-        model.addAttribute("picture", pictureService.getById(item.getPicture()).getName());
-        model.addAttribute("access", access);
-        this.doShowProcedure(item, principal);
-        return "show";
+        if (item == null) {
+            return "redirect:/" + category;
+        } else {
+            boolean access = checkAccessToItem(item, principal);
+            this.addItemAttributesShow(model, item, principal);
+            model.addAttribute("picture", pictureService.getById(item.getPicture()).getName());
+            model.addAttribute("access", access);
+
+            return "show";
+        }
     }
 
     @Operation(hidden = true)
