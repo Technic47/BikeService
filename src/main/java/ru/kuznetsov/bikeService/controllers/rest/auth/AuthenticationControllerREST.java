@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bikeservice.mainresources.models.dto.AuthenticationRequestDto;
-import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.kuznetsov.bikeService.config.security.jwt.JwtTokenProvider;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
 
 import java.util.HashMap;

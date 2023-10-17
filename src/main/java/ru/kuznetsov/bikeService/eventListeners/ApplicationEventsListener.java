@@ -13,17 +13,18 @@ import org.springframework.stereotype.Component;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
 import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
-import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.bikeservice.mainresources.services.PictureService;
 import ru.bikeservice.mainresources.services.modelServices.ManufacturerService;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
+import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
-import static ru.bikeservice.mainresources.controllers.abstracts.AbstractController.logger;
+import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
 
 @Component
 public class ApplicationEventsListener {
@@ -98,9 +99,7 @@ public class ApplicationEventsListener {
     //Resending verification email.
     @EventListener(ResentTokenEvent.class)
     public void resentToken(ResentTokenEvent event) {
-        Runnable emailSend = () -> {
-            emailTemplate.send("emailResend", event.getBytes());
-        };
+        Runnable emailSend = () -> emailTemplate.send("emailResend", event.getBytes());
         mainExecutor.submit(emailSend);
     }
 
@@ -120,7 +119,7 @@ public class ApplicationEventsListener {
 
     //LogOut tracking
     @EventListener(LogoutSuccessEvent.class)
-    public void logOutEvent(LogoutSuccessEvent event){
+    public void logOutEvent(LogoutSuccessEvent event) {
         String userName = event.getAuthentication().getName();
         logger.info("User " + userName + " is logged out.");
         userService.setActive(userName, false);

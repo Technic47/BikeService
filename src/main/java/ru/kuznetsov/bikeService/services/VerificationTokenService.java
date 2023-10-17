@@ -6,9 +6,9 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.bikeservice.mainresources.services.abstracts.AbstractService;
 import ru.kuznetsov.bikeService.models.security.VerificationToken;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.repositories.VerificationTokenRepository;
 
 import java.sql.SQLException;

@@ -5,15 +5,18 @@ import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
-import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
+import ru.kuznetsov.bikeService.models.ShowableGetter;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -36,6 +39,8 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     protected final S service;
     protected T thisClassNewObject;
     protected String category;
+
+    private final ReplyingKafkaTemplate<String, ShowableGetter, List<Showable>> spokeCalcKafkaTemplate;
 
 
     public BasicController(S service) {

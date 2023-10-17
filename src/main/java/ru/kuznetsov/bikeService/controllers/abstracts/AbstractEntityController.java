@@ -25,9 +25,9 @@ import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.showable.Showable;
-import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.bikeservice.mainresources.services.SearchService;
 import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,8 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ru.bikeservice.mainresources.models.users.UserRole.ROLE_ADMIN;
-import static ru.bikeservice.mainresources.models.users.UserRole.ROLE_USER;
+import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
+import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
 
 /**
  * Intermediate layer that includes common methods for REST and non-REST controllers.

@@ -1,4 +1,4 @@
-package ru.kuznetsov.bikeService.config;
+package ru.kuznetsov.bikeService.config.kafkaConfig;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -21,9 +21,9 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
-    private String bootstrapAddress;
+    protected String bootstrapAddress;
     @Value("${kafka.group.id}")
-    private String kafkaGroupId;
+    protected String kafkaGroupId;
     @Value("${kafka.reply.topic.pdf}")
     private String replyTopicPdf;
     @Value("${kafka.reply.topic.spokeCalc}")
@@ -115,7 +115,7 @@ public class KafkaConfig {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+//        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, DoubleDeserializer.class);
         return new DefaultKafkaConsumerFactory<>(props);

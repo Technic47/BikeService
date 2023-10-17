@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
-import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.kuznetsov.bikeService.models.UserDto;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.security.Principal;
 import java.util.ArrayList;

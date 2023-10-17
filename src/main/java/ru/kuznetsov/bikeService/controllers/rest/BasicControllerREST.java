@@ -14,8 +14,9 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
 import ru.bikeservice.mainresources.models.support.EntitySupportService;
-import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.security.Principal;
 import java.util.HashMap;

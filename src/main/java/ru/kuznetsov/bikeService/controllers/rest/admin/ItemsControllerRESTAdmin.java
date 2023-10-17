@@ -14,6 +14,7 @@ import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.bikeservice.mainresources.services.modelServices.*;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 
 import java.util.HashMap;
 import java.util.List;

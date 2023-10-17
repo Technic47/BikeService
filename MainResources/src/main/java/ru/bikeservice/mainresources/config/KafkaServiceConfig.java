@@ -32,15 +32,15 @@ public class KafkaServiceConfig {
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        producerProps.put(JsonSerializer.TYPE_MAPPINGS,
-                "Document:ru/bikeservice/mainresources/models/showable/Document," +
-                        "Fastener:ru/bikeservice/mainresources/models/showable/Fastener," +
-                        "Manufacturer:ru/bikeservice/mainresources/models/showable/Manufacturer," +
-                        "Consumable:ru/bikeservice/mainresources/models/showable/Consumable," +
-                        "Tool:ru/bikeservice/mainresources/models/showable/Tool," +
-                        "Part:ru/bikeservice/mainresources/models/showable/Part," +
-                        "Bike:ru/bikeservice/mainresources/models/showable/Bike"
-        );
+//        producerProps.put(JsonSerializer.TYPE_MAPPINGS,
+//                "Document:ru/bikeservice/mainresources/models/showable/Document," +
+//                        "Fastener:ru/bikeservice/mainresources/models/showable/Fastener," +
+//                        "Manufacturer:ru/bikeservice/mainresources/models/showable/Manufacturer," +
+//                        "Consumable:ru/bikeservice/mainresources/models/showable/Consumable," +
+//                        "Tool:ru/bikeservice/mainresources/models/showable/Tool," +
+//                        "Part:ru/bikeservice/mainresources/models/showable/Part," +
+//                        "Bike:ru/bikeservice/mainresources/models/showable/Bike"
+//        );
         return new DefaultKafkaProducerFactory<>(producerProps);
     }
 

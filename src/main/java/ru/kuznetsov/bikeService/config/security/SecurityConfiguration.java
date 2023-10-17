@@ -17,9 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.bikeservice.mainresources.exceptionHandlers.CustomAuthenticationFailureHandler;
-import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.kuznetsov.bikeService.config.security.jwt.CustomAuthorizationFilter;
 import ru.kuznetsov.bikeService.config.security.jwt.JwtTokenProvider;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.CustomOAuth2UserService;
 import ru.kuznetsov.bikeService.services.CustomUserDetailsService;
 
