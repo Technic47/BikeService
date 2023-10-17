@@ -4,7 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
-import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
@@ -107,8 +108,8 @@ public class KafkaController {
         return null;
     }
 
-    @KafkaListener(topics = "{createShowable, createUsable, createServiceable}", id = "mainResources")
-    public void createEntity(AbstractEntityDtoNew dtoNew){
+    @KafkaListener(topics = "createNewItem", id = "mainResources")
+    public void createEntity(EntityKafkaTransfer dtoNew) {
         switch (dtoNew.getCategory()) {
             case "documents" -> documentService.save(new Document(dtoNew));
             case "fasteners" -> fastenerService.save(new Fastener(dtoNew));
@@ -118,5 +119,21 @@ public class KafkaController {
             case "parts" -> partService.save(new Part(dtoNew));
             case "bikes" -> bikeService.save(new Bike(dtoNew));
         }
+    }
+
+    @KafkaListener(topics = "updateItem", id = "mainResources")
+    public AbstractShowableEntity updateEntity(EntityKafkaTransfer dtoToUpdate) {
+        AbstractShowableEntity updated = null;
+        switch (dtoToUpdate.getCategory()) {
+            case "documents" -> updated = documentService.update(dtoToUpdate.getId(), new Document(dtoToUpdate));
+            case "fasteners" -> updated = fastenerService.update(dtoToUpdate.getId(), new Fastener(dtoToUpdate));
+            case "manufacturers" ->
+                    updated = manufacturerService.update(dtoToUpdate.getId(), new Manufacturer(dtoToUpdate));
+            case "consumables" -> updated = consumableService.update(dtoToUpdate.getId(), new Consumable(dtoToUpdate));
+            case "tools" -> updated = toolService.update(dtoToUpdate.getId(), new Tool(dtoToUpdate));
+            case "parts" -> updated = partService.update(dtoToUpdate.getId(), new Part(dtoToUpdate));
+            case "bikes" -> updated = bikeService.update(dtoToUpdate.getId(), new Bike(dtoToUpdate));
+        }
+        return updated;
     }
 }

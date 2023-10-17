@@ -2,6 +2,7 @@ package ru.bikeservice.mainresources.models.abstracts;
 
 import jakarta.persistence.MappedSuperclass;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.servicable.Serviceable;
 
@@ -18,6 +19,10 @@ public abstract class AbstractServiceableEntity extends AbstractUsableEntity imp
 
     public AbstractServiceableEntity(AbstractEntityDtoNew dtoNew) {
         super(dtoNew);
+    }
+
+    public AbstractServiceableEntity(EntityKafkaTransfer dtoTransfer) {
+        super(dtoTransfer);
     }
 
     abstract public Set<PartEntity> getLinkedItems();

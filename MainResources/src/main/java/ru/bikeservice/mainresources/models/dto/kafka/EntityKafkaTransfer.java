@@ -1,6 +1,5 @@
-package ru.bikeservice.mainresources.models.dto;
+package ru.bikeservice.mainresources.models.dto.kafka;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.servicable.Serviceable;
 import ru.bikeservice.mainresources.models.showable.Showable;
@@ -9,10 +8,9 @@ import ru.bikeservice.mainresources.models.usable.Usable;
 import java.util.Set;
 
 /**
- * Dto to show entities to users. Enable hiding service information.
+ * Dto to transfer entities via kafka. Enable hiding service information.
  */
-@JsonInclude(JsonInclude.Include.NON_NULL) //Hide null fields
-public class AbstractEntityDto {
+public class EntityKafkaTransfer {
     private Long id;
     private String category;
     private String name;
@@ -20,21 +18,25 @@ public class AbstractEntityDto {
     private Long picture;
     private String link;
     private String value;
+    private Long creator;
+    private boolean shared;
     private Long manufacturer;
     private String model;
     private Set<PartEntity> linkedItems;
 
-    public AbstractEntityDto() {
+    public EntityKafkaTransfer() {
     }
 
-    public AbstractEntityDto(Showable item, String category) {
+    public EntityKafkaTransfer(Showable item, String category) {
         this.id = item.getId();
+        this.category = category;
         this.name = item.getName();
         this.description = item.getDescription();
         this.picture = item.getPicture();
         this.link = item.getLink();
         this.value = item.getValue();
-        this.category = category;
+        this.creator = item.getCreator();
+        this.shared = item.getIsShared();
         if (item instanceof Usable) {
             this.manufacturer = ((Usable) item).getManufacturer();
             this.model = ((Usable) item).getModel();
@@ -98,6 +100,22 @@ public class AbstractEntityDto {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Long creator) {
+        this.creator = creator;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 
     public Long getManufacturer() {

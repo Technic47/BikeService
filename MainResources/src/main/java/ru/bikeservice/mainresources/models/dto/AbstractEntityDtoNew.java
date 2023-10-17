@@ -1,6 +1,8 @@
 package ru.bikeservice.mainresources.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import ru.bikeservice.mainresources.models.showable.Showable;
+import ru.bikeservice.mainresources.models.usable.Usable;
 
 /**
  * Dto to get new entities from users. Enable hiding service information.
@@ -13,9 +15,27 @@ public class AbstractEntityDtoNew {
     private Long picture;
     private String link;
     private String value;
+    private Long creator;
     private boolean shared;
     private Long manufacturer;
     private String model;
+
+    public AbstractEntityDtoNew() {
+    }
+
+    public AbstractEntityDtoNew(Showable item, String category) {
+        this.name = item.getName();
+        this.description = item.getDescription();
+        this.picture = item.getPicture();
+        this.link = item.getLink();
+        this.value = item.getValue();
+        this.creator = item.getCreator();
+        this.category = category;
+        if (item instanceof Usable) {
+            this.manufacturer = ((Usable) item).getManufacturer();
+            this.model = ((Usable) item).getModel();
+        }
+    }
 
     public String getCategory() {
         return category;
@@ -63,6 +83,14 @@ public class AbstractEntityDtoNew {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Long creator) {
+        this.creator = creator;
     }
 
     public Long getManufacturer() {

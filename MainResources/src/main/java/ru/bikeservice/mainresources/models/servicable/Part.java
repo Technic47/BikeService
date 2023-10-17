@@ -3,6 +3,7 @@ package ru.bikeservice.mainresources.models.servicable;
 import jakarta.persistence.*;
 import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 
 import java.util.HashSet;
@@ -27,6 +28,11 @@ public final class Part extends AbstractServiceableEntity {
 
     public Part(AbstractEntityDtoNew dtoNew) {
         super(dtoNew);
+    }
+
+    public Part(EntityKafkaTransfer dtoTransfer) {
+        super(dtoTransfer);
+        this.linkedItems = dtoTransfer.getLinkedItems();
     }
 
     @Override

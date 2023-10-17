@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 
 
 @Entity
@@ -18,6 +19,10 @@ public final class Fastener extends AbstractShowableEntity {
 
     public Fastener(AbstractEntityDtoNew dtoNew) {
         super(dtoNew);
+    }
+
+    public Fastener(EntityKafkaTransfer dtoTransfer) {
+        super(dtoTransfer);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.showable.Showable;
 
 import java.util.Date;
@@ -81,6 +82,17 @@ public abstract class AbstractShowableEntity
         this.link = dtoNew.getLink();
         this.value = dtoNew.getValue();
         this.isShared = dtoNew.isShared();
+    }
+
+    public AbstractShowableEntity(EntityKafkaTransfer dtoTransfer){
+        this.id = dtoTransfer.getId();
+        this.name = dtoTransfer.getName();
+        this.description = dtoTransfer.getDescription();
+        this.picture = dtoTransfer.getPicture();
+        this.link = dtoTransfer.getLink();
+        this.value = dtoTransfer.getValue();
+        this.isShared = dtoTransfer.isShared();
+        this.creator = dtoTransfer.getCreator();
     }
 
     @Override

@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 
 @Entity
 @Table(name = "consumables")
@@ -17,6 +18,10 @@ public final class Consumable extends AbstractUsableEntity {
 
     public Consumable(AbstractEntityDtoNew dtoNew) {
         super(dtoNew);
+    }
+
+    public Consumable(EntityKafkaTransfer dtoTransfer) {
+        super(dtoTransfer);
     }
 
     @Override

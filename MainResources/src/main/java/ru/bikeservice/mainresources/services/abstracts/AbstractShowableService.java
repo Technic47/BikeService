@@ -21,6 +21,12 @@ public abstract class AbstractShowableService<E extends AbstractShowableEntity, 
         super(repository);
     }
 
+    @Override
+    public E save(E entity) {
+        entity.setCreated(new Date());
+        return super.save(entity);
+    }
+
     /**
      * Method for updating item with id.
      * Parameters are taken from E newItem.

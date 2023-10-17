@@ -85,7 +85,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
         T item = EntitySupportService.convertFromDTO(category, itemDto);
-        T createdItem = this.doCreateProcedure(item, service, file, principal);
+        T createdItem = this.doCreateProcedure(item, file, principal, category);
         return createDtoFrom(createdItem);
     }
 

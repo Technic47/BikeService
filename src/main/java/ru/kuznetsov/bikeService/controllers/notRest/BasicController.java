@@ -130,7 +130,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
             this.addItemAttributesNew(model, item, principal);
             return "new";
         }
-        this.doCreateProcedure(item, service, file, principal);
+        this.doCreateProcedure(item, file, principal, category);
         return "redirect:/" + category;
     }
 

@@ -17,6 +17,7 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
 import ru.bikeservice.mainresources.models.dto.PdfEntityDto;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.lists.UserEntity;
@@ -35,7 +36,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +51,10 @@ public abstract class AbstractEntityController extends AbstractController {
     protected SearchService searchService;
     @Autowired
     private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfKafkaTemplate;
+    @Autowired
     protected ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
+    @Autowired
+    protected ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemlate;
 
     /**
      * Creates List of entities depending on userModel role and shared flag.
@@ -62,7 +65,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @return formed List.
      */
-    protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(UserModel userModel, String category, boolean shared) {
+    protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(final UserModel userModel, final String category, boolean shared) {
         List<T> objects = null;
         try {
             if (userModel.getAuthorities().contains(ROLE_USER)) {
@@ -99,7 +102,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param <T>     AbstractShowableEntity from main mainResources.models.
      */
     protected <T extends AbstractShowableEntity> void addIndexMapsToModel(
-            Model model, Long userId, List<T> objects) {
+            Model model, final Long userId, final List<T> objects) {
         Map<T, String> indexMap = new HashMap<>();
         Map<T, String> sharedIndexMap = new HashMap<>();
         if (objects != null) {
@@ -123,7 +126,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * @return entity.
      */
     protected <T extends AbstractShowableEntity> T doShowProcedure(
-            final String category, Long id, Principal principal
+            final String category, final Long id, Principal principal
     ) {
         ShowableGetter body = new ShowableGetter(category, id);
         ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
@@ -145,22 +148,30 @@ public abstract class AbstractEntityController extends AbstractController {
      * Main procedure for creation new entity.
      *
      * @param item      entity with new information.
-     * @param service   connected to entity service.
      * @param file      Multipart file with picture.
      * @param principal principal who is updating.
      * @param <T>       AbstractShowableEntity from main mainResources.models.
-     * @param <S>
      * @return updated entity.
      */
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>>
-    T doCreateProcedure(final T item, final S service, MultipartFile file, Principal principal) {
-        this.checkImageFile(file, item);
+    protected <T extends AbstractShowableEntity>
+    T doCreateProcedure(final T item, MultipartFile file, Principal principal, final String category) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
-        item.setCreator(userModel.getId());
-        item.setCreated(new Date());
-        T createdItem = service.save(item);
+        EntityKafkaTransfer body = new EntityKafkaTransfer(item, category);
+        this.checkImageFile(file, body);
+        body.setCreator(userModel.getId());
+
+        ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>("createNewItem", body);
+        RequestReplyFuture<String, EntityKafkaTransfer, AbstractShowableEntity> reply = creatorTemlate.sendAndReceive(record);
+
+        T createdItem;
+        try {
+            createdItem = (T) reply.get().value();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+//        item.setCreated(new Date());
+//        T createdItem = service.save(item);
         userService.addCreatedItem(userModel,
                 new UserEntity(item.getClass().getSimpleName(), createdItem.getId()));
         logger.info(item.getId() + ":" + item.getName() + " was created by '" + userModel.getUsername());
@@ -324,6 +335,18 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param <T>  AbstractShowableEntity from main mainResources.models.
      */
     protected <T extends AbstractShowableEntity> void checkImageFile(MultipartFile file, T item) {
+        if (file != null) {
+            if (!file.isEmpty()) {
+                Picture picture = pictureService.save(file);
+                item.setPicture(picture.getId());
+            }
+        }
+        if (item.getPicture() == null) {
+            item.setPicture(1L);
+        }
+    }
+
+    protected <T extends AbstractShowableEntity> void checkImageFile(MultipartFile file, EntityKafkaTransfer item) {
         if (file != null) {
             if (!file.isEmpty()) {
                 Picture picture = pictureService.save(file);

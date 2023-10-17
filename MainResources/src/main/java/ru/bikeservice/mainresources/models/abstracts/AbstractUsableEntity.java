@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.usable.Usable;
 
 import java.util.Objects;
@@ -34,6 +35,12 @@ public abstract class AbstractUsableEntity extends AbstractShowableEntity implem
         super(dtoNew);
         this.manufacturer = dtoNew.getManufacturer();
         this.model = dtoNew.getModel();
+    }
+
+    public AbstractUsableEntity(EntityKafkaTransfer dtoTransfer) {
+        super(dtoTransfer);
+        this.manufacturer = dtoTransfer.getManufacturer();
+        this.model = dtoTransfer.getModel();
     }
 
     public Long getManufacturer() {
