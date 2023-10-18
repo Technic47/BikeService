@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,19 +17,17 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
+import ru.bikeservice.mainresources.models.dto.KafkaUserDto;
 import ru.bikeservice.mainresources.models.dto.PdfEntityDto;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
-import ru.bikeservice.mainresources.models.lists.PartEntity;
+import ru.bikeservice.mainresources.models.dto.kafka.SearchKafkaDTO;
+import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.lists.UserEntity;
 import ru.bikeservice.mainresources.models.pictures.Picture;
-import ru.bikeservice.mainresources.models.servicable.Bike;
-import ru.bikeservice.mainresources.models.servicable.Part;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.services.SearchService;
-import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
-import ru.kuznetsov.bikeService.models.ShowableGetter;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.IOException;
@@ -39,6 +38,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
@@ -55,6 +55,8 @@ public abstract class AbstractEntityController extends AbstractController {
     protected ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
     @Autowired
     protected ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemlate;
+    @Autowired
+    protected ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>> searchTemplate;
 
     /**
      * Creates List of entities depending on userModel role and shared flag.
@@ -69,7 +71,7 @@ public abstract class AbstractEntityController extends AbstractController {
         List<T> objects = null;
         try {
             if (userModel.getAuthorities().contains(ROLE_USER)) {
-                ShowableGetter body = new ShowableGetter(category, userModel.getId(), userModel.getAuthorities(), shared);
+                ShowableGetter body = new ShowableGetter(category, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
                 ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
                 RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
 
@@ -119,16 +121,16 @@ public abstract class AbstractEntityController extends AbstractController {
     /**
      * Main procedure for showing entity.
      *
-     * @param category  category of entities.
+     * @param type      type of entities.
      * @param id        id of entity.
      * @param principal principal to whom entity is shown.
      * @param <T>       AbstractShowableEntity from main models.
      * @return entity.
      */
     protected <T extends AbstractShowableEntity> T doShowProcedure(
-            final String category, final Long id, Principal principal
+            final String type, final Long id, Principal principal
     ) {
-        ShowableGetter body = new ShowableGetter(category, id);
+        ShowableGetter body = new ShowableGetter(type, id);
         ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
         RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
 
@@ -150,15 +152,15 @@ public abstract class AbstractEntityController extends AbstractController {
      * @param item      entity with new information.
      * @param file      Multipart file with picture.
      * @param principal principal who is updating.
-     * @param category  category of entities.
+     * @param type      type of entities.
      * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @return updated entity.
      */
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     protected <T extends AbstractShowableEntity>
-    T doCreateProcedure(final T item, MultipartFile file, Principal principal, final String category) {
+    T doCreateProcedure(final T item, MultipartFile file, Principal principal, final String type) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
-        EntityKafkaTransfer body = new EntityKafkaTransfer(item, category);
+        EntityKafkaTransfer body = new EntityKafkaTransfer(item, type);
         this.checkImageFile(file, body);
         body.setCreator(userModel.getId());
 
@@ -175,7 +177,7 @@ public abstract class AbstractEntityController extends AbstractController {
 //        T createdItem = service.save(item);
         userService.addCreatedItem(userModel,
                 new UserEntity(item.getClass().getSimpleName(), createdItem.getId()));
-        logger.info(item.getId() + ":" + item.getName() + " was created by '" + userModel.getUsername());
+        logger.info(type + " " + item.getId() + ":" + item.getName() + " was created by '" + userModel.getUsername());
         return createdItem;
     }
 
@@ -183,7 +185,7 @@ public abstract class AbstractEntityController extends AbstractController {
      * Main procedure for updating entity.
      *
      * @param newItem   entity with new information.
-     * @param category  category of entities.
+     * @param type      type of entities.
      * @param oldItem   entity to apply new information.
      * @param file      Multipart file with picture.
      * @param principal principal who is updating.
@@ -192,10 +194,10 @@ public abstract class AbstractEntityController extends AbstractController {
      */
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     protected <T extends AbstractShowableEntity>
-    T doUpdateProcedure(final T newItem, String category, final T oldItem, MultipartFile file, Principal principal) {
+    T doUpdateProcedure(final T newItem, String type, final T oldItem, MultipartFile file, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
 
-        EntityKafkaTransfer body = new EntityKafkaTransfer(newItem, category);
+        EntityKafkaTransfer body = new EntityKafkaTransfer(newItem, type);
         body.setId(oldItem.getId());
         this.checkImageFile(file, body);
         ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>("updateItem", body);
@@ -219,51 +221,70 @@ public abstract class AbstractEntityController extends AbstractController {
      * Main procedure for deleting entity. Cleans up connected tables.
      *
      * @param item      entity for deleting.
-     * @param service   connected to entity service.
+     * @param type      type of entities.
      * @param principal principal who is trying to delete the item.
-     * @param <T>       AbstractShowableEntity from main mainResources.models.
-     * @param <S>
+     * @param <T>       AbstractShowableEntity from main models.
      */
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
-    protected <T extends AbstractShowableEntity,
-            S extends CommonAbstractEntityService<T>>
-    void doDeleteProcedure(final T item, final S service, final Principal principal) {
+    protected <T extends AbstractShowableEntity>
+    void doDeleteProcedure(final T item, String type, final Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long itemId = item.getId();
-        service.delete(itemId);
-        this.cleanUpAfterDelete(item, userModel);
-        String category = item.getClass().getSimpleName();
-        logger.info(category +
+        EntityKafkaTransfer body = new EntityKafkaTransfer(item, type);
+
+        CompletableFuture<SendResult<String, EntityKafkaTransfer>> reply = creatorTemlate.send("updateItem", body);
+
+        try {
+            reply.thenRun(() -> this.cleanUpUserAfterDelete(item, userModel));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+//        service.delete(itemId);
+//        this.cleanUpAfterDelete(item, userModel);
+        logger.info(type +
                 " id:" + itemId + " was deleted by '" + userModel.getUsername() + "'");
     }
 
     /**
      * Deletes entity record from user createdList.
-     * Checks if entity is linked to any Part or Bike and deletes it from linkedItems.
      *
      * @param item      entity to delete.
      * @param userModel creator of entity.
      * @param <T>       AbstractShowableEntity from main mainResources.models.
      */
-    private <T extends AbstractShowableEntity> void cleanUpAfterDelete(
+    private <T extends AbstractShowableEntity> void cleanUpUserAfterDelete(
             T item, UserModel userModel) {
-        String partType = item.getClass().getSimpleName();
-        Long id = item.getId();
-        Runnable clearUser = () -> userService
-                .delCreatedItem(userModel, new UserEntity(item));
-        Runnable clearParts = () -> {
-            PartEntity entityPart = new PartEntity("Part", partType, id, 1);
-            List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
-            listOfParts.parallelStream().forEach(part -> partService.delFromLinkedItems(part, entityPart));
-        };
-        Runnable clearBikes = () -> {
-            PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
-            List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
-            listOfBikes.parallelStream().forEach(part -> bikeService.delFromLinkedItems(part, entityBike));
-        };
-        mainExecutor.submit(clearUser);
-        mainExecutor.submit(clearParts);
-        mainExecutor.submit(clearBikes);
+//        Runnable clearParts = () -> {
+//            PartEntity entityPart = new PartEntity("Part", partType, id, 1);
+//            List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
+//            listOfParts.parallelStream().forEach(part -> partService.delFromLinkedItems(part, entityPart));
+//        };
+//        Runnable clearBikes = () -> {
+//            PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
+//            List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
+//            listOfBikes.parallelStream().forEach(part -> bikeService.delFromLinkedItems(part, entityBike));
+//        };
+        mainExecutor.submit(() -> userService
+                .delCreatedItem(userModel, new UserEntity(item)));
+//        mainExecutor.submit(clearParts);
+//        mainExecutor.submit(clearBikes);
+    }
+
+    protected List<AbstractShowableEntity> doSearchProcedure(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String category) {
+        SearchKafkaDTO body = new SearchKafkaDTO(findBy, searchValue, kafkaUserDto, shared, category);
+
+        ProducerRecord<String, SearchKafkaDTO> record = new ProducerRecord<>("search", body);
+        RequestReplyFuture<String, SearchKafkaDTO, List<AbstractShowableEntity>> reply = searchTemplate.sendAndReceive(record);
+
+        List<AbstractShowableEntity> results;
+        try {
+            results = reply.get().value();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        return results;
     }
 
     /**
@@ -345,7 +366,7 @@ public abstract class AbstractEntityController extends AbstractController {
      *
      * @param file file to check.
      * @param item entity to set picture.
-     * @param <T>  AbstractShowableEntity from main mainResources.models.
+     * @param <T>  AbstractShowableEntity from main models.
      */
     protected <T extends AbstractShowableEntity> void checkImageFile(MultipartFile file, T item) {
         if (file != null) {
@@ -359,6 +380,13 @@ public abstract class AbstractEntityController extends AbstractController {
         }
     }
 
+    /**
+     * Checks if Multipart file contains picture. Set picture to entity if contains.
+     *
+     * @param file file to check.
+     * @param item entity to set picture.
+     * @param <T>  AbstractShowableEntity from main models.
+     */
     protected <T extends AbstractShowableEntity> void checkImageFile(MultipartFile file, EntityKafkaTransfer item) {
         if (file != null) {
             if (!file.isEmpty()) {
@@ -398,11 +426,5 @@ public abstract class AbstractEntityController extends AbstractController {
         header.add("Pragma", "no-cache");
         header.add("Expires", "0");
         return header;
-    }
-
-
-    @Autowired
-    private void setSearchService(SearchService searchService) {
-        this.searchService = searchService;
     }
 }

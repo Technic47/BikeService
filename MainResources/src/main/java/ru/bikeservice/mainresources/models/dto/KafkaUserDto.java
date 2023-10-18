@@ -3,10 +3,21 @@ package ru.bikeservice.mainresources.models.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserDTO {
+public class KafkaUserDto {
     private Long id;
+    private boolean admin;
     private Set<UserRole> authorities = new HashSet<>();
     private String userName;
+
+    public KafkaUserDto() {
+    }
+
+    public KafkaUserDto(Long id, boolean admin, String userName) {
+        this.id = id;
+        this.admin = admin;
+        this.userName = userName;
+    }
+
 
     public Long getId() {
         return id;

@@ -1,12 +1,15 @@
 package ru.kuznetsov.bikeService.controllers.rest.addition;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
+import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
-import ru.bikeservice.mainresources.services.SearchService;
+import ru.bikeservice.mainresources.models.dto.kafka.SearchKafkaDTO;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
@@ -20,10 +23,10 @@ import static ru.bikeservice.mainresources.models.support.EntitySupportService.s
 @RestController
 @RequestMapping("/api/search")
 public class SearchController extends AbstractController {
-    private final SearchService searchService;
+    private final ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>> searchTemplate;
 
-    public SearchController(SearchService searchService) {
-        this.searchService = searchService;
+    public SearchController(ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>> searchTemplate) {
+        this.searchTemplate = searchTemplate;
     }
 
 
@@ -35,12 +38,17 @@ public class SearchController extends AbstractController {
                                             @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
 
-        List<AbstractShowableEntity> objects = null;
+        List<AbstractShowableEntity> objects;
+
+        SearchKafkaDTO body = new SearchKafkaDTO(findBy, searchValue, userModel.getKafkaDto(), shared);
+
+        ProducerRecord<String, SearchKafkaDTO> record = new ProducerRecord<>("createNewItem", body);
+        RequestReplyFuture<String, SearchKafkaDTO, List<AbstractShowableEntity>> reply = searchTemplate.sendAndReceive(record);
+
+
         try {
-            objects = searchService.doGlobalSearchProcedure(findBy, searchValue, userModel, shared);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+            objects = reply.get().value();
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
         List<AbstractShowableEntity> sortedList = sortBasic(objects, sort);

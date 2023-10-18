@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class EntityKafkaTransfer {
     private Long id;
-    private String category;
+    private String type;
     private String name;
     private String description;
     private Long picture;
@@ -27,9 +27,9 @@ public class EntityKafkaTransfer {
     public EntityKafkaTransfer() {
     }
 
-    public EntityKafkaTransfer(Showable item, String category) {
+    public EntityKafkaTransfer(Showable item, String type) {
         this.id = item.getId();
-        this.category = category;
+        this.type = type;
         this.name = item.getName();
         this.description = item.getDescription();
         this.picture = item.getPicture();
@@ -54,12 +54,12 @@ public class EntityKafkaTransfer {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getType() {
+        return type;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {

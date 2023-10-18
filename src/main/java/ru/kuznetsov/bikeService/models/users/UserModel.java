@@ -7,9 +7,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import ru.bikeservice.mainresources.models.dto.KafkaUserDto;
 import ru.bikeservice.mainresources.models.lists.UserEntity;
 
 import java.util.*;
+
+import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_ADMIN;
 
 @Entity
 @Table(name = "users")
@@ -76,6 +79,10 @@ public class UserModel implements UserDetails, OAuth2User {
         this.attributes = oauth2User.getAttributes();
         this.setUsername(this.attributes.get("email").toString());
         this.setEmail(this.attributes.get("email").toString());
+    }
+
+    public KafkaUserDto getKafkaDto(){
+        return new KafkaUserDto(id, authorities.contains(ROLE_ADMIN), username);
     }
 
     public Long getId() {

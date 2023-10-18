@@ -8,8 +8,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-import ru.bikeservice.mainresources.services.PictureService;
-import ru.bikeservice.mainresources.services.modelServices.*;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.UserService;
 
@@ -23,14 +21,14 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractController {
     public final static Logger logger = LoggerFactory.getLogger("BikeServiceLogger");
     protected UserService userService;
-    protected PictureService pictureService;
-    protected DocumentService documentService;
-    protected FastenerService fastenerService;
-    protected ManufacturerService manufacturerService;
-    protected ConsumableService consumableService;
-    protected ToolService toolService;
-    protected PartService partService;
-    protected BikeService bikeService;
+//    protected PictureService pictureService;
+//    protected DocumentService documentService;
+//    protected FastenerService fastenerService;
+//    protected ManufacturerService manufacturerService;
+//    protected ConsumableService consumableService;
+//    protected ToolService toolService;
+//    protected PartService partService;
+//    protected BikeService bikeService;
     protected ExecutorService mainExecutor;
     protected ExecutorService additionExecutor;
 
@@ -53,11 +51,11 @@ public abstract class AbstractController {
     private void setUserService(UserService userService) {
         this.userService = userService;
     }
-
-    @Autowired
-    private void setPictureService(PictureService pictureService) {
-        this.pictureService = pictureService;
-    }
+//
+//    @Autowired
+//    private void setPictureService(PictureService pictureService) {
+//        this.pictureService = pictureService;
+//    }
 
     @Autowired
     @Qualifier("MainExecutor")
@@ -70,39 +68,39 @@ public abstract class AbstractController {
     private void setAdditionExecutor(ExecutorService additionExecutor) {
         this.additionExecutor = additionExecutor;
     }
-
-    @Autowired
-    private void setDocumentService(DocumentService documentService) {
-        this.documentService = documentService;
-    }
-
-    @Autowired
-    private void setFastenerService(FastenerService fastenerService) {
-        this.fastenerService = fastenerService;
-    }
-
-    @Autowired
-    private void setManufacturerService(ManufacturerService manufacturerService) {
-        this.manufacturerService = manufacturerService;
-    }
-
-    @Autowired
-    private void setConsumableService(ConsumableService consumableService) {
-        this.consumableService = consumableService;
-    }
-
-    @Autowired
-    private void setToolService(ToolService toolService) {
-        this.toolService = toolService;
-    }
-
-    @Autowired
-    private void setPartService(PartService partService) {
-        this.partService = partService;
-    }
-
-    @Autowired
-    private void setBikeService(BikeService bikeService) {
-        this.bikeService = bikeService;
-    }
+//
+//    @Autowired
+//    private void setDocumentService(DocumentService documentService) {
+//        this.documentService = documentService;
+//    }
+//
+//    @Autowired
+//    private void setFastenerService(FastenerService fastenerService) {
+//        this.fastenerService = fastenerService;
+//    }
+//
+//    @Autowired
+//    private void setManufacturerService(ManufacturerService manufacturerService) {
+//        this.manufacturerService = manufacturerService;
+//    }
+//
+//    @Autowired
+//    private void setConsumableService(ConsumableService consumableService) {
+//        this.consumableService = consumableService;
+//    }
+//
+//    @Autowired
+//    private void setToolService(ToolService toolService) {
+//        this.toolService = toolService;
+//    }
+//
+//    @Autowired
+//    private void setPartService(PartService partService) {
+//        this.partService = partService;
+//    }
+//
+//    @Autowired
+//    private void setBikeService(BikeService bikeService) {
+//        this.bikeService = bikeService;
+//    }
 }

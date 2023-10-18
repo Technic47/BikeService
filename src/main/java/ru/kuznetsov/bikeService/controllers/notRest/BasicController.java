@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -58,7 +57,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
-        List<T> objects = this.doIndexProcedure(userModel, category, true);
+        List<T> objects = this.doIndexProcedure(userModel, thisClassNewObject.getClass().getSimpleName(), true);
 
         this.addIndexMapsToModel(model, userId, objects);
         model.addAttribute("sharedCheck", true);
@@ -70,7 +69,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
                        Model model, Principal principal) {
-        T item = this.doShowProcedure(category, id, principal);
+        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
         return this.show(item, model, principal, category);
     }
 
@@ -130,14 +129,14 @@ public abstract class BasicController<T extends AbstractShowableEntity,
             this.addItemAttributesNew(model, item, principal);
             return "new";
         }
-        this.doCreateProcedure(item, file, principal, category);
+        this.doCreateProcedure(item, file, principal, thisClassNewObject.getClass().getSimpleName());
         return "redirect:/" + category;
     }
 
     @Operation(hidden = true)
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
-        T item = this.doShowProcedure(category, id, principal);
+        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
 //        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
@@ -163,7 +162,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model, Principal principal) {
-        T item = this.doShowProcedure(category, id, principal);
+        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
 //        T item = service.getById(id);
         return this.update(newItem, bindingResult, file, item, model, principal);
     }
@@ -178,7 +177,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
                 return "edit";
             }
 
-            this.doUpdateProcedure(newItem, category, oldItem, file, principal);
+            this.doUpdateProcedure(newItem, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
 
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + oldItem.getId();
@@ -187,9 +186,9 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @Operation(hidden = true)
     @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id, Principal principal) {
-        T item = service.getById(id);
+        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
         if (checkAccessToItem(item, principal)) {
-            this.doDeleteProcedure(item, service, principal);
+            this.doDeleteProcedure(item, thisClassNewObject.getClass().getSimpleName(), principal);
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
     }
@@ -201,7 +200,6 @@ public abstract class BasicController<T extends AbstractShowableEntity,
         T item = this.service.getById(id);
         return this.prepareShowablePDF(item, principal);
     }
-//
 
     /**
      * Searching via matching in Name and Description. Case is ignored. ResultSet is formed considering current user`s ROLE.
@@ -224,8 +222,9 @@ public abstract class BasicController<T extends AbstractShowableEntity,
 
         List<T> resultList = null;
         try {
-            resultList = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
-        } catch (ExecutionException | InterruptedException e) {
+//            resultList = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
+            resultList = (List<T>) doSearchProcedure("standard", value, userModel.getKafkaDto(), shared, category);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

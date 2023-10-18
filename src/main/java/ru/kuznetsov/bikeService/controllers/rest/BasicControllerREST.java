@@ -22,7 +22,6 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.*;
 
@@ -62,8 +61,9 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         List<T> objects;
         if (searchValue != null) {
             try {
-                objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
-            } catch (ExecutionException | InterruptedException e) {
+//                objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
+                objects = (List<T>) doSearchProcedure(findBy, searchValue, userModel.getKafkaDto(), shared, category);
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else objects = doIndexProcedure(userModel, category, shared);
@@ -148,7 +148,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
         T item = service.getById(id);
 
         if (checkAccessToItem(item, principal)) {
-            this.doDeleteProcedure(item, service, principal);
+            this.doDeleteProcedure(item, thisClassNewObject.getClass().getSimpleName(), principal);
             Map<String, String> response = new HashMap<>();
             response.put("deleted", "ok");
             return ResponseEntity.ok(response);

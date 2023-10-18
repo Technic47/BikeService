@@ -1,31 +1,39 @@
 package ru.bikeservice.mainresources.models.dto.kafka;
 
-import ru.bikeservice.mainresources.models.dto.UserRole;
-
-import java.util.Set;
-
 public class ShowableGetter {
-    private String category;
-    private Long id;
+    private String type;
+    private Long itemId;
     private Long userId;
-    private Set<UserRole> role;
+    private boolean admin;
     private boolean shared;
 
-
-    public String getCategory() {
-        return category;
+    public ShowableGetter(String type, Long itemId, Long userId, boolean admin, boolean shared) {
+        this.type = type;
+        this.itemId = itemId;
+        this.userId = userId;
+        this.admin = admin;
+        this.shared = shared;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public ShowableGetter(String type, Long itemId) {
+        this.type = type;
+        this.itemId = itemId;
     }
 
-    public Long getId() {
-        return id;
+    public String getType() {
+        return type;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public Long getUserId() {
@@ -36,12 +44,12 @@ public class ShowableGetter {
         this.userId = userId;
     }
 
-    public Set<UserRole> getRole() {
-        return role;
+    public boolean isAdmin() {
+        return admin;
     }
 
-    public void setRole(Set<UserRole> role) {
-        this.role = role;
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     public boolean isShared() {

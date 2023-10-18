@@ -15,29 +15,29 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
-import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
+import ru.bikeservice.mainresources.models.dto.kafka.SearchKafkaDTO;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainResourcesKafkaConfig extends KafkaConfig {
-    private String replyMainResources;
+public class SearchKafkaProducerConfig extends KafkaConfig{
+    private String replySearchMainResources;
 
     @Bean
-    public ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>>
+    public ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>>
     mainResourcesReplyingKafkaTemplate(
-            ProducerFactory<String, ShowableGetter> pf,
+            ProducerFactory<String, SearchKafkaDTO> pf,
             ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory) {
         ConcurrentMessageListenerContainer<String, List<AbstractShowableEntity>> replyContainer =
-                factory.createContainer(replyMainResources);
+                factory.createContainer(replySearchMainResources);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
         return new ReplyingKafkaTemplate<>(pf, replyContainer);
     }
 
     @Bean
-    public ProducerFactory<String, ShowableGetter> producerFactory() {
+    public ProducerFactory<String, SearchKafkaDTO> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
