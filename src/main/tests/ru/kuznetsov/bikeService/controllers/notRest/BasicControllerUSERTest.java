@@ -11,8 +11,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.bikeservice.mainresources.models.lists.UserEntity;
 import ru.bikeservice.mainresources.models.showable.Document;
-import ru.bikeservice.mainresources.services.PictureService;
 import ru.bikeservice.mainresources.services.modelServices.DocumentService;
+import ru.kuznetsov.bikeService.services.PictureService;
+import ru.kuznetsov.bikeService.services.UserService;
 
 import java.util.List;
 

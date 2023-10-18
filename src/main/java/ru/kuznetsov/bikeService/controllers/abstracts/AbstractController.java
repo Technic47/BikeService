@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
 
 import java.security.Principal;
@@ -21,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractController {
     public final static Logger logger = LoggerFactory.getLogger("BikeServiceLogger");
     protected UserService userService;
-//    protected PictureService pictureService;
+    protected PictureService pictureService;
 //    protected DocumentService documentService;
 //    protected FastenerService fastenerService;
 //    protected ManufacturerService manufacturerService;
@@ -51,11 +52,11 @@ public abstract class AbstractController {
     private void setUserService(UserService userService) {
         this.userService = userService;
     }
-//
-//    @Autowired
-//    private void setPictureService(PictureService pictureService) {
-//        this.pictureService = pictureService;
-//    }
+
+    @Autowired
+    private void setPictureService(PictureService pictureService) {
+        this.pictureService = pictureService;
+    }
 
     @Autowired
     @Qualifier("MainExecutor")

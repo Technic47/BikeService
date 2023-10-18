@@ -20,7 +20,6 @@ import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
-import ru.bikeservice.mainresources.services.PictureService;
 import ru.bikeservice.mainresources.services.SearchService;
 import ru.bikeservice.mainresources.services.modelServices.*;
 
@@ -32,7 +31,6 @@ import java.util.concurrent.ExecutorService;
 
 public class KafkaController {
     public final static Logger logger = LoggerFactory.getLogger("MainResourcesLogger");
-    protected final PictureService pictureService;
     protected final DocumentService documentService;
     protected final FastenerService fastenerService;
     protected final ManufacturerService manufacturerService;
@@ -43,8 +41,7 @@ public class KafkaController {
     protected final ExecutorService mainExecutor;
     protected final SearchService searchService;
 
-    public KafkaController(PictureService pictureService, DocumentService documentService, FastenerService fastenerService, ManufacturerService manufacturerService, ConsumableService consumableService, ToolService toolService, PartService partService, BikeService bikeService, ExecutorService mainExecutor, SearchService searchService) {
-        this.pictureService = pictureService;
+    public KafkaController(DocumentService documentService, FastenerService fastenerService, ManufacturerService manufacturerService, ConsumableService consumableService, ToolService toolService, PartService partService, BikeService bikeService, ExecutorService mainExecutor, SearchService searchService) {
         this.documentService = documentService;
         this.fastenerService = fastenerService;
         this.manufacturerService = manufacturerService;
@@ -188,7 +185,7 @@ public class KafkaController {
 
     @KafkaListener(topics = "search", id = "searchService")
     public List<AbstractShowableEntity> search(SearchKafkaDTO searchDto) {
-        List<AbstractShowableEntity> results = null;
+        List<AbstractShowableEntity> results;
 
         String findBy = searchDto.getFindBy();
         String searchValue = searchDto.getSearchValue();
@@ -206,4 +203,6 @@ public class KafkaController {
         }
         return results;
     }
+
+
 }

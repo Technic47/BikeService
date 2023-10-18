@@ -1,27 +1,33 @@
 package ru.kuznetsov.bikeService.eventListeners;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
+import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
-import ru.bikeservice.mainresources.services.PictureService;
-import ru.bikeservice.mainresources.services.modelServices.ManufacturerService;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
 import ru.kuznetsov.bikeService.models.users.UserModel;
+import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.logger;
@@ -29,23 +35,22 @@ import static ru.kuznetsov.bikeService.controllers.abstracts.AbstractController.
 @Component
 public class ApplicationEventsListener {
     private final PictureService pictureService;
-    private final ManufacturerService manufacturerService;
     private final VerificationTokenService tokenService;
     private final UserService userService;
     private final ExecutorService mainExecutor;
     private final KafkaTemplate<String, byte[]> emailTemplate;
+    private final ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
 
     @Autowired
     public ApplicationEventsListener(PictureService pictureService,
-                                     ManufacturerService manufacturerService,
                                      VerificationTokenService tokenService, UserService userService, @Qualifier("MainExecutor") ExecutorService mainExecutor,
-                                     KafkaTemplate<String, byte[]> emailTemplate) {
+                                     KafkaTemplate<String, byte[]> emailTemplate, ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate) {
         this.pictureService = pictureService;
-        this.manufacturerService = manufacturerService;
         this.tokenService = tokenService;
         this.userService = userService;
         this.mainExecutor = mainExecutor;
         this.emailTemplate = emailTemplate;
+        this.mainResourcesKafkaTemplate = mainResourcesKafkaTemplate;
     }
 
     //Checking for default picture and manufacture in db.
@@ -62,7 +67,15 @@ public class ApplicationEventsListener {
 
         System.out.println("Checking default manufacture...");
         try {
-            manufacturerService.getById(1L);
+            ShowableGetter body = new ShowableGetter(Manufacturer.class.getSimpleName(), 1L);
+            ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
+            RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
+
+            List<AbstractShowableEntity> objects = reply.get().value();
+            if (objects.isEmpty()) {
+                throw new ResourceNotFoundException(1L);
+            }
+//            manufacturerService.getById(1L);
             System.out.println("Default manufacture is OK.");
         } catch (ResourceNotFoundException e) {
             Manufacturer defaultManufacture = new Manufacturer();
@@ -74,6 +87,8 @@ public class ApplicationEventsListener {
             defaultManufacture.setValue("none");
             manufacturerService.save(defaultManufacture);
             System.out.println("Default manufacture was empty. New one is created in DB");
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

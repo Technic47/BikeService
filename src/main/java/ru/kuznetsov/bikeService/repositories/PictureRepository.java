@@ -1,4 +1,4 @@
-package ru.bikeservice.mainresources.repositories;
+package ru.kuznetsov.bikeService.repositories;
 
 import org.springframework.stereotype.Repository;
 import ru.bikeservice.mainresources.models.pictures.Picture;

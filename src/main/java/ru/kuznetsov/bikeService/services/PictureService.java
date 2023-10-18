@@ -1,4 +1,4 @@
-package ru.bikeservice.mainresources.services;
+package ru.kuznetsov.bikeService.services;
 
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,8 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.controllers.abstracts.KafkaController;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
 import ru.bikeservice.mainresources.models.pictures.Picture;
-import ru.bikeservice.mainresources.repositories.PictureRepository;
 import ru.bikeservice.mainresources.services.abstracts.AbstractService;
+import ru.kuznetsov.bikeService.repositories.PictureRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

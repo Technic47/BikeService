@@ -1,9 +1,9 @@
-package ru.bikeservice.mainresources.services;
+package ru.kuznetsov.bikeService.services;
 
 import org.springframework.stereotype.Service;
 import ru.bikeservice.mainresources.models.ReplyMessage;
-import ru.bikeservice.mainresources.repositories.ReplyMessageRepository;
 import ru.bikeservice.mainresources.services.abstracts.AbstractService;
+import ru.kuznetsov.bikeService.repositories.ReplyMessageRepository;
 
 @Service
 public class ReplyMessageService extends AbstractService<ReplyMessage, ReplyMessageRepository> {
