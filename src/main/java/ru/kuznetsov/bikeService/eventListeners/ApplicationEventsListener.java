@@ -9,12 +9,14 @@ import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
@@ -27,6 +29,7 @@ import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
@@ -40,17 +43,21 @@ public class ApplicationEventsListener {
     private final ExecutorService mainExecutor;
     private final KafkaTemplate<String, byte[]> emailTemplate;
     private final ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemplate;
 
     @Autowired
     public ApplicationEventsListener(PictureService pictureService,
                                      VerificationTokenService tokenService, UserService userService, @Qualifier("MainExecutor") ExecutorService mainExecutor,
-                                     KafkaTemplate<String, byte[]> emailTemplate, ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate) {
+                                     KafkaTemplate<String, byte[]> emailTemplate,
+                                     ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate,
+                                     ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemlate) {
         this.pictureService = pictureService;
         this.tokenService = tokenService;
         this.userService = userService;
         this.mainExecutor = mainExecutor;
         this.emailTemplate = emailTemplate;
         this.mainResourcesKafkaTemplate = mainResourcesKafkaTemplate;
+        this.creatorTemplate = creatorTemlate;
     }
 
     //Checking for default picture and manufacture in db.
@@ -85,8 +92,12 @@ public class ApplicationEventsListener {
             defaultManufacture.setDescription("Default manufacture for everything");
             defaultManufacture.setLink("none");
             defaultManufacture.setValue("none");
-            manufacturerService.save(defaultManufacture);
-            System.out.println("Default manufacture was empty. New one is created in DB");
+
+            EntityKafkaTransfer body = new EntityKafkaTransfer(defaultManufacture, defaultManufacture.getClass().getSimpleName());
+            CompletableFuture<SendResult<String, EntityKafkaTransfer>> reply = creatorTemplate.send("createNewItem", body);
+
+            reply.thenRun(() -> System.out.println("Default manufacture was empty. New one is created in DB"));
+
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
