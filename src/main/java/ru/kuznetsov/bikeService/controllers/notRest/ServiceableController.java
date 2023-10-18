@@ -47,7 +47,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
         }
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
+        model.addAttribute("manufacture", doShowProcedure(thisClassNewObject.getClass().getSimpleName(), manufactureIndex, principal));
         this.addLinkedItemsToModel(model, serviceList);
         this.addItemAttributesShow(model, item, principal);
         return super.show(item, model, principal, category);
@@ -177,11 +177,11 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
 //            throw new RuntimeException(e);
 //        }
 
-        model.addAttribute("allDocuments", documentService.index());
-        model.addAttribute("allFasteners", fastenerService.index());
-        model.addAttribute("allTools", toolService.index());
-        model.addAttribute("allConsumables", consumableService.index());
-        model.addAttribute("allParts", partService.index());
+        model.addAttribute("allDocuments", doIndexProcedure(Document.class.getSimpleName()));
+        model.addAttribute("allFasteners", doIndexProcedure(Fastener.class.getSimpleName()));
+        model.addAttribute("allTools", doIndexProcedure(Tool.class.getSimpleName()));
+        model.addAttribute("allConsumables", doIndexProcedure(Consumable.class.getSimpleName()));
+        model.addAttribute("allParts", doIndexProcedure(Part.class.getSimpleName()));
     }
 
     @Override

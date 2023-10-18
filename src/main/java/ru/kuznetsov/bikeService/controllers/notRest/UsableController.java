@@ -32,7 +32,7 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
             return "redirect:/" + category;
         }
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
+        model.addAttribute("manufacture", doShowProcedure(thisClassNewObject.getClass().getSimpleName(), manufactureIndex, principal));
         this.addItemAttributesShow(model, item, principal);
         return super.show(item, model, principal, category);
     }
@@ -40,13 +40,13 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
 
     @Override
     protected void addItemAttributesNew(Model model, T item, Principal principal) {
-        model.addAttribute("manufacturers", manufacturerService.index());
+        model.addAttribute("manufacturers", doIndexProcedure(thisClassNewObject.getClass().getSimpleName()));
         super.addItemAttributesNew(model, item, principal);
     }
 
     @Override
     protected void addItemAttributesEdit(Model model, T item, Principal principal) {
-        model.addAttribute("manufacture", manufacturerService.getById(item.getManufacturer()));
+        model.addAttribute("manufacture", doShowProcedure(thisClassNewObject.getClass().getSimpleName(), item.getManufacturer(), principal));
         super.addItemAttributesEdit(model, item, principal);
     }
 

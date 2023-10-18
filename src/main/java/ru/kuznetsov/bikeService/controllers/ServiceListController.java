@@ -3,26 +3,31 @@ package ru.kuznetsov.bikeService.controllers;
 import org.springframework.stereotype.Component;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.lists.ServiceList;
-import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
+import ru.bikeservice.mainresources.models.servicable.Part;
+import ru.bikeservice.mainresources.models.showable.Document;
+import ru.bikeservice.mainresources.models.showable.Fastener;
+import ru.bikeservice.mainresources.models.usable.Consumable;
+import ru.bikeservice.mainresources.models.usable.Tool;
+import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 
 import java.util.Set;
 
 @Component
-public class ServiceListController extends AbstractController {
+public class ServiceListController extends AbstractEntityController {
     public ServiceList getServiceList(Set<PartEntity> entityList) {
         ServiceList serviceList = new ServiceList();
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
                 case "Tool" ->
-                        serviceList.addToToolMap(this.toolService.getById(entity.getItemId()), entity.getAmount());
+                        serviceList.addToToolMap(doShowProcedure(Tool.class.getSimpleName(), entity.getItemId()), entity.getAmount());
                 case "Fastener" ->
-                        serviceList.addToFastenerMap(this.fastenerService.getById(entity.getItemId()), entity.getAmount());
+                        serviceList.addToFastenerMap(doShowProcedure(Fastener.class.getSimpleName(), entity.getItemId()), entity.getAmount());
                 case "Consumable" ->
-                        serviceList.addToConsumableMap(this.consumableService.getById(entity.getItemId()), entity.getAmount());
+                        serviceList.addToConsumableMap(doShowProcedure(Consumable.class.getSimpleName(), entity.getItemId()), entity.getAmount());
                 case "Document" ->
-                        serviceList.addToDocumentMap(this.documentService.getById(entity.getItemId()), entity.getAmount());
+                        serviceList.addToDocumentMap(doShowProcedure(Document.class.getSimpleName(), entity.getItemId()), entity.getAmount());
                 case "Part" ->
-                        serviceList.addToPartMap(this.partService.getById(entity.getItemId()), entity.getAmount());
+                        serviceList.addToPartMap(doShowProcedure(Part.class.getSimpleName(), entity.getItemId()), entity.getAmount());
             }
         }
         return serviceList;

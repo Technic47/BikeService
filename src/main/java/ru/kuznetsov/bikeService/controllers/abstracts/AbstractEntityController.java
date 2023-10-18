@@ -62,33 +62,48 @@ public abstract class AbstractEntityController extends AbstractController {
      * Creates List of entities depending on userModel role and shared flag.
      *
      * @param userModel user for whom List is being created.
-     * @param category  category of entities for logging.
+     * @param type      type of entities for logging.
      * @param shared    flag for including shared entities.
      * @param <T>       AbstractShowableEntity from main mainResources.models.
      * @return formed List.
      */
-    protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(final UserModel userModel, final String category, boolean shared) {
+    protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(final UserModel userModel, final String type, boolean shared) {
         List<T> objects = null;
         try {
             if (userModel.getAuthorities().contains(ROLE_USER)) {
-                ShowableGetter body = new ShowableGetter(category, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
+                ShowableGetter body = new ShowableGetter(type, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
                 ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
                 RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
 
                 objects = (List<T>) reply.get().value();
                 if (shared) {
 //                    objects = service.findByCreatorOrShared(userModel.getId());
-                    logger.info("Personal and shared " + category + " are shown to '" + userModel.getUsername() + "'");
+                    logger.info("Personal and shared " + type + " are shown to '" + userModel.getUsername() + "'");
                 } else {
 //                    objects = service.findByCreator(userModel.getId());
-                    logger.info("Personal " + category + " are shown to '" + userModel.getUsername() + "'");
+                    logger.info("Personal " + type + " are shown to '" + userModel.getUsername() + "'");
                 }
             }
             if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
 
 //                objects = service.index();
-                logger.info("All " + category + " are shown to '" + userModel.getUsername() + "'");
+                logger.info("All " + type + " are shown to '" + userModel.getUsername() + "'");
             }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        return objects;
+    }
+
+    protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(final String type) {
+        List<T> objects;
+        try {
+            ShowableGetter body = new ShowableGetter(type, null, 1L, true, true);
+            ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
+            RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
+
+            objects = (List<T>) reply.get().value();
+
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -119,7 +134,7 @@ public abstract class AbstractEntityController extends AbstractController {
     }
 
     /**
-     * Main procedure for showing entity.
+     * Main procedure for showing entity with logging.
      *
      * @param type      type of entities.
      * @param id        id of entity.
@@ -130,6 +145,23 @@ public abstract class AbstractEntityController extends AbstractController {
     protected <T extends AbstractShowableEntity> T doShowProcedure(
             final String type, final Long id, Principal principal
     ) {
+        T item = doShowProcedure(type, id);
+
+        logger.info(item.getClass()
+                .getSimpleName() + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
+        return item;
+    }
+
+    /**
+     * Main procedure for showing entity.
+     *
+     * @param type type of entities.
+     * @param id   id of entity.
+     * @param <T>  AbstractShowableEntity from main models.
+     * @return entity.
+     */
+    protected <T extends AbstractShowableEntity> T doShowProcedure(
+            final String type, final Long id) {
         ShowableGetter body = new ShowableGetter(type, id);
         ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
         RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
@@ -140,9 +172,6 @@ public abstract class AbstractEntityController extends AbstractController {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-
-        logger.info(item.getClass()
-                .getSimpleName() + " " + item.getId() + " was shown to '" + this.getUserModelFromPrincipal(principal).getUsername() + "'");
         return item;
     }
 
