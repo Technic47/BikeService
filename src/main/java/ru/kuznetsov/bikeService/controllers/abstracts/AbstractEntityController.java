@@ -22,12 +22,12 @@ import ru.bikeservice.mainresources.models.dto.PdfEntityDto;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.SearchKafkaDTO;
 import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
+import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.lists.UserEntity;
-import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.showable.Showable;
-import ru.bikeservice.mainresources.services.SearchService;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.IOException;
@@ -38,6 +38,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -48,7 +49,6 @@ import static ru.kuznetsov.bikeService.models.users.UserRole.ROLE_USER;
  * Intermediate layer that includes common methods for REST and non-REST controllers.
  */
 public abstract class AbstractEntityController extends AbstractController {
-    protected SearchService searchService;
     @Autowired
     private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfKafkaTemplate;
     @Autowired
@@ -243,6 +243,28 @@ public abstract class AbstractEntityController extends AbstractController {
 
         logger.info(newItem.getClass()
                 .getSimpleName() + " id:" + oldItem.getId() + " was edited by '" + userModel.getUsername() + "'");
+        return updated;
+    }
+
+    protected AbstractServiceableEntity doLinkedListManipulation(final AbstractServiceableEntity item, final String type, PartEntity entity, int action) {
+        EntityKafkaTransfer body = new EntityKafkaTransfer(item, type);
+        body.setLinkedItems(Set.of(entity));
+        String topic;
+        switch (action) {
+            case 1 -> topic = "addLinkedItem";
+            case 0 -> topic = "delLinkedItem";
+            default -> throw new IllegalArgumentException("Wrong argument 'action'");
+        }
+
+        ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>(topic, body);
+        RequestReplyFuture<String, EntityKafkaTransfer, AbstractShowableEntity> reply = creatorTemplate.sendAndReceive(record);
+
+        AbstractServiceableEntity updated;
+        try {
+            updated = (AbstractServiceableEntity) reply.get().value();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         return updated;
     }
 

@@ -1,8 +1,8 @@
 package ru.kuznetsov.bikeService.services;
 
 import org.springframework.stereotype.Service;
-import ru.bikeservice.mainresources.models.ReplyMessage;
 import ru.bikeservice.mainresources.services.abstracts.AbstractService;
+import ru.kuznetsov.bikeService.models.ReplyMessage;
 import ru.kuznetsov.bikeService.repositories.ReplyMessageRepository;
 
 @Service

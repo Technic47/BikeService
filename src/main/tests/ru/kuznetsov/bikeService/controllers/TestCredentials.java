@@ -9,7 +9,7 @@ import ru.bikeservice.mainresources.models.showable.Fastener;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
-import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.io.File;
 import java.io.FileInputStream;

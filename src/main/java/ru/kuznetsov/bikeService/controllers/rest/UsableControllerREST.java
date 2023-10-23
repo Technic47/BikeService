@@ -7,22 +7,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
+import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.support.EntitySupportService;
-import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
 
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.convertFromDTO;
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.createDtoFrom;
 
-public abstract class UsableControllerREST<T extends AbstractUsableEntity,
-        S extends CommonAbstractEntityService<T>>
-        extends BasicControllerREST<T, S> {
-    protected UsableControllerREST(S service) {
-        super(service);
+public abstract class UsableControllerREST<T extends AbstractUsableEntity>
+        extends BasicControllerREST<T> {
+    protected UsableControllerREST() {
+        super();
     }
 
     @Override
@@ -40,7 +40,7 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
                                     @RequestBody AbstractEntityDtoNew newItem,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
-        T item = service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         T newEntity = convertFromDTO(category, newItem);
         this.checkManufacturer(newEntity);
         T updated = this.update(newEntity, file, item, principal);
@@ -50,7 +50,8 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
     void checkManufacturer(T item) {
         Long manufacturerId = item.getManufacturer();
         if (manufacturerId != null) {
-            if (!manufacturerService.existById(manufacturerId)) {
+            AbstractShowableEntity manufacturer = doShowProcedure(Manufacturer.class.getSimpleName(), manufacturerId);
+            if (manufacturer == null) {
                 throw new ResourceNotFoundException(manufacturerId);
             }
         } else item.setManufacturer(1L);
@@ -58,7 +59,7 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity,
 
     @Override
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
-        T item = this.service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         return this.prepareUsablePDF(item, principal);
     }
 }

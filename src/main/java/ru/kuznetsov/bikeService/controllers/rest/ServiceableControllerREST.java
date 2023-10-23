@@ -14,21 +14,24 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.lists.ServiceList;
+import ru.bikeservice.mainresources.models.servicable.Part;
+import ru.bikeservice.mainresources.models.showable.Document;
+import ru.bikeservice.mainresources.models.showable.Fastener;
 import ru.bikeservice.mainresources.models.showable.Showable;
-import ru.bikeservice.mainresources.services.abstracts.CommonServiceableEntityService;
+import ru.bikeservice.mainresources.models.usable.Consumable;
+import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.kuznetsov.bikeService.controllers.ServiceListController;
 
 import java.security.Principal;
 
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.createDtoFrom;
 
-public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity,
-        S extends CommonServiceableEntityService<T>>
-        extends UsableControllerREST<T, S> {
+public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity>
+        extends UsableControllerREST<T> {
     private ServiceListController serviceListController;
 
-    protected ServiceableControllerREST(S service) {
-        super(service);
+    protected ServiceableControllerREST() {
+        super();
     }
 
     @Operation(summary = "Add linked item to entity")
@@ -48,7 +51,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
                                                @RequestParam(value = "type") String type,
                                                @RequestParam(value = "amount") Integer amount,
                                                Principal principal) {
-        T item = service.getById(itemId);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), itemId);
         Showable itemToAdd = this.checkItem(linkedItemId, type);
         if (this.checkAccessToItem(item, principal)) {
             T updated = this.itemsManipulation(item, 1, itemToAdd.getClass(), linkedItemId, amount);
@@ -73,7 +76,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
                                                  @RequestParam(value = "type") String type,
                                                  @RequestParam(value = "amount") Integer amount,
                                                  Principal principal) {
-        T item = service.getById(itemId);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), itemId);
         Showable itemToAdd = this.checkItem(linkedItemId, type);
         if (this.checkAccessToItem(item, principal)) {
             T updated = this.itemsManipulation(item, 0, itemToAdd.getClass(), linkedItemId, amount);
@@ -82,35 +85,37 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     }
 
     private T itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
-        PartEntity entity = new PartEntity(item.getClass().getSimpleName(),
+        String type = thisClassNewObject.getClass().getSimpleName();
+        PartEntity entity = new PartEntity(type,
                 itemClass.getSimpleName(), id, amount);
-        switch (action) {
-            case 1 -> {
-                return service.addToLinkedItems(item, entity);
-            }
-            case 0 -> {
-                return service.delFromLinkedItems(item, entity);
-            }
-            default -> throw new IllegalArgumentException("Argument 'action' is wrong!");
-        }
+        return (T) doLinkedListManipulation(item, type, entity, action);
+//        switch (action) {
+//            case 1 -> {
+//                return service.addToLinkedItems(item, entity);
+//            }
+//            case 0 -> {
+//                return service.delFromLinkedItems(item, entity);
+//            }
+//            default -> throw new IllegalArgumentException("Argument 'action' is wrong!");
+//        }
     }
 
     Showable checkItem(Long id, String type) {
         switch (type) {
             case "Document", "document" -> {
-                return documentService.getById(id);
+                return doShowProcedure(Document.class.getSimpleName(), id);
             }
             case "Fastener", "fastener" -> {
-                return fastenerService.getById(id);
+                return doShowProcedure(Fastener.class.getSimpleName(), id);
             }
             case "Tool", "tool" -> {
-                return toolService.getById(id);
+                return doShowProcedure(Tool.class.getSimpleName(), id);
             }
             case "Consumable", "consumable" -> {
-                return consumableService.getById(id);
+                return doShowProcedure(Consumable.class.getSimpleName(), id);
             }
             case "Part", "part" -> {
-                return partService.getById(id);
+                return doShowProcedure(Part.class.getSimpleName(), id);
             }
             default -> throw new IllegalArgumentException("Argument 'type' is wrong!");
         }
@@ -118,7 +123,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
 
     @Override
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
-        T item = this.service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
 
         return this.prepareServiceablePDF(item, principal, serviceList);
@@ -134,7 +139,7 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
                     content = @Content)})
     @GetMapping(value = "/{id}/pdfAll")
     public ResponseEntity<Resource> createPdfAll(@PathVariable Long id, Principal principal) {
-        T item = this.service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         ServiceList serviceList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
         return this.prepareServiceablePDF(item, principal, serviceList);

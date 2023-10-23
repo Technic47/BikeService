@@ -8,16 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
-import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
-import java.io.IOException;
 import java.security.Principal;
 
 @Component
-public abstract class UsableController<T extends AbstractUsableEntity, S extends CommonAbstractEntityService<T>>
-        extends BasicController<T, S> {
-    public UsableController(S service) {
-        super(service);
+public abstract class UsableController<T extends AbstractUsableEntity>
+        extends BasicController<T> {
+    public UsableController() {
     }
 
 
@@ -51,8 +48,8 @@ public abstract class UsableController<T extends AbstractUsableEntity, S extends
     }
 
     @Override
-    public ResponseEntity<Resource> createPdf(Long id, Principal principal) throws IOException {
-        T item = this.service.getById(id);
+    public ResponseEntity<Resource> createPdf(Long id, Principal principal) {
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
 
         return this.prepareUsablePDF(item, principal);
     }

@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
@@ -15,6 +16,7 @@ import ru.bikeservice.mainresources.models.showable.Showable;
 import java.util.HashMap;
 import java.util.Map;
 
+@Configuration
 public class CreatorConsumerKafkaConfig extends KafkaConfig {
 
     @Bean
@@ -37,7 +39,7 @@ public class CreatorConsumerKafkaConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, EntityKafkaTransfer> consumerFactory() {
+    public ConsumerFactory<String, EntityKafkaTransfer> creatorConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
@@ -49,10 +51,10 @@ public class CreatorConsumerKafkaConfig extends KafkaConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer>
-    kafkaListenerContainerFactory() {
+    creatorKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(creatorConsumerFactory());
         return factory;
     }
 }

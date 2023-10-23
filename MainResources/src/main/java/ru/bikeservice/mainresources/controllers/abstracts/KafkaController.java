@@ -3,9 +3,9 @@ package ru.bikeservice.mainresources.controllers.abstracts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.KafkaUserDto;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
@@ -21,10 +21,12 @@ import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.bikeservice.mainresources.services.SearchService;
+import ru.bikeservice.mainresources.services.abstracts.AbstractServiceableService;
 import ru.bikeservice.mainresources.services.modelServices.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -53,8 +55,7 @@ public class KafkaController {
         this.searchService = searchService;
     }
 
-    @KafkaListener(topics = "getItems", id = "mainResources")
-    @SendTo
+    @KafkaListener(topics = "getItems", groupId = "mainResourceShow")
     public List<Showable> getShowable(ShowableGetter requestDTO) {
         if (requestDTO.getItemId() != null) {
             List<Showable> list = new ArrayList<>(1);
@@ -204,5 +205,55 @@ public class KafkaController {
         return results;
     }
 
+    @KafkaListener(topics = "addLinkedItem", id = "mainResources")
+    public AbstractShowableEntity addLinkedItem(EntityKafkaTransfer toAdd) {
+        AbstractServiceableEntity item;
+        switch (toAdd.getType()) {
+            case "Part" -> {
+                item = partService.getById(toAdd.getId());
+                setLinkedItems(item, partService, toAdd.getLinkedItems(), 1);
+            }
+            case "Bike" -> {
+                item = bikeService.getById(toAdd.getId());
+                setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 1);
+            }
+            default -> throw new IllegalArgumentException("Wrong type of entity");
+        }
+        return item;
+    }
 
+    @KafkaListener(topics = "delLinkedItem", id = "mainResources")
+    public AbstractServiceableEntity delLinkedItem(EntityKafkaTransfer toAdd) {
+        AbstractServiceableEntity item;
+        switch (toAdd.getType()) {
+            case "Part" -> {
+                item = partService.getById(toAdd.getId());
+                return setLinkedItems(item, partService, toAdd.getLinkedItems(), 0);
+            }
+            case "Bike" -> {
+                item = bikeService.getById(toAdd.getId());
+                return setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 0);
+            }
+            default -> throw new IllegalArgumentException("Wrong type of entity");
+        }
+    }
+
+    private AbstractServiceableEntity setLinkedItems(AbstractServiceableEntity item,
+                                AbstractServiceableService service,
+                                Collection<PartEntity> addList,
+                                int action) {
+        switch (action) {
+            case 1 -> {
+                for (PartEntity partEntity : addList) {
+                    service.addToLinkedItems(item, partEntity);
+                }
+            }
+            case 0 -> {
+                for (PartEntity partEntity : addList) {
+                    service.delFromLinkedItems(item, partEntity);
+                }
+            }
+        }
+        return item;
+    }
 }

@@ -14,7 +14,6 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
 import ru.bikeservice.mainresources.models.support.EntitySupportService;
-import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
@@ -26,15 +25,12 @@ import java.util.Map;
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.*;
 
 
-public abstract class BasicControllerREST<T extends AbstractShowableEntity,
-        S extends CommonAbstractEntityService<T>>
+public abstract class BasicControllerREST<T extends AbstractShowableEntity>
         extends AbstractEntityController {
-    protected final S service;
     protected T thisClassNewObject;
     protected String category;
 
-    protected BasicControllerREST(S service) {
-        this.service = service;
+    protected BasicControllerREST() {
     }
 
     public void setCurrentClass(Class<T> currentClass) {
@@ -123,7 +119,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                                     @RequestBody AbstractEntityDtoNew newItem,
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
-        T item = service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         T newEntity = convertFromDTO(category, newItem);
         T updated = this.update(newEntity, file, item, principal);
         return createDtoFrom(updated);
@@ -145,7 +141,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
                     content = @Content)})
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id, Principal principal) {
-        T item = service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
 
         if (checkAccessToItem(item, principal)) {
             this.doDeleteProcedure(item, thisClassNewObject.getClass().getSimpleName(), principal);
@@ -169,7 +165,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity,
     @GetMapping(value = "/{id}/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@PathVariable Long id, Principal principal) {
-        T item = this.service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         return this.prepareShowablePDF(item, principal);
     }
 }

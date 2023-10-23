@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
-import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractEntityController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
@@ -27,19 +26,15 @@ import java.util.Objects;
  * Abstract non-REST controller that provides general methods and mapping for AbstractShowableEntity models.
  *
  * @param <T> entities from AbstractShowableEntity.
- * @param <S>
  */
 @Component
-public abstract class BasicController<T extends AbstractShowableEntity,
-        S extends CommonAbstractEntityService<T>>
+public abstract class BasicController<T extends AbstractShowableEntity>
         extends AbstractEntityController {
-    protected final S service;
     protected T thisClassNewObject;
     protected String category;
 
 
-    public BasicController(S service) {
-        this.service = service;
+    public BasicController() {
     }
 
     public void setCurrentClass(Class<T> currentClass) {
@@ -197,7 +192,7 @@ public abstract class BasicController<T extends AbstractShowableEntity,
     @GetMapping(value = "/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
-        T item = this.service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         return this.prepareShowablePDF(item, principal);
     }
 

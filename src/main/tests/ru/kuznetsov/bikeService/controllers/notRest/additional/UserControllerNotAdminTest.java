@@ -8,7 +8,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasSize;

@@ -1,7 +1,6 @@
 package ru.bikeservice.mainresources.models.dto.kafka;
 
 import ru.bikeservice.mainresources.models.lists.PartEntity;
-import ru.bikeservice.mainresources.models.servicable.Serviceable;
 import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.models.usable.Usable;
 
@@ -41,9 +40,9 @@ public class EntityKafkaTransfer {
             this.manufacturer = ((Usable) item).getManufacturer();
             this.model = ((Usable) item).getModel();
         }
-        if (item instanceof Serviceable) {
-            this.linkedItems = ((Serviceable) item).getLinkedItems();
-        }
+//        if (item instanceof Serviceable) {
+//            this.linkedItems = ((Serviceable) item).getLinkedItems();
+//        }
     }
 
     public Long getId() {

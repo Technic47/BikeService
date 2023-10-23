@@ -19,20 +19,16 @@ import ru.bikeservice.mainresources.models.showable.Document;
 import ru.bikeservice.mainresources.models.showable.Fastener;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
-import ru.bikeservice.mainresources.services.abstracts.CommonServiceableEntityService;
 import ru.kuznetsov.bikeService.controllers.ServiceListController;
 
-import java.io.IOException;
 import java.security.Principal;
 
 @Component
-public abstract class ServiceableController<T extends AbstractServiceableEntity,
-        S extends CommonServiceableEntityService<T>>
-        extends UsableController<T, S> {
+public abstract class ServiceableController<T extends AbstractServiceableEntity>
+        extends UsableController<T> {
     private ServiceListController serviceListController;
 
-    public ServiceableController(S service) {
-        super(service);
+    public ServiceableController() {
     }
 
     @Operation(hidden = true)
@@ -41,7 +37,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        T item = service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         if (item == null) {
             return "redirect:/" + category;
         }
@@ -57,7 +53,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
     @Override
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable Long id, Principal principal) {
-        T item = service.getById(id);
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         if (item == null) {
             return "redirect:/" + category;
         }
@@ -87,7 +83,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
             @RequestParam(value = "partId", required = false) Long partId,
             @RequestPart(value = "newImage", required = false) MultipartFile file,
             Model model, Principal principal) {
-        T oldItem = service.getById(id);
+        T oldItem = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         item.setLinkedItems(oldItem.getLinkedItems());
         switch (action) {
             case "finish":
@@ -123,22 +119,25 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
                 this.itemsManipulation(item, 0, Part.class, partId, 1);
                 break;
         }
-        service.update(oldItem, item);
+        doUpdateProcedure(item, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
+//        service.update(oldItem, item);
         return editWithItem(model, oldItem, principal);
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
-        PartEntity entity = new PartEntity(thisClassNewObject.getClass().getSimpleName(),
+        String type = thisClassNewObject.getClass().getSimpleName();
+        PartEntity entity = new PartEntity(type,
                 itemClass.getSimpleName(), id, amount);
-        switch (action) {
-            case 1 -> service.addToLinkedItems(item, entity);
-            case 0 -> service.delFromLinkedItems(item, entity);
-        }
+        doLinkedListManipulation(item, type, entity, action);
+//        switch (action) {
+//            case 1 -> service.addToLinkedItems(item, entity);
+//            case 0 -> service.delFromLinkedItems(item, entity);
+//        }
     }
 
     @Override
-    public ResponseEntity<Resource> createPdf(Long id, Principal principal) throws IOException {
-        T item = this.service.getById(id);
+    public ResponseEntity<Resource> createPdf(Long id, Principal principal) {
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         ServiceList generalList = serviceListController.getServiceList(item.getLinkedItems());
 
         return this.prepareServiceablePDF(item, principal, generalList);
@@ -146,8 +145,8 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity,
 
     @Operation(hidden = true)
     @GetMapping(value = "/pdfAll")
-    public ResponseEntity<Resource> createPdfAll(@Param("id") Long id, Principal principal) throws IOException {
-        T item = this.service.getById(id);
+    public ResponseEntity<Resource> createPdfAll(@Param("id") Long id, Principal principal) {
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
         ServiceList generalList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
         return this.prepareServiceablePDF(item, principal, generalList);

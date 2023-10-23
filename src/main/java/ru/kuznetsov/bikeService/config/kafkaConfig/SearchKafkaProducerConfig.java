@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -24,11 +25,12 @@ import java.util.Map;
 
 @Configuration
 public class SearchKafkaProducerConfig extends KafkaConfig{
+    @Value("${kafka.reply.topic.search}")
     private String replySearchMainResources;
 
     @Bean
     public ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>>
-    mainResourcesReplyingKafkaTemplate(
+    searchReplyingKafkaTemplate(
             ProducerFactory<String, SearchKafkaDTO> pf,
             ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory) {
         ConcurrentMessageListenerContainer<String, List<AbstractShowableEntity>> replyContainer =
@@ -39,7 +41,7 @@ public class SearchKafkaProducerConfig extends KafkaConfig{
     }
 
     @Bean
-    public ProducerFactory<String, SearchKafkaDTO> producerFactory() {
+    public ProducerFactory<String, SearchKafkaDTO> searchProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -47,17 +49,17 @@ public class SearchKafkaProducerConfig extends KafkaConfig{
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>>
-    mainResourcesKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(mainResourcesConsumerFactory());
-        return factory;
-    }
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>>
+//    searchKafkaListenerContainerFactory() {
+//        ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory =
+//                new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(searchConsumerFactory());
+//        return factory;
+//    }
 
     @Bean
-    public ConsumerFactory<String, List<AbstractShowableEntity>> mainResourcesConsumerFactory() {
+    public ConsumerFactory<String, List<AbstractShowableEntity>> searchConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);

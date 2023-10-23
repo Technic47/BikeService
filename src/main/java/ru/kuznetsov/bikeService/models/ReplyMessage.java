@@ -1,4 +1,4 @@
-package ru.bikeservice.mainresources.models;
+package ru.kuznetsov.bikeService.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

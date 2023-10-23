@@ -21,6 +21,7 @@ public class Starter extends SpringBootServletInitializer {
 }
 
 /*TODO
+- Thread name to logging
 - REST API module ???
 - admin module
 - logOut user work (active true/false) User may stay active.

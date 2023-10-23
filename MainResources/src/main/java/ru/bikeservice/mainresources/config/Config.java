@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.kafka.annotation.EnableKafka;
 
 import javax.sql.DataSource;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@EnableKafka
 @Configuration
 public class Config {
     public static String UPLOAD_PATH;
@@ -22,11 +24,6 @@ public class Config {
     private String username;
     @Value("${spring.datasource.password}")
     private String password;
-
-//    @Bean
-//    public static PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 
     @Value("${upload.path}")
     private void setUploadPath() {
@@ -53,4 +50,39 @@ public class Config {
         dataSource.setPassword(password);
         return dataSource;
     }
+
+//    @Bean
+//    public DocumentService getDocumentService(DocumentRepository repository){
+//        return new DocumentService(repository);
+//    }
+//
+//    @Bean
+//    public FastenerService getFastenerService(FastenerRepository repository){
+//        return new FastenerService(repository);
+//    }
+//
+//    @Bean
+//    public ManufacturerService getManufacturerService(ManufacturerRepository repository){
+//        return new ManufacturerService(repository);
+//    }
+//
+//    @Bean
+//    public ConsumableService getConsumableService(ConsumableRepository repository){
+//        return new ConsumableService(repository);
+//    }
+//
+//    @Bean
+//    public ToolService getToolService(ToolRepository repository){
+//        return new ToolService(repository);
+//    }
+//
+//    @Bean
+//    public PartService getPartService(PartRepository repository){
+//        return new PartService(repository);
+//    }
+//
+//    @Bean
+//    public BikeService getBikeService(BikeRepository repository){
+//        return new BikeService(repository);
+//    }
 }

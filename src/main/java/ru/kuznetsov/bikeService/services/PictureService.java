@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.controllers.abstracts.KafkaController;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
-import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.services.abstracts.AbstractService;
+import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.repositories.PictureRepository;
 
 import javax.imageio.ImageIO;

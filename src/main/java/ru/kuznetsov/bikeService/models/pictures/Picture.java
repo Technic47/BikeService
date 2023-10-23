@@ -1,4 +1,4 @@
-package ru.bikeservice.mainresources.models.pictures;
+package ru.kuznetsov.bikeService.models.pictures;
 
 import jakarta.persistence.*;
 
