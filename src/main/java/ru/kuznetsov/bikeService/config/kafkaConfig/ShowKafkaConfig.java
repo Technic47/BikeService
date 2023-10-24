@@ -20,20 +20,19 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class MainResourcesKafkaConfig extends KafkaConfig {
-    @Value("${kafka.reply.topic.mainResources}")
+public class ShowKafkaConfig extends KafkaConfig {
+    @Value("${kafka.reply.topic.show}")
     private String replyMainResources;
 
     @Bean
-    public ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>>
-    mainResourcesReplyingKafkaTemplate(
+    public ReplyingKafkaTemplate<String, ShowableGetter, AbstractShowableEntity>
+    showReplyingKafkaTemplate(
             ProducerFactory<String, ShowableGetter> pf,
-            ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory) {
-        ConcurrentMessageListenerContainer<String, List<AbstractShowableEntity>> replyContainer =
+            ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity> factory) {
+        ConcurrentMessageListenerContainer<String, AbstractShowableEntity> replyContainer =
                 factory.createContainer(replyMainResources);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
@@ -41,7 +40,7 @@ public class MainResourcesKafkaConfig extends KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, ShowableGetter> producerFactory() {
+    public ProducerFactory<String, ShowableGetter> showProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -50,16 +49,16 @@ public class MainResourcesKafkaConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>>
+    public ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity>
     mainResourcesKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory =
+        ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(mainResourcesConsumerFactory());
+        factory.setConsumerFactory(showConsumerFactory());
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, List<AbstractShowableEntity>> mainResourcesConsumerFactory() {
+    public ConsumerFactory<String, AbstractShowableEntity> showConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);

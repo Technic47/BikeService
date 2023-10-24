@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
-import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
+import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
 import ru.bikeservice.mainresources.models.showable.Document;
@@ -33,10 +33,11 @@ import static ru.bikeservice.mainresources.models.support.EntitySupportService.c
 @RestController
 @RequestMapping("/api/users")
 public class UserControllerREST extends AbstractController {
-    private final ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, List<AbstractShowableEntity>> indexKafkaTemplate;
 
-    public UserControllerREST(ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate) {
-        this.mainResourcesKafkaTemplate = mainResourcesKafkaTemplate;
+    public UserControllerREST(ReplyingKafkaTemplate<String,
+            IndexKafkaDTO, List<AbstractShowableEntity>> indexKafkaTemplate) {
+        this.indexKafkaTemplate = indexKafkaTemplate;
     }
 
     @GetMapping()
@@ -67,9 +68,9 @@ public class UserControllerREST extends AbstractController {
     }
 
     private List<AbstractShowableEntity> getItems(String type, Long id) throws ExecutionException, InterruptedException {
-        ShowableGetter body = new ShowableGetter(type, null, id, false, false);
-        ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
-        RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
+        IndexKafkaDTO body = new IndexKafkaDTO(type, id, false, false);
+        ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
+        RequestReplyFuture<String, IndexKafkaDTO, List<AbstractShowableEntity>> reply = indexKafkaTemplate.sendAndReceive(record);
 
         return reply.get().value();
     }

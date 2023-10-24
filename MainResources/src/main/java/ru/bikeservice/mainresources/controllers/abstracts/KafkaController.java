@@ -1,5 +1,6 @@
 package ru.bikeservice.mainresources.controllers.abstracts;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +13,7 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.KafkaUserDto;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
+import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 import ru.bikeservice.mainresources.models.dto.kafka.SearchKafkaDTO;
 import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
@@ -54,7 +56,7 @@ public class KafkaController {
                            ToolService toolService,
                            PartService partService,
                            BikeService bikeService,
-                           @Qualifier("MainExecutor") ExecutorService mainExecutor ,
+                           @Qualifier("MainExecutor") ExecutorService mainExecutor,
                            SearchService searchService) {
         this.documentService = documentService;
         this.fastenerService = fastenerService;
@@ -67,65 +69,76 @@ public class KafkaController {
         this.searchService = searchService;
     }
 
-    @KafkaListener(topics = "getItems", groupId = "showIndex")
-    @SendTo
-    public List<Showable> getShowable(ShowableGetter requestDTO) {
+    @KafkaListener(topics = "showEntity", groupId = "showEntity")
+//    @SendTo
+    public Showable getShowable(ShowableGetter requestDTO) {
         if (requestDTO.getItemId() != null) {
-            List<Showable> list = new ArrayList<>(1);
+            Showable item = null;
             String category = requestDTO.getType();
             switch (category) {
-                case "Document" -> list.add(documentService.getById(requestDTO.getItemId()));
-                case "Fastener" -> list.add(fastenerService.getById(requestDTO.getItemId()));
-                case "Manufacture" -> list.add(manufacturerService.getById(requestDTO.getItemId()));
-                case "Consumable" -> list.add(consumableService.getById(requestDTO.getItemId()));
-                case "Tool" -> list.add(toolService.getById(requestDTO.getItemId()));
-                case "Part" -> list.add(partService.getById(requestDTO.getItemId()));
-                case "Bike" -> list.add(bikeService.getById(requestDTO.getItemId()));
+                case "Document" -> item = documentService.getById(requestDTO.getItemId());
+                case "Fastener" -> item = fastenerService.getById(requestDTO.getItemId());
+                case "Manufacture" -> item = manufacturerService.getById(requestDTO.getItemId());
+                case "Consumable" -> item = consumableService.getById(requestDTO.getItemId());
+                case "Tool" -> item = toolService.getById(requestDTO.getItemId());
+                case "Part" -> item = partService.getById(requestDTO.getItemId());
+                case "Bike" -> item = bikeService.getById(requestDTO.getItemId());
             }
-            return list;
+            return item;
         }
+        return null;
+    }
 
-        if (requestDTO.getUserId() != null) {
-            List<Showable> list = new ArrayList<>();
-            String category = requestDTO.getType();
-            if (!requestDTO.isAdmin()) {
-                if (requestDTO.isShared()) {
-                    switch (category) {
-                        case "Document" -> list.addAll(documentService.findByCreatorOrShared(requestDTO.getUserId()));
-                        case "Fastener" -> list.addAll(fastenerService.findByCreatorOrShared(requestDTO.getUserId()));
-                        case "Manufacture" ->
-                                list.addAll(manufacturerService.findByCreatorOrShared(requestDTO.getUserId()));
-                        case "Consumable" ->
-                                list.addAll(consumableService.findByCreatorOrShared(requestDTO.getUserId()));
-                        case "Tool" -> list.addAll(toolService.findByCreatorOrShared(requestDTO.getUserId()));
-                        case "Part" -> list.addAll(partService.findByCreatorOrShared(requestDTO.getUserId()));
-                        case "Bike" -> list.addAll(bikeService.findByCreatorOrShared(requestDTO.getUserId()));
-                    }
-                } else {
-                    switch (category) {
-                        case "Document" -> list.addAll(documentService.findByCreator(requestDTO.getUserId()));
-                        case "Fastener" -> list.addAll(fastenerService.findByCreator(requestDTO.getUserId()));
-                        case "Manufacture" -> list.addAll(manufacturerService.findByCreator(requestDTO.getUserId()));
-                        case "Consumable" -> list.addAll(consumableService.findByCreator(requestDTO.getUserId()));
-                        case "Tool" -> list.addAll(toolService.findByCreator(requestDTO.getUserId()));
-                        case "Part" -> list.addAll(partService.findByCreator(requestDTO.getUserId()));
-                        case "Bike" -> list.addAll(bikeService.findByCreator(requestDTO.getUserId()));
-                    }
+    @KafkaListener(topics = "showIndex",
+            groupId = "showIndex",
+            containerFactory = "indexListenerContainerFactory")
+    @SendTo
+    public AbstractShowableEntity[] index(ConsumerRecord<String, IndexKafkaDTO>  data
+//                                            ,IndexKafkaDTO requestDTO
+    ) {
+        IndexKafkaDTO requestDTO = data.value();
+        System.out.println(data.value());
+        System.out.println(data.key());
+        System.out.println(data.headers());
+        List<AbstractShowableEntity> list = new ArrayList<>();
+        String category = requestDTO.getType();
+        if (!requestDTO.isAdmin()) {
+            if (requestDTO.isShared()) {
+                switch (category) {
+                    case "Document" -> list.addAll(documentService.findByCreatorOrShared(requestDTO.getUserId()));
+                    case "Fastener" -> list.addAll(fastenerService.findByCreatorOrShared(requestDTO.getUserId()));
+                    case "Manufacture" ->
+                            list.addAll(manufacturerService.findByCreatorOrShared(requestDTO.getUserId()));
+                    case "Consumable" -> list.addAll(consumableService.findByCreatorOrShared(requestDTO.getUserId()));
+                    case "Tool" -> list.addAll(toolService.findByCreatorOrShared(requestDTO.getUserId()));
+                    case "Part" -> list.addAll(partService.findByCreatorOrShared(requestDTO.getUserId()));
+                    case "Bike" -> list.addAll(bikeService.findByCreatorOrShared(requestDTO.getUserId()));
                 }
             } else {
                 switch (category) {
-                    case "Document" -> list.addAll(documentService.index());
-                    case "Fastener" -> list.addAll(fastenerService.index());
-                    case "Manufacture" -> list.addAll(manufacturerService.index());
-                    case "Consumable" -> list.addAll(consumableService.index());
-                    case "Tool" -> list.addAll(toolService.index());
-                    case "Part" -> list.addAll(partService.index());
-                    case "Bike" -> list.addAll(bikeService.index());
+                    case "Document" -> list.addAll(documentService.findByCreator(requestDTO.getUserId()));
+                    case "Fastener" -> list.addAll(fastenerService.findByCreator(requestDTO.getUserId()));
+                    case "Manufacture" -> list.addAll(manufacturerService.findByCreator(requestDTO.getUserId()));
+                    case "Consumable" -> list.addAll(consumableService.findByCreator(requestDTO.getUserId()));
+                    case "Tool" -> list.addAll(toolService.findByCreator(requestDTO.getUserId()));
+                    case "Part" -> list.addAll(partService.findByCreator(requestDTO.getUserId()));
+                    case "Bike" -> list.addAll(bikeService.findByCreator(requestDTO.getUserId()));
                 }
             }
-            return list;
+        } else {
+            switch (category) {
+                case "Document" -> list.addAll(documentService.index());
+                case "Fastener" -> list.addAll(fastenerService.index());
+                case "Manufacture" -> list.addAll(manufacturerService.index());
+                case "Consumable" -> list.addAll(consumableService.index());
+                case "Tool" -> list.addAll(toolService.index());
+                case "Part" -> list.addAll(partService.index());
+                case "Bike" -> list.addAll(bikeService.index());
+            }
         }
-        return null;
+        System.out.println("Index is done.");
+        System.out.println(list.size() + " items in list.");
+        return list.toArray(new AbstractShowableEntity[0]);
     }
 
     @KafkaListener(topics = "createNewItem", id = "newEntity")
@@ -252,9 +265,9 @@ public class KafkaController {
     }
 
     private AbstractServiceableEntity setLinkedItems(AbstractServiceableEntity item,
-                                AbstractServiceableService service,
-                                Collection<PartEntity> addList,
-                                int action) {
+                                                     AbstractServiceableService service,
+                                                     Collection<PartEntity> addList,
+                                                     int action) {
         switch (action) {
             case 1 -> {
                 for (PartEntity partEntity : addList) {

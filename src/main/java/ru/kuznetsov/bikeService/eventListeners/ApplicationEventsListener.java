@@ -6,15 +6,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
-import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
-import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
-import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 import ru.kuznetsov.bikeService.models.events.OnRegistrationCompleteEvent;
 import ru.kuznetsov.bikeService.models.events.ResentTokenEvent;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
@@ -23,7 +19,6 @@ import ru.kuznetsov.bikeService.services.PictureService;
 import ru.kuznetsov.bikeService.services.UserService;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
@@ -36,22 +31,16 @@ public class ApplicationEventsListener {
     private final UserService userService;
     private final ExecutorService mainExecutor;
     private final KafkaTemplate<String, byte[]> emailTemplate;
-    private final ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
-    private final ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemplate;
 
     @Autowired
     public ApplicationEventsListener(PictureService pictureService,
                                      VerificationTokenService tokenService, UserService userService, @Qualifier("MainExecutor") ExecutorService mainExecutor,
-                                     KafkaTemplate<String, byte[]> emailTemplate,
-                                     ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate,
-                                     ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemlate) {
+                                     KafkaTemplate<String, byte[]> emailTemplate) {
         this.pictureService = pictureService;
         this.tokenService = tokenService;
         this.userService = userService;
         this.mainExecutor = mainExecutor;
         this.emailTemplate = emailTemplate;
-        this.mainResourcesKafkaTemplate = mainResourcesKafkaTemplate;
-        this.creatorTemplate = creatorTemlate;
     }
 
     //Checking for default picture and manufacture in db.

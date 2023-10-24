@@ -2,6 +2,7 @@ package ru.kuznetsov.bikeService.config.kafkaConfig;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,19 +17,33 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import ru.bikeservice.mainresources.config.KafkaConfig;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
-import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
+import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
-public class CreatorProducerKafkaConfig extends KafkaConfig {
-    @Value("${kafka.reply.topic.creator}")
-    private String creatorReplyTopic;
+public class IndexProducerConfig extends KafkaConfig {
+    @Value("${kafka.reply.topic.index}")
+    private String replyIndex;
 
     @Bean
-    public ProducerFactory<String, EntityKafkaTransfer> creatorProducerFactory() {
+    public ReplyingKafkaTemplate<String, IndexKafkaDTO, List<AbstractShowableEntity>>
+    indexReplyingKafkaTemplate(
+            ProducerFactory<String, IndexKafkaDTO> pf,
+            ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory) {
+        ConcurrentMessageListenerContainer<String, List<AbstractShowableEntity>> replyContainer =
+                factory.createContainer(replyIndex);
+        replyContainer.getContainerProperties().setMissingTopicsFatal(false);
+        replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
+        return new ReplyingKafkaTemplate<>(pf, replyContainer);
+    }
+
+    @Bean
+    public ProducerFactory<String, IndexKafkaDTO> indexProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -36,36 +51,25 @@ public class CreatorProducerKafkaConfig extends KafkaConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-
     @Bean
-    public ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorReplyingKafkaTemplate(
-            ProducerFactory<String, EntityKafkaTransfer> pf,
-            ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity> factory) {
-        ConcurrentMessageListenerContainer<String, AbstractShowableEntity> replyContainer =
-                factory.createContainer(creatorReplyTopic);
-        replyContainer.getContainerProperties().setMissingTopicsFatal(false);
-        replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
-        return new ReplyingKafkaTemplate<>(pf, replyContainer);
+    public ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>>
+    indexKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(indexConsumerFactory());
+        factory.setBatchListener(true);
+        return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, AbstractShowableEntity> creatorConsumerFactory() {
+    public ConsumerFactory<String, List<AbstractShowableEntity>> indexConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return new DefaultKafkaConsumerFactory<>(props);
     }
-
-//    @Bean
-//    public ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity>
-//    creatorKafkaListenerContainerFactory() {
-//        ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity> factory =
-//                new ConcurrentKafkaListenerContainerFactory<>();
-//        factory.setConsumerFactory(creatorConsumerFactory());
-//        return factory;
-//    }
 }

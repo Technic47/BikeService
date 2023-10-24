@@ -28,7 +28,8 @@ public class PdfKafkaConfig extends KafkaConfig {
     private String replyTopicPdf;
 
     @Bean
-    public ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfReplyingKafkaTemplate(
+    public ReplyingKafkaTemplate<String, PdfEntityDto, byte[]>
+    pdfReplyingKafkaTemplate(
             ProducerFactory<String, PdfEntityDto> pf,
             ConcurrentKafkaListenerContainerFactory<String, byte[]> factory) {
         ConcurrentMessageListenerContainer<String, byte[]> replyContainer =

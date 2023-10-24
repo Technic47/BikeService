@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
-import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
+import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
 import ru.bikeservice.mainresources.models.showable.Document;
@@ -38,12 +38,14 @@ import java.util.concurrent.ExecutionException;
 public class UserController extends AbstractController {
     private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenService tokenService;
-    private final ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, List<AbstractShowableEntity>> indexKafkaTemplate;
 
-    public UserController(ApplicationEventPublisher eventPublisher, VerificationTokenService tokenService, ReplyingKafkaTemplate<String, ShowableGetter, List<AbstractShowableEntity>> mainResourcesKafkaTemplate) {
+    public UserController(ApplicationEventPublisher eventPublisher,
+                          VerificationTokenService tokenService,
+                          ReplyingKafkaTemplate<String, IndexKafkaDTO, List<AbstractShowableEntity>> indexKafkaTemplate) {
         this.eventPublisher = eventPublisher;
         this.tokenService = tokenService;
-        this.mainResourcesKafkaTemplate = mainResourcesKafkaTemplate;
+        this.indexKafkaTemplate = indexKafkaTemplate;
     }
 
 
@@ -119,9 +121,10 @@ public class UserController extends AbstractController {
     }
 
     private List<AbstractShowableEntity> getItems(String type, Long id) throws ExecutionException, InterruptedException {
-        ShowableGetter body = new ShowableGetter(type, null, id, false, false);
-        ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
-        RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
+//        ShowableGetter body = new ShowableGetter(type, null, id, false, false);
+        IndexKafkaDTO body = new IndexKafkaDTO(type, id, false, false);
+        ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
+        RequestReplyFuture<String, IndexKafkaDTO, List<AbstractShowableEntity>> reply = indexKafkaTemplate.sendAndReceive(record);
 
         return reply.get().value();
     }
