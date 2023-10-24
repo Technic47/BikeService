@@ -2,7 +2,10 @@ package ru.bikeservice.mainresources.controllers.abstracts;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
@@ -31,6 +34,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
+@Component
 public class KafkaController {
     public final static Logger logger = LoggerFactory.getLogger("MainResourcesLogger");
     protected final DocumentService documentService;
@@ -43,7 +47,15 @@ public class KafkaController {
     protected final ExecutorService mainExecutor;
     protected final SearchService searchService;
 
-    public KafkaController(DocumentService documentService, FastenerService fastenerService, ManufacturerService manufacturerService, ConsumableService consumableService, ToolService toolService, PartService partService, BikeService bikeService, ExecutorService mainExecutor, SearchService searchService) {
+    public KafkaController(DocumentService documentService,
+                           FastenerService fastenerService,
+                           ManufacturerService manufacturerService,
+                           ConsumableService consumableService,
+                           ToolService toolService,
+                           PartService partService,
+                           BikeService bikeService,
+                           @Qualifier("MainExecutor") ExecutorService mainExecutor ,
+                           SearchService searchService) {
         this.documentService = documentService;
         this.fastenerService = fastenerService;
         this.manufacturerService = manufacturerService;
@@ -55,7 +67,8 @@ public class KafkaController {
         this.searchService = searchService;
     }
 
-    @KafkaListener(topics = "getItems", groupId = "mainResourceShow")
+    @KafkaListener(topics = "getItems", groupId = "showIndex")
+    @SendTo
     public List<Showable> getShowable(ShowableGetter requestDTO) {
         if (requestDTO.getItemId() != null) {
             List<Showable> list = new ArrayList<>(1);
@@ -115,7 +128,7 @@ public class KafkaController {
         return null;
     }
 
-    @KafkaListener(topics = "createNewItem", id = "mainResources")
+    @KafkaListener(topics = "createNewItem", id = "newEntity")
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     public void createEntity(EntityKafkaTransfer dtoNew) {
         switch (dtoNew.getType()) {
@@ -129,7 +142,7 @@ public class KafkaController {
         }
     }
 
-    @KafkaListener(topics = "updateItem", id = "mainResources")
+    @KafkaListener(topics = "updateItem", id = "updateEntity")
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     public AbstractShowableEntity updateEntity(EntityKafkaTransfer dtoToUpdate) {
         AbstractShowableEntity updated = null;
@@ -146,7 +159,7 @@ public class KafkaController {
         return updated;
     }
 
-    @KafkaListener(topics = "deleteItem", id = "mainResources")
+    @KafkaListener(topics = "deleteItem", id = "deleteEntity")
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     public void deleteEntity(EntityKafkaTransfer dtoToDelete) {
         switch (dtoToDelete.getType()) {
@@ -205,7 +218,7 @@ public class KafkaController {
         return results;
     }
 
-    @KafkaListener(topics = "addLinkedItem", id = "mainResources")
+    @KafkaListener(topics = "addLinkedItem", id = "addLinkedItem")
     public AbstractShowableEntity addLinkedItem(EntityKafkaTransfer toAdd) {
         AbstractServiceableEntity item;
         switch (toAdd.getType()) {
@@ -222,7 +235,7 @@ public class KafkaController {
         return item;
     }
 
-    @KafkaListener(topics = "delLinkedItem", id = "mainResources")
+    @KafkaListener(topics = "delLinkedItem", id = "delLinkedItem")
     public AbstractServiceableEntity delLinkedItem(EntityKafkaTransfer toAdd) {
         AbstractServiceableEntity item;
         switch (toAdd.getType()) {

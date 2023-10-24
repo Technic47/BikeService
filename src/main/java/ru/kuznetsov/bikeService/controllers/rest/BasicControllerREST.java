@@ -62,7 +62,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity>
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else objects = doIndexProcedure(userModel, category, shared);
+        } else objects = doIndexProcedure(userModel, thisClassNewObject.getClass().getSimpleName(), shared);
 
         List<T> sortedList = sortBasic(objects, sort);
 
@@ -81,7 +81,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity>
                                     @RequestPart(value = "newImage", required = false) MultipartFile file,
                                     Principal principal) {
         T item = EntitySupportService.convertFromDTO(category, itemDto);
-        T createdItem = this.doCreateProcedure(item, file, principal, category);
+        T createdItem = this.doCreateProcedure(item, file, principal, thisClassNewObject.getClass().getSimpleName());
         return createDtoFrom(createdItem);
     }
 
@@ -97,7 +97,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity>
                     content = @Content)})
     @GetMapping("/{id}")
     public AbstractEntityDto show(@PathVariable("id") Long id, Principal principal) {
-        T item = this.doShowProcedure(category, id, principal);
+        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
         if (checkAccessToItem(item, principal)) {
             return createDtoFrom(item);
         } else throw new AccessToResourceDenied(item.getId());
@@ -127,7 +127,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity>
 
     public T update(T newItem, MultipartFile file, T oldItem, Principal principal) {
         if (checkAccessToItem(oldItem, principal)) {
-            return this.doUpdateProcedure(newItem, category, oldItem, file, principal);
+            return this.doUpdateProcedure(newItem, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
         } else throw new AccessToResourceDenied(oldItem.getId());
     }
 

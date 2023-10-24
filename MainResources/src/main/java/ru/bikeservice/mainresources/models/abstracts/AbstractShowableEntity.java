@@ -11,13 +11,14 @@ import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.showable.Showable;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractShowableEntity
-        implements Showable, Comparable<AbstractShowableEntity> {
+        implements Showable, Comparable<AbstractShowableEntity>, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

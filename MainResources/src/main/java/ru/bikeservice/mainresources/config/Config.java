@@ -50,39 +50,4 @@ public class Config {
         dataSource.setPassword(password);
         return dataSource;
     }
-
-//    @Bean
-//    public DocumentService getDocumentService(DocumentRepository repository){
-//        return new DocumentService(repository);
-//    }
-//
-//    @Bean
-//    public FastenerService getFastenerService(FastenerRepository repository){
-//        return new FastenerService(repository);
-//    }
-//
-//    @Bean
-//    public ManufacturerService getManufacturerService(ManufacturerRepository repository){
-//        return new ManufacturerService(repository);
-//    }
-//
-//    @Bean
-//    public ConsumableService getConsumableService(ConsumableRepository repository){
-//        return new ConsumableService(repository);
-//    }
-//
-//    @Bean
-//    public ToolService getToolService(ToolRepository repository){
-//        return new ToolService(repository);
-//    }
-//
-//    @Bean
-//    public PartService getPartService(PartRepository repository){
-//        return new PartService(repository);
-//    }
-//
-//    @Bean
-//    public BikeService getBikeService(BikeRepository repository){
-//        return new BikeService(repository);
-//    }
 }

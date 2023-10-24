@@ -1,11 +1,16 @@
 package ru.bikeservice.mainresources.models.dto.kafka;
 
-public class ShowableGetter {
+import java.io.Serializable;
+
+public class ShowableGetter implements Serializable {
     private String type;
     private Long itemId;
     private Long userId;
     private boolean admin;
     private boolean shared;
+
+    public ShowableGetter() {
+    }
 
     public ShowableGetter(String type, Long itemId, Long userId, boolean admin, boolean shared) {
         this.type = type;

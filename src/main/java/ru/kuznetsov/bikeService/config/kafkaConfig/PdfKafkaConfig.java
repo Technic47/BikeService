@@ -27,7 +27,6 @@ public class PdfKafkaConfig extends KafkaConfig {
     @Value("${kafka.reply.topic.pdf}")
     private String replyTopicPdf;
 
-
     @Bean
     public ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfReplyingKafkaTemplate(
             ProducerFactory<String, PdfEntityDto> pf,

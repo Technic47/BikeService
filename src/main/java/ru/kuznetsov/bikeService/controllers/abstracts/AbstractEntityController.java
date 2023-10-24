@@ -1,5 +1,6 @@
 package ru.kuznetsov.bikeService.controllers.abstracts;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -68,14 +69,14 @@ public abstract class AbstractEntityController extends AbstractController {
      * @return formed List.
      */
     protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(final UserModel userModel, final String type, boolean shared) {
-        List<T> objects = null;
+        List<T> objects;
         try {
-            if (userModel.getAuthorities().contains(ROLE_USER)) {
-                ShowableGetter body = new ShowableGetter(type, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
-                ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
-                RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
+            ShowableGetter body = new ShowableGetter(type, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
+            ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("getItems", body);
+            RequestReplyFuture<String, ShowableGetter, List<AbstractShowableEntity>> reply = mainResourcesKafkaTemplate.sendAndReceive(record);
 
-                objects = (List<T>) reply.get().value();
+            objects = (List<T>) reply.get().value();
+            if (userModel.getAuthorities().contains(ROLE_USER)) {
                 if (shared) {
 //                    objects = service.findByCreatorOrShared(userModel.getId());
                     logger.info("Personal and shared " + type + " are shown to '" + userModel.getUsername() + "'");
@@ -168,7 +169,8 @@ public abstract class AbstractEntityController extends AbstractController {
 
         T item;
         try {
-            item = (T) reply.get().value().get(0);
+            ConsumerRecord<String, List<AbstractShowableEntity>> stringListConsumerRecord = reply.get();
+            item = (T) stringListConsumerRecord.value().get(0);
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
