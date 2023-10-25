@@ -11,8 +11,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
-import ru.bikeservice.mainresources.models.showable.Showable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.Map;
 @Configuration
 public class KafkaIndexConfig extends KafkaConfig {
     @Bean
-    public ProducerFactory<String, Showable[]> indexProducerFactory() {
+    public ProducerFactory<String, EntityKafkaTransfer[]> indexProducerFactory() {
         Map<String, Object> producerProps = new HashMap<>();
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -30,10 +30,10 @@ public class KafkaIndexConfig extends KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Showable[]> indexKafkaTemplate(
-            ProducerFactory<String, Showable[]> pf,
+    public KafkaTemplate<String, EntityKafkaTransfer[]> indexKafkaTemplate(
+            ProducerFactory<String, EntityKafkaTransfer[]> pf,
             ConcurrentKafkaListenerContainerFactory<String, IndexKafkaDTO> factory) {
-        KafkaTemplate<String, Showable[]> kafkaTemplate = new KafkaTemplate<>(pf);
+        KafkaTemplate<String, EntityKafkaTransfer[]> kafkaTemplate = new KafkaTemplate<>(pf);
         factory.getContainerProperties().setMissingTopicsFatal(false);
         factory.setReplyTemplate(kafkaTemplate);
         return kafkaTemplate;

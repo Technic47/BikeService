@@ -17,7 +17,7 @@ import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import ru.bikeservice.mainresources.config.KafkaConfig;
-import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 
 import java.util.HashMap;
@@ -29,11 +29,11 @@ public class IndexProducerConfig extends KafkaConfig {
     private String replyIndex;
 
     @Bean
-    public ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]>
+    public ReplyingKafkaTemplate<String, IndexKafkaDTO, EntityKafkaTransfer[]>
     indexReplyingKafkaTemplate(
             ProducerFactory<String, IndexKafkaDTO> pf,
-            ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity[]> factory) {
-        ConcurrentMessageListenerContainer<String, AbstractShowableEntity[]> replyContainer =
+            ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer[]> factory) {
+        ConcurrentMessageListenerContainer<String, EntityKafkaTransfer[]> replyContainer =
                 factory.createContainer(replyIndex);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
@@ -50,9 +50,9 @@ public class IndexProducerConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity[]>
+    public ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer[]>
     indexKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity[]> factory =
+        ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer[]> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(indexConsumerFactory());
         factory.setBatchListener(true);
@@ -60,7 +60,7 @@ public class IndexProducerConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, AbstractShowableEntity[]> indexConsumerFactory() {
+    public ConsumerFactory<String, EntityKafkaTransfer[]> indexConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);

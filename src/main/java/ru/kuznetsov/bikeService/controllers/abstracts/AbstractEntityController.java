@@ -49,7 +49,7 @@ public abstract class AbstractEntityController extends AbstractController {
     @Autowired
     protected ReplyingKafkaTemplate<String, ShowableGetter, EntityKafkaTransfer> showKafkaTemplate;
     @Autowired
-    protected ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate;
+    protected ReplyingKafkaTemplate<String, IndexKafkaDTO, EntityKafkaTransfer[]> indexKafkaTemplate;
     @Autowired
     protected ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemplate;
     @Autowired
@@ -70,13 +70,13 @@ public abstract class AbstractEntityController extends AbstractController {
 //            ShowableGetter body = new ShowableGetter(type, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
             IndexKafkaDTO body = new IndexKafkaDTO(type, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
             ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
-            RequestReplyFuture<String, IndexKafkaDTO, AbstractShowableEntity[]> reply = indexKafkaTemplate.sendAndReceive(record);
+            RequestReplyFuture<String, IndexKafkaDTO, EntityKafkaTransfer[]> reply = indexKafkaTemplate.sendAndReceive(record);
 
             objects = new ArrayList<>();
             System.out.println(record.headers());
-            AbstractShowableEntity[] array = reply.get().value();
-            for (AbstractShowableEntity item : array) {
-                objects.add((T) item);
+            EntityKafkaTransfer[] array = reply.get().value();
+            for (EntityKafkaTransfer item : array) {
+                objects.add((T) item.getEntity());
             }
 
             if (userModel.getAuthorities().contains(ROLE_USER)) {
@@ -105,13 +105,12 @@ public abstract class AbstractEntityController extends AbstractController {
 //            ShowableGetter body = new ShowableGetter(type, null, 1L, true, true);
             IndexKafkaDTO body = new IndexKafkaDTO(type, 1L, true, true);
             ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
-            RequestReplyFuture<String, IndexKafkaDTO, AbstractShowableEntity[]> reply = indexKafkaTemplate.sendAndReceive(record);
+            RequestReplyFuture<String, IndexKafkaDTO, EntityKafkaTransfer[]> reply = indexKafkaTemplate.sendAndReceive(record);
 
             objects = new ArrayList<>();
-            System.out.println(record.headers());
-            AbstractShowableEntity[] array = reply.get().value();
-            for (AbstractShowableEntity item : array) {
-                objects.add((T) item);
+            EntityKafkaTransfer[] array = reply.get().value();
+            for (EntityKafkaTransfer item : array) {
+                objects.add((T) item.getEntity());
             }
 
         } catch (InterruptedException | ExecutionException e) {
@@ -179,8 +178,9 @@ public abstract class AbstractEntityController extends AbstractController {
         T item;
         try {
             EntityKafkaTransfer value = reply.get().value();
+            AbstractShowableEntity entity = value.getEntity();
 
-            item = (T) value.getEntity();
+            item = (T) entity;
 
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);

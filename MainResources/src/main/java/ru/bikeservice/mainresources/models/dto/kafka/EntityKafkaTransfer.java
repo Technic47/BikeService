@@ -59,10 +59,10 @@ public class EntityKafkaTransfer {
             case "Document" -> item = new Document(this);
             case "Fastener" -> item = new Fastener(this);
             case "Manufacture" -> item = new Manufacturer(this);
-            case "Consumable" -> new Consumable(this);
-            case "Tool" -> new Tool(this);
-            case "Part" -> new Part(this);
-            case "Bike" -> new Bike(this);
+            case "Consumable" -> item = new Consumable(this);
+            case "Tool" -> item = new Tool(this);
+            case "Part" -> item = new Part(this);
+            case "Bike" -> item = new Bike(this);
         }
         return item;
     }

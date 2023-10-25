@@ -1,6 +1,5 @@
 package ru.bikeservice.mainresources.controllers.abstracts;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -99,13 +98,7 @@ public class KafkaController {
             groupId = "showIndex",
             containerFactory = "indexListenerContainerFactory")
     @SendTo
-    public Showable[] index(ConsumerRecord<String, IndexKafkaDTO> data
-//                                            ,IndexKafkaDTO requestDTO
-    ) {
-        IndexKafkaDTO requestDTO = data.value();
-//        System.out.println(data.value());
-//        System.out.println(data.key());
-//        System.out.println(data.headers());
+    public EntityKafkaTransfer[] index(IndexKafkaDTO requestDTO) {
         List<Showable> list = new ArrayList<>();
         String category = requestDTO.getType();
         if (!requestDTO.isAdmin()) {
@@ -145,7 +138,12 @@ public class KafkaController {
         System.out.println("Index is done.");
         System.out.println(list.size() + " items in list.");
 
-        return list.toArray(new Showable[0]);
+        EntityKafkaTransfer[] results = new EntityKafkaTransfer[list.size()];
+        for (int i = 0; i < results.length; i++) {
+            results[i] = new EntityKafkaTransfer(list.get(i), category);
+        }
+
+        return results;
     }
 
     @KafkaListener(topics = "createNewItem", id = "newEntity")

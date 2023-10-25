@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
@@ -22,7 +23,10 @@ import ru.kuznetsov.bikeService.models.UserDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.createDtoFrom;
@@ -30,10 +34,10 @@ import static ru.bikeservice.mainresources.models.support.EntitySupportService.c
 @RestController
 @RequestMapping("/api/users")
 public class UserControllerREST extends AbstractController {
-    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, EntityKafkaTransfer[]> indexKafkaTemplate;
 
     public UserControllerREST(ReplyingKafkaTemplate<String,
-            IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate) {
+            IndexKafkaDTO, EntityKafkaTransfer[]> indexKafkaTemplate) {
         this.indexKafkaTemplate = indexKafkaTemplate;
     }
 
@@ -67,12 +71,16 @@ public class UserControllerREST extends AbstractController {
     private List<AbstractShowableEntity> getItems(String type, Long id) throws ExecutionException, InterruptedException {
         IndexKafkaDTO body = new IndexKafkaDTO(type, id, false, false);
         ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
-        RequestReplyFuture<String, IndexKafkaDTO, AbstractShowableEntity[]> reply = indexKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, IndexKafkaDTO, EntityKafkaTransfer[]> reply = indexKafkaTemplate.sendAndReceive(record);
 
+        EntityKafkaTransfer[] array = reply.get().value();
 
-        AbstractShowableEntity[] array = reply.get().value();
+        List<AbstractShowableEntity> list = new ArrayList<>();
+        for (EntityKafkaTransfer entity : array) {
+            list.add(entity.getEntity());
+        }
 
-        return new ArrayList<>(Arrays.asList(array));
+        return list;
     }
 
     private <T extends AbstractShowableEntity> List<AbstractEntityDto> convertToDto(List<T> list) {

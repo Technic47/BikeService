@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
@@ -27,7 +28,10 @@ import ru.kuznetsov.bikeService.models.users.UserModel;
 import ru.kuznetsov.bikeService.services.VerificationTokenService;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 
@@ -36,11 +40,11 @@ import java.util.concurrent.ExecutionException;
 public class UserController extends AbstractController {
     private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenService tokenService;
-    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, EntityKafkaTransfer[]> indexKafkaTemplate;
 
     public UserController(ApplicationEventPublisher eventPublisher,
                           VerificationTokenService tokenService,
-                          ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate) {
+                          ReplyingKafkaTemplate<String, IndexKafkaDTO, EntityKafkaTransfer[]> indexKafkaTemplate) {
         this.eventPublisher = eventPublisher;
         this.tokenService = tokenService;
         this.indexKafkaTemplate = indexKafkaTemplate;
@@ -122,11 +126,16 @@ public class UserController extends AbstractController {
 //        ShowableGetter body = new ShowableGetter(type, null, id, false, false);
         IndexKafkaDTO body = new IndexKafkaDTO(type, id, false, false);
         ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
-        RequestReplyFuture<String, IndexKafkaDTO, AbstractShowableEntity[]> reply = indexKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, IndexKafkaDTO, EntityKafkaTransfer[]> reply = indexKafkaTemplate.sendAndReceive(record);
 
-        AbstractShowableEntity[] array = reply.get().value();
+        EntityKafkaTransfer[] array = reply.get().value();
 
-        return new ArrayList<>(Arrays.asList(array));
+        List<AbstractShowableEntity> list = new ArrayList<>();
+        for (EntityKafkaTransfer entity : array) {
+            list.add(entity.getEntity());
+        }
+
+        return list;
     }
 
     @PostMapping("/update/{id}")
