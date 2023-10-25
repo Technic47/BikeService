@@ -36,6 +36,12 @@ public final class Bike extends AbstractServiceableEntity {
     }
 
     @Override
+    public void convertFromDTO(EntityKafkaTransfer dtoTransfer) {
+        super.convertFromDTO(dtoTransfer);
+        this.linkedParts = dtoTransfer.getLinkedItems();
+    }
+
+    @Override
     public Set<PartEntity> getLinkedItems() {
         return linkedParts;
     }

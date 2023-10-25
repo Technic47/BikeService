@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.config.kafkaConfig;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +14,9 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.ShowableGetter;
 
 import java.util.HashMap;
@@ -25,15 +25,15 @@ import java.util.Map;
 @Configuration
 public class ShowKafkaConfig extends KafkaConfig {
     @Value("${kafka.reply.topic.show}")
-    private String replyMainResources;
+    private String replyShow;
 
     @Bean
-    public ReplyingKafkaTemplate<String, ShowableGetter, AbstractShowableEntity>
+    public ReplyingKafkaTemplate<String, ShowableGetter, EntityKafkaTransfer>
     showReplyingKafkaTemplate(
             ProducerFactory<String, ShowableGetter> pf,
-            ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity> factory) {
-        ConcurrentMessageListenerContainer<String, AbstractShowableEntity> replyContainer =
-                factory.createContainer(replyMainResources);
+            ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer> factory) {
+        ConcurrentMessageListenerContainer<String, EntityKafkaTransfer> replyContainer =
+                factory.createContainer(replyShow);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
         return new ReplyingKafkaTemplate<>(pf, replyContainer);
@@ -49,23 +49,23 @@ public class ShowKafkaConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity>
+    public ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer>
     mainResourcesKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity> factory =
+        ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(showConsumerFactory());
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, AbstractShowableEntity> showConsumerFactory() {
+    public ConsumerFactory<String, EntityKafkaTransfer> showConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-//        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         return new DefaultKafkaConsumerFactory<>(props);
     }
 }

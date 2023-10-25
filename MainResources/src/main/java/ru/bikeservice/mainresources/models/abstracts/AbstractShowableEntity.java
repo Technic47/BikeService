@@ -9,16 +9,16 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
+import ru.bikeservice.mainresources.models.showable.ConvertableFromDTO;
 import ru.bikeservice.mainresources.models.showable.Showable;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractShowableEntity
-        implements Showable, Comparable<AbstractShowableEntity>, Serializable {
+        implements Showable, Comparable<AbstractShowableEntity>, ConvertableFromDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -86,6 +86,17 @@ public abstract class AbstractShowableEntity
     }
 
     public AbstractShowableEntity(EntityKafkaTransfer dtoTransfer){
+        this.id = dtoTransfer.getId();
+        this.name = dtoTransfer.getName();
+        this.description = dtoTransfer.getDescription();
+        this.picture = dtoTransfer.getPicture();
+        this.link = dtoTransfer.getLink();
+        this.value = dtoTransfer.getValue();
+        this.isShared = dtoTransfer.isShared();
+        this.creator = dtoTransfer.getCreator();
+    }
+
+    public void convertFromDTO(EntityKafkaTransfer dtoTransfer){
         this.id = dtoTransfer.getId();
         this.name = dtoTransfer.getName();
         this.description = dtoTransfer.getDescription();

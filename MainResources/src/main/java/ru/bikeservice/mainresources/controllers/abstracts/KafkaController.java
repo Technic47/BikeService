@@ -69,38 +69,44 @@ public class KafkaController {
         this.searchService = searchService;
     }
 
-    @KafkaListener(topics = "showEntity", groupId = "showEntity")
-//    @SendTo
-    public Showable getShowable(ShowableGetter requestDTO) {
-        if (requestDTO.getItemId() != null) {
-            Showable item = null;
-            String category = requestDTO.getType();
-            switch (category) {
-                case "Document" -> item = documentService.getById(requestDTO.getItemId());
-                case "Fastener" -> item = fastenerService.getById(requestDTO.getItemId());
-                case "Manufacture" -> item = manufacturerService.getById(requestDTO.getItemId());
-                case "Consumable" -> item = consumableService.getById(requestDTO.getItemId());
-                case "Tool" -> item = toolService.getById(requestDTO.getItemId());
-                case "Part" -> item = partService.getById(requestDTO.getItemId());
-                case "Bike" -> item = bikeService.getById(requestDTO.getItemId());
-            }
-            return item;
+    @KafkaListener(topics = "showEntity",
+            groupId = "showEntity",
+            containerFactory = "showListenerContainerFactory")
+    @SendTo
+    public EntityKafkaTransfer getShowable(ShowableGetter requestDTO) {
+        Showable item = null;
+        String category = requestDTO.getType();
+        switch (category) {
+            case "Document" -> item = documentService.getById(requestDTO.getItemId());
+            case "Fastener" -> item = fastenerService.getById(requestDTO.getItemId());
+            case "Manufacture" -> item = manufacturerService.getById(requestDTO.getItemId());
+            case "Consumable" -> item = consumableService.getById(requestDTO.getItemId());
+            case "Tool" -> item = toolService.getById(requestDTO.getItemId());
+            case "Part" -> item = partService.getById(requestDTO.getItemId());
+            case "Bike" -> item = bikeService.getById(requestDTO.getItemId());
         }
-        return null;
+
+        if (item != null) {
+            logger.info(category + " with id: " + requestDTO.getItemId() + " was found.");
+            return new EntityKafkaTransfer(item, category);
+        } else {
+            logger.info(category + " with id: " + requestDTO.getItemId() + " not found.");
+            return new EntityKafkaTransfer();
+        }
     }
 
     @KafkaListener(topics = "showIndex",
             groupId = "showIndex",
             containerFactory = "indexListenerContainerFactory")
     @SendTo
-    public AbstractShowableEntity[] index(ConsumerRecord<String, IndexKafkaDTO>  data
+    public Showable[] index(ConsumerRecord<String, IndexKafkaDTO> data
 //                                            ,IndexKafkaDTO requestDTO
     ) {
         IndexKafkaDTO requestDTO = data.value();
-        System.out.println(data.value());
-        System.out.println(data.key());
-        System.out.println(data.headers());
-        List<AbstractShowableEntity> list = new ArrayList<>();
+//        System.out.println(data.value());
+//        System.out.println(data.key());
+//        System.out.println(data.headers());
+        List<Showable> list = new ArrayList<>();
         String category = requestDTO.getType();
         if (!requestDTO.isAdmin()) {
             if (requestDTO.isShared()) {
@@ -138,7 +144,8 @@ public class KafkaController {
         }
         System.out.println("Index is done.");
         System.out.println(list.size() + " items in list.");
-        return list.toArray(new AbstractShowableEntity[0]);
+
+        return list.toArray(new Showable[0]);
     }
 
     @KafkaListener(topics = "createNewItem", id = "newEntity")

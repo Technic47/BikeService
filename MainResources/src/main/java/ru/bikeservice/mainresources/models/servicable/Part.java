@@ -36,6 +36,12 @@ public final class Part extends AbstractServiceableEntity {
     }
 
     @Override
+    public void convertFromDTO(EntityKafkaTransfer dtoTransfer) {
+        super.convertFromDTO(dtoTransfer);
+        this.linkedItems = dtoTransfer.getLinkedItems();
+    }
+
+    @Override
     public Set<PartEntity> getLinkedItems() {
         return linkedItems;
     }

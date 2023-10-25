@@ -43,6 +43,13 @@ public abstract class AbstractUsableEntity extends AbstractShowableEntity implem
         this.model = dtoTransfer.getModel();
     }
 
+    @Override
+    public void convertFromDTO(EntityKafkaTransfer dtoTransfer) {
+        super.convertFromDTO(dtoTransfer);
+        this.manufacturer = dtoTransfer.getManufacturer();
+        this.model = dtoTransfer.getModel();
+    }
+
     public Long getManufacturer() {
         return manufacturer;
     }

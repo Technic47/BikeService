@@ -1,7 +1,15 @@
 package ru.bikeservice.mainresources.models.dto.kafka;
 
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
+import ru.bikeservice.mainresources.models.servicable.Bike;
+import ru.bikeservice.mainresources.models.servicable.Part;
+import ru.bikeservice.mainresources.models.showable.Document;
+import ru.bikeservice.mainresources.models.showable.Fastener;
+import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.showable.Showable;
+import ru.bikeservice.mainresources.models.usable.Consumable;
+import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.bikeservice.mainresources.models.usable.Usable;
 
 import java.util.Set;
@@ -43,6 +51,20 @@ public class EntityKafkaTransfer {
 //        if (item instanceof Serviceable) {
 //            this.linkedItems = ((Serviceable) item).getLinkedItems();
 //        }
+    }
+
+    public AbstractShowableEntity getEntity(){
+        AbstractShowableEntity item = null;
+        switch (type) {
+            case "Document" -> item = new Document(this);
+            case "Fastener" -> item = new Fastener(this);
+            case "Manufacture" -> item = new Manufacturer(this);
+            case "Consumable" -> new Consumable(this);
+            case "Tool" -> new Tool(this);
+            case "Part" -> new Part(this);
+            case "Bike" -> new Bike(this);
+        }
+        return item;
     }
 
     public Long getId() {

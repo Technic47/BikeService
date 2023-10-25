@@ -2,7 +2,6 @@ package ru.kuznetsov.bikeService.config.kafkaConfig;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +21,6 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -31,11 +29,11 @@ public class IndexProducerConfig extends KafkaConfig {
     private String replyIndex;
 
     @Bean
-    public ReplyingKafkaTemplate<String, IndexKafkaDTO, List<AbstractShowableEntity>>
+    public ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]>
     indexReplyingKafkaTemplate(
             ProducerFactory<String, IndexKafkaDTO> pf,
-            ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory) {
-        ConcurrentMessageListenerContainer<String, List<AbstractShowableEntity>> replyContainer =
+            ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity[]> factory) {
+        ConcurrentMessageListenerContainer<String, AbstractShowableEntity[]> replyContainer =
                 factory.createContainer(replyIndex);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
@@ -52,9 +50,9 @@ public class IndexProducerConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>>
+    public ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity[]>
     indexKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, List<AbstractShowableEntity>> factory =
+        ConcurrentKafkaListenerContainerFactory<String, AbstractShowableEntity[]> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(indexConsumerFactory());
         factory.setBatchListener(true);
@@ -62,13 +60,13 @@ public class IndexProducerConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, List<AbstractShowableEntity>> indexConsumerFactory() {
+    public ConsumerFactory<String, AbstractShowableEntity[]> indexConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return new DefaultKafkaConsumerFactory<>(props);
     }

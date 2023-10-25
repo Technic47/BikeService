@@ -1,6 +1,5 @@
 package ru.kuznetsov.bikeService.controllers.abstracts;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -34,10 +33,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -51,9 +47,9 @@ public abstract class AbstractEntityController extends AbstractController {
     @Autowired
     private ReplyingKafkaTemplate<String, PdfEntityDto, byte[]> pdfKafkaTemplate;
     @Autowired
-    protected ReplyingKafkaTemplate<String, ShowableGetter, AbstractShowableEntity> showKafkaTemplate;
+    protected ReplyingKafkaTemplate<String, ShowableGetter, EntityKafkaTransfer> showKafkaTemplate;
     @Autowired
-    protected ReplyingKafkaTemplate<String, IndexKafkaDTO, List<AbstractShowableEntity>> indexKafkaTemplate;
+    protected ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate;
     @Autowired
     protected ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemplate;
     @Autowired
@@ -74,11 +70,15 @@ public abstract class AbstractEntityController extends AbstractController {
 //            ShowableGetter body = new ShowableGetter(type, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
             IndexKafkaDTO body = new IndexKafkaDTO(type, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
             ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
-            RequestReplyFuture<String, IndexKafkaDTO, List<AbstractShowableEntity>> reply = indexKafkaTemplate.sendAndReceive(record);
+            RequestReplyFuture<String, IndexKafkaDTO, AbstractShowableEntity[]> reply = indexKafkaTemplate.sendAndReceive(record);
 
+            objects = new ArrayList<>();
             System.out.println(record.headers());
+            AbstractShowableEntity[] array = reply.get().value();
+            for (AbstractShowableEntity item : array) {
+                objects.add((T) item);
+            }
 
-            objects = (List<T>) reply.get().value();
             if (userModel.getAuthorities().contains(ROLE_USER)) {
                 if (shared) {
 //                    objects = service.findByCreatorOrShared(userModel.getId());
@@ -105,9 +105,14 @@ public abstract class AbstractEntityController extends AbstractController {
 //            ShowableGetter body = new ShowableGetter(type, null, 1L, true, true);
             IndexKafkaDTO body = new IndexKafkaDTO(type, 1L, true, true);
             ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
-            RequestReplyFuture<String, IndexKafkaDTO, List<AbstractShowableEntity>> reply = indexKafkaTemplate.sendAndReceive(record);
+            RequestReplyFuture<String, IndexKafkaDTO, AbstractShowableEntity[]> reply = indexKafkaTemplate.sendAndReceive(record);
 
-            objects = (List<T>) reply.get().value();
+            objects = new ArrayList<>();
+            System.out.println(record.headers());
+            AbstractShowableEntity[] array = reply.get().value();
+            for (AbstractShowableEntity item : array) {
+                objects.add((T) item);
+            }
 
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -169,12 +174,14 @@ public abstract class AbstractEntityController extends AbstractController {
             final String type, final Long id) {
         ShowableGetter body = new ShowableGetter(type, id);
         ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("showEntity", body);
-        RequestReplyFuture<String, ShowableGetter, AbstractShowableEntity> reply = showKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, ShowableGetter, EntityKafkaTransfer> reply = showKafkaTemplate.sendAndReceive(record);
 
         T item;
         try {
-            ConsumerRecord<String, AbstractShowableEntity> stringListConsumerRecord = reply.get();
-            item = (T) stringListConsumerRecord.value();
+            EntityKafkaTransfer value = reply.get().value();
+
+            item = (T) value.getEntity();
+
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -377,11 +384,11 @@ public abstract class AbstractEntityController extends AbstractController {
     ) {
         ShowableGetter body = new ShowableGetter(Manufacturer.class.getSimpleName(), item.getManufacturer());
         ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("showEntity", body);
-        RequestReplyFuture<String, ShowableGetter, AbstractShowableEntity> reply = showKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, ShowableGetter, EntityKafkaTransfer> reply = showKafkaTemplate.sendAndReceive(record);
 //        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
 
         try {
-            Manufacturer manufacturer = (Manufacturer) reply.get().value();
+            Manufacturer manufacturer = (Manufacturer) reply.get().value().getEntity();
             PdfEntityDto pdfEntityDto = this.buildShowableDTO(item, principal);
             pdfEntityDto.setManufacturer(manufacturer.getName());
             return preparePDF(pdfEntityDto);
@@ -395,12 +402,12 @@ public abstract class AbstractEntityController extends AbstractController {
     ) {
         ShowableGetter body = new ShowableGetter(Manufacturer.class.getSimpleName(), item.getManufacturer());
         ProducerRecord<String, ShowableGetter> record = new ProducerRecord<>("showEntity", body);
-        RequestReplyFuture<String, ShowableGetter, AbstractShowableEntity> reply = showKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, ShowableGetter, EntityKafkaTransfer> reply = showKafkaTemplate.sendAndReceive(record);
 
 //        Manufacturer manufacturer = manufacturerService.getById(item.getManufacturer());
 
         try {
-            Manufacturer manufacturer = (Manufacturer) reply.get().value();
+            Manufacturer manufacturer = (Manufacturer) reply.get().value().getEntity();
             PdfEntityDto pdfEntityDto = this.buildShowableDTO(item, principal);
             pdfEntityDto.setManufacturer(manufacturer.getName());
             pdfEntityDto.setLinkedItems(serviceList);

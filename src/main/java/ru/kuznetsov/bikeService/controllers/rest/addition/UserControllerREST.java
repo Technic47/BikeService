@@ -22,10 +22,7 @@ import ru.kuznetsov.bikeService.models.UserDto;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.createDtoFrom;
@@ -33,10 +30,10 @@ import static ru.bikeservice.mainresources.models.support.EntitySupportService.c
 @RestController
 @RequestMapping("/api/users")
 public class UserControllerREST extends AbstractController {
-    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, List<AbstractShowableEntity>> indexKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate;
 
     public UserControllerREST(ReplyingKafkaTemplate<String,
-            IndexKafkaDTO, List<AbstractShowableEntity>> indexKafkaTemplate) {
+            IndexKafkaDTO, AbstractShowableEntity[]> indexKafkaTemplate) {
         this.indexKafkaTemplate = indexKafkaTemplate;
     }
 
@@ -70,9 +67,12 @@ public class UserControllerREST extends AbstractController {
     private List<AbstractShowableEntity> getItems(String type, Long id) throws ExecutionException, InterruptedException {
         IndexKafkaDTO body = new IndexKafkaDTO(type, id, false, false);
         ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
-        RequestReplyFuture<String, IndexKafkaDTO, List<AbstractShowableEntity>> reply = indexKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, IndexKafkaDTO, AbstractShowableEntity[]> reply = indexKafkaTemplate.sendAndReceive(record);
 
-        return reply.get().value();
+
+        AbstractShowableEntity[] array = reply.get().value();
+
+        return new ArrayList<>(Arrays.asList(array));
     }
 
     private <T extends AbstractShowableEntity> List<AbstractEntityDto> convertToDto(List<T> list) {
