@@ -1,7 +1,5 @@
 package ru.bikeservice.mainresources.config;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -14,19 +12,14 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @EnableKafka
 @Configuration
 public class KafkaIndexConfig extends KafkaConfig {
     @Bean
     public ProducerFactory<String, EntityKafkaTransfer[]> indexProducerFactory() {
-        Map<String, Object> producerProps = new HashMap<>();
-        producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(producerProps);
+        return new DefaultKafkaProducerFactory<>(getProducerProps(),
+                new StringSerializer(),
+                new JsonSerializer<>());
     }
 
     @Bean
@@ -41,12 +34,7 @@ public class KafkaIndexConfig extends KafkaConfig {
 
     @Bean
     public ConsumerFactory<String, IndexKafkaDTO> indexConsumerFactory() {
-        Map<String, Object> consumerProps = new HashMap<>();
-        consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
-        consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        return new DefaultKafkaConsumerFactory<>(consumerProps,
+        return new DefaultKafkaConsumerFactory<>(getConsumerProps(),
                 new StringDeserializer(),
                 new JsonDeserializer<>(IndexKafkaDTO.class));
     }

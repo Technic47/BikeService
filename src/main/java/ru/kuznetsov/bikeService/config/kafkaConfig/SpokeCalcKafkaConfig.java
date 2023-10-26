@@ -1,7 +1,5 @@
 package ru.kuznetsov.bikeService.config.kafkaConfig;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.DoubleDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -18,21 +16,12 @@ import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import ru.bikeservice.mainresources.config.KafkaConfig;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
 public class SpokeCalcKafkaConfig extends KafkaConfig {
     @Value("${kafka.reply.topic.spokeCalc}")
     private String replyTopicSpokeCalc;
-    @Bean
-    public ProducerFactory<String, Map<String, Double>> spokeCalcProducerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
-    }
 
     @Bean
     public ReplyingKafkaTemplate<String, Map<String, Double>, Double> spokeCalcReplyingKafkaTemplate(
@@ -45,15 +34,10 @@ public class SpokeCalcKafkaConfig extends KafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, Double> spokeCalkConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-//        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, DoubleDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(props);
+    public ProducerFactory<String, Map<String, Double>> spokeCalcProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(getProducerProps(),
+                new StringSerializer(),
+                new JsonSerializer<>());
     }
 
     @Bean
@@ -63,5 +47,12 @@ public class SpokeCalcKafkaConfig extends KafkaConfig {
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(spokeCalkConsumerFactory());
         return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, Double> spokeCalkConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(getConsumerProps(),
+                new StringDeserializer(),
+                new DoubleDeserializer());
     }
 }
