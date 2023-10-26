@@ -51,7 +51,7 @@ public abstract class AbstractEntityController extends AbstractController {
     @Autowired
     protected ReplyingKafkaTemplate<String, IndexKafkaDTO, EntityKafkaTransfer[]> indexKafkaTemplate;
     @Autowired
-    protected ReplyingKafkaTemplate<String, EntityKafkaTransfer, AbstractShowableEntity> creatorTemplate;
+    protected ReplyingKafkaTemplate<String, EntityKafkaTransfer, EntityKafkaTransfer> creatorTemplate;
     @Autowired
     protected ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>> searchTemplate;
 
@@ -205,12 +205,12 @@ public abstract class AbstractEntityController extends AbstractController {
         this.checkImageFile(file, body);
         body.setCreator(userModel.getId());
 
-        ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>("createNewItem", body);
-        RequestReplyFuture<String, EntityKafkaTransfer, AbstractShowableEntity> reply = creatorTemplate.sendAndReceive(record);
+        ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>("saveEntity", body);
+        RequestReplyFuture<String, EntityKafkaTransfer, EntityKafkaTransfer> reply = creatorTemplate.sendAndReceive(record);
 
         T createdItem;
         try {
-            createdItem = (T) reply.get().value();
+            createdItem = (T) reply.get().value().getEntity();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -240,12 +240,12 @@ public abstract class AbstractEntityController extends AbstractController {
         EntityKafkaTransfer body = new EntityKafkaTransfer(newItem, type);
         body.setId(oldItem.getId());
         this.checkImageFile(file, body);
-        ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>("updateItem", body);
-        RequestReplyFuture<String, EntityKafkaTransfer, AbstractShowableEntity> reply = creatorTemplate.sendAndReceive(record);
+        ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>("updateEntity", body);
+        RequestReplyFuture<String, EntityKafkaTransfer, EntityKafkaTransfer> reply = creatorTemplate.sendAndReceive(record);
 
         T updated;
         try {
-            updated = (T) reply.get().value();
+            updated = (T) reply.get().value().getEntity();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -268,11 +268,11 @@ public abstract class AbstractEntityController extends AbstractController {
         }
 
         ProducerRecord<String, EntityKafkaTransfer> record = new ProducerRecord<>(topic, body);
-        RequestReplyFuture<String, EntityKafkaTransfer, AbstractShowableEntity> reply = creatorTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, EntityKafkaTransfer, EntityKafkaTransfer> reply = creatorTemplate.sendAndReceive(record);
 
         AbstractServiceableEntity updated;
         try {
-            updated = (AbstractServiceableEntity) reply.get().value();
+            updated = (AbstractServiceableEntity) reply.get().value().getEntity();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }

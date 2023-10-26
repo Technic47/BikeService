@@ -146,25 +146,42 @@ public class KafkaController {
         return results;
     }
 
-    @KafkaListener(topics = "createNewItem", id = "newEntity")
+    @KafkaListener(topics = "saveEntity",
+            id = "saveEntity",
+            containerFactory = "saveListenerContainerFactory")
+    @SendTo
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
-    public void createEntity(EntityKafkaTransfer dtoNew) {
-        switch (dtoNew.getType()) {
-            case "Document" -> documentService.save(new Document(dtoNew));
-            case "Fastener" -> fastenerService.save(new Fastener(dtoNew));
-            case "Manufacture" -> manufacturerService.save(new Manufacturer(dtoNew));
-            case "Consumable" -> consumableService.save(new Consumable(dtoNew));
-            case "Tool" -> toolService.save(new Tool(dtoNew));
-            case "Part" -> partService.save(new Part(dtoNew));
-            case "Bike" -> bikeService.save(new Bike(dtoNew));
+    public EntityKafkaTransfer createEntity(EntityKafkaTransfer dtoNew) {
+        Showable item = null;
+        String type = dtoNew.getType();
+        switch (type) {
+            case "Document" -> item = documentService.save(new Document(dtoNew));
+            case "Fastener" -> item = fastenerService.save(new Fastener(dtoNew));
+            case "Manufacture" -> item = manufacturerService.save(new Manufacturer(dtoNew));
+            case "Consumable" -> item = consumableService.save(new Consumable(dtoNew));
+            case "Tool" -> item = toolService.save(new Tool(dtoNew));
+            case "Part" -> item = partService.save(new Part(dtoNew));
+            case "Bike" -> item = bikeService.save(new Bike(dtoNew));
+        }
+
+        if (item != null) {
+            logger.info(type + " with id: " + item.getId() + " was created.");
+            return new EntityKafkaTransfer(item, type);
+        } else {
+            logger.info("Creation of " + type + " is not finished.");
+            return new EntityKafkaTransfer();
         }
     }
 
-    @KafkaListener(topics = "updateItem", id = "updateEntity")
+    @KafkaListener(topics = "updateEntity",
+            id = "updateEntity",
+            containerFactory = "saveListenerContainerFactory")
+    @SendTo
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
-    public AbstractShowableEntity updateEntity(EntityKafkaTransfer dtoToUpdate) {
+    public EntityKafkaTransfer updateEntity(EntityKafkaTransfer dtoToUpdate) {
         AbstractShowableEntity updated = null;
-        switch (dtoToUpdate.getType()) {
+        String type = dtoToUpdate.getType();
+        switch (type) {
             case "Document" -> updated = documentService.update(dtoToUpdate.getId(), new Document(dtoToUpdate));
             case "Fastener" -> updated = fastenerService.update(dtoToUpdate.getId(), new Fastener(dtoToUpdate));
             case "Manufacture" ->
@@ -174,7 +191,14 @@ public class KafkaController {
             case "Part" -> updated = partService.update(dtoToUpdate.getId(), new Part(dtoToUpdate));
             case "Bike" -> updated = bikeService.update(dtoToUpdate.getId(), new Bike(dtoToUpdate));
         }
-        return updated;
+
+        if (updated != null) {
+            logger.info(type + " with id: " + updated.getId() + " was updated.");
+            return new EntityKafkaTransfer(updated, type);
+        } else {
+            logger.info("Update of " + type + " is not finished.");
+            return new EntityKafkaTransfer();
+        }
     }
 
     @KafkaListener(topics = "deleteItem", id = "deleteEntity")
@@ -215,7 +239,9 @@ public class KafkaController {
         mainExecutor.submit(clearBikes);
     }
 
-    @KafkaListener(topics = "search", id = "searchService")
+    @KafkaListener(topics = "search",
+            id = "searchService",
+    containerFactory = "")
     public List<AbstractShowableEntity> search(SearchKafkaDTO searchDto) {
         List<AbstractShowableEntity> results;
 

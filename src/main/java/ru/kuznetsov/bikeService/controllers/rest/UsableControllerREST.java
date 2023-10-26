@@ -31,7 +31,7 @@ public abstract class UsableControllerREST<T extends AbstractUsableEntity>
                                     Principal principal) {
         T item = EntitySupportService.convertFromDTO(category, itemDto);
         this.checkManufacturer(item);
-        T updatedItem = this.doCreateProcedure(item, file, principal, category);
+        T updatedItem = this.doCreateProcedure(item, file, principal, thisClassNewObject.getClass().getSimpleName());
         return createDtoFrom(updatedItem);
     }
 
