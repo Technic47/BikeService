@@ -135,8 +135,7 @@ public class KafkaController {
                 case "Bike" -> list.addAll(bikeService.index());
             }
         }
-        System.out.println("Index is done.");
-        System.out.println(list.size() + " items in list.");
+        logger.info(list.size() + " items in " + category + "s");
 
         EntityKafkaTransfer[] results = new EntityKafkaTransfer[list.size()];
         for (int i = 0; i < results.length; i++) {
@@ -206,16 +205,19 @@ public class KafkaController {
             containerFactory = "entityListenerContainerFactory")
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     public void deleteEntity(EntityKafkaTransfer dtoToDelete) {
-        switch (dtoToDelete.getType()) {
-            case "Document" -> documentService.delete(dtoToDelete.getId());
-            case "Fastener" -> fastenerService.delete(dtoToDelete.getId());
-            case "Manufacturer" -> manufacturerService.delete(dtoToDelete.getId());
-            case "Consumable" -> consumableService.delete(dtoToDelete.getId());
-            case "Tool" -> toolService.delete(dtoToDelete.getId());
-            case "Part" -> partService.delete(dtoToDelete.getId());
-            case "Bike" -> bikeService.delete(dtoToDelete.getId());
+        String type = dtoToDelete.getType();
+        Long itemId = dtoToDelete.getId();
+        switch (type) {
+            case "Document" -> documentService.delete(itemId);
+            case "Fastener" -> fastenerService.delete(itemId);
+            case "Manufacturer" -> manufacturerService.delete(itemId);
+            case "Consumable" -> consumableService.delete(itemId);
+            case "Tool" -> toolService.delete(itemId);
+            case "Part" -> partService.delete(itemId);
+            case "Bike" -> bikeService.delete(itemId);
         }
         cleanUpAfterDelete(dtoToDelete);
+        logger.info(type + " id:" + itemId + " was deleted");
     }
 
     /**
@@ -243,7 +245,7 @@ public class KafkaController {
 
     @KafkaListener(topics = "search",
             id = "searchService",
-    containerFactory = "searchListenerContainerFactory")
+            containerFactory = "searchListenerContainerFactory")
     public EntityKafkaTransfer[] search(SearchKafkaDTO searchDto) {
         List<AbstractShowableEntity> list;
 
@@ -271,10 +273,13 @@ public class KafkaController {
     }
 
     @KafkaListener(topics = "addLinkedItem",
-            id = "addLinkedItem")
-    public AbstractShowableEntity addLinkedItem(EntityKafkaTransfer toAdd) {
+            id = "addLinkedItem",
+            containerFactory = "entityListenerContainerFactory")
+    @SendTo
+    public EntityKafkaTransfer addLinkedItem(EntityKafkaTransfer toAdd) {
         AbstractServiceableEntity item;
-        switch (toAdd.getType()) {
+        String type = toAdd.getType();
+        switch (type) {
             case "Part" -> {
                 item = partService.getById(toAdd.getId());
                 setLinkedItems(item, partService, toAdd.getLinkedItems(), 1);
@@ -285,23 +290,31 @@ public class KafkaController {
             }
             default -> throw new IllegalArgumentException("Wrong type of entity");
         }
-        return item;
+        logger.info(type + " id:" + toAdd.getId() + " linkedItems added - " + toAdd.getLinkedItems().size() + " item(s).");
+        return new EntityKafkaTransfer(item, item.getClass().getSimpleName());
     }
 
-    @KafkaListener(topics = "delLinkedItem", id = "delLinkedItem")
-    public AbstractServiceableEntity delLinkedItem(EntityKafkaTransfer toAdd) {
+    @KafkaListener(topics = "delLinkedItem",
+            id = "delLinkedItem",
+            containerFactory = "entityListenerContainerFactory")
+    @SendTo
+    public EntityKafkaTransfer delLinkedItem(EntityKafkaTransfer toAdd) {
         AbstractServiceableEntity item;
-        switch (toAdd.getType()) {
+        String type = toAdd.getType();
+        switch (type) {
             case "Part" -> {
                 item = partService.getById(toAdd.getId());
-                return setLinkedItems(item, partService, toAdd.getLinkedItems(), 0);
+                setLinkedItems(item, partService, toAdd.getLinkedItems(), 0);
             }
             case "Bike" -> {
                 item = bikeService.getById(toAdd.getId());
-                return setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 0);
+                setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 0);
             }
             default -> throw new IllegalArgumentException("Wrong type of entity");
         }
+
+        logger.info(type + " id:" + toAdd.getId() + " linkedItems removed - " + toAdd.getLinkedItems().size() + " item(s).");
+        return new EntityKafkaTransfer(item, item.getClass().getSimpleName());
     }
 
     private AbstractServiceableEntity setLinkedItems(AbstractServiceableEntity item,

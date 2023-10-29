@@ -4,6 +4,7 @@ import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
+import ru.bikeservice.mainresources.models.servicable.Serviceable;
 import ru.bikeservice.mainresources.models.showable.Document;
 import ru.bikeservice.mainresources.models.showable.Fastener;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
@@ -38,6 +39,7 @@ public class EntityKafkaTransfer {
 
     public EntityKafkaTransfer(Showable item, String type) {
         linkedItems = new HashSet<>();
+//        String itemType = item.getClass().getSimpleName();
         this.id = item.getId();
         this.type = type;
         this.name = item.getName();
@@ -51,12 +53,31 @@ public class EntityKafkaTransfer {
             this.manufacturer = ((Usable) item).getManufacturer();
             this.model = ((Usable) item).getModel();
         }
-//        if (item instanceof Serviceable) {
-//            this.linkedItems = ((Serviceable) item).getLinkedItems();
-//        }
+        if (item instanceof Serviceable) {
+            this.linkedItems = ((Serviceable) item).getLinkedItems();
+        }
     }
 
-    public AbstractShowableEntity getEntity(){
+    public EntityKafkaTransfer(Showable item, String type, PartEntity entity) {
+        linkedItems = new HashSet<>();
+//        String itemType = item.getClass().getSimpleName();
+        this.id = item.getId();
+        this.type = type;
+        this.name = item.getName();
+        this.description = item.getDescription();
+        this.picture = item.getPicture();
+        this.link = item.getLink();
+        this.value = item.getValue();
+        this.creator = item.getCreator();
+        this.shared = item.getIsShared();
+        if (item instanceof Usable) {
+            this.manufacturer = ((Usable) item).getManufacturer();
+            this.model = ((Usable) item).getModel();
+        }
+        this.linkedItems.add(entity);
+    }
+
+    public AbstractShowableEntity getEntity() {
         AbstractShowableEntity item = null;
         switch (type) {
             case "Document" -> item = new Document(this);

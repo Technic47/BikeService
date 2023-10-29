@@ -30,7 +30,7 @@ public abstract class UsableController<T extends AbstractUsableEntity>
             return "redirect:/" + category;
         }
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", doShowProcedure(Manufacturer.class.getSimpleName(), manufactureIndex, principal));
+        model.addAttribute("manufacture", doShowProcedure(Manufacturer.class.getSimpleName(), manufactureIndex, principal).getName());
         this.addItemAttributesShow(model, item, principal);
         return super.show(item, model, principal, category);
     }

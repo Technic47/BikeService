@@ -120,7 +120,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
                 this.itemsManipulation(item, 0, Part.class, partId, 1);
                 break;
         }
-        doUpdateProcedure(item, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
+//        doUpdateProcedure(item, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
 //        service.update(oldItem, item);
         return editWithItem(model, oldItem, principal);
     }

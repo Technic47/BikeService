@@ -61,7 +61,9 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         } else {
             entitySet.add(entity);
         }
-        return repository.save(item);
+//        E save = repository.save(item);
+        E save = repository.saveAndFlush(item);
+        return save;
     }
 
     /**

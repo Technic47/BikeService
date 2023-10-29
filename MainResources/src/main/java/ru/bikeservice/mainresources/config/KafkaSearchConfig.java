@@ -10,7 +10,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import ru.bikeservice.mainresources.models.dto.kafka.SearchKafkaDTO;
 
 @Configuration
-public class SearchKafkaConfig extends KafkaConfig {
+public class KafkaSearchConfig extends KafkaConfig {
     @Bean
     public ConsumerFactory<String, SearchKafkaDTO> searchConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(getConsumerProps(),

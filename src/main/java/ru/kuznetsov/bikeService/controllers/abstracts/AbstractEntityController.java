@@ -33,7 +33,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -258,8 +261,8 @@ public abstract class AbstractEntityController extends AbstractController {
     }
 
     protected AbstractServiceableEntity doLinkedListManipulation(final AbstractServiceableEntity item, final String type, PartEntity entity, int action) {
-        EntityKafkaTransfer body = new EntityKafkaTransfer(item, type);
-        body.setLinkedItems(Set.of(entity));
+//        item.getLinkedItems().add(entity);
+        EntityKafkaTransfer body = new EntityKafkaTransfer(item, type, entity);
         String topic;
         switch (action) {
             case 1 -> topic = "addLinkedItem";
@@ -292,6 +295,7 @@ public abstract class AbstractEntityController extends AbstractController {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long itemId = item.getId();
         EntityKafkaTransfer body = new EntityKafkaTransfer(item, type);
+
 
         CompletableFuture<SendResult<String, EntityKafkaTransfer>> reply = creatorTemplate.send("deleteItem", body);
 

@@ -9,6 +9,9 @@ public class SearchKafkaDTO {
     private boolean shared;
     private String type;
 
+    public SearchKafkaDTO() {
+    }
+
     public SearchKafkaDTO(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String type) {
         this.findBy = findBy;
         this.searchValue = searchValue;
