@@ -40,7 +40,7 @@ public class KafkaSaveConfig extends KafkaConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer>
-    saveListenerContainerFactory() {
+    entityListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(creatorConsumerFactory());

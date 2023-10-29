@@ -218,7 +218,7 @@ public abstract class BasicController<T extends AbstractShowableEntity>
         List<T> resultList = null;
         try {
 //            resultList = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
-            resultList = (List<T>) doSearchProcedure("standard", value, userModel.getKafkaDto(), shared, category);
+            resultList = doSearchProcedure("standard", value, userModel.getKafkaDto(), shared, category);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

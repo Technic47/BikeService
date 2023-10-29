@@ -78,7 +78,7 @@ public class KafkaController {
         switch (category) {
             case "Document" -> item = documentService.getById(requestDTO.getItemId());
             case "Fastener" -> item = fastenerService.getById(requestDTO.getItemId());
-            case "Manufacture" -> item = manufacturerService.getById(requestDTO.getItemId());
+            case "Manufacturer" -> item = manufacturerService.getById(requestDTO.getItemId());
             case "Consumable" -> item = consumableService.getById(requestDTO.getItemId());
             case "Tool" -> item = toolService.getById(requestDTO.getItemId());
             case "Part" -> item = partService.getById(requestDTO.getItemId());
@@ -106,7 +106,7 @@ public class KafkaController {
                 switch (category) {
                     case "Document" -> list.addAll(documentService.findByCreatorOrShared(requestDTO.getUserId()));
                     case "Fastener" -> list.addAll(fastenerService.findByCreatorOrShared(requestDTO.getUserId()));
-                    case "Manufacture" ->
+                    case "Manufacturer" ->
                             list.addAll(manufacturerService.findByCreatorOrShared(requestDTO.getUserId()));
                     case "Consumable" -> list.addAll(consumableService.findByCreatorOrShared(requestDTO.getUserId()));
                     case "Tool" -> list.addAll(toolService.findByCreatorOrShared(requestDTO.getUserId()));
@@ -117,7 +117,7 @@ public class KafkaController {
                 switch (category) {
                     case "Document" -> list.addAll(documentService.findByCreator(requestDTO.getUserId()));
                     case "Fastener" -> list.addAll(fastenerService.findByCreator(requestDTO.getUserId()));
-                    case "Manufacture" -> list.addAll(manufacturerService.findByCreator(requestDTO.getUserId()));
+                    case "Manufacturer" -> list.addAll(manufacturerService.findByCreator(requestDTO.getUserId()));
                     case "Consumable" -> list.addAll(consumableService.findByCreator(requestDTO.getUserId()));
                     case "Tool" -> list.addAll(toolService.findByCreator(requestDTO.getUserId()));
                     case "Part" -> list.addAll(partService.findByCreator(requestDTO.getUserId()));
@@ -128,7 +128,7 @@ public class KafkaController {
             switch (category) {
                 case "Document" -> list.addAll(documentService.index());
                 case "Fastener" -> list.addAll(fastenerService.index());
-                case "Manufacture" -> list.addAll(manufacturerService.index());
+                case "Manufacturer" -> list.addAll(manufacturerService.index());
                 case "Consumable" -> list.addAll(consumableService.index());
                 case "Tool" -> list.addAll(toolService.index());
                 case "Part" -> list.addAll(partService.index());
@@ -148,7 +148,7 @@ public class KafkaController {
 
     @KafkaListener(topics = "saveEntity",
             id = "saveEntity",
-            containerFactory = "saveListenerContainerFactory")
+            containerFactory = "entityListenerContainerFactory")
     @SendTo
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     public EntityKafkaTransfer createEntity(EntityKafkaTransfer dtoNew) {
@@ -157,7 +157,7 @@ public class KafkaController {
         switch (type) {
             case "Document" -> item = documentService.save(new Document(dtoNew));
             case "Fastener" -> item = fastenerService.save(new Fastener(dtoNew));
-            case "Manufacture" -> item = manufacturerService.save(new Manufacturer(dtoNew));
+            case "Manufacturer" -> item = manufacturerService.save(new Manufacturer(dtoNew));
             case "Consumable" -> item = consumableService.save(new Consumable(dtoNew));
             case "Tool" -> item = toolService.save(new Tool(dtoNew));
             case "Part" -> item = partService.save(new Part(dtoNew));
@@ -175,7 +175,7 @@ public class KafkaController {
 
     @KafkaListener(topics = "updateEntity",
             id = "updateEntity",
-            containerFactory = "saveListenerContainerFactory")
+            containerFactory = "entityListenerContainerFactory")
     @SendTo
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     public EntityKafkaTransfer updateEntity(EntityKafkaTransfer dtoToUpdate) {
@@ -184,7 +184,7 @@ public class KafkaController {
         switch (type) {
             case "Document" -> updated = documentService.update(dtoToUpdate.getId(), new Document(dtoToUpdate));
             case "Fastener" -> updated = fastenerService.update(dtoToUpdate.getId(), new Fastener(dtoToUpdate));
-            case "Manufacture" ->
+            case "Manufacturer" ->
                     updated = manufacturerService.update(dtoToUpdate.getId(), new Manufacturer(dtoToUpdate));
             case "Consumable" -> updated = consumableService.update(dtoToUpdate.getId(), new Consumable(dtoToUpdate));
             case "Tool" -> updated = toolService.update(dtoToUpdate.getId(), new Tool(dtoToUpdate));
@@ -201,13 +201,15 @@ public class KafkaController {
         }
     }
 
-    @KafkaListener(topics = "deleteItem", id = "deleteEntity")
+    @KafkaListener(topics = "deleteItem",
+            id = "deleteEntity",
+            containerFactory = "entityListenerContainerFactory")
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {SQLException.class, RuntimeException.class})
     public void deleteEntity(EntityKafkaTransfer dtoToDelete) {
         switch (dtoToDelete.getType()) {
             case "Document" -> documentService.delete(dtoToDelete.getId());
             case "Fastener" -> fastenerService.delete(dtoToDelete.getId());
-            case "Manufacture" -> manufacturerService.delete(dtoToDelete.getId());
+            case "Manufacturer" -> manufacturerService.delete(dtoToDelete.getId());
             case "Consumable" -> consumableService.delete(dtoToDelete.getId());
             case "Tool" -> toolService.delete(dtoToDelete.getId());
             case "Part" -> partService.delete(dtoToDelete.getId());
@@ -241,28 +243,35 @@ public class KafkaController {
 
     @KafkaListener(topics = "search",
             id = "searchService",
-    containerFactory = "")
-    public List<AbstractShowableEntity> search(SearchKafkaDTO searchDto) {
-        List<AbstractShowableEntity> results;
+    containerFactory = "searchListenerContainerFactory")
+    public EntityKafkaTransfer[] search(SearchKafkaDTO searchDto) {
+        List<AbstractShowableEntity> list;
 
         String findBy = searchDto.getFindBy();
         String searchValue = searchDto.getSearchValue();
         KafkaUserDto kafkaUserDto = searchDto.getUserDTO();
         boolean shared = searchDto.isShared();
-        String category = searchDto.getCategory();
+        String category = searchDto.getType();
 
         try {
             if (category != null) {
-                results = searchService.doSearchProcedure(findBy, searchValue, kafkaUserDto, shared, category);
-            } else results = searchService.doGlobalSearchProcedure(findBy, searchValue, kafkaUserDto, shared);
+                list = searchService.doSearchProcedure(findBy, searchValue, kafkaUserDto, shared, category);
+            } else list = searchService.doGlobalSearchProcedure(findBy, searchValue, kafkaUserDto, shared);
 
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        EntityKafkaTransfer[] results = new EntityKafkaTransfer[list.size()];
+        for (int i = 0; i < results.length; i++) {
+            results[i] = new EntityKafkaTransfer(list.get(i), category);
+        }
+
         return results;
     }
 
-    @KafkaListener(topics = "addLinkedItem", id = "addLinkedItem")
+    @KafkaListener(topics = "addLinkedItem",
+            id = "addLinkedItem")
     public AbstractShowableEntity addLinkedItem(EntityKafkaTransfer toAdd) {
         AbstractServiceableEntity item;
         switch (toAdd.getType()) {

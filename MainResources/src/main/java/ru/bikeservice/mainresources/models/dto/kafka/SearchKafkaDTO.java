@@ -7,14 +7,14 @@ public class SearchKafkaDTO {
     private String searchValue;
     private KafkaUserDto kafkaUserDto;
     private boolean shared;
-    private String category;
+    private String type;
 
-    public SearchKafkaDTO(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String category) {
+    public SearchKafkaDTO(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String type) {
         this.findBy = findBy;
         this.searchValue = searchValue;
         this.kafkaUserDto = kafkaUserDto;
         this.shared = shared;
-        this.category = category;
+        this.type = type;
     }
 
     public SearchKafkaDTO(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared) {
@@ -56,11 +56,11 @@ public class SearchKafkaDTO {
         this.shared = shared;
     }
 
-    public String getCategory() {
-        return category;
+    public String getType() {
+        return type;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setType(String type) {
+        this.type = type;
     }
 }

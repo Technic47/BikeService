@@ -12,6 +12,7 @@ import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.bikeservice.mainresources.models.usable.Usable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,9 +33,11 @@ public class EntityKafkaTransfer {
     private Set<PartEntity> linkedItems;
 
     public EntityKafkaTransfer() {
+        linkedItems = new HashSet<>();
     }
 
     public EntityKafkaTransfer(Showable item, String type) {
+        linkedItems = new HashSet<>();
         this.id = item.getId();
         this.type = type;
         this.name = item.getName();
@@ -58,7 +61,7 @@ public class EntityKafkaTransfer {
         switch (type) {
             case "Document" -> item = new Document(this);
             case "Fastener" -> item = new Fastener(this);
-            case "Manufacture" -> item = new Manufacturer(this);
+            case "Manufacturer" -> item = new Manufacturer(this);
             case "Consumable" -> item = new Consumable(this);
             case "Tool" -> item = new Tool(this);
             case "Part" -> item = new Part(this);

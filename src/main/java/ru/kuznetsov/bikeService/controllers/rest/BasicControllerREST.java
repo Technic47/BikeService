@@ -58,7 +58,7 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity>
         if (searchValue != null) {
             try {
 //                objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
-                objects = (List<T>) doSearchProcedure(findBy, searchValue, userModel.getKafkaDto(), shared, category);
+                objects = doSearchProcedure(findBy, searchValue, userModel.getKafkaDto(), shared, category);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

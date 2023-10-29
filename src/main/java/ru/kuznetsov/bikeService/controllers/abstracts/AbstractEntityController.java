@@ -53,7 +53,7 @@ public abstract class AbstractEntityController extends AbstractController {
     @Autowired
     protected ReplyingKafkaTemplate<String, EntityKafkaTransfer, EntityKafkaTransfer> creatorTemplate;
     @Autowired
-    protected ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>> searchTemplate;
+    protected ReplyingKafkaTemplate<String, SearchKafkaDTO, EntityKafkaTransfer[]> searchTemplate;
 
     /**
      * Creates List of entities depending on userModel role and shared flag.
@@ -293,7 +293,7 @@ public abstract class AbstractEntityController extends AbstractController {
         Long itemId = item.getId();
         EntityKafkaTransfer body = new EntityKafkaTransfer(item, type);
 
-        CompletableFuture<SendResult<String, EntityKafkaTransfer>> reply = creatorTemplate.send("updateItem", body);
+        CompletableFuture<SendResult<String, EntityKafkaTransfer>> reply = creatorTemplate.send("deleteItem", body);
 
         try {
             reply.thenRun(() -> this.cleanUpUserAfterDelete(item, userModel));
@@ -332,15 +332,19 @@ public abstract class AbstractEntityController extends AbstractController {
 //        mainExecutor.submit(clearBikes);
     }
 
-    protected List<AbstractShowableEntity> doSearchProcedure(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String category) {
+    protected<T extends AbstractShowableEntity> List<T> doSearchProcedure(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String category) {
         SearchKafkaDTO body = new SearchKafkaDTO(findBy, searchValue, kafkaUserDto, shared, category);
 
         ProducerRecord<String, SearchKafkaDTO> record = new ProducerRecord<>("search", body);
-        RequestReplyFuture<String, SearchKafkaDTO, List<AbstractShowableEntity>> reply = searchTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, SearchKafkaDTO, EntityKafkaTransfer[]> reply = searchTemplate.sendAndReceive(record);
 
-        List<AbstractShowableEntity> results;
+        List<T> results;
         try {
-            results = reply.get().value();
+            results = new ArrayList<>();
+            EntityKafkaTransfer[] array = reply.get().value();
+            for (EntityKafkaTransfer item : array) {
+                results.add((T) item.getEntity());
+            }
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }

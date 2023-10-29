@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
 import ru.bikeservice.mainresources.models.dto.kafka.SearchKafkaDTO;
 import ru.kuznetsov.bikeService.controllers.abstracts.AbstractController;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -23,9 +25,9 @@ import static ru.bikeservice.mainresources.models.support.EntitySupportService.s
 @RestController
 @RequestMapping("/api/search")
 public class SearchController extends AbstractController {
-    private final ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>> searchTemplate;
+    private final ReplyingKafkaTemplate<String, SearchKafkaDTO, EntityKafkaTransfer[]> searchTemplate;
 
-    public SearchController(ReplyingKafkaTemplate<String, SearchKafkaDTO, List<AbstractShowableEntity>> searchTemplate) {
+    public SearchController(ReplyingKafkaTemplate<String, SearchKafkaDTO, EntityKafkaTransfer[]> searchTemplate) {
         this.searchTemplate = searchTemplate;
     }
 
@@ -38,20 +40,24 @@ public class SearchController extends AbstractController {
                                             @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
 
-        List<AbstractShowableEntity> objects;
+        List<AbstractShowableEntity> results;
 
         SearchKafkaDTO body = new SearchKafkaDTO(findBy, searchValue, userModel.getKafkaDto(), shared);
 
         ProducerRecord<String, SearchKafkaDTO> record = new ProducerRecord<>("createNewItem", body);
-        RequestReplyFuture<String, SearchKafkaDTO, List<AbstractShowableEntity>> reply = searchTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, SearchKafkaDTO, EntityKafkaTransfer[]> reply = searchTemplate.sendAndReceive(record);
 
 
         try {
-            objects = reply.get().value();
+            results = new ArrayList<>();
+            EntityKafkaTransfer[] array = reply.get().value();
+            for (EntityKafkaTransfer item : array) {
+                results.add(item.getEntity());
+            }
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        List<AbstractShowableEntity> sortedList = sortBasic(objects, sort);
+        List<AbstractShowableEntity> sortedList = sortBasic(results, sort);
 
         return convertListToDto(sortedList);
     }

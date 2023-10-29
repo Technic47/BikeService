@@ -17,6 +17,7 @@ import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.servicable.Part;
 import ru.bikeservice.mainresources.models.showable.Document;
 import ru.bikeservice.mainresources.models.showable.Fastener;
+import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.kuznetsov.bikeService.controllers.ServiceListController;
@@ -43,7 +44,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
         }
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", doShowProcedure(thisClassNewObject.getClass().getSimpleName(), manufactureIndex, principal));
+        model.addAttribute("manufacture", doShowProcedure(Manufacturer.class.getSimpleName(), manufactureIndex, principal));
         this.addLinkedItemsToModel(model, serviceList);
         this.addItemAttributesShow(model, item, principal);
         return super.show(item, model, principal, category);
