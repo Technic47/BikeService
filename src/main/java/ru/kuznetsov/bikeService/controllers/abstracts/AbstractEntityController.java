@@ -463,9 +463,8 @@ public abstract class AbstractEntityController extends AbstractController {
      *
      * @param file file to check.
      * @param item entity to set picture.
-     * @param <T>  AbstractShowableEntity from main models.
      */
-    protected <T extends AbstractShowableEntity> void checkImageFile(MultipartFile file, EntityKafkaTransfer item) {
+    protected void checkImageFile(MultipartFile file, EntityKafkaTransfer item) {
         if (file != null) {
             if (!file.isEmpty()) {
                 Picture picture = pictureService.save(file);

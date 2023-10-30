@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.customExceptions.AccessToResourceDenied;
 import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.dto.AbstractEntityDto;
+import ru.bikeservice.mainresources.models.dto.AbstractEntityDtoNew;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.servicable.Part;
@@ -23,7 +25,10 @@ import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.kuznetsov.bikeService.controllers.ServiceListController;
 
 import java.security.Principal;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static ru.bikeservice.mainresources.models.support.EntitySupportService.convertFromDTO;
 import static ru.bikeservice.mainresources.models.support.EntitySupportService.createDtoFrom;
 
 public abstract class ServiceableControllerREST<T extends AbstractServiceableEntity>
@@ -33,6 +38,24 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
     protected ServiceableControllerREST() {
         super();
     }
+
+    @Override
+    public AbstractEntityDto update(@PathVariable Long id,
+                                    @RequestBody AbstractEntityDtoNew newItem,
+                                    @RequestPart(value = "newImage", required = false) MultipartFile file,
+                                    Principal principal) {
+        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+        T newEntity = convertFromDTO(category, newItem);
+        newEntity.setLinkedItems(item.getLinkedItems());
+        this.checkManufacturer(newEntity);
+        return createDtoFrom(update(newEntity, null, item, principal));
+    }
+
+//    public T update(T newItem, MultipartFile file, T oldItem, Principal principal) {
+//        if (checkAccessToItem(oldItem, principal)) {
+//            return this.doUpdateProcedure(newItem, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
+//        } else throw new AccessToResourceDenied(oldItem.getId());
+//    }
 
     @Operation(summary = "Add linked item to entity")
     @ApiResponses(value = {
@@ -52,10 +75,11 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
                                                @RequestParam(value = "amount") Integer amount,
                                                Principal principal) {
         T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), itemId);
-        Showable itemToAdd = this.checkItem(linkedItemId, type);
+        Showable itemToAdd = this.getItem(linkedItemId, type);
         if (this.checkAccessToItem(item, principal)) {
             T updated = this.itemsManipulation(item, 1, itemToAdd.getClass(), linkedItemId, amount);
-            return createDtoFrom(updated);
+            T returnedItem = doUpdateProcedure(updated, item.getClass().getSimpleName(), item, null, principal);
+            return createDtoFrom(returnedItem);
         } else throw new AccessToResourceDenied(itemToAdd.getId());
     }
 
@@ -77,10 +101,11 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
                                                  @RequestParam(value = "amount") Integer amount,
                                                  Principal principal) {
         T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), itemId);
-        Showable itemToAdd = this.checkItem(linkedItemId, type);
+        Showable itemToAdd = this.getItem(linkedItemId, type);
         if (this.checkAccessToItem(item, principal)) {
             T updated = this.itemsManipulation(item, 0, itemToAdd.getClass(), linkedItemId, amount);
-            return createDtoFrom(updated);
+            T returnedItem = doUpdateProcedure(updated, item.getClass().getSimpleName(), item, null, principal);
+            return createDtoFrom(returnedItem);
         } else throw new AccessToResourceDenied(itemToAdd.getId());
     }
 
@@ -88,19 +113,54 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         String type = thisClassNewObject.getClass().getSimpleName();
         PartEntity entity = new PartEntity(type,
                 itemClass.getSimpleName(), id, amount);
-        return (T) doLinkedListManipulation(item, type, entity, action);
-//        switch (action) {
-//            case 1 -> {
-//                return service.addToLinkedItems(item, entity);
-//            }
-//            case 0 -> {
-//                return service.delFromLinkedItems(item, entity);
-//            }
-//            default -> throw new IllegalArgumentException("Argument 'action' is wrong!");
-//        }
+//        return (T) doLinkedListManipulation(item, type, entity, action);
+        switch (action) {
+            case 1 -> addToSet(item, entity);
+            case 0 -> delFromSet(item, entity);
+            default -> throw new IllegalArgumentException("Argument 'action' is wrong!");
+        }
+        return item;
     }
 
-    Showable checkItem(Long id, String type) {
+    private void addToSet(T item, PartEntity entity) {
+        Set<PartEntity> set = item.getLinkedItems();
+
+        if (set.contains(entity)) {
+            if (entity.getType().equals("Consumable") || entity.getType().equals("Fastener")) {
+                set.forEach(setItem -> {
+                    if (setItem.equals(entity)) {
+                        setItem.setAmount(setItem.getAmount() + entity.getAmount());
+                    }
+                });
+            }
+        } else {
+            entity.setAmount(1);
+            set.add(entity);
+        }
+    }
+
+    private void delFromSet(T item, PartEntity entity) {
+        Set<PartEntity> set = item.getLinkedItems();
+
+        if (set.contains(entity)) {
+            if (entity.getType().equals("Consumable") || entity.getType().equals("Fastener")) {
+                set.forEach(setItem -> {
+                    if (setItem.equals(entity)) {
+                        setItem.setAmount(setItem.getAmount() - entity.getAmount());
+                    }
+                });
+            } else set.remove(entity);
+        }
+
+        Set<PartEntity> collect = set
+                .stream()
+                .filter(e -> e.getAmount() > 0)
+                .collect(Collectors.toSet());
+
+        item.setLinkedItems(collect);
+    }
+
+    Showable getItem(Long id, String type) {
         switch (type) {
             case "Document", "document" -> {
                 return doShowProcedure(Document.class.getSimpleName(), id);

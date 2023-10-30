@@ -25,6 +25,7 @@ import ru.kuznetsov.bikeService.controllers.ServiceListController;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public abstract class ServiceableController<T extends AbstractServiceableEntity>
@@ -102,14 +103,15 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
             @RequestParam(value = "partId", required = false) Long partId,
             @RequestPart(value = "newImage", required = false) MultipartFile file,
             Model model, Principal principal) {
-
-
 //        item.setLinkedItems(cacheSet.get(item));
         switch (action) {
             case "finish" -> {
-                Set<PartEntity> partEntities = cacheSet.get(getHashCodeForMap(item));
+                int code = getHashCodeForMap(item);
+                Set<PartEntity> partEntities = cacheSet.get(code);
                 item.setLinkedItems(partEntities);
                 T oldItem = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+                cacheSet.remove(code);
+                cacheServiceList.remove(code);
                 return this.update(item, bindingResult, file, oldItem, model, principal);
             }
             case "addDocument" -> this.itemsManipulation(item, 1, Document.class, documentId, 1);
@@ -156,7 +158,10 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
                     }
                 });
             }
-        } else set.add(entity);
+        } else {
+            entity.setAmount(1);
+            set.add(entity);
+        }
     }
 
     private void delFromSet(T item, PartEntity entity) {
@@ -176,6 +181,13 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
                 });
             } else set.remove(entity);
         }
+
+        Set<PartEntity> collect = set
+                .stream()
+                .filter(e -> e.getAmount() > 0)
+                .collect(Collectors.toSet());
+
+        item.setLinkedItems(collect);
     }
 
     private AbstractShowableEntity getObjectFromGMap(PartEntity entity) {
