@@ -28,6 +28,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
     }
 
     E serviceableToRepo(E toRepo, E newItem) {
+        toRepo.setLinkedItems(newItem.getLinkedItems());
         return this.usableToRepo(toRepo, newItem);
     }
 
@@ -61,9 +62,7 @@ public abstract class AbstractServiceableService<E extends AbstractServiceableEn
         } else {
             entitySet.add(entity);
         }
-//        E save = repository.save(item);
-        E save = repository.saveAndFlush(item);
-        return save;
+        return repository.save(item);
     }
 
     /**

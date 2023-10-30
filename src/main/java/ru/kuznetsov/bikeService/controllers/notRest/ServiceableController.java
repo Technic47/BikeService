@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
+import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.servicable.Part;
@@ -23,13 +24,20 @@ import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.kuznetsov.bikeService.controllers.ServiceListController;
 
 import java.security.Principal;
+import java.util.*;
 
 @Component
 public abstract class ServiceableController<T extends AbstractServiceableEntity>
         extends UsableController<T> {
     private ServiceListController serviceListController;
+    private final Map<Integer, Set<PartEntity>> cacheSet;
+    private final Map<Integer, ServiceList> cacheServiceList;
+    private final Map<String, Set<AbstractShowableEntity>> globalMap;
 
     public ServiceableController() {
+        cacheSet = new HashMap<>();
+        cacheServiceList = new HashMap<>();
+        globalMap = new HashMap<>();
     }
 
     @Operation(hidden = true)
@@ -58,14 +66,24 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
         if (item == null) {
             return "redirect:/" + category;
         }
+        cacheSet.put(getHashCodeForMap(item), item.getLinkedItems());
+        fillGlobalMap();
+        fillCacheServiceList(item);
         return this.editWithItem(model, item, principal);
     }
 
     private String editWithItem(Model model, T item, Principal principal) {
-        ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
+//        ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
+//        ServiceList serviceList = serviceListController.getServiceList(cacheSet.get(getHashCodeForMap(item)));
+        ServiceList serviceList = cacheServiceList.get(getHashCodeForMap(item));
         this.addAllItemsToModel(model);
         this.addLinkedItemsToModel(model, serviceList);
         return super.edit(model, item, principal);
+    }
+
+    private int getHashCodeForMap(T item) {
+        String code = item.getId() + item.getClass().getSimpleName();
+        return code.hashCode();
     }
 
     @Operation(hidden = true)
@@ -84,56 +102,101 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
             @RequestParam(value = "partId", required = false) Long partId,
             @RequestPart(value = "newImage", required = false) MultipartFile file,
             Model model, Principal principal) {
-        T oldItem = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
-        item.setLinkedItems(oldItem.getLinkedItems());
+
+
+//        item.setLinkedItems(cacheSet.get(item));
         switch (action) {
-            case "finish":
+            case "finish" -> {
+                Set<PartEntity> partEntities = cacheSet.get(getHashCodeForMap(item));
+                item.setLinkedItems(partEntities);
+                T oldItem = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
                 return this.update(item, bindingResult, file, oldItem, model, principal);
-            case "addDocument":
-                this.itemsManipulation(item, 1, Document.class, documentId, 1);
-                break;
-            case "delDocument":
-                this.itemsManipulation(item, 0, Document.class, documentId, 1);
-                break;
-            case "addFastener":
-                this.itemsManipulation(item, 1, Fastener.class, fastenerId, fastenerQuantity);
-                break;
-            case "delFastener":
-                this.itemsManipulation(item, 0, Fastener.class, fastenerId, fastenerQuantity);
-                break;
-            case "addTool":
-                this.itemsManipulation(item, 1, Tool.class, toolId, 1);
-                break;
-            case "delTool":
-                this.itemsManipulation(item, 0, Tool.class, toolId, 1);
-                break;
-            case "addConsumable":
-                this.itemsManipulation(item, 1, Consumable.class, consumableId, consumableQuantity);
-                break;
-            case "delConsumable":
-                this.itemsManipulation(item, 0, Consumable.class, consumableId, consumableQuantity);
-                break;
-            case "addPart":
-                this.itemsManipulation(item, 1, Part.class, partId, 1);
-                break;
-            case "delPart":
-                this.itemsManipulation(item, 0, Part.class, partId, 1);
-                break;
+            }
+            case "addDocument" -> this.itemsManipulation(item, 1, Document.class, documentId, 1);
+            case "delDocument" -> this.itemsManipulation(item, 0, Document.class, documentId, 1);
+            case "addFastener" -> this.itemsManipulation(item, 1, Fastener.class, fastenerId, fastenerQuantity);
+            case "delFastener" -> this.itemsManipulation(item, 0, Fastener.class, fastenerId, fastenerQuantity);
+            case "addTool" -> this.itemsManipulation(item, 1, Tool.class, toolId, 1);
+            case "delTool" -> this.itemsManipulation(item, 0, Tool.class, toolId, 1);
+            case "addConsumable" -> this.itemsManipulation(item, 1, Consumable.class, consumableId, consumableQuantity);
+            case "delConsumable" -> this.itemsManipulation(item, 0, Consumable.class, consumableId, consumableQuantity);
+            case "addPart" -> this.itemsManipulation(item, 1, Part.class, partId, 1);
+            case "delPart" -> this.itemsManipulation(item, 0, Part.class, partId, 1);
         }
 //        doUpdateProcedure(item, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
 //        service.update(oldItem, item);
-        return editWithItem(model, oldItem, principal);
+        return editWithItem(model, item, principal);
     }
 
     private void itemsManipulation(T item, int action, Class itemClass, Long id, int amount) {
         String type = thisClassNewObject.getClass().getSimpleName();
         PartEntity entity = new PartEntity(type,
                 itemClass.getSimpleName(), id, amount);
-        doLinkedListManipulation(item, type, entity, action);
-//        switch (action) {
-//            case 1 -> service.addToLinkedItems(item, entity);
-//            case 0 -> service.delFromLinkedItems(item, entity);
-//        }
+
+//        doLinkedListManipulation(item, type, entity, action);
+        switch (action) {
+            case 1 -> addToSet(item, entity);
+            case 0 -> delFromSet(item, entity);
+        }
+    }
+
+    private void addToSet(T item, PartEntity entity) {
+        int hashCode = getHashCodeForMap(item);
+        Set<PartEntity> set = cacheSet.get(hashCode);
+
+        ServiceList serviceList = cacheServiceList.get(hashCode);
+
+        serviceListController.addToServiceList(serviceList, getObjectFromGMap(entity), entity.getAmount());
+
+        if (set.contains(entity)) {
+            if (entity.getType().equals("Consumable") || entity.getType().equals("Fastener")) {
+                set.forEach(setItem -> {
+                    if (setItem.equals(entity)) {
+                        setItem.setAmount(setItem.getAmount() + entity.getAmount());
+                    }
+                });
+            }
+        } else set.add(entity);
+    }
+
+    private void delFromSet(T item, PartEntity entity) {
+        int hashCode = getHashCodeForMap(item);
+        Set<PartEntity> set = cacheSet.get(hashCode);
+
+        ServiceList serviceList = cacheServiceList.get(hashCode);
+
+        serviceListController.delFromServiceList(serviceList, getObjectFromGMap(entity), entity.getAmount());
+
+        if (set.contains(entity)) {
+            if (entity.getType().equals("Consumable") || entity.getType().equals("Fastener")) {
+                set.forEach(setItem -> {
+                    if (setItem.equals(entity)) {
+                        setItem.setAmount(setItem.getAmount() - entity.getAmount());
+                    }
+                });
+            } else set.remove(entity);
+        }
+    }
+
+    private AbstractShowableEntity getObjectFromGMap(PartEntity entity) {
+        String type = entity.getType();
+        Long id = entity.getItemId();
+
+        AbstractShowableEntity result = null;
+
+        switch (type) {
+            case "Document" -> result = findEntity(globalMap.get("allDocuments"), id);
+            case "Fastener" -> result = findEntity(globalMap.get("allFasteners"), id);
+            case "Tool" -> result = findEntity(globalMap.get("allTools"), id);
+            case "Consumable" -> result = findEntity(globalMap.get("allConsumables"), id);
+            case "Part" -> result = findEntity(globalMap.get("allParts"), id);
+        }
+        return result;
+    }
+
+    private AbstractShowableEntity findEntity(Set<AbstractShowableEntity> set, Long id) {
+        Optional<AbstractShowableEntity> result = set.stream().filter(item -> item.getId().equals(id)).findFirst();
+        return result.orElse(null);
     }
 
     @Override
@@ -177,11 +240,30 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
 //            throw new RuntimeException(e);
 //        }
 
-        model.addAttribute("allDocuments", doIndexProcedure(Document.class.getSimpleName()));
-        model.addAttribute("allFasteners", doIndexProcedure(Fastener.class.getSimpleName()));
-        model.addAttribute("allTools", doIndexProcedure(Tool.class.getSimpleName()));
-        model.addAttribute("allConsumables", doIndexProcedure(Consumable.class.getSimpleName()));
-        model.addAttribute("allParts", doIndexProcedure(Part.class.getSimpleName()));
+        model.addAttribute("allDocuments", globalMap.get("allDocuments"));
+        model.addAttribute("allFasteners", globalMap.get("allFasteners"));
+        model.addAttribute("allTools", globalMap.get("allTools"));
+        model.addAttribute("allConsumables", globalMap.get("allConsumables"));
+        model.addAttribute("allParts", globalMap.get("allParts"));
+
+//        model.addAttribute("allDocuments", doIndexProcedure(Document.class.getSimpleName()));
+//        model.addAttribute("allFasteners", doIndexProcedure(Fastener.class.getSimpleName()));
+//        model.addAttribute("allTools", doIndexProcedure(Tool.class.getSimpleName()));
+//        model.addAttribute("allConsumables", doIndexProcedure(Consumable.class.getSimpleName()));
+//        model.addAttribute("allParts", doIndexProcedure(Part.class.getSimpleName()));
+    }
+
+    private void fillGlobalMap() {
+        globalMap.put("allDocuments", new HashSet<>(doIndexProcedure(Document.class.getSimpleName())));
+        globalMap.put("allFasteners", new HashSet<>(doIndexProcedure(Fastener.class.getSimpleName())));
+        globalMap.put("allTools", new HashSet<>(doIndexProcedure(Tool.class.getSimpleName())));
+        globalMap.put("allConsumables", new HashSet<>(doIndexProcedure(Consumable.class.getSimpleName())));
+        globalMap.put("allParts", new HashSet<>(doIndexProcedure(Part.class.getSimpleName())));
+    }
+
+    private void fillCacheServiceList(T item) {
+        ServiceList serviceList = serviceListController.getServiceList(cacheSet.get(getHashCodeForMap(item)));
+        cacheServiceList.put(getHashCodeForMap(item), serviceList);
     }
 
     @Override
