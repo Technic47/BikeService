@@ -74,8 +74,6 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
     }
 
     private String editWithItem(Model model, T item, Principal principal) {
-//        ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
-//        ServiceList serviceList = serviceListController.getServiceList(cacheSet.get(getHashCodeForMap(item)));
         ServiceList serviceList = cacheServiceList.get(getHashCodeForMap(item));
         this.addAllItemsToModel(model);
         this.addLinkedItemsToModel(model, serviceList);
@@ -103,7 +101,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
             @RequestParam(value = "partId", required = false) Long partId,
             @RequestPart(value = "newImage", required = false) MultipartFile file,
             Model model, Principal principal) {
-//        item.setLinkedItems(cacheSet.get(item));
+
         switch (action) {
             case "finish" -> {
                 int code = getHashCodeForMap(item);
@@ -112,6 +110,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
                 T oldItem = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
                 cacheSet.remove(code);
                 cacheServiceList.remove(code);
+                globalMap.clear();
                 return this.update(item, bindingResult, file, oldItem, model, principal);
             }
             case "addDocument" -> this.itemsManipulation(item, 1, Document.class, documentId, 1);
@@ -125,8 +124,6 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
             case "addPart" -> this.itemsManipulation(item, 1, Part.class, partId, 1);
             case "delPart" -> this.itemsManipulation(item, 0, Part.class, partId, 1);
         }
-//        doUpdateProcedure(item, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
-//        service.update(oldItem, item);
         return editWithItem(model, item, principal);
     }
 
@@ -135,7 +132,6 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
         PartEntity entity = new PartEntity(type,
                 itemClass.getSimpleName(), id, amount);
 
-//        doLinkedListManipulation(item, type, entity, action);
         switch (action) {
             case 1 -> addToSet(item, entity);
             case 0 -> delFromSet(item, entity);

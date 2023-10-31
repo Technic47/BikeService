@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import static ru.bikeservice.mainresources.controllers.abstracts.KafkaController.logger;
+import static ru.bikeservice.mainresources.listeners.MainListeners.logger;
 import static ru.bikeservice.mainresources.models.dto.UserRole.ROLE_ADMIN;
 
 @Service

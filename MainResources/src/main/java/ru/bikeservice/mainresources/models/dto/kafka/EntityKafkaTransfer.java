@@ -35,6 +35,8 @@ public class EntityKafkaTransfer {
 
     public EntityKafkaTransfer() {
         linkedItems = new HashSet<>();
+        this.id = -1L;
+        this.type = "Empty";
     }
 
     public EntityKafkaTransfer(Showable item, String type) {
@@ -87,6 +89,7 @@ public class EntityKafkaTransfer {
             case "Tool" -> item = new Tool(this);
             case "Part" -> item = new Part(this);
             case "Bike" -> item = new Bike(this);
+            default -> item = new Document(this);
         }
         return item;
     }

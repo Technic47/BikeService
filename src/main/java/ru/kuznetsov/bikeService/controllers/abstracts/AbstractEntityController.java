@@ -26,6 +26,7 @@ import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.lists.UserEntity;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.showable.Showable;
+import ru.kuznetsov.bikeService.customExceptions.ResourceNotFoundException;
 import ru.kuznetsov.bikeService.models.pictures.Picture;
 import ru.kuznetsov.bikeService.models.users.UserModel;
 
@@ -70,7 +71,6 @@ public abstract class AbstractEntityController extends AbstractController {
     protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(final UserModel userModel, final String type, boolean shared) {
         List<T> objects;
         try {
-//            ShowableGetter body = new ShowableGetter(type, null, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
             IndexKafkaDTO body = new IndexKafkaDTO(type, userModel.getId(), userModel.getAuthorities().contains(ROLE_ADMIN), shared);
             ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
             RequestReplyFuture<String, IndexKafkaDTO, EntityKafkaTransfer[]> reply = indexKafkaTemplate.sendAndReceive(record);
@@ -84,16 +84,12 @@ public abstract class AbstractEntityController extends AbstractController {
 
             if (userModel.getAuthorities().contains(ROLE_USER)) {
                 if (shared) {
-//                    objects = service.findByCreatorOrShared(userModel.getId());
                     logger.info("Personal and shared " + type + " are shown to '" + userModel.getUsername() + "'");
                 } else {
-//                    objects = service.findByCreator(userModel.getId());
                     logger.info("Personal " + type + " are shown to '" + userModel.getUsername() + "'");
                 }
             }
             if (userModel.getAuthorities().contains(ROLE_ADMIN)) {
-
-//                objects = service.index();
                 logger.info("All " + type + " are shown to '" + userModel.getUsername() + "'");
             }
         } catch (InterruptedException | ExecutionException e) {
@@ -105,7 +101,6 @@ public abstract class AbstractEntityController extends AbstractController {
     protected <T extends AbstractShowableEntity> List<T> doIndexProcedure(final String type) {
         List<T> objects;
         try {
-//            ShowableGetter body = new ShowableGetter(type, null, 1L, true, true);
             IndexKafkaDTO body = new IndexKafkaDTO(type, 1L, true, true);
             ProducerRecord<String, IndexKafkaDTO> record = new ProducerRecord<>("showIndex", body);
             RequestReplyFuture<String, IndexKafkaDTO, EntityKafkaTransfer[]> reply = indexKafkaTemplate.sendAndReceive(record);
@@ -185,6 +180,9 @@ public abstract class AbstractEntityController extends AbstractController {
 
             item = (T) entity;
 
+            if (item.getId() == -1L) {
+                throw new ResourceNotFoundException(id);
+            }
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -214,11 +212,12 @@ public abstract class AbstractEntityController extends AbstractController {
         T createdItem;
         try {
             createdItem = (T) reply.get().value().getEntity();
+            if (createdItem.getId() == -1L) {
+                throw new RuntimeException("Item was not saved due to server errors!");
+            }
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-//        item.setCreated(new Date());
-//        T createdItem = service.save(item);
         userService.addCreatedItem(userModel,
                 new UserEntity(item.getClass().getSimpleName(), createdItem.getId()));
         logger.info(type + " " + item.getId() + ":" + item.getName() + " was created by '" + userModel.getUsername());
@@ -249,12 +248,12 @@ public abstract class AbstractEntityController extends AbstractController {
         T updated;
         try {
             updated = (T) reply.get().value().getEntity();
+            if (updated.getId() == -1L) {
+                throw new RuntimeException("Item was not updated due to server errors!");
+            }
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-
-//        T updated = service.update(oldItem, newItem);
-
         logger.info(newItem.getClass()
                 .getSimpleName() + " id:" + oldItem.getId() + " was edited by '" + userModel.getUsername() + "'");
         return updated;
@@ -296,19 +295,16 @@ public abstract class AbstractEntityController extends AbstractController {
         Long itemId = item.getId();
         EntityKafkaTransfer body = new EntityKafkaTransfer(item, type);
 
-
         CompletableFuture<SendResult<String, EntityKafkaTransfer>> reply = creatorTemplate.send("deleteItem", body);
 
         try {
             reply.thenRun(() -> this.cleanUpUserAfterDelete(item, userModel));
+            logger.info(type +
+                    " id:" + itemId + " was deleted by '" + userModel.getUsername() + "'");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-//        service.delete(itemId);
-//        this.cleanUpAfterDelete(item, userModel);
-        logger.info(type +
-                " id:" + itemId + " was deleted by '" + userModel.getUsername() + "'");
     }
 
     /**
@@ -320,23 +316,11 @@ public abstract class AbstractEntityController extends AbstractController {
      */
     private <T extends AbstractShowableEntity> void cleanUpUserAfterDelete(
             T item, UserModel userModel) {
-//        Runnable clearParts = () -> {
-//            PartEntity entityPart = new PartEntity("Part", partType, id, 1);
-//            List<Part> listOfParts = this.partService.findByLinkedItemsItemIdAndLinkedItemsType(id, partType);
-//            listOfParts.parallelStream().forEach(part -> partService.delFromLinkedItems(part, entityPart));
-//        };
-//        Runnable clearBikes = () -> {
-//            PartEntity entityBike = new PartEntity("Bike", partType, id, 1);
-//            List<Bike> listOfBikes = this.bikeService.findByLinkedPartsItemIdAndLinkedPartsType(id, partType);
-//            listOfBikes.parallelStream().forEach(part -> bikeService.delFromLinkedItems(part, entityBike));
-//        };
         mainExecutor.submit(() -> userService
                 .delCreatedItem(userModel, new UserEntity(item)));
-//        mainExecutor.submit(clearParts);
-//        mainExecutor.submit(clearBikes);
     }
 
-    protected<T extends AbstractShowableEntity> List<T> doSearchProcedure(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String category) {
+    protected <T extends AbstractShowableEntity> List<T> doSearchProcedure(String findBy, String searchValue, KafkaUserDto kafkaUserDto, boolean shared, String category) {
         SearchKafkaDTO body = new SearchKafkaDTO(findBy, searchValue, kafkaUserDto, shared, category);
 
         ProducerRecord<String, SearchKafkaDTO> record = new ProducerRecord<>("search", body);
@@ -437,25 +421,6 @@ public abstract class AbstractEntityController extends AbstractController {
     private void logAccess(Showable item, String userName, boolean access) {
         logger.info("User " + userName + " tries to get access to item: "
                 + item.getClass().getSimpleName() + " id: " + item.getId() + " access - " + access);
-    }
-
-    /**
-     * Checks if Multipart file contains picture. Set picture to entity if contains.
-     *
-     * @param file file to check.
-     * @param item entity to set picture.
-     * @param <T>  AbstractShowableEntity from main models.
-     */
-    protected <T extends AbstractShowableEntity> void checkImageFile(MultipartFile file, T item) {
-        if (file != null) {
-            if (!file.isEmpty()) {
-                Picture picture = pictureService.save(file);
-                item.setPicture(picture.getId());
-            }
-        }
-        if (item.getPicture() == null) {
-            item.setPicture(1L);
-        }
     }
 
     /**

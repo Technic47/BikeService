@@ -51,12 +51,6 @@ public abstract class ServiceableControllerREST<T extends AbstractServiceableEnt
         return createDtoFrom(update(newEntity, null, item, principal));
     }
 
-//    public T update(T newItem, MultipartFile file, T oldItem, Principal principal) {
-//        if (checkAccessToItem(oldItem, principal)) {
-//            return this.doUpdateProcedure(newItem, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
-//        } else throw new AccessToResourceDenied(oldItem.getId());
-//    }
-
     @Operation(summary = "Add linked item to entity")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity is updated",

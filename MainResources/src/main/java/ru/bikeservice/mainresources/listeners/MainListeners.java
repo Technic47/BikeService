@@ -1,4 +1,4 @@
-package ru.bikeservice.mainresources.controllers.abstracts;
+package ru.bikeservice.mainresources.listeners;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
 import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.KafkaUserDto;
@@ -36,7 +37,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 @Component
-public class KafkaController {
+public class MainListeners {
     public final static Logger logger = LoggerFactory.getLogger("MainResourcesLogger");
     protected final DocumentService documentService;
     protected final FastenerService fastenerService;
@@ -48,15 +49,15 @@ public class KafkaController {
     protected final ExecutorService mainExecutor;
     protected final SearchService searchService;
 
-    public KafkaController(DocumentService documentService,
-                           FastenerService fastenerService,
-                           ManufacturerService manufacturerService,
-                           ConsumableService consumableService,
-                           ToolService toolService,
-                           PartService partService,
-                           BikeService bikeService,
-                           @Qualifier("MainExecutor") ExecutorService mainExecutor,
-                           SearchService searchService) {
+    public MainListeners(DocumentService documentService,
+                         FastenerService fastenerService,
+                         ManufacturerService manufacturerService,
+                         ConsumableService consumableService,
+                         ToolService toolService,
+                         PartService partService,
+                         BikeService bikeService,
+                         @Qualifier("MainExecutor") ExecutorService mainExecutor,
+                         SearchService searchService) {
         this.documentService = documentService;
         this.fastenerService = fastenerService;
         this.manufacturerService = manufacturerService;
@@ -75,21 +76,20 @@ public class KafkaController {
     public EntityKafkaTransfer getShowable(ShowableGetter requestDTO) {
         Showable item = null;
         String category = requestDTO.getType();
-        switch (category) {
-            case "Document" -> item = documentService.getById(requestDTO.getItemId());
-            case "Fastener" -> item = fastenerService.getById(requestDTO.getItemId());
-            case "Manufacturer" -> item = manufacturerService.getById(requestDTO.getItemId());
-            case "Consumable" -> item = consumableService.getById(requestDTO.getItemId());
-            case "Tool" -> item = toolService.getById(requestDTO.getItemId());
-            case "Part" -> item = partService.getById(requestDTO.getItemId());
-            case "Bike" -> item = bikeService.getById(requestDTO.getItemId());
-        }
-
-        if (item != null) {
+        try {
+            switch (category) {
+                case "Document" -> item = documentService.getById(requestDTO.getItemId());
+                case "Fastener" -> item = fastenerService.getById(requestDTO.getItemId());
+                case "Manufacturer" -> item = manufacturerService.getById(requestDTO.getItemId());
+                case "Consumable" -> item = consumableService.getById(requestDTO.getItemId());
+                case "Tool" -> item = toolService.getById(requestDTO.getItemId());
+                case "Part" -> item = partService.getById(requestDTO.getItemId());
+                case "Bike" -> item = bikeService.getById(requestDTO.getItemId());
+            }
             logger.info(category + " with id: " + requestDTO.getItemId() + " was found.");
             return new EntityKafkaTransfer(item, category);
-        } else {
-            logger.info(category + " with id: " + requestDTO.getItemId() + " not found.");
+        } catch (ResourceNotFoundException e) {
+            logger.info(e.getMessage());
             return new EntityKafkaTransfer();
         }
     }
@@ -153,21 +153,21 @@ public class KafkaController {
     public EntityKafkaTransfer createEntity(EntityKafkaTransfer dtoNew) {
         Showable item = null;
         String type = dtoNew.getType();
-        switch (type) {
-            case "Document" -> item = documentService.save(new Document(dtoNew));
-            case "Fastener" -> item = fastenerService.save(new Fastener(dtoNew));
-            case "Manufacturer" -> item = manufacturerService.save(new Manufacturer(dtoNew));
-            case "Consumable" -> item = consumableService.save(new Consumable(dtoNew));
-            case "Tool" -> item = toolService.save(new Tool(dtoNew));
-            case "Part" -> item = partService.save(new Part(dtoNew));
-            case "Bike" -> item = bikeService.save(new Bike(dtoNew));
-        }
+        try {
+            switch (type) {
+                case "Document" -> item = documentService.save(new Document(dtoNew));
+                case "Fastener" -> item = fastenerService.save(new Fastener(dtoNew));
+                case "Manufacturer" -> item = manufacturerService.save(new Manufacturer(dtoNew));
+                case "Consumable" -> item = consumableService.save(new Consumable(dtoNew));
+                case "Tool" -> item = toolService.save(new Tool(dtoNew));
+                case "Part" -> item = partService.save(new Part(dtoNew));
+                case "Bike" -> item = bikeService.save(new Bike(dtoNew));
+            }
 
-        if (item != null) {
             logger.info(type + " with id: " + item.getId() + " was created.");
             return new EntityKafkaTransfer(item, type);
-        } else {
-            logger.info("Creation of " + type + " is not finished.");
+        } catch (Exception e) {
+            logger.info(e.getMessage());
             return new EntityKafkaTransfer();
         }
     }
@@ -180,22 +180,23 @@ public class KafkaController {
     public EntityKafkaTransfer updateEntity(EntityKafkaTransfer dtoToUpdate) {
         AbstractShowableEntity updated = null;
         String type = dtoToUpdate.getType();
-        switch (type) {
-            case "Document" -> updated = documentService.update(dtoToUpdate.getId(), new Document(dtoToUpdate));
-            case "Fastener" -> updated = fastenerService.update(dtoToUpdate.getId(), new Fastener(dtoToUpdate));
-            case "Manufacturer" ->
-                    updated = manufacturerService.update(dtoToUpdate.getId(), new Manufacturer(dtoToUpdate));
-            case "Consumable" -> updated = consumableService.update(dtoToUpdate.getId(), new Consumable(dtoToUpdate));
-            case "Tool" -> updated = toolService.update(dtoToUpdate.getId(), new Tool(dtoToUpdate));
-            case "Part" -> updated = partService.update(dtoToUpdate.getId(), new Part(dtoToUpdate));
-            case "Bike" -> updated = bikeService.update(dtoToUpdate.getId(), new Bike(dtoToUpdate));
-        }
+        try {
+            switch (type) {
+                case "Document" -> updated = documentService.update(dtoToUpdate.getId(), new Document(dtoToUpdate));
+                case "Fastener" -> updated = fastenerService.update(dtoToUpdate.getId(), new Fastener(dtoToUpdate));
+                case "Manufacturer" ->
+                        updated = manufacturerService.update(dtoToUpdate.getId(), new Manufacturer(dtoToUpdate));
+                case "Consumable" ->
+                        updated = consumableService.update(dtoToUpdate.getId(), new Consumable(dtoToUpdate));
+                case "Tool" -> updated = toolService.update(dtoToUpdate.getId(), new Tool(dtoToUpdate));
+                case "Part" -> updated = partService.update(dtoToUpdate.getId(), new Part(dtoToUpdate));
+                case "Bike" -> updated = bikeService.update(dtoToUpdate.getId(), new Bike(dtoToUpdate));
+            }
 
-        if (updated != null) {
             logger.info(type + " with id: " + updated.getId() + " was updated.");
             return new EntityKafkaTransfer(updated, type);
-        } else {
-            logger.info("Update of " + type + " is not finished.");
+        } catch (Exception e) {
+            logger.info(e.getMessage());
             return new EntityKafkaTransfer();
         }
     }

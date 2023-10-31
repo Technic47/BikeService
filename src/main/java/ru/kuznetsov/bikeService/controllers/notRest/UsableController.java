@@ -18,7 +18,6 @@ public abstract class UsableController<T extends AbstractUsableEntity>
     public UsableController() {
     }
 
-
     @Operation(hidden = true)
     @Override
     @GetMapping("/{id}")

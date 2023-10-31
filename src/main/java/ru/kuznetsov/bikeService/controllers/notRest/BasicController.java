@@ -132,7 +132,6 @@ public abstract class BasicController<T extends AbstractShowableEntity>
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
         T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
-//        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         } else
@@ -158,7 +157,6 @@ public abstract class BasicController<T extends AbstractShowableEntity>
                          @PathVariable("id") Long id,
                          Model model, Principal principal) {
         T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
-//        T item = service.getById(id);
         return this.update(newItem, bindingResult, file, item, model, principal);
     }
 
@@ -215,9 +213,8 @@ public abstract class BasicController<T extends AbstractShowableEntity>
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
 
-        List<T> resultList = null;
+        List<T> resultList;
         try {
-//            resultList = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
             resultList = doSearchProcedure("standard", value, userModel.getKafkaDto(), shared, category);
         } catch (Exception e) {
             throw new RuntimeException(e);

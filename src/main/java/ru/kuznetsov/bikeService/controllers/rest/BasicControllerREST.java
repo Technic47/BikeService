@@ -46,27 +46,33 @@ public abstract class BasicControllerREST<T extends AbstractShowableEntity>
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Index is ok",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = List.class))})})
+                            schema = @Schema(implementation = List.class))}),
+            @ApiResponse(responseCode = "204", description = "No content",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class))})})
     @GetMapping()
-    public List<AbstractEntityDto> index(Principal principal,
-                                         @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
-                                         @RequestParam(name = "searchValue", required = false) String searchValue,
-                                         @RequestParam(name = "sort", required = false, defaultValue = "") String sort,
-                                         @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
+    public ResponseEntity<List<AbstractEntityDto>> index(Principal principal,
+                                                         @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
+                                                         @RequestParam(name = "searchValue", required = false) String searchValue,
+                                                         @RequestParam(name = "sort", required = false, defaultValue = "") String sort,
+                                                         @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         List<T> objects;
         if (searchValue != null) {
             try {
-//                objects = (List<T>) searchService.doSearchProcedure(findBy, searchValue, userModel, shared, category);
                 objects = doSearchProcedure(findBy, searchValue, userModel.getKafkaDto(), shared, category);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else objects = doIndexProcedure(userModel, thisClassNewObject.getClass().getSimpleName(), shared);
 
+        if (objects.size() == 0) {
+            return ResponseEntity.status(204).build();
+        }
+
         List<T> sortedList = sortBasic(objects, sort);
 
-        return convertListToDto(sortedList);
+        return ResponseEntity.ok(convertListToDto(sortedList));
     }
 
     @Operation(summary = "Create a new entity")

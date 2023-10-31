@@ -1,6 +1,12 @@
 package ru.kuznetsov.bikeService.controllers.rest.addition;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,13 +37,20 @@ public class SearchController extends AbstractController {
         this.searchTemplate = searchTemplate;
     }
 
-
+    @Operation(summary = "Search")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Search is ok",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = List.class))}),
+            @ApiResponse(responseCode = "204", description = "No content found",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AbstractEntityDto.class))})})
     @GetMapping()
-    public List<AbstractEntityDto> doSearch(Principal principal,
-                                            @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
-                                            @RequestParam(name = "searchValue") String searchValue,
-                                            @RequestParam(name = "sort", required = false, defaultValue = "") String sort,
-                                            @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
+    public ResponseEntity<List<AbstractEntityDto>> doSearch(Principal principal,
+                                                            @RequestParam(name = "shared", required = false, defaultValue = "false") boolean shared,
+                                                            @RequestParam(name = "searchValue") String searchValue,
+                                                            @RequestParam(name = "sort", required = false, defaultValue = "") String sort,
+                                                            @RequestParam(name = "findBy", required = false, defaultValue = "standard") String findBy) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
 
         List<AbstractShowableEntity> results;
@@ -57,8 +70,11 @@ public class SearchController extends AbstractController {
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        if (results.size() == 0) {
+            return ResponseEntity.status(204).build();
+        }
         List<AbstractShowableEntity> sortedList = sortBasic(results, sort);
 
-        return convertListToDto(sortedList);
+        return ResponseEntity.ok(convertListToDto(sortedList));
     }
 }
