@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  main_resources:
+    build:
+      context: .
+    container_name: main-resources
+    restart: always
+    ports:
+      - "8091:8070"
+    env_file:
+      - ../../local.env
+    networks:
+      - kafka_network
+
+networks:
+  kafka_network:
+    external: true

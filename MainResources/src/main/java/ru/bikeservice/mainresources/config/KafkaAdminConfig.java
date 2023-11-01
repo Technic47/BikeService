@@ -1,7 +1,6 @@
 package ru.bikeservice.mainresources.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
@@ -17,9 +16,9 @@ public class KafkaAdminConfig extends KafkaConfig{
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         return new KafkaAdmin(configs);
     }
-
-    @Bean
-    public NewTopic topic1() {
-        return new NewTopic("getItems", 1, (short) 1);
-    }
+//
+//    @Bean
+//    public NewTopic topic1() {
+//        return new NewTopic("getItems", 1, (short) 1);
+//    }
 }

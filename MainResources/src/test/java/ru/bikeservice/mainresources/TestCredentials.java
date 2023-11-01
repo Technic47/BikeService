@@ -1,6 +1,5 @@
 package ru.bikeservice.mainresources;
 
-import org.springframework.mock.web.MockMultipartFile;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
 import ru.bikeservice.mainresources.models.servicable.Bike;
 import ru.bikeservice.mainresources.models.servicable.Part;
@@ -9,12 +8,7 @@ import ru.bikeservice.mainresources.models.showable.Fastener;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
-import ru.bikeservice.mainresources.models.users.UserModel;
-import ru.bikeservice.mainresources.services.PictureServiceTest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +24,6 @@ public final class TestCredentials {
     public static final String TEST_MODEL = "testModel";
     public static final String TEST_PASS = "testPass";
     public static final String TEST_EMAIL = "email@gmail.com";
-    public static final UserModel TEST_USER = new UserModel(TEST_NAME, TEST_EMAIL, TEST_PASS);
     public static final Set<PartEntity> TEST_ITEM_LIST = testLinkedItemsFill();
     public static final Document TEST_DOCUMENT = new Document(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);
     public static final Fastener TEST_FASTENER = new Fastener(TEST_ID, TEST_NAME, TEST_DESCRIPTION, TEST_PICTURE, TEST_LINK, TEST_VALUE, TEST_CREATOR);
@@ -53,15 +46,15 @@ public final class TestCredentials {
         return newItemsSet;
     }
 
-    public static MockMultipartFile getDefaultMultipartFile() {
-        MockMultipartFile multipartFile = null;
-        try {
-            File initialFile = new File(PictureServiceTest.PATH_WIDE_FILE);
-            InputStream targetStream1 = new FileInputStream(initialFile);
-            multipartFile = new MockMultipartFile("newImage", initialFile.getName(), "image/jpeg", targetStream1);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return multipartFile;
-    }
+//    public static MockMultipartFile getDefaultMultipartFile() {
+//        MockMultipartFile multipartFile = null;
+//        try {
+//            File initialFile = new File(PictureServiceTest.PATH_WIDE_FILE);
+//            InputStream targetStream1 = new FileInputStream(initialFile);
+//            multipartFile = new MockMultipartFile("newImage", initialFile.getName(), "image/jpeg", targetStream1);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//        return multipartFile;
+//    }
 }
