@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  demo_bike_service:
+    build:
+      context: .
+    container_name: main_app_V2.0
+    restart: always
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      #      Windows:
+      - ../images:/app/IMG
+    #      Linux:
+    #      - /home/technic47/images:/app/IMG
+    env_file:
+      - ../local.env
+    networks:
+      - kafka_network
+
+networks:
+  kafka_network:
+    external: true

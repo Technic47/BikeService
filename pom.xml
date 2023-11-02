@@ -3,11 +3,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
     <groupId>ru.kuznetsov.bikeService</groupId>
     <artifactId>BikeService</artifactId>
     <version>1.5-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+<!--    <modules>-->
+<!--        <module>MainResources</module>-->
+<!--        <module>EmailSender</module>-->
+<!--        <module>PdfModule</module>-->
+<!--        <module>SpokeCalc</module>-->
+<!--    </modules>-->
 
     <name>bikeService Maven Webapp</name>
     <url>https://yourbikeservice.ru</url>
@@ -41,42 +53,42 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>6.0.12</version>
+<!--            <version>6.0.12</version>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>3.0.4</version>
+<!--            <version>3.0.4</version>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.0</version>
+<!--            <version>3.1.0</version>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <version>3.0.4</version>
+<!--            <version>3.0.4</version>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
-            <version>3.1.1</version>
+<!--            <version>3.1.1</version>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <version>3.0.4</version>
+<!--            <version>3.0.4</version>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity6 -->
@@ -94,11 +106,24 @@
             <scope>provided</scope>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>jakarta.validation</groupId>-->
+<!--            <artifactId>jakarta.validation-api</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--            <artifactId>jackson-databind</artifactId>-->
+<!--        </dependency>-->
+
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>3.0.4</version>
+<!--            <version>3.0.4</version>-->
         </dependency>
 
         <dependency>
@@ -112,28 +137,10 @@
             <version>2.4.0-b180830.0359</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.1</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.kafka</groupId>-->
-<!--            <artifactId>spring-kafka</artifactId>-->
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
 <!--            <version>3.0.4</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.postgresql</groupId>-->
-<!--            <artifactId>postgresql</artifactId>-->
-<!--            <version>42.5.4</version>-->
-<!--        </dependency>-->
-
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.imgscalr</groupId>-->
-<!--            <artifactId>imgscalr-lib</artifactId>-->
-<!--            <version>4.2</version>-->
-<!--        </dependency>-->
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
         <dependency>
@@ -142,24 +149,26 @@
             <version>2.2.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.zalando/logbook-spring-boot-starter -->
-        <dependency>
-            <groupId>org.zalando</groupId>
-            <artifactId>logbook-spring-boot-starter</artifactId>
-            <version>3.5.0</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.zalando/logbook-spring-boot-starter &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.zalando</groupId>-->
+<!--            <artifactId>logbook-spring-boot-starter</artifactId>-->
+<!--            <version>3.5.0</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>ru.bikeservice</groupId>
             <artifactId>MainResources</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+<!--            <scope>compile</scope>-->
+<!--            <systemPath>${project.basedir}/MainResources/target/MainResources-1.0.0-SNAPSHOT.jar</systemPath>-->
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.1.0</version>
+<!--            <version>3.1.0</version>-->
             <scope>test</scope>
         </dependency>
 
@@ -167,7 +176,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>6.0.2</version>
+<!--            <version>6.0.2</version>-->
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -202,6 +211,23 @@
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
                     <version>3.1.1</version>
+<!--                    <configuration>-->
+<!--                        <groupId>ru.bikeservice</groupId>-->
+<!--                        <artifactId>MainResources</artifactId>-->
+<!--                        <version>1.0.0-SNAPSHOT</version>-->
+<!--                        <packaging>jar</packaging>-->
+<!--                        <file>${basedir}/MainResources/target/MainResources-1.0.0-SNAPSHOT.jar</file>-->
+<!--                        <generatePom>true</generatePom>-->
+<!--                    </configuration>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>install-jar-lib</id>-->
+<!--                            <goals>-->
+<!--                                <goal>install-file</goal>-->
+<!--                            </goals>-->
+<!--                            <phase>validate</phase>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
                 </plugin>
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
-import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.dto.KafkaUserDto;
 import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
@@ -26,12 +25,10 @@ import ru.bikeservice.mainresources.models.showable.Showable;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
 import ru.bikeservice.mainresources.services.SearchService;
-import ru.bikeservice.mainresources.services.abstracts.AbstractServiceableService;
 import ru.bikeservice.mainresources.services.modelServices.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -273,67 +270,67 @@ public class MainListeners {
         return results;
     }
 
-    @KafkaListener(topics = "addLinkedItem",
-            id = "addLinkedItem",
-            containerFactory = "entityListenerContainerFactory")
-    @SendTo
-    public EntityKafkaTransfer addLinkedItem(EntityKafkaTransfer toAdd) {
-        AbstractServiceableEntity item;
-        String type = toAdd.getType();
-        switch (type) {
-            case "Part" -> {
-                item = partService.getById(toAdd.getId());
-                setLinkedItems(item, partService, toAdd.getLinkedItems(), 1);
-            }
-            case "Bike" -> {
-                item = bikeService.getById(toAdd.getId());
-                setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 1);
-            }
-            default -> throw new IllegalArgumentException("Wrong type of entity");
-        }
-        logger.info(type + " id:" + toAdd.getId() + " linkedItems added - " + toAdd.getLinkedItems().size() + " item(s).");
-        return new EntityKafkaTransfer(item, item.getClass().getSimpleName());
-    }
-
-    @KafkaListener(topics = "delLinkedItem",
-            id = "delLinkedItem",
-            containerFactory = "entityListenerContainerFactory")
-    @SendTo
-    public EntityKafkaTransfer delLinkedItem(EntityKafkaTransfer toAdd) {
-        AbstractServiceableEntity item;
-        String type = toAdd.getType();
-        switch (type) {
-            case "Part" -> {
-                item = partService.getById(toAdd.getId());
-                setLinkedItems(item, partService, toAdd.getLinkedItems(), 0);
-            }
-            case "Bike" -> {
-                item = bikeService.getById(toAdd.getId());
-                setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 0);
-            }
-            default -> throw new IllegalArgumentException("Wrong type of entity");
-        }
-
-        logger.info(type + " id:" + toAdd.getId() + " linkedItems removed - " + toAdd.getLinkedItems().size() + " item(s).");
-        return new EntityKafkaTransfer(item, item.getClass().getSimpleName());
-    }
-
-    private AbstractServiceableEntity setLinkedItems(AbstractServiceableEntity item,
-                                                     AbstractServiceableService service,
-                                                     Collection<PartEntity> addList,
-                                                     int action) {
-        switch (action) {
-            case 1 -> {
-                for (PartEntity partEntity : addList) {
-                    service.addToLinkedItems(item, partEntity);
-                }
-            }
-            case 0 -> {
-                for (PartEntity partEntity : addList) {
-                    service.delFromLinkedItems(item, partEntity);
-                }
-            }
-        }
-        return item;
-    }
+//    @KafkaListener(topics = "addLinkedItem",
+//            id = "addLinkedItem",
+//            containerFactory = "entityListenerContainerFactory")
+//    @SendTo
+//    public EntityKafkaTransfer addLinkedItem(EntityKafkaTransfer toAdd) {
+//        AbstractServiceableEntity item;
+//        String type = toAdd.getType();
+//        switch (type) {
+//            case "Part" -> {
+//                item = partService.getById(toAdd.getId());
+//                setLinkedItems(item, partService, toAdd.getLinkedItems(), 1);
+//            }
+//            case "Bike" -> {
+//                item = bikeService.getById(toAdd.getId());
+//                setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 1);
+//            }
+//            default -> throw new IllegalArgumentException("Wrong type of entity");
+//        }
+//        logger.info(type + " id:" + toAdd.getId() + " linkedItems added - " + toAdd.getLinkedItems().size() + " item(s).");
+//        return new EntityKafkaTransfer(item, item.getClass().getSimpleName());
+//    }
+//
+//    @KafkaListener(topics = "delLinkedItem",
+//            id = "delLinkedItem",
+//            containerFactory = "entityListenerContainerFactory")
+//    @SendTo
+//    public EntityKafkaTransfer delLinkedItem(EntityKafkaTransfer toAdd) {
+//        AbstractServiceableEntity item;
+//        String type = toAdd.getType();
+//        switch (type) {
+//            case "Part" -> {
+//                item = partService.getById(toAdd.getId());
+//                setLinkedItems(item, partService, toAdd.getLinkedItems(), 0);
+//            }
+//            case "Bike" -> {
+//                item = bikeService.getById(toAdd.getId());
+//                setLinkedItems(item, bikeService, toAdd.getLinkedItems(), 0);
+//            }
+//            default -> throw new IllegalArgumentException("Wrong type of entity");
+//        }
+//
+//        logger.info(type + " id:" + toAdd.getId() + " linkedItems removed - " + toAdd.getLinkedItems().size() + " item(s).");
+//        return new EntityKafkaTransfer(item, item.getClass().getSimpleName());
+//    }
+//
+//    private AbstractServiceableEntity setLinkedItems(AbstractServiceableEntity item,
+//                                                     AbstractServiceableService service,
+//                                                     Collection<PartEntity> addList,
+//                                                     int action) {
+//        switch (action) {
+//            case 1 -> {
+//                for (PartEntity partEntity : addList) {
+//                    service.addToLinkedItems(item, partEntity);
+//                }
+//            }
+//            case 0 -> {
+//                for (PartEntity partEntity : addList) {
+//                    service.delFromLinkedItems(item, partEntity);
+//                }
+//            }
+//        }
+//        return item;
+//    }
 }
