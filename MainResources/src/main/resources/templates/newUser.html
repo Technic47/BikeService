@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main">
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container-base">
+        <div class="container">
+            <form class="container-form" th:action="@{/users}" th:method="POST" th:object="newUser">
+                <div class="col-1-1">
+                    <br/>
+                    <label for="name">LogIn:</label>
+                    <input id="name" th:field="*{name}" type="text"/>
+                    <br/>
+                    <span style="color:red" th:errors="*{name}"
+                          th:if="${#fields.hasErrors('name')}"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div th:replace="~{header :: footer}"></div>
+</div>
+</body>
+</html>

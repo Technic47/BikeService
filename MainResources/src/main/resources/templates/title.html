@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main">
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container-base">
+        <div class="container-title-1">
+            <div class="col-1-2-1">
+                <a class="container-title-a" href="bikes">
+                    <img alt="My bikes" height="300" hidden
+                         src="/siteIMG/bicycle%20set.jpg"/>
+                    Велосипеды</a>
+                <br/>
+            </div>
+            <div class="col-1-2-2">
+                <a class="container-title-a" href="parts">
+                    <img alt="My parts" height="300" hidden
+                         src="/siteIMG/bicycle%20parts.jpg"/>
+                    Запчасти</a>
+            </div>
+        </div>
+        <div class="container-title-2">
+            <div class="col-5-2-1">
+                <a class="container-title-a" href="documents">
+                    <img alt="My documents" height="200" hidden
+                         src="/siteIMG/documents.jpg" width="200"/>
+                    Документы</a>
+            </div>
+            <div class="col-5-2-2">
+                <a class="container-title-a" href="fasteners">
+                    <img alt="My fasteners" height="200" hidden
+                         src="/siteIMG/fasteners.jpg" width="200"/>
+                    Крепёж</a>
+            </div>
+            <div class="col-5-2-3">
+                <a class="container-title-a" href="tools">
+                    <img alt="My tools" height="200" hidden
+                         src="/siteIMG/tools.jpg" width="200"/>
+                    Инструменты</a>
+            </div>
+            <div class="col-5-2-4">
+                <a class="container-title-a" href="manufacturers">
+                    <img alt="My manufacturers" height="200" hidden
+                         src="/siteIMG/manufacturers.jpg" width="200"/>
+                    Производители</a>
+            </div>
+            <div class="col-5-2-5">
+                <a class="container-title-a" href="consumables">
+                    <img alt="My consumables" height="200" hidden
+                         src="/siteIMG/consumables.jpg" width="200"/>
+                    Расходники</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{header :: footer}"></div>
+</div>
+</body>
+</html>

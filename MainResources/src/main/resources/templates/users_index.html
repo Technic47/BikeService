@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/table-no-border.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main">
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container-base">
+        <div class="container">
+            <div class="col-1-2-no-boarder">
+                <h3>
+                    Пользователи, зарегистрированные в системе:
+                </h3>
+            </div>
+            <div class="col-1-2-no-boarder">
+                <form method="get" th:action="@{/users/search}">
+                    <input th:name="value" th:type="text"/>
+                    <button th:type="submit">Найти</button>
+                </form>
+                <form method="get" th:action="@{/users}">
+                    <button th:type="submit">Сбросить</button>
+                </form>
+            </div>
+        </div>
+        <div class="border-block-85">
+            <table class="table-no-border">
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td>
+                        <a th:href="@{/users/{id}(id=${user.getId()})}"
+                           th:text="${user.toString()}">user</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="~{header :: footer}"></div>
+</div>
+</body>
+</html>

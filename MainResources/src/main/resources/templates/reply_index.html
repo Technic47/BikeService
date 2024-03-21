@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/table-no-border.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/7edf9b7286.js"></script>
+<div class="main">
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container-base">
+        <div class="col-1-1-no-boarder">
+            <h3>
+                Отзывы, зарегистрированные в системе:
+            </h3>
+        </div>
+        <div class="border-block-90">
+            <table class="table-no-border">
+                <tbody>
+                <tr th:each="message : ${replyMessages}">
+                    <td>
+                        <form th:action="@{/reply/{id}(id=${message.getId()})}" th:method="POST">
+                            <p th:text="${message.getMessage()}"></p>
+                            <button class="btn btn-success" type="submit">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:replace="~{header :: footer}"></div>
+</div>
+</body>
+</html>

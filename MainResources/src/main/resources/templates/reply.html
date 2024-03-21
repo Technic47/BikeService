@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reply form</title>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main">
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container-base">
+        <div class="container">
+            <div class="center">
+                <h3>Оставьте своё предложения ниже.</h3>
+                <p>Сообщение отправляется анонимно</p>
+                <form th:action="@{/reply/save}" th:method="POST" th:object="${replyMessage}">
+                    <label for="message">Сообщение до 1000 символов</label>
+                    <br/>
+                    <textarea cols="100" id="message" rows="10" th:field="*{message}">
+        </textarea>
+                    <br/>
+                    <span style="color:red" th:errors="*{message}"
+                          th:if="${#fields.hasErrors('message')}"></span>
+                    <br/>
+                    <button type="submit" value="Обновить">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{header :: footer}"></div>
+</div>
+</body>
+</html>

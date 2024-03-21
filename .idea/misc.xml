@@ -12,6 +12,9 @@
         <option value="$PROJECT_DIR$/SpokeCalc/pom.xml" />
         <option value="$PROJECT_DIR$/EmailSender/pom.xml" />
         <option value="$PROJECT_DIR$/MainResources/pom.xml" />
+        <option value="$PROJECT_DIR$/Controllers/pom.xml" />
+        <option value="$PROJECT_DIR$/ControllersREST/pom.xml" />
+        <option value="$PROJECT_DIR$/Main/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Part info</title>
+    <link href="/static/css/center.css" rel="stylesheet"/>
+    <link href="/static/css/container.css" rel="stylesheet"/>
+    <link href="/static/css/table-no-border.css" rel="stylesheet"/>
+    <link href="/static/css/border-block.css" rel="stylesheet"/>
+    <link href="/static/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main">
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="container-base">
+        <div class="container">
+            <div class="col-1-1-no-boarder">
+                <div class="col-1-3-no-border">
+                    <img alt="Item picture" class="col-1-3-no-border-img"
+                         th:src="@{/IMG/{fileName}(fileName=${picture})}"/>
+                </div>
+                <div class="col-1-3-no-border">
+                    <h1 th:text="${object.getName()}"></h1>
+                    <a target="_blank"
+                       th:href="@{${object.getLink()}}"
+                       th:text="${object.getLink()}"></a>
+                    <p th:if="${type == 'Usable'} or ${type == 'Serviceable'}"
+                       th:text="${manufacture} + ' ' + ${object.getModel()}"></p>
+                    <p th:if="${category != 'documents'}"
+                       th:text="${object.getValueName()} + ' - ' + ${object.getValue()}"></p>
+                    <p th:text="${object.getDescription()}"></p>
+                    <div class="container-buttons">
+                        <form th:action="@{/{link}/{id}/edit(link=${category}, id=${object.getId()})}"
+                              th:if="${access == true}">
+                            <button th:type="submit">Редактировать</button>
+                        </form>
+                        <form th:action="@{/{link}/{id}(link=${category}, id=${object.getId()})}"
+                              th:if="${access == true}" th:method="POST">
+                            <button onclick="return confirm('Вы уверены в удалении?')" th:type="submit">Удалить</button>
+                        </form>
+                        <form th:action="@{/{link}/pdf(link=${category})}">
+                            <button th:name="id" th:type="submit" th:value="${object.getId()}">Скачать PDF</button>
+                        </form>
+                        <form th:action="@{/{link}/pdfAll(link=${category})}"
+                              th:if="${type == 'Serviceable'}">
+                            <button th:name="id" th:type="submit" th:value="${object.getId()}">Скачать общий PDF
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-1-3-no-border"
+                     th:if="${user.getAuthorities().contains(T(ru.kuznetsov.bikeService.models.users.UserRole).ROLE_ADMIN)}">
+                    <ul>
+                        <li th:text="'ID - ' + ${object.getId()}"></li>
+                        <li th:text="'IsShared - ' + ${object.getIsShared()}"></li>
+                        <li th:text="'Name - ' + ${object.getName()}"></li>
+                        <li th:if="${type == 'Usable'} or ${type == 'Serviceable'}"
+                            th:text="'Manufacturer - ' + ${manufacture}"></li>
+                        <li th:if="${type == 'Usable'} or ${type == 'Serviceable'}"
+                            th:text="'Model - ' + ${object.getModel()}"></li>
+                        <li th:text="'Description - ' + ${object.getDescription()}"></li>
+                        <li th:text="'Link - ' + ${object.getLink()}"></li>
+                        <li th:text="'ValueName - ' + ${object.getValueName()}"></li>
+                        <li th:text="'Value - ' + ${object.getValue()}"></li>
+                        <li th:text="'Creator`s ID - ' + ${object.getCreator()}"></li>
+                        <li th:text="'Picture`s ID - ' + ${object.getPicture()}"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border-block-42" th:if="${type == 'Serviceable'}">
+            <div class="col-5-2-no-boarders">
+                <h4>Запчасти</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="part : ${parts}">
+                            <td>
+                                <a th:href="@{/parts/{id}(id=${part.getKey().getId()})}"
+                                   th:text="${part.getKey().getName()} + ' ' + ${part.getKey().getModel()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-5-2-no-boarders">
+                <h4>Документы</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="document : ${documents}">
+                            <td>
+                                <a th:href="@{/documents/{id}(id=${document.getKey().getId()})}"
+                                   th:text="${document.getKey().getName()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-5-2-no-boarders">
+                <h4>Инструмент</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="tool : ${tools}">
+                            <td>
+                                <a th:href="@{/tools/{id}(id=${tool.getKey().getId()})}"
+                                   th:text="${tool.getKey().getName()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-5-2-no-boarders">
+                <h4>Крепёж</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="fastener : ${fasteners}">
+                            <td>
+                                <a th:href="@{/fasteners/{id}(id=${fastener.getKey().getId()})}"
+                                   th:text="${fastener.getKey().getName()} + ' ' + ${fastener.getValue()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-5-2-no-boarders">
+                <h4>Расходники</h4>
+                <div>
+                    <table class="table-no-border">
+                        <tbody>
+                        <tr th:each="consumable : ${consumables}">
+                            <td>
+                                <a th:href="@{/consumables/{id}(id=${consumable.getKey().getId()})}"
+                                   th:text="${consumable.getKey().getName()} + ' ' + ${consumable.getValue()}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{header :: footer}"></div>
+</div>
+</body>
+</html>
