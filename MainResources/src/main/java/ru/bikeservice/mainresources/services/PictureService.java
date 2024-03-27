@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.customExceptions.ResourceNotFoundException;
-import ru.bikeservice.mainresources.listeners.MainListeners;
 import ru.bikeservice.mainresources.models.pictures.Picture;
 import ru.bikeservice.mainresources.repositories.PictureRepository;
 import ru.bikeservice.mainresources.services.abstracts.AbstractService;
@@ -20,6 +19,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 import static ru.bikeservice.mainresources.config.SpringConfig.UPLOAD_PATH;
+import static ru.bikeservice.mainresources.config.SpringConfig.logger;
 
 @Service
 public class PictureService extends AbstractService<Picture, PictureRepository> {
@@ -140,7 +140,7 @@ public class PictureService extends AbstractService<Picture, PictureRepository> 
             previewFile.delete();
             repository.deleteById(id);
         } else {
-            MainListeners.logger.warn("Picture with id = " + id + " not found. Can`t delete!");
+            logger.warn("Picture with id = " + id + " not found. Can`t delete!");
             throw new ResourceNotFoundException(id);
         }
     }

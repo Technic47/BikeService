@@ -14,6 +14,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import ru.bikeservice.mainresources.config.KafkaConfig;
 
 import java.util.Map;
 

@@ -1,5 +1,7 @@
 package ru.bikeservice.mainresources.models.dto;
 
+import ru.bikeservice.mainresources.models.users.UserRole;
+
 import java.util.HashSet;
 import java.util.Set;
 

@@ -28,7 +28,7 @@ public class ReplyController extends AbstractController {
     }
 
     private void addMessagesToModel(Model model) {
-        model.addAttribute("replyMessages", this.service.index());
+        model.addAttribute("replyMessages", this.service.getAll());
     }
 
     @GetMapping("/new")

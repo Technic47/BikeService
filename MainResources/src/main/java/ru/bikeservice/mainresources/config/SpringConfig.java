@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 @Configuration
 @ComponentScan("ru.bikeservice.mainresources")
 @EnableJpaRepositories("ru.bikeservice.mainresources.repositories")
-@EntityScan("ru.kuznetsov.bikeService.models")
+@EntityScan("ru.bikeservice.mainresources.models")
 @EnableMethodSecurity(securedEnabled = true)
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {

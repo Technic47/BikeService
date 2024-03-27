@@ -20,16 +20,31 @@ public class ServiceListController extends AbstractEntityController {
         ServiceList serviceList = new ServiceList();
         for (PartEntity entity : entityList) {
             switch (entity.getType()) {
-                case "Tool" ->
-                        serviceList.addToToolMap(doShowProcedure(Tool.class.getSimpleName(), entity.getItemId()), entity.getAmount());
+                case "Tool" -> {
+                    Tool item = toolService.getById(entity.getItemId());
+                    serviceList.addToToolMap(item, entity.getAmount());
+                }
+
                 case "Fastener" ->
-                        serviceList.addToFastenerMap(doShowProcedure(Fastener.class.getSimpleName(), entity.getItemId()), entity.getAmount());
+                {
+                    Fastener item = fastenerService.getById(entity.getItemId());
+                    serviceList.addToFastenerMap(item, entity.getAmount());
+                }
                 case "Consumable" ->
-                        serviceList.addToConsumableMap(doShowProcedure(Consumable.class.getSimpleName(), entity.getItemId()), entity.getAmount());
+                {
+                    Consumable item = consumableService.getById(entity.getItemId());
+                    serviceList.addToConsumableMap(item, entity.getAmount());
+                }
                 case "Document" ->
-                        serviceList.addToDocumentMap(doShowProcedure(Document.class.getSimpleName(), entity.getItemId()), entity.getAmount());
+                {
+                    Document item = documentService.getById(entity.getItemId());
+                    serviceList.addToDocumentMap(item, entity.getAmount());
+                }
                 case "Part" ->
-                        serviceList.addToPartMap(doShowProcedure(Part.class.getSimpleName(), entity.getItemId()), entity.getAmount());
+                {
+                    Part item = partService.getById(entity.getItemId());
+                    serviceList.addToPartMap(item, entity.getAmount());
+                }
             }
         }
         return serviceList;

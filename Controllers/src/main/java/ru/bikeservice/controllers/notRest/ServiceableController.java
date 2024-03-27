@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.bikeservice.mainresources.ServiceListController;
 import ru.bikeservice.mainresources.models.abstracts.AbstractServiceableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.lists.PartEntity;
@@ -17,23 +18,25 @@ import ru.bikeservice.mainresources.models.lists.ServiceList;
 import ru.bikeservice.mainresources.models.servicable.Part;
 import ru.bikeservice.mainresources.models.showable.Document;
 import ru.bikeservice.mainresources.models.showable.Fastener;
-import ru.bikeservice.mainresources.models.showable.Manufacturer;
 import ru.bikeservice.mainresources.models.usable.Consumable;
 import ru.bikeservice.mainresources.models.usable.Tool;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public abstract class ServiceableController<T extends AbstractServiceableEntity>
-        extends UsableController<T> {
+public abstract class ServiceableController<T extends AbstractServiceableEntity,
+        S extends CommonAbstractEntityService<T>>
+        extends UsableController<T, S> {
     private ServiceListController serviceListController;
     private final Map<Integer, Set<PartEntity>> cacheSet;
     private final Map<Integer, ServiceList> cacheServiceList;
     private final Map<String, Set<AbstractShowableEntity>> globalMap;
 
-    public ServiceableController() {
+    public ServiceableController(S service) {
+        super(service);
         cacheSet = new HashMap<>();
         cacheServiceList = new HashMap<>();
         globalMap = new HashMap<>();
@@ -44,13 +47,14 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+        T item = service.getById(id);
+        item = this.doShowProcedure(item, principal);
         if (item == null) {
             return "redirect:/" + category;
         }
         ServiceList serviceList = serviceListController.getServiceList(item.getLinkedItems());
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", doShowProcedure(Manufacturer.class.getSimpleName(), manufactureIndex, principal));
+        model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
         this.addLinkedItemsToModel(model, serviceList);
         this.addItemAttributesShow(model, item, principal);
         return super.show(item, model, principal, category);
@@ -59,7 +63,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
     @Override
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable Long id, Principal principal) {
-        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+        T item = service.getById(id);
         if (item == null) {
             return "redirect:/" + category;
         }
@@ -102,7 +106,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
                 int code = getHashCodeForMap(item);
                 Set<PartEntity> partEntities = cacheSet.get(code);
                 item.setLinkedItems(partEntities);
-                T oldItem = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+                T oldItem = service.getById(id);
                 cacheSet.remove(code);
                 cacheServiceList.remove(code);
                 globalMap.clear();
@@ -204,7 +208,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
 
     @Override
     public ResponseEntity<Resource> createPdf(Long id, Principal principal) {
-        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+        T item = service.getById(id);
         ServiceList generalList = serviceListController.getServiceList(item.getLinkedItems());
 
         return this.prepareServiceablePDF(item, principal, generalList);
@@ -212,7 +216,7 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
 
     @GetMapping(value = "/pdfAll")
     public ResponseEntity<Resource> createPdfAll(@Param("id") Long id, Principal principal) {
-        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+        T item = (T) service.getById(id);
         ServiceList generalList = serviceListController.getGeneralServiceList(item.getLinkedItems());
 
         return this.prepareServiceablePDF(item, principal, generalList);
@@ -256,11 +260,11 @@ public abstract class ServiceableController<T extends AbstractServiceableEntity>
     }
 
     private void fillGlobalMap() {
-        globalMap.put("allDocuments", new HashSet<>(doIndexProcedure(Document.class.getSimpleName())));
-        globalMap.put("allFasteners", new HashSet<>(doIndexProcedure(Fastener.class.getSimpleName())));
-        globalMap.put("allTools", new HashSet<>(doIndexProcedure(Tool.class.getSimpleName())));
-        globalMap.put("allConsumables", new HashSet<>(doIndexProcedure(Consumable.class.getSimpleName())));
-        globalMap.put("allParts", new HashSet<>(doIndexProcedure(Part.class.getSimpleName())));
+        globalMap.put("allDocuments", new HashSet<>(documentService.getAll()));
+        globalMap.put("allFasteners", new HashSet<>(fastenerService.getAll()));
+        globalMap.put("allTools", new HashSet<>(toolService.getAll()));
+        globalMap.put("allConsumables", new HashSet<>(consumableService.getAll()));
+        globalMap.put("allParts", new HashSet<>(partService.getAll()));
     }
 
     private void fillCacheServiceList(T item) {

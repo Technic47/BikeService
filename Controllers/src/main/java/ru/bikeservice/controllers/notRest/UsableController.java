@@ -7,14 +7,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
-import ru.bikeservice.mainresources.models.showable.Manufacturer;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.security.Principal;
 
 @Component
-public abstract class UsableController<T extends AbstractUsableEntity>
-        extends BasicController<T> {
-    public UsableController() {
+public abstract class UsableController<T extends AbstractUsableEntity,
+        S extends CommonAbstractEntityService<T>>
+        extends BasicController<T, S> {
+
+
+    public UsableController(S service) {
+        super(service);
     }
 
     @Override
@@ -22,12 +26,13 @@ public abstract class UsableController<T extends AbstractUsableEntity>
     public String show(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
-        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
+        T item = service.getById(id);
+        item = this.doShowProcedure(item, principal);
         if (item == null) {
             return "redirect:/" + category;
         }
         Long manufactureIndex = item.getManufacturer();
-        model.addAttribute("manufacture", doShowProcedure(Manufacturer.class.getSimpleName(), manufactureIndex, principal).getName());
+        model.addAttribute("manufacture", manufacturerService.getById(manufactureIndex).getName());
         this.addItemAttributesShow(model, item, principal);
         return super.show(item, model, principal, category);
     }
@@ -35,19 +40,19 @@ public abstract class UsableController<T extends AbstractUsableEntity>
 
     @Override
     protected void addItemAttributesNew(Model model, T item, Principal principal) {
-        model.addAttribute("manufacturers", doIndexProcedure(Manufacturer.class.getSimpleName()));
+        model.addAttribute("manufacturers", manufacturerService.getAll());
         super.addItemAttributesNew(model, item, principal);
     }
 
     @Override
     protected void addItemAttributesEdit(Model model, T item, Principal principal) {
-        model.addAttribute("manufacture", doShowProcedure(Manufacturer.class.getSimpleName(), item.getManufacturer(), principal));
+        model.addAttribute("manufacture", manufacturerService.getById(item.getManufacturer()));
         super.addItemAttributesEdit(model, item, principal);
     }
 
     @Override
     public ResponseEntity<Resource> createPdf(Long id, Principal principal) {
-        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+        T item = service.getById(id);
 
         return this.prepareUsablePDF(item, principal);
     }

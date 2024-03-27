@@ -17,7 +17,7 @@ public class PicturesController extends AbstractController {
     @Secured("ROLE_ADMIN")
     public String index(Model model, Principal principal) {
         this.addUserToModel(model, principal);
-        model.addAttribute("allPictures", pictureService.index());
+        model.addAttribute("allPictures", pictureService.getAll());
         return "picture_index";
     }
 

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.bikeservice.mainresources.services.PictureService;
 import ru.bikeservice.mainresources.services.UserService;
+import ru.bikeservice.mainresources.services.modelServices.*;
 
 import java.security.Principal;
 import java.util.concurrent.ExecutorService;
@@ -18,17 +19,33 @@ import java.util.concurrent.ExecutorService;
  */
 @Component
 public abstract class AbstractController {
+    @Autowired
     protected UserService userService;
+    @Autowired
     protected PictureService pictureService;
-    //    protected DocumentService documentService;
-//    protected FastenerService fastenerService;
-//    protected ManufacturerService manufacturerService;
-//    protected ConsumableService consumableService;
-//    protected ToolService toolService;
-//    protected PartService partService;
-//    protected BikeService bikeService;
+    @Autowired
+    protected DocumentService documentService;
+    @Autowired
+    protected FastenerService fastenerService;
+    @Autowired
+    protected ManufacturerService manufacturerService;
+    @Autowired
+    protected ConsumableService consumableService;
+    @Autowired
+    protected ToolService toolService;
+    @Autowired
+    protected PartService partService;
+    @Autowired
+    protected BikeService bikeService;
+    @Autowired
+    @Qualifier("MainExecutor")
     protected ExecutorService mainExecutor;
+    @Autowired
+    @Qualifier("AdditionExecutor")
     protected ExecutorService additionExecutor;
+
+    protected AbstractController() {
+    }
 
     protected UserModel getUserModelFromPrincipal(Principal principal) {
         String userName;
@@ -66,39 +83,4 @@ public abstract class AbstractController {
     private void setAdditionExecutor(ExecutorService additionExecutor) {
         this.additionExecutor = additionExecutor;
     }
-//
-//    @Autowired
-//    private void setDocumentService(DocumentService documentService) {
-//        this.documentService = documentService;
-//    }
-//
-//    @Autowired
-//    private void setFastenerService(FastenerService fastenerService) {
-//        this.fastenerService = fastenerService;
-//    }
-//
-//    @Autowired
-//    private void setManufacturerService(ManufacturerService manufacturerService) {
-//        this.manufacturerService = manufacturerService;
-//    }
-//
-//    @Autowired
-//    private void setConsumableService(ConsumableService consumableService) {
-//        this.consumableService = consumableService;
-//    }
-//
-//    @Autowired
-//    private void setToolService(ToolService toolService) {
-//        this.toolService = toolService;
-//    }
-//
-//    @Autowired
-//    private void setPartService(PartService partService) {
-//        this.partService = partService;
-//    }
-//
-//    @Autowired
-//    private void setBikeService(BikeService bikeService) {
-//        this.bikeService = bikeService;
-//    }
 }

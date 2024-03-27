@@ -13,7 +13,7 @@ public interface CommonService<E> {
 
     E update(E item, E updateItem);
 
-    List<E> index();
+    List<E> getAll();
 
     void delete(Long id) throws ResourceNotFoundException;
 }

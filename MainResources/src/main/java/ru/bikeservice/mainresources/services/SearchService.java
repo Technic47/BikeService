@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.abstracts.AbstractUsableEntity;
-import ru.bikeservice.mainresources.models.dto.KafkaUserDto;
 import ru.bikeservice.mainresources.models.showable.Manufacturer;
+import ru.bikeservice.mainresources.models.users.UserModel;
 import ru.bikeservice.mainresources.services.modelServices.*;
 
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import static ru.bikeservice.mainresources.listeners.MainListeners.logger;
-import static ru.bikeservice.mainresources.models.dto.UserRole.ROLE_ADMIN;
+import static ru.bikeservice.mainresources.config.SpringConfig.logger;
+import static ru.bikeservice.mainresources.models.users.UserRole.ROLE_ADMIN;
 
 @Service
 public class SearchService {
@@ -54,7 +54,7 @@ public class SearchService {
      * @return List with search results.
      */
     public List<AbstractShowableEntity> doSearchProcedure(
-            String findBy, String searchValue, final KafkaUserDto userModel, boolean shared, String category) throws ExecutionException, InterruptedException {
+            String findBy, String searchValue, final UserModel userModel, boolean shared, String category) throws ExecutionException, InterruptedException {
         return mainExecutor.submit(() -> {
                     List<AbstractShowableEntity> results;
 
@@ -79,7 +79,7 @@ public class SearchService {
      * @return with search results.
      */
     private List<AbstractShowableEntity> getAdminResults(
-            String findBy, String searchValue, final KafkaUserDto userModel, String category
+            String findBy, String searchValue, final UserModel userModel, String category
     ) {
         List<AbstractShowableEntity> results = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class SearchService {
      * @return with search results.
      */
     protected List<AbstractShowableEntity> getUserResults(
-            String findBy, String searchValue, final KafkaUserDto userModel, boolean shared, String category) {
+            String findBy, String searchValue, final UserModel userModel, boolean shared, String category) {
         List<AbstractShowableEntity> results = new ArrayList<>();
 
         switch (findBy) {
@@ -142,7 +142,7 @@ public class SearchService {
      * @return List with search results.
      */
     public List<AbstractShowableEntity> doGlobalSearchProcedure(
-            String findBy, String searchValue, final KafkaUserDto userModel, boolean shared) throws ExecutionException, InterruptedException {
+            String findBy, String searchValue, final UserModel userModel, boolean shared) throws ExecutionException, InterruptedException {
         List<AbstractShowableEntity> results = new ArrayList<>();
 
         switch (findBy) {
@@ -161,7 +161,7 @@ public class SearchService {
         return results;
     }
 
-    private List<AbstractShowableEntity> findAllByNameOrShared(final String searchValue, final KafkaUserDto userModel, boolean shared) {
+    private List<AbstractShowableEntity> findAllByNameOrShared(final String searchValue, final UserModel userModel, boolean shared) {
 //        List<AbstractShowableEntity> results = new ArrayList<>();
 //        results.addAll(findByNameCreatorShared(searchValue, "documents", userModel, shared));
 //        results.addAll(findByNameCreatorShared(searchValue, "fasteners", userModel, shared));
@@ -210,7 +210,7 @@ public class SearchService {
         return results;
     }
 
-    private List<AbstractShowableEntity> findAllByDescriptionOrShared(final String searchValue, final KafkaUserDto userModel, boolean shared) {
+    private List<AbstractShowableEntity> findAllByDescriptionOrShared(final String searchValue, final UserModel userModel, boolean shared) {
 //        List<AbstractShowableEntity> results = new ArrayList<>();
 //        results.addAll(findByDescriptionCreatorShared(searchValue, "documents", userModel, shared));
 //        results.addAll(findByDescriptionCreatorShared(searchValue, "fasteners", userModel, shared));
@@ -233,7 +233,7 @@ public class SearchService {
         return this.addResultsShowable(List.of(documents, fasteners, manufacturers, consumables, tools, parts, bikes));
     }
 
-    private List<AbstractShowableEntity> findAllByValueOrShared(final String searchValue, final KafkaUserDto userModel, boolean shared) {
+    private List<AbstractShowableEntity> findAllByValueOrShared(final String searchValue, final UserModel userModel, boolean shared) {
 //        List<AbstractShowableEntity> results = new ArrayList<>();
 //        results.addAll(findByValueCreatorShared(searchValue, "documents", userModel, shared));
 //        results.addAll(findByValueCreatorShared(searchValue, "fasteners", userModel, shared));
@@ -256,7 +256,7 @@ public class SearchService {
         return this.addResultsShowable(List.of(documents, fasteners, manufacturers, consumables, tools, parts, bikes));
     }
 
-    private List<AbstractUsableEntity> findAllByManufacturer(final String searchValue, final KafkaUserDto userModel, boolean shared) {
+    private List<AbstractUsableEntity> findAllByManufacturer(final String searchValue, final UserModel userModel, boolean shared) {
 //        List<AbstractShowableEntity> results = new ArrayList<>();
 //        results.addAll(findByManufactureCreatorShared(searchValue, "consumables", userModel, shared));
 //        results.addAll(findByManufactureCreatorShared(searchValue, "tools", userModel, shared));
@@ -272,7 +272,7 @@ public class SearchService {
         return this.addResultsUsable(List.of(consumables, tools, parts, bikes));
     }
 
-    private List<AbstractUsableEntity> findAllByModelOrShared(final String searchValue, final KafkaUserDto userModel, boolean shared) {
+    private List<AbstractUsableEntity> findAllByModelOrShared(final String searchValue, final UserModel userModel, boolean shared) {
 //        List<AbstractShowableEntity> results = new ArrayList<>();
 //        results.addAll(findByModelCreatorShared(searchValue, "consumables", userModel, shared));
 //        results.addAll(findByModelCreatorShared(searchValue, "tools", userModel, shared));
@@ -288,7 +288,7 @@ public class SearchService {
         return this.addResultsUsable(List.of(consumables, tools, parts, bikes));
     }
 
-    private List<AbstractShowableEntity> findByNameCreatorShared(String searchValue, String category, KafkaUserDto userModel, boolean shared) {
+    private List<AbstractShowableEntity> findByNameCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractShowableEntity> results = new ArrayList<>();
         switch (category) {
             case "documents" ->
@@ -327,7 +327,7 @@ public class SearchService {
         return results;
     }
 
-    private List<AbstractShowableEntity> findByDescriptionCreatorShared(String searchValue, String category, KafkaUserDto userModel, boolean shared) {
+    private List<AbstractShowableEntity> findByDescriptionCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractShowableEntity> results = new ArrayList<>();
 
         switch (category) {
@@ -369,7 +369,7 @@ public class SearchService {
         return results;
     }
 
-    private List<AbstractShowableEntity> findByValueCreatorShared(String searchValue, String category, KafkaUserDto userModel, boolean shared) {
+    private List<AbstractShowableEntity> findByValueCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractShowableEntity> results = new ArrayList<>();
 
         switch (category) {
@@ -410,7 +410,7 @@ public class SearchService {
         return results;
     }
 
-    private List<AbstractUsableEntity> findByManufactureCreatorShared(String searchValue, String category, KafkaUserDto userModel, boolean shared) {
+    private List<AbstractUsableEntity> findByManufactureCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractUsableEntity> results = new ArrayList<>();
         List<Manufacturer> manufacturers = manufacturerService.findByNameContainingIgnoreCase(searchValue);
 
@@ -456,7 +456,7 @@ public class SearchService {
         return results;
     }
 
-    private List<AbstractUsableEntity> findByModelCreatorShared(String searchValue, String category, KafkaUserDto userModel, boolean shared) {
+    private List<AbstractUsableEntity> findByModelCreatorShared(String searchValue, String category, UserModel userModel, boolean shared) {
         List<AbstractUsableEntity> results = new ArrayList<>();
 
         switch (category) {

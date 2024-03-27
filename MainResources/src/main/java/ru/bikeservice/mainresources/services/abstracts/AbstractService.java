@@ -47,7 +47,7 @@ public abstract class AbstractService<E, R extends CommonRepository<E>>
     public abstract E update(E item, E updateItem);
 
     @Override
-    public List<E> index() {
+    public List<E> getAll() {
         return new ArrayList<>(repository.findAll());
     }
 

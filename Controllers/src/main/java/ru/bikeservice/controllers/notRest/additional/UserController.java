@@ -55,7 +55,7 @@ public class UserController extends AbstractController {
     @Secured("ROLE_ADMIN")
     public String index(Model model, Principal principal) {
         this.addUserToModel(model, principal);
-        model.addAttribute("users", userService.index());
+        model.addAttribute("users", userService.getAll());
         return "users_index";
     }
 

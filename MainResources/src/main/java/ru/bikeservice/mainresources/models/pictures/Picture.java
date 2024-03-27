@@ -1,5 +1,7 @@
 package ru.bikeservice.mainresources.models.pictures;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
 @Entity
@@ -42,8 +44,7 @@ public class Picture {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Picture)) return false;
-        Picture picture = (Picture) o;
+        if (!(o instanceof Picture picture)) return false;
         return Objects.equals(id, picture.id) && Objects.equals(name, picture.name);
     }
 

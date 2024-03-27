@@ -14,7 +14,7 @@ import java.util.List;
 public class UserModelControllerRESTAdmin extends AbstractEntityController {
     @GetMapping
     public List<UserModel> index() {
-     return userService.index();
+     return userService.getAll();
     }
 
     @GetMapping("/{id}")

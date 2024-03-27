@@ -1,6 +1,5 @@
 package ru.bikeservice.mainresources.config.kafkaConfig;
 
-import org.apache.kafka.common.serialization.DoubleDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,45 +12,50 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-
-import java.util.Map;
+import ru.bikeservice.mainresources.config.KafkaConfig;
+import ru.bikeservice.mainresources.models.dto.kafka.EntityKafkaTransfer;
+import ru.bikeservice.mainresources.models.dto.kafka.IndexKafkaDTO;
 
 @Configuration
-public class SpokeCalcKafkaConfig extends KafkaConfig {
-    @Value("${kafka.reply.topic.spokeCalc}")
-    private String replyTopicSpokeCalc;
+public class IndexProducerConfig extends KafkaConfig {
+    @Value("${kafka.reply.topic.index}")
+    private String replyIndex;
 
     @Bean
-    public ReplyingKafkaTemplate<String, Map<String, Double>, Double> spokeCalcReplyingKafkaTemplate(
-            ProducerFactory<String, Map<String, Double>> pf,
-            ConcurrentKafkaListenerContainerFactory<String, Double> factory) {
-        ConcurrentMessageListenerContainer<String, Double> replyContainer = factory.createContainer(replyTopicSpokeCalc);
+    public ReplyingKafkaTemplate<String, IndexKafkaDTO, EntityKafkaTransfer[]>
+    indexReplyingKafkaTemplate(
+            ProducerFactory<String, IndexKafkaDTO> pf,
+            ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer[]> factory) {
+        ConcurrentMessageListenerContainer<String, EntityKafkaTransfer[]> replyContainer =
+                factory.createContainer(replyIndex);
         replyContainer.getContainerProperties().setMissingTopicsFatal(false);
         replyContainer.getContainerProperties().setGroupId(kafkaGroupId);
         return new ReplyingKafkaTemplate<>(pf, replyContainer);
     }
 
     @Bean
-    public ProducerFactory<String, Map<String, Double>> spokeCalcProducerFactory() {
+    public ProducerFactory<String, IndexKafkaDTO> indexProducerFactory() {
         return new DefaultKafkaProducerFactory<>(getProducerProps(),
                 new StringSerializer(),
                 new JsonSerializer<>());
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Double>
-    spokeCalkKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Double> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer[]>
+    indexKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, EntityKafkaTransfer[]> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(spokeCalkConsumerFactory());
+        factory.setConsumerFactory(indexConsumerFactory());
+        factory.setBatchListener(true);
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, Double> spokeCalkConsumerFactory() {
+    public ConsumerFactory<String, EntityKafkaTransfer[]> indexConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(getConsumerProps(),
                 new StringDeserializer(),
-                new DoubleDeserializer());
+                new JsonDeserializer<>());
     }
 }

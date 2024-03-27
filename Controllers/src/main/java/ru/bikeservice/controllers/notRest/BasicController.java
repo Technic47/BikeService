@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.bikeservice.mainresources.controllers.abstracts.AbstractEntityController;
 import ru.bikeservice.mainresources.models.abstracts.AbstractShowableEntity;
 import ru.bikeservice.mainresources.models.users.UserModel;
+import ru.bikeservice.mainresources.services.abstracts.CommonAbstractEntityService;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -27,13 +29,16 @@ import java.util.Objects;
  * @param <T> entities from AbstractShowableEntity.
  */
 @Component
-public abstract class BasicController<T extends AbstractShowableEntity>
+public abstract class BasicController<T extends AbstractShowableEntity,
+        S extends CommonAbstractEntityService<T>>
         extends AbstractEntityController {
+    protected final S service;
     protected T thisClassNewObject;
     protected String category;
 
 
-    public BasicController() {
+    public BasicController(S service) {
+        this.service = service;
     }
 
     public void setCurrentClass(Class<T> currentClass) {
@@ -50,7 +55,7 @@ public abstract class BasicController<T extends AbstractShowableEntity>
     public String index(Model model, Principal principal) {
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
-        List<T> objects = this.doIndexProcedure(userModel, thisClassNewObject.getClass().getSimpleName(), true);
+        List<T> objects = this.doIndexProcedure(service, userModel, category, true);
 
         this.addIndexMapsToModel(model, userId, objects);
         model.addAttribute("sharedCheck", true);
@@ -61,8 +66,13 @@ public abstract class BasicController<T extends AbstractShowableEntity>
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id,
                        Model model, Principal principal) {
-        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
-        return this.show(item, model, principal, category);
+        T item = service.getById(id);
+        if (item == null) {
+            return "redirect:/" + category;
+        } else {
+            item = this.doShowProcedure(item, principal);
+            return this.show(item, model, principal, category);
+        }
     }
 
     String show(T item, Model model, Principal principal, String category) {
@@ -100,7 +110,7 @@ public abstract class BasicController<T extends AbstractShowableEntity>
     }
 
     void addItemAttributesNew(Model model, T item, Principal principal) {
-        model.addAttribute("allPictures", pictureService.index());
+        model.addAttribute("allPictures", pictureService.getAll());
         this.addItemAttributesShow(model, item, principal);
     }
 
@@ -119,13 +129,14 @@ public abstract class BasicController<T extends AbstractShowableEntity>
             this.addItemAttributesNew(model, item, principal);
             return "new";
         }
-        this.doCreateProcedure(item, file, principal, thisClassNewObject.getClass().getSimpleName());
+        this.doCreateProcedure(item, service, file, principal);
         return "redirect:/" + category;
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id, Principal principal) {
-        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
+        T item = service.getById(id);
+        item = this.doShowProcedure(item, principal);
         if (item == null) {
             return "redirect:/" + category;
         } else
@@ -149,7 +160,7 @@ public abstract class BasicController<T extends AbstractShowableEntity>
                          @RequestPart(value = "newImage") MultipartFile file,
                          @PathVariable("id") Long id,
                          Model model, Principal principal) {
-        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
+        T item = service.getById(id);
         return this.update(newItem, bindingResult, file, item, model, principal);
     }
 
@@ -163,7 +174,7 @@ public abstract class BasicController<T extends AbstractShowableEntity>
                 return "edit";
             }
 
-            this.doUpdateProcedure(newItem, thisClassNewObject.getClass().getSimpleName(), oldItem, file, principal);
+            this.doUpdateProcedure(newItem, service, oldItem, file, principal);
 
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + oldItem.getId();
@@ -171,9 +182,9 @@ public abstract class BasicController<T extends AbstractShowableEntity>
 
     @PostMapping(value = "/{id}")
     public String delete(@PathVariable("id") Long id, Principal principal) {
-        T item = this.doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id, principal);
+        T item = service.getById(id);
         if (checkAccessToItem(item, principal)) {
-            this.doDeleteProcedure(item, thisClassNewObject.getClass().getSimpleName(), principal);
+            this.doDeleteProcedure(item, service, principal);
             return "redirect:/" + category;
         } else return "redirect:/" + category + "/" + id;
     }
@@ -181,7 +192,7 @@ public abstract class BasicController<T extends AbstractShowableEntity>
     @GetMapping(value = "/pdf")
     @ResponseBody
     public ResponseEntity<Resource> createPdf(@Param("id") Long id, Principal principal) throws IOException {
-        T item = doShowProcedure(thisClassNewObject.getClass().getSimpleName(), id);
+        T item = this.service.getById(id);
         return this.prepareShowablePDF(item, principal);
     }
 
@@ -203,10 +214,10 @@ public abstract class BasicController<T extends AbstractShowableEntity>
         UserModel userModel = this.getUserModelFromPrincipal(principal);
         Long userId = userModel.getId();
 
-        List<T> resultList;
+        List<T> resultList = null;
         try {
-            resultList = doSearchProcedure("standard", value, userModel.getKafkaDto(), shared, category);
-        } catch (Exception e) {
+            resultList = (List<T>) this.searchService.doSearchProcedure("standard", value, userModel, shared, category);
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 

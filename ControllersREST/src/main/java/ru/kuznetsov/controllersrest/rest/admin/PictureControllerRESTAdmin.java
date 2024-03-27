@@ -14,7 +14,7 @@ import java.util.List;
 public class PictureControllerRESTAdmin extends AbstractEntityController {
     @GetMapping
     public List<Picture> index() {
-        return pictureService.index();
+        return pictureService.getAll();
     }
 
     @GetMapping("/{id}")
