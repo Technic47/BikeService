@@ -29,7 +29,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   db:
-    image: postgres
+    image: postgres:15
     restart: always
     container_name: db
     depends_on:

@@ -54,7 +54,6 @@ public class SecurityConfiguration {
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionFixation().migrateSession() // protection against typical Session Fixation attacks
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/", "/home", "/registration", "/static/**", "/login", "/oauth/**",
@@ -82,7 +81,8 @@ public class SecurityConfiguration {
                     response.sendRedirect("/successLogin");
                 })
                 .and()
-                .addFilterBefore(new CustomAuthorizationFilter(jwtTokenProvider, customUserDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CustomAuthorizationFilter(jwtTokenProvider, customUserDetailsService),
+                        UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .deleteCookies("JSESSIONID");
         return http.build();
