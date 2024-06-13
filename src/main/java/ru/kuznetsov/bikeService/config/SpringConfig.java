@@ -40,7 +40,7 @@ public class SpringConfig implements WebMvcConfigurer {
     private String adminName;
     @Value("${admin.pass}")
     private String adminPass;
-    @Value("${datasource.driver}")
+    @Value("${spring.datasource.driverClassName}")
     private String driver;
     @Value("${spring.datasource.url}")
     private String jdbcURL;

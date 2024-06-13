@@ -63,6 +63,9 @@ public class UserService extends AbstractService<UserModel, UserRepository> {
         UserModel newUser = new UserBuilder(userModel.getName(), userModel.getEmail(), userModel.getPassword())
                 .encodePassword(this.passwordEncoder).setActive(true).setCreationDate()
                 .addRole(role).setProvider(LOCAL).build();
+        if (role.equals(ROLE_ADMIN)) {
+            newUser.setEnabled(true);
+        }
         return repository.save(newUser);
     }
 
